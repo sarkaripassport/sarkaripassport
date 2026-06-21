@@ -14,7 +14,11 @@ export default function Home() {
         
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
           <div className="w-full md:w-4/5 space-y-4">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0B1B3D] tracking-tight">
+            <h1 className="flex items-center flex-wrap gap-3 text-lg md:text-xl lg:text-2xl font-extrabold text-[#0B1B3D] tracking-tight">
+              <span className="relative flex h-3 w-3 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              </span>
               Latest Government Jobs, Results, Admit Cards & Eligibility Updates
             </h1>
             <div className="flex flex-wrap gap-2 pt-2">
