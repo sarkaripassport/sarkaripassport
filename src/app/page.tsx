@@ -81,38 +81,62 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Latest Jobs Table */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-          <div className="flex justify-between items-center p-5 border-b border-gray-100">
-            <h2 className="text-lg font-bold text-[#0B1B3D]">Latest Jobs</h2>
-            <Link href="/jobs" className="text-sm font-bold text-[#0A58CA] hover:underline">View All</Link>
+        {/* Latest Jobs Table - Professional Formal Futuristic */}
+        <div className="bg-white/90 backdrop-blur-xl rounded-2xl border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.06)] overflow-hidden relative">
+          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-[#0B1B3D]"></div>
+          
+          <div className="flex justify-between items-center p-6 border-b border-gray-100/80">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0B1B3D] to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <Briefcase className="w-4 h-4 text-white" />
+              </div>
+              <h2 className="text-xl font-black text-[#0B1B3D] tracking-tight">Latest Official Vacancies</h2>
+            </div>
+            <Link href="/jobs" className="text-sm font-bold text-[#0A58CA] flex items-center gap-1 hover:text-cyan-600 transition-colors">
+              Explore All <ChevronRight className="w-4 h-4" />
+            </Link>
           </div>
+          
           <div className="overflow-x-auto">
             <table className="w-full text-sm text-left">
-              <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+              <thead className="text-xs text-gray-500 uppercase tracking-widest bg-gray-50/50">
                 <tr>
-                  <th className="px-6 py-3 font-bold">Post Name</th>
-                  <th className="px-6 py-3 font-bold text-center">Vacancies</th>
-                  <th className="px-6 py-3 font-bold text-center">Last Date</th>
-                  <th className="px-6 py-3 font-bold text-right">Action</th>
+                  <th className="px-6 py-4 font-bold">Post Name</th>
+                  <th className="px-6 py-4 font-bold text-center">Vacancies</th>
+                  <th className="px-6 py-4 font-bold text-center">Last Date</th>
+                  <th className="px-6 py-4 font-bold text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-gray-100/80">
                 {[
-                  { title: "SSC CGL 2026", vac: "12,256", date: "24 Jun 2026" },
-                  { title: "MSC Bank Bharti 2026", vac: "175", date: "30 Jun 2026" },
-                  { title: "AFCAT 02/2026", vac: "-", date: "15 Jul 2026" },
-                  { title: "MPPSC Group B & C", vac: "385", date: "20 Jul 2026" },
-                  { title: "IB ACIO Grade-II", vac: "995", date: "12 Jun 2026" },
+                  { title: "SSC CGL 2026", vac: "12,256", date: "24 Jun 2026", active: true },
+                  { title: "MSC Bank Bharti 2026", vac: "175", date: "30 Jun 2026", active: true },
+                  { title: "AFCAT 02/2026", vac: "-", date: "15 Jul 2026", active: true },
+                  { title: "MPPSC Group B & C", vac: "385", date: "20 Jul 2026", active: false },
+                  { title: "IB ACIO Grade-II", vac: "995", date: "12 Jun 2026", active: true },
                 ].map((job, i) => (
-                  <tr key={i} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 font-bold text-[#0B1B3D]">{job.title}</td>
-                    <td className="px-6 py-4 text-center font-semibold text-gray-800">{job.vac}</td>
-                    <td className="px-6 py-4 text-center text-gray-600">{job.date}</td>
-                    <td className="px-6 py-4 flex items-center justify-end gap-2">
-                      <button className="px-3 py-1.5 text-xs font-bold text-[#0A58CA] border border-blue-200 rounded hover:bg-blue-50">View Details</button>
-                      <button className="px-3 py-1.5 text-xs font-bold text-white bg-[#0A58CA] rounded hover:bg-blue-700">Check Eligibility</button>
-                      <button className="p-1.5 text-gray-400 hover:text-[#0B1B3D] border border-gray-200 rounded"><Bookmark className="w-4 h-4" /></button>
+                  <tr key={i} className="group hover:bg-blue-50/30 transition-all duration-300 relative">
+                    <td className="px-6 py-5">
+                      <div className="absolute left-0 top-0 h-full w-1 bg-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                      <div className="flex items-center gap-3">
+                        {job.active ? (
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                          </span>
+                        ) : (
+                          <span className="w-2 h-2 rounded-full bg-gray-300"></span>
+                        )}
+                        <span className="font-extrabold text-[#0B1B3D] group-hover:text-[#0A58CA] transition-colors">{job.title}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-center font-bold text-gray-700">{job.vac}</td>
+                    <td className="px-6 py-5 text-center text-gray-500 font-medium">{job.date}</td>
+                    <td className="px-6 py-5 flex items-center justify-end gap-3">
+                      <button className="text-xs font-bold text-gray-500 hover:text-[#0B1B3D] transition-colors">Details</button>
+                      <button className="px-5 py-2 text-xs font-bold text-white bg-[#0B1B3D] rounded-full hover:bg-gradient-to-r hover:from-[#0A58CA] hover:to-cyan-500 hover:shadow-lg hover:shadow-cyan-500/20 transition-all duration-300">
+                        Apply Now
+                      </button>
                     </td>
                   </tr>
                 ))}
