@@ -8,9 +8,9 @@ export default function Home() {
     <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
 
       {/* Hero Section */}
-      <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-8 pb-16 px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-6 pb-12 px-4 sm:px-6 lg:px-8">
         {/* Background placeholder for Parliament Illustration */}
-        <div className="absolute right-0 bottom-0 opacity-20 pointer-events-none w-1/2 h-full bg-[url('https://placehold.co/800x400/eeeeee/cccccc?text=Parliament+Illustration')] bg-no-repeat bg-right-bottom bg-contain"></div>
+        <div className="absolute right-0 bottom-0 opacity-[0.03] pointer-events-none w-1/2 h-[150%] bg-[url('https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg')] bg-no-repeat bg-right-bottom bg-contain translate-y-1/4"></div>
         
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
           <div className="w-full md:w-4/5 space-y-4">
@@ -42,24 +42,24 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 space-y-8 pb-16">
         
         {/* Advanced Search Bar */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 space-y-4">
+        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4 space-y-3">
           <div className="relative">
-            <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
             <input 
               type="text" 
-              placeholder="Search by job title, organization, qualification, keyword..." 
-              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-[#0A58CA]"
+              placeholder="Search by job title, keyword..." 
+              className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-[#0A58CA]"
             />
-            <button className="absolute right-2 top-2 px-6 py-1.5 bg-[#0A58CA] text-white font-bold rounded-md hover:bg-blue-700">
+            <button className="absolute right-1.5 top-1.5 px-4 py-1 text-sm bg-[#0A58CA] text-white font-bold rounded-md hover:bg-blue-700 transition-colors">
               Search
             </button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>Qualification</option></select>
-            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>State</option></select>
-            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>Department</option></select>
-            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>Job Type</option></select>
-            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>Last Date</option></select>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Qualification</option></select>
+            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>State</option></select>
+            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Department</option></select>
+            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Job Type</option></select>
+            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Last Date</option></select>
           </div>
         </div>
 
