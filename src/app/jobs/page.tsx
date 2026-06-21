@@ -1,7 +1,12 @@
+"use client";
+
 import Link from "next/link";
-import { Search, ChevronDown, Building2, MapPin, Briefcase, GraduationCap, Users, Shield, Landmark, Train, Monitor, Bookmark, MessageCircle } from "lucide-react";
+import { useState } from "react";
+import { Search, ChevronDown, Building2, MapPin, Briefcase, GraduationCap, Users, Shield, Landmark, Train, Monitor, Bookmark, MessageCircle, Filter } from "lucide-react";
 
 export default function JobsListingPage() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <div className="bg-[#F4F7FA] min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,8 +23,20 @@ export default function JobsListingPage() {
 
         <div className="flex flex-col lg:flex-row gap-8">
           
+          {/* Mobile Sidebar Toggle */}
+          <button 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="lg:hidden w-full bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between font-bold text-[#0B1B3D] shadow-sm active:scale-[0.99] transition-transform"
+          >
+            <div className="flex items-center gap-2">
+              <Filter className="w-5 h-5 text-[#0A58CA]" />
+              Search Filters & Categories
+            </div>
+            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isSidebarOpen ? 'rotate-180' : ''}`} />
+          </button>
+
           {/* Left Sidebar */}
-          <div className="w-full lg:w-[280px] shrink-0 space-y-6">
+          <div className={`w-full lg:w-[280px] shrink-0 space-y-6 ${isSidebarOpen ? 'block' : 'hidden lg:block'}`}>
             
             {/* Filter Card */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
