@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
-import { Search, MapPin, Briefcase, GraduationCap, Calendar, CheckCircle2, Building2, Bookmark, ChevronRight, FileText, Award } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
+import { useState } from "react";
+import { Search, MapPin, Briefcase, GraduationCap, Calendar, CheckCircle2, Building2, Bookmark, ChevronRight, FileText, Award, Filter, ChevronDown } from "lucide-react";
 
 export default function Home() {
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
 
@@ -52,7 +55,16 @@ export default function Home() {
               Search
             </button>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+          
+          <button 
+            onClick={() => setIsFilterOpen(!isFilterOpen)} 
+            className="md:hidden w-full flex items-center justify-center gap-2 py-2 text-sm font-bold text-gray-600 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+          >
+            <Filter className="w-4 h-4" /> Advanced Filters
+            <ChevronDown className={`w-4 h-4 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          <div className={`grid-cols-2 md:grid-cols-5 gap-3 ${isFilterOpen ? 'grid' : 'hidden md:grid'}`}>
             <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Qualification</option></select>
             <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>State</option></select>
             <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Department</option></select>
@@ -88,53 +100,105 @@ export default function Home() {
             <Link href="/jobs" className="text-sm font-semibold text-[#0A58CA] hover:text-blue-700 hover:underline transition-colors">View All</Link>
           </div>
           
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs text-left">
-              <thead className="text-xs text-gray-800 font-bold bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th className="px-4 py-3 whitespace-nowrap">Post Name</th>
-                  <th className="px-4 py-3 whitespace-nowrap text-center">Vacancies</th>
-                  <th className="px-4 py-3 whitespace-nowrap text-center">Last Date</th>
-                  <th className="px-4 py-3 whitespace-nowrap">Status</th>
-                  <th className="px-4 py-3 whitespace-nowrap text-right"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {[
-                  { title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", statusColor: "text-green-800 bg-green-100 border border-green-200 shadow-sm", isLive: true },
-                  { title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200 shadow-sm", isLive: true },
-                  { title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200 shadow-sm", isLive: true },
-                  { title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", statusColor: "text-amber-800 bg-amber-100 border border-amber-200 shadow-sm", isLive: false },
-                  { title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200 shadow-sm", isLive: true },
-                ].map((job, i) => (
-                  <tr key={i} className="group hover:bg-blue-50/40 text-gray-800 font-semibold bg-white transition-all duration-200">
-                    <td className="px-4 py-3.5 group-hover:text-[#0A58CA] transition-colors">{job.title}</td>
-                    <td className="px-4 py-3.5 text-center text-gray-600 font-medium">{job.vac}</td>
-                    <td className="px-4 py-3.5 text-center text-gray-600 font-medium">{job.date}</td>
-                    <td className="px-4 py-3.5">
-                      <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wide ${job.statusColor}`}>
-                        {job.isLive && (
-                          <span className="relative flex h-1.5 w-1.5">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-600"></span>
-                          </span>
-                        )}
-                        {job.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3.5 flex items-center justify-end gap-2">
-                      <button className="px-3 py-1.5 text-[11px] font-bold text-[#0A58CA] border border-[#0A58CA] rounded shadow-sm bg-white hover:bg-blue-50 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-inner transition-all whitespace-nowrap">
-                        View Details
-                      </button>
-                      <button className="px-3 py-1.5 text-[11px] font-bold text-white bg-gradient-to-b from-[#0A58CA] to-blue-700 border border-blue-800 rounded shadow-[0_2px_4px_rgba(10,88,202,0.3)] hover:shadow-[0_4px_8px_rgba(10,88,202,0.4)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-inner transition-all whitespace-nowrap">
-                        Check Eligibility
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {(() => {
+            const latestJobsList = [
+              { title: "SSC CGL 2026", vac: "12,256", date: "24 Jun 2026", status: "New", statusColor: "text-green-800 bg-green-100 border border-green-200 shadow-sm", isLive: true },
+              { title: "MSC Bank Bharti 2026", vac: "175", date: "30 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200 shadow-sm", isLive: true },
+              { title: "AFCAT 02/2026", vac: "-", date: "15 Jul 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200 shadow-sm", isLive: true },
+              { title: "MPPSC Group B & C", vac: "385", date: "20 Jul 2026", status: "Last Date Near", statusColor: "text-amber-800 bg-amber-100 border border-amber-200 shadow-sm", isLive: false },
+              { title: "IB ACIO Grade-II", vac: "995", date: "12 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200 shadow-sm", isLive: true },
+            ];
+
+            return (
+              <>
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full text-xs text-left">
+                    <thead className="text-xs text-gray-800 font-bold bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="px-4 py-3 whitespace-nowrap">Post Name</th>
+                        <th className="px-4 py-3 whitespace-nowrap text-center">Vacancies</th>
+                        <th className="px-4 py-3 whitespace-nowrap text-center">Last Date</th>
+                        <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                        <th className="px-4 py-3 whitespace-nowrap text-right"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {latestJobsList.map((job, i) => (
+                        <tr key={i} className="group hover:bg-blue-50/40 text-gray-800 font-semibold bg-white transition-all duration-200">
+                          <td className="px-4 py-3.5 group-hover:text-[#0A58CA] transition-colors">{job.title}</td>
+                          <td className="px-4 py-3.5 text-center text-gray-600 font-medium">{job.vac}</td>
+                          <td className="px-4 py-3.5 text-center text-gray-600 font-medium">{job.date}</td>
+                          <td className="px-4 py-3.5">
+                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-[10px] font-bold tracking-wide ${job.statusColor}`}>
+                              {job.isLive && (
+                                <span className="relative flex h-1.5 w-1.5">
+                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-600"></span>
+                                </span>
+                              )}
+                              {job.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3.5 flex items-center justify-end gap-2">
+                            <button className="px-3 py-1.5 text-[11px] font-bold text-[#0A58CA] border border-[#0A58CA] rounded shadow-sm bg-white hover:bg-blue-50 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-inner transition-all whitespace-nowrap">
+                              View Details
+                            </button>
+                            <button className="px-3 py-1.5 text-[11px] font-bold text-white bg-gradient-to-b from-[#0A58CA] to-blue-700 border border-blue-800 rounded shadow-[0_2px_4px_rgba(10,88,202,0.3)] hover:shadow-[0_4px_8px_rgba(10,88,202,0.4)] hover:-translate-y-0.5 active:translate-y-0 active:shadow-inner transition-all whitespace-nowrap">
+                              Check Eligibility
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Mobile Cards View */}
+                <div className="md:hidden flex flex-col divide-y divide-gray-100">
+                  {latestJobsList.map((job, i) => (
+                    <div key={i} className="p-4 hover:bg-gray-50 transition-colors">
+                      {/* Header */}
+                      <div className="flex items-start justify-between gap-2 mb-3">
+                        <h3 className="font-bold text-[#0B1B3D] text-[13px] leading-tight flex-1">{job.title}</h3>
+                        <span className={`shrink-0 inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[9px] font-bold tracking-wide ${job.statusColor}`}>
+                          {job.isLive && (
+                            <span className="relative flex h-1.5 w-1.5">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-600"></span>
+                            </span>
+                          )}
+                          {job.status}
+                        </span>
+                      </div>
+                      
+                      {/* Details Grid */}
+                      <div className="flex justify-between items-center bg-gray-50 p-2.5 rounded border border-gray-100 mb-3">
+                        <div className="text-center flex-1 border-r border-gray-200">
+                          <p className="text-[9px] text-gray-400 uppercase font-bold tracking-wider mb-0.5">Vacancies</p>
+                          <p className="text-[11px] font-bold text-gray-800">{job.vac}</p>
+                        </div>
+                        <div className="text-center flex-1">
+                          <p className="text-[9px] text-gray-400 uppercase font-bold tracking-wider mb-0.5">Last Date</p>
+                          <p className="text-[11px] font-bold text-red-600">{job.date}</p>
+                        </div>
+                      </div>
+                      
+                      {/* Actions */}
+                      <div className="flex gap-2">
+                        <button className="flex-1 py-2 text-[10px] font-bold text-[#0A58CA] border border-blue-200 rounded shadow-sm bg-white hover:bg-blue-50 transition-colors">
+                          View Details
+                        </button>
+                        <button className="flex-1 py-2 text-[10px] font-bold text-white bg-gradient-to-b from-[#0A58CA] to-blue-700 border border-blue-800 rounded shadow-sm hover:shadow-md transition-colors">
+                          Check Eligibility
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            );
+          })()}
         </div>
 
         {/* 4-Column Grid for Updates */}
