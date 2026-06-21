@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronDown, GraduationCap, MapPin, Building2, CheckCircle2, Clock, ShieldCheck, Download, ExternalLink, Bookmark, CheckSquare, FileText, UploadCloud, Monitor, CheckCircle, FileQuestion, ArrowRight } from "lucide-react";
+import { ChevronDown, GraduationCap, MapPin, Building2, CheckCircle2, Clock, ShieldCheck, Download, ExternalLink, Bookmark, CheckSquare, FileText, UploadCloud, Monitor, CheckCircle, FileQuestion, ArrowRight, Briefcase } from "lucide-react";
 
 export default function JobDetailPage({ params }: { params: { slug: string } }) {
   return (
