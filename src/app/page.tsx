@@ -8,30 +8,30 @@ export default function Home() {
     <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
 
       {/* Hero Section */}
-      <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-12 pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-8 pb-16 px-4 sm:px-6 lg:px-8">
         {/* Background placeholder for Parliament Illustration */}
         <div className="absolute right-0 bottom-0 opacity-20 pointer-events-none w-1/2 h-full bg-[url('https://placehold.co/800x400/eeeeee/cccccc?text=Parliament+Illustration')] bg-no-repeat bg-right-bottom bg-contain"></div>
         
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
-          <div className="w-full md:w-3/5 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-[#0A58CA] text-xs font-bold rounded-full border border-blue-100 mb-2">
-              <CheckCircle2 className="w-4 h-4" /> India's Trusted Government Job Portal
+          <div className="w-full md:w-4/5 space-y-4">
+            <div className="inline-flex items-center gap-2 px-2 py-1 bg-blue-50 text-[#0A58CA] text-xs font-bold rounded-full border border-blue-100">
+              <CheckCircle2 className="w-3.5 h-3.5" /> India's Trusted Government Job Portal
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#0B1B3D] leading-[1.1] tracking-tight">
-              Latest Government Jobs,<br/>Results, Admit Cards &<br/>Eligibility Updates
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0B1B3D] tracking-tight">
+              Latest Government Jobs, Results, Admit Cards & Eligibility Updates
             </h1>
-            <p className="text-lg text-gray-600 max-w-xl">
+            <p className="text-base text-gray-600 max-w-xl">
               Find verified Sarkari job updates and check your eligibility with Naukri Passport.
             </p>
-            <div className="flex flex-wrap gap-3 pt-4">
-              <Link href="/jobs" className="px-6 py-3 bg-[#0A58CA] text-white rounded-lg font-bold shadow-md shadow-blue-500/20 hover:bg-blue-700 transition">
+            <div className="flex flex-wrap gap-2 pt-2">
+              <Link href="/jobs" className="px-4 py-2 text-sm bg-[#0A58CA] text-white rounded-lg font-bold shadow-sm hover:bg-blue-700 transition">
                 Latest Jobs
               </Link>
-              <button className="px-6 py-3 bg-white text-[#0B1B3D] border border-gray-300 rounded-lg font-bold hover:bg-gray-50 flex items-center gap-2 transition">
-                <span className="w-4 h-4 rounded-full border-2 border-gray-400"></span> Create Profile
+              <button className="px-4 py-2 text-sm bg-white text-[#0B1B3D] border border-gray-300 rounded-lg font-bold hover:bg-gray-50 flex items-center gap-2 transition">
+                <span className="w-3 h-3 rounded-full border-2 border-gray-400"></span> Create Profile
               </button>
-              <button className="px-6 py-3 bg-white text-[#0B1B3D] border border-gray-300 rounded-lg font-bold hover:bg-gray-50 flex items-center gap-2 transition">
-                <CheckCircle2 className="w-4 h-4 text-gray-400" /> Check Eligibility
+              <button className="px-4 py-2 text-sm bg-white text-[#0B1B3D] border border-gray-300 rounded-lg font-bold hover:bg-gray-50 flex items-center gap-2 transition">
+                <CheckCircle2 className="w-3.5 h-3.5 text-gray-400" /> Check Eligibility
               </button>
             </div>
           </div>
@@ -94,31 +94,23 @@ export default function Home() {
               <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-3 font-bold">Post Name</th>
-                  <th className="px-6 py-3 font-bold">Organization</th>
-                  <th className="px-6 py-3 font-bold">Qualification</th>
                   <th className="px-6 py-3 font-bold text-center">Vacancies</th>
                   <th className="px-6 py-3 font-bold text-center">Last Date</th>
-                  <th className="px-6 py-3 font-bold text-center">Status</th>
                   <th className="px-6 py-3 font-bold text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {[
-                  { title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", color: "text-[#E37400] bg-[#FEF7E0]" },
-                  { title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                  { title: "SSC CGL 2026", vac: "12,256", date: "24 Jun 2026" },
+                  { title: "MSC Bank Bharti 2026", vac: "175", date: "30 Jun 2026" },
+                  { title: "AFCAT 02/2026", vac: "-", date: "15 Jul 2026" },
+                  { title: "MPPSC Group B & C", vac: "385", date: "20 Jul 2026" },
+                  { title: "IB ACIO Grade-II", vac: "995", date: "12 Jun 2026" },
                 ].map((job, i) => (
                   <tr key={i} className="hover:bg-gray-50">
                     <td className="px-6 py-4 font-bold text-[#0B1B3D]">{job.title}</td>
-                    <td className="px-6 py-4 text-gray-600">{job.org}</td>
-                    <td className="px-6 py-4 text-gray-600">{job.qual}</td>
                     <td className="px-6 py-4 text-center font-semibold text-gray-800">{job.vac}</td>
                     <td className="px-6 py-4 text-center text-gray-600">{job.date}</td>
-                    <td className="px-6 py-4 text-center">
-                      <span className={`px-2 py-1 text-xs font-bold rounded ${job.color}`}>{job.status}</span>
-                    </td>
                     <td className="px-6 py-4 flex items-center justify-end gap-2">
                       <button className="px-3 py-1.5 text-xs font-bold text-[#0A58CA] border border-blue-200 rounded hover:bg-blue-50">View Details</button>
                       <button className="px-3 py-1.5 text-xs font-bold text-white bg-[#0A58CA] rounded hover:bg-blue-700">Check Eligibility</button>
