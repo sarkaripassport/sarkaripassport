@@ -62,7 +62,7 @@ export default function Home() {
         </div>
 
         {/* Quick Category Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
+        <div className="grid grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3">
           {[
             { n: 'Latest Jobs', v: '128', icon: Briefcase, c: 'text-blue-600' },
             { n: 'Admit Card', v: '42', icon: FileText, c: 'text-green-600' },
@@ -73,10 +73,10 @@ export default function Home() {
             { n: 'Maharashtra Jobs', v: '64', icon: MapPin, c: 'text-pink-600' },
             { n: 'Central Govt. Jobs', v: '92', icon: Building2, c: 'text-indigo-600' }
           ].map((cat, i) => (
-            <div key={i} className="bg-white p-2.5 rounded-lg border border-gray-200 shadow-sm flex flex-col items-center justify-center text-center cursor-pointer hover:border-blue-300 hover:shadow-md transition">
-              <cat.icon className={`w-5 h-5 mb-1 ${cat.c}`} />
-              <span className="text-[11px] leading-tight font-bold text-[#0B1B3D]">{cat.n}</span>
-              <span className="text-sm font-black text-gray-800">{cat.v}</span>
+            <div key={i} className="bg-white rounded-lg border border-gray-200 p-2 sm:p-4 text-center hover:border-[#0A58CA] hover:shadow-md transition-all cursor-pointer">
+              <cat.icon className={`w-5 h-5 sm:w-8 sm:h-8 mx-auto mb-1.5 sm:mb-2 ${cat.c}`} />
+              <div className="font-bold text-gray-900 text-[10px] sm:text-sm mb-0.5 sm:mb-1 leading-tight break-words">{cat.n}</div>
+              <div className="font-extrabold text-sm sm:text-xl text-gray-800">{cat.v}</div>
             </div>
           ))}
         </div>
