@@ -9,8 +9,8 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-6 pb-12 px-4 sm:px-6 lg:px-8">
-        {/* Background placeholder for Parliament Illustration */}
-        <div className="absolute right-0 bottom-0 opacity-[0.03] pointer-events-none w-1/2 h-[150%] bg-[url('https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg')] bg-no-repeat bg-right-bottom bg-contain translate-y-1/4"></div>
+        {/* Background Emblem for Trust & Authenticity spanning the whole section */}
+        <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg')] bg-no-repeat bg-center bg-cover sm:bg-contain"></div>
         
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
           <div className="w-full md:w-4/5 space-y-4">
