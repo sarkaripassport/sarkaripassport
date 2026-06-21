@@ -93,8 +93,6 @@ export default function Home() {
               <thead className="text-xs text-gray-800 font-bold bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-4 py-3 whitespace-nowrap">Post Name</th>
-                  <th className="px-4 py-3 whitespace-nowrap">Organization</th>
-                  <th className="px-4 py-3 whitespace-nowrap">Qualification</th>
                   <th className="px-4 py-3 whitespace-nowrap text-center">Vacancies</th>
                   <th className="px-4 py-3 whitespace-nowrap text-center">Last Date</th>
                   <th className="px-4 py-3 whitespace-nowrap">Status</th>
@@ -111,8 +109,6 @@ export default function Home() {
                 ].map((job, i) => (
                   <tr key={i} className="group hover:bg-blue-50/40 text-gray-800 font-semibold bg-white transition-all duration-200">
                     <td className="px-4 py-3.5 group-hover:text-[#0A58CA] transition-colors">{job.title}</td>
-                    <td className="px-4 py-3.5 text-gray-600 font-medium group-hover:text-gray-900 transition-colors">{job.org}</td>
-                    <td className="px-4 py-3.5 text-gray-600 font-medium">{job.qual}</td>
                     <td className="px-4 py-3.5 text-center text-gray-600 font-medium">{job.vac}</td>
                     <td className="px-4 py-3.5 text-center text-gray-600 font-medium">{job.date}</td>
                     <td className="px-4 py-3.5">
