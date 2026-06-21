@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search, Briefcase, FileText, Award, ChevronRight, TrendingUp } from "lucide-react";
+import { Search, Briefcase, FileText, Award, ChevronRight, TrendingUp, User } from "lucide-react";
 
 export default function Home() {
   return (
