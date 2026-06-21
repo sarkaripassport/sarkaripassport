@@ -14,15 +14,9 @@ export default function Home() {
         
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
           <div className="w-full md:w-4/5 space-y-4">
-            <div className="inline-flex items-center gap-2 px-2 py-1 bg-blue-50 text-[#0A58CA] text-xs font-bold rounded-full border border-blue-100">
-              <CheckCircle2 className="w-3.5 h-3.5" /> India's Trusted Government Job Portal
-            </div>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-[#0B1B3D] tracking-tight">
               Latest Government Jobs, Results, Admit Cards & Eligibility Updates
             </h1>
-            <p className="text-base text-gray-600 max-w-xl">
-              Find verified Sarkari job updates and check your eligibility with Naukri Passport.
-            </p>
             <div className="flex flex-wrap gap-2 pt-2">
               <Link href="/jobs" className="px-4 py-2 text-sm bg-[#0A58CA] text-white rounded-lg font-bold shadow-sm hover:bg-blue-700 transition">
                 Latest Jobs
