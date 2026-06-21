@@ -1,126 +1,199 @@
 import Link from "next/link";
-import { Search, Filter, MapPin, Building, Briefcase, Calendar } from "lucide-react";
+import { Search, ChevronDown, Building2, MapPin, Briefcase, GraduationCap, Users, Shield, Landmark, Train, Monitor, Bookmark, MessageCircle } from "lucide-react";
 
 export default function JobsListingPage() {
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-      {/* Page Header */}
-      <div className="mb-8 md:mb-12">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-brand-navy tracking-tight mb-4">
-          Latest Government Jobs
-        </h1>
-        <p className="text-lg text-gray-600 max-w-3xl">
-          Browse through the latest Sarkari jobs, recruitment notifications, and vacancies across India.
-        </p>
-      </div>
-
-      <div className="flex flex-col lg:flex-row gap-8">
+    <div className="bg-[#F4F7FA] min-h-screen py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Sidebar Filters */}
-        <div className="w-full lg:w-1/4">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-24">
-            <h2 className="text-lg font-bold text-brand-navy mb-4 flex items-center gap-2">
-              <Filter className="h-5 w-5 text-brand-blue" />
-              Smart Filters
-            </h2>
+        {/* Breadcrumb & Title */}
+        <div className="mb-6">
+          <h1 className="text-3xl font-extrabold text-[#0B1B3D] mb-2">Latest Jobs</h1>
+          <div className="text-sm text-gray-500 flex items-center gap-2">
+            <Link href="/" className="hover:text-[#0A58CA]">Home</Link>
+            <ChevronDown className="w-3 h-3 -rotate-90" />
+            <span className="text-gray-900 font-medium">Latest Jobs</span>
+          </div>
+        </div>
+
+        <div className="flex flex-col lg:flex-row gap-8">
+          
+          {/* Left Sidebar */}
+          <div className="w-full lg:w-[280px] shrink-0 space-y-6">
             
-            {/* Search Filter */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
-              <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="e.g. UPSC, SSC..." 
-                  className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none"
-                />
-                <Search className="h-4 w-4 text-gray-400 absolute left-3 top-3" />
+            {/* Filter Card */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <h3 className="font-bold text-[#0B1B3D] mb-4">Search & Filter Jobs</h3>
+              
+              <div className="relative mb-6">
+                <Search className="w-4 h-4 absolute left-3 top-2.5 text-gray-400" />
+                <input type="text" placeholder="Search by post name, organization, keyword..." className="w-full pl-9 pr-3 py-2 text-sm border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-[#0A58CA]" />
               </div>
-            </div>
 
-            {/* Category Filter */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-              <div className="space-y-2">
-                {['Banking', 'Defense', 'Railways', 'SSC', 'UPSC', 'State Govt'].map((cat) => (
-                  <label key={cat} className="flex items-center gap-2 cursor-pointer group">
-                    <input type="checkbox" className="w-4 h-4 text-brand-blue border-gray-300 rounded focus:ring-brand-blue" />
-                    <span className="text-sm text-gray-600 group-hover:text-brand-navy">{cat}</span>
-                  </label>
+              <div className="space-y-3 mb-6">
+                {['Qualification', 'State', 'Department', 'Job Type', 'Last Date'].map((filter, i) => (
+                  <button key={i} className="w-full flex items-center justify-between px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition">
+                    <span className="flex items-center gap-2">
+                      {i === 0 && <GraduationCap className="w-4 h-4 text-gray-400" />}
+                      {i === 1 && <MapPin className="w-4 h-4 text-gray-400" />}
+                      {i === 2 && <Building2 className="w-4 h-4 text-gray-400" />}
+                      {i === 3 && <Briefcase className="w-4 h-4 text-gray-400" />}
+                      {i === 4 && <Search className="w-4 h-4 text-gray-400" />}
+                      {filter}
+                    </span>
+                    <ChevronDown className="w-4 h-4 text-gray-400" />
+                  </button>
                 ))}
               </div>
+
+              <div className="flex gap-3">
+                <button className="flex-1 py-2.5 border border-gray-200 text-gray-700 text-sm font-bold rounded-lg hover:bg-gray-50 transition">Reset</button>
+                <button className="flex-1 py-2.5 bg-[#0A58CA] text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition shadow-md">Apply Filters</button>
+              </div>
             </div>
 
-            {/* Qualification Filter */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Qualification</label>
-              <div className="space-y-2">
-                {['10th Pass', '12th Pass', 'Graduate', 'Post Graduate', 'Diploma'].map((qual) => (
-                  <label key={qual} className="flex items-center gap-2 cursor-pointer group">
-                    <input type="checkbox" className="w-4 h-4 text-brand-blue border-gray-300 rounded focus:ring-brand-blue" />
-                    <span className="text-sm text-gray-600 group-hover:text-brand-navy">{qual}</span>
-                  </label>
+            {/* Browse by Category Card */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <h3 className="font-bold text-[#0B1B3D] mb-4">Browse by Category</h3>
+              <ul className="space-y-1">
+                {[
+                  { n: 'Central Govt. Jobs', c: '92', icon: Landmark, color: 'text-indigo-600' },
+                  { n: 'State Govt. Jobs', c: '64', icon: MapPin, color: 'text-green-600' },
+                  { n: 'Bank Jobs', c: '37', icon: Building2, color: 'text-blue-600' },
+                  { n: 'Defence Jobs', c: '28', icon: Shield, color: 'text-orange-600' },
+                  { n: 'Teaching Jobs', c: '26', icon: GraduationCap, color: 'text-red-600' },
+                  { n: 'Railway Jobs', c: '24', icon: Train, color: 'text-teal-600' },
+                  { n: 'Police Jobs', c: '20', icon: Shield, color: 'text-amber-600' },
+                  { n: 'PSU Jobs', c: '18', icon: Building2, color: 'text-pink-600' },
+                  { n: 'Others', c: '13', icon: Briefcase, color: 'text-gray-500' },
+                ].map((item, i) => (
+                  <li key={i}>
+                    <Link href="#" className="flex items-center justify-between py-2 text-sm text-gray-600 hover:text-[#0A58CA] group">
+                      <span className="flex items-center gap-3">
+                        <item.icon className={`w-4 h-4 ${item.color} group-hover:scale-110 transition-transform`} />
+                        {item.n}
+                      </span>
+                      <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-600">{item.c}</span>
+                    </Link>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
 
-            <button className="w-full py-2 bg-brand-navy text-white rounded-lg font-medium hover:bg-brand-blue transition-colors">
-              Apply Filters
-            </button>
+            {/* WhatsApp CTA */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 bg-gradient-to-br from-white to-green-50">
+              <h3 className="font-bold text-[#0B1B3D] mb-2">Get job alerts on WhatsApp</h3>
+              <p className="text-xs text-gray-600 mb-4">Never miss any government job updates</p>
+              <button className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#25D366] text-white text-sm font-bold rounded-lg hover:bg-[#128C7E] transition shadow-md">
+                <MessageCircle className="w-4 h-4" /> Join Now
+              </button>
+            </div>
+
           </div>
-        </div>
 
-        {/* Jobs List */}
-        <div className="w-full lg:w-3/4 space-y-4">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
-            <div key={item} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 card-hover flex flex-col md:flex-row gap-6">
-              {/* Job Info */}
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  <span className="px-3 py-1 bg-blue-50 text-brand-blue text-xs font-bold rounded-full border border-blue-100">
-                    Govt. of India
-                  </span>
-                  <span className="text-sm text-gray-500 flex items-center gap-1">
-                    <Calendar className="h-4 w-4" /> Posted 2 days ago
-                  </span>
-                </div>
-                
-                <h3 className="text-xl font-bold text-brand-navy mb-2 cursor-pointer hover:text-brand-blue transition-colors">
-                  Staff Selection Commission (SSC) CHSL Recruitment 2026
-                </h3>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-4 mb-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-2"><Building className="h-4 w-4 text-gray-400" /> SSC Board</div>
-                  <div className="flex items-center gap-2"><MapPin className="h-4 w-4 text-gray-400" /> All India</div>
-                  <div className="flex items-center gap-2"><Briefcase className="h-4 w-4 text-gray-400" /> 3,712 Vacancies</div>
-                  <div className="flex items-center gap-2"><span className="font-semibold text-brand-navy">₹</span> 25,500 - 81,100 / month</div>
-                </div>
+          {/* Main Content Area */}
+          <div className="flex-1 space-y-4">
+            
+            {/* Tabs and Sort */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex overflow-x-auto hide-scrollbar">
+                <button className="px-5 py-2.5 text-sm font-bold text-[#0A58CA] border-b-2 border-[#0A58CA] whitespace-nowrap">All Jobs <span className="text-xs text-blue-400 ml-1">1281</span></button>
+                <button className="px-5 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0B1B3D] whitespace-nowrap">Central Govt. <span className="text-xs text-gray-400 ml-1">481</span></button>
+                <button className="px-5 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0B1B3D] whitespace-nowrap">State Govt. <span className="text-xs text-gray-400 ml-1">372</span></button>
+                <button className="px-5 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0B1B3D] whitespace-nowrap">Banking <span className="text-xs text-gray-400 ml-1">181</span></button>
+                <button className="px-5 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0B1B3D] whitespace-nowrap">Defence <span className="text-xs text-gray-400 ml-1">123</span></button>
+                <button className="px-5 py-2.5 text-sm font-medium text-gray-600 hover:text-[#0B1B3D] whitespace-nowrap">Others <span className="text-xs text-gray-400 ml-1">124</span></button>
               </div>
-
-              {/* Action Area */}
-              <div className="flex flex-col justify-center items-start md:items-end gap-3 md:w-48 shrink-0 md:border-l md:border-gray-100 md:pl-6">
-                <div className="text-left md:text-right w-full">
-                  <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Last Date</p>
-                  <p className="text-sm font-bold text-accent-red">15 Aug 2026</p>
-                </div>
-                <Link href={`/jobs/ssc-chsl-2026`} className="w-full text-center py-2.5 px-4 bg-brand-light text-brand-navy border border-gray-200 rounded-lg font-medium hover:bg-brand-blue hover:text-white hover:border-transparent transition-all shadow-sm">
-                  View Details
-                </Link>
+              <div className="flex items-center gap-2 px-3 shrink-0">
+                <span className="text-xs text-gray-500">Sort by:</span>
+                <select className="text-sm font-bold text-[#0B1B3D] outline-none bg-transparent cursor-pointer">
+                  <option>Latest</option>
+                  <option>Ending Soon</option>
+                  <option>Most Vacancies</option>
+                </select>
               </div>
             </div>
-          ))}
 
-          {/* Pagination Dummy */}
-          <div className="flex justify-center pt-8">
-            <div className="flex items-center gap-2">
-              <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50">Previous</button>
-              <button className="px-4 py-2 bg-brand-blue text-white rounded-lg text-sm font-bold">1</button>
-              <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">2</button>
-              <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">3</button>
-              <button className="px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-500 hover:bg-gray-50">Next</button>
+            {/* Jobs Table */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="overflow-x-auto custom-scrollbar">
+                <table className="w-full text-sm text-left whitespace-nowrap">
+                  <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-6 py-4 font-bold">Post Name</th>
+                      <th className="px-6 py-4 font-bold">Organization</th>
+                      <th className="px-6 py-4 font-bold">Qualification</th>
+                      <th className="px-6 py-4 font-bold text-center">Vacancies</th>
+                      <th className="px-6 py-4 font-bold text-center">Last Date</th>
+                      <th className="px-6 py-4 font-bold text-center">Status</th>
+                      <th className="px-6 py-4 font-bold text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {[
+                      { title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                      { title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                      { title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                      { title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", color: "text-[#E37400] bg-[#FEF7E0]" },
+                      { title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                      { title: "RRB Technician 2026", org: "Railway Recruitment Board", qual: "10th Pass/ITI", vac: "9,144", date: "28 Jun 2026", status: "New", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                      { title: "UP Police Constable 2026", org: "Uttar Pradesh Police", qual: "12th Pass", vac: "60,244", date: "25 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                      { title: "IOCL Apprentice 2026", org: "Indian Oil Corporation", qual: "Graduate/Diploma", vac: "2,470", date: "15 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                      { title: "BSF Constable Tradesman", org: "Border Security Force", qual: "10th Pass", vac: "3,588", date: "22 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                      { title: "DRDO CEPTAM 10 2026", org: "DRDO", qual: "ITI/Diploma", vac: "1,904", date: "18 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                    ].map((job, i) => (
+                      <tr key={i} className="hover:bg-gray-50 group">
+                        <td className="px-6 py-5">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full border border-gray-200 bg-white flex flex-shrink-0 items-center justify-center p-1">
+                              <Building2 className="w-5 h-5 text-gray-400" />
+                            </div>
+                            <div>
+                              <div className="font-bold text-[#0B1B3D] flex items-center gap-2">
+                                {job.title}
+                                {job.status === 'New' && <span className="px-1.5 py-0.5 text-[10px] bg-blue-50 text-blue-600 rounded">New</span>}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-5 text-gray-600 max-w-[200px] truncate">{job.org}</td>
+                        <td className="px-6 py-5">
+                          <span className={`text-xs font-semibold ${job.qual.includes('Graduate') ? 'text-purple-600' : 'text-pink-600'}`}>{job.qual}</span>
+                        </td>
+                        <td className="px-6 py-5 text-center font-bold text-gray-800">{job.vac}</td>
+                        <td className="px-6 py-5 text-center text-gray-600">{job.date}</td>
+                        <td className="px-6 py-5 text-center">
+                          <span className={`px-2 py-1 text-[11px] font-bold rounded ${job.color}`}>{job.status}</span>
+                        </td>
+                        <td className="px-6 py-5">
+                          <div className="flex items-center justify-center gap-2">
+                            <Link href={`/jobs/slug-${i}`} className="px-4 py-2 text-xs font-bold text-[#0A58CA] border border-blue-200 rounded-lg hover:bg-blue-50">View Details</Link>
+                            <button className="px-4 py-2 text-xs font-bold text-white bg-[#0A58CA] rounded-lg hover:bg-blue-700 shadow-md">Check Eligibility</button>
+                            <button className="p-2 text-gray-400 hover:text-[#0B1B3D] border border-gray-200 rounded-lg hover:bg-gray-50"><Bookmark className="w-4 h-4" /></button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Pagination */}
+              <div className="p-4 border-t border-gray-100 flex items-center justify-center gap-1 text-sm">
+                <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-[#0A58CA] text-white font-bold shadow-md">1</button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 font-medium">2</button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 font-medium">3</button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 font-medium">4</button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 font-medium">5</button>
+                <span className="w-10 h-10 flex items-center justify-center text-gray-400">...</span>
+                <button className="w-10 h-10 flex items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 font-medium">64</button>
+                <button className="px-4 h-10 flex items-center justify-center rounded-lg text-gray-600 hover:bg-gray-100 font-medium ml-2">Next <ChevronDown className="w-4 h-4 -rotate-90 ml-1" /></button>
+              </div>
+
             </div>
           </div>
-        </div>
 
+        </div>
       </div>
     </div>
   );

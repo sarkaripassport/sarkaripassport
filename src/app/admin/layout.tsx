@@ -1,58 +1,56 @@
+import { LayoutDashboard, Briefcase, FileText, Settings, LogOut, Bell } from "lucide-react";
 import Link from "next/link";
-import { LayoutDashboard, FilePlus, Users, Settings, LogOut, Bell } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
+    <div className="flex h-screen bg-[#F4F7FA] overflow-hidden font-sans">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-brand-navy text-white flex flex-col shrink-0">
-        <div className="h-16 flex items-center px-6 border-b border-gray-800">
-          <span className="text-xl font-bold tracking-tight">Admin Portal</span>
+      <aside className="w-64 bg-[#0B1B3D] text-white flex flex-col hidden md:flex shrink-0">
+        <div className="h-16 flex items-center px-6 border-b border-gray-800 font-black text-xl tracking-tight">
+          <span className="text-[#0A58CA]">Naukri</span>Passport <span className="ml-2 text-[10px] bg-red-500 px-1.5 py-0.5 rounded text-white font-bold uppercase tracking-wider">Admin</span>
         </div>
-        
-        <nav className="flex-1 py-6 px-3 space-y-1">
-          <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/10 text-white font-medium">
-            <LayoutDashboard className="h-5 w-5" /> Dashboard
+        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+          <Link href="/admin" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
+            <LayoutDashboard className="w-5 h-5" /> Dashboard
           </Link>
-          <Link href="/admin/vacancies/create" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
-            <FilePlus className="h-5 w-5" /> Post Vacancy
+          <Link href="/admin/jobs" className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#0A58CA] text-white font-semibold transition shadow-md">
+            <Briefcase className="w-5 h-5" /> Manage Jobs
           </Link>
-          <Link href="/admin/users" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
-            <Users className="h-5 w-5" /> Manage Users
+          <Link href="/admin/content" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
+            <FileText className="w-5 h-5" /> Content / Pages
           </Link>
-          <Link href="/admin/settings" className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
-            <Settings className="h-5 w-5" /> Settings
+          <Link href="/admin/settings" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
+            <Settings className="w-5 h-5" /> Settings
           </Link>
         </nav>
-        
         <div className="p-4 border-t border-gray-800">
-          <button className="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-gray-300 hover:bg-white/5 hover:text-red-400 transition-colors">
-            <LogOut className="h-5 w-5" /> Logout
+          <button className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition">
+            <LogOut className="w-5 h-5" /> Logout
           </button>
         </div>
       </aside>
 
-      {/* Main Content Area */}
-      <main className="flex-1 flex flex-col min-h-screen overflow-hidden">
-        {/* Top Header */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0">
-          <h2 className="text-lg font-medium text-gray-800">Welcome back, Admin</h2>
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Topbar */}
+        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-10">
+          <h2 className="font-bold text-[#0B1B3D] text-lg">Smart Publisher</h2>
           <div className="flex items-center gap-4">
-            <button className="text-gray-400 hover:text-brand-blue relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-0 right-0 h-2 w-2 bg-accent-red rounded-full"></span>
+            <button className="relative text-gray-500 hover:text-[#0B1B3D]">
+              <Bell className="w-5 h-5" />
+              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
             </button>
-            <div className="h-8 w-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">
+            <div className="w-8 h-8 bg-blue-100 text-[#0A58CA] font-bold rounded-full flex items-center justify-center">
               A
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-y-auto p-6 relative">
           {children}
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

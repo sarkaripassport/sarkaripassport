@@ -1,164 +1,316 @@
 import Link from "next/link";
-import { Building, MapPin, Calendar, Briefcase, FileText, Download, ExternalLink, Share2, CheckCircle2 } from "lucide-react";
+import { ChevronDown, GraduationCap, MapPin, Building2, CheckCircle2, Clock, ShieldCheck, Download, ExternalLink, Bookmark, CheckSquare, FileText, UploadCloud, Monitor, CheckCircle, FileQuestion, ArrowRight } from "lucide-react";
 
 export default function JobDetailPage({ params }: { params: { slug: string } }) {
   return (
-    <div className="bg-brand-light min-h-screen pb-16">
-      {/* Job Header Banner */}
-      <div className="bg-brand-navy text-white pt-12 pb-24 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-6">
-            <div>
-              <span className="inline-block px-3 py-1 bg-blue-500/20 text-blue-300 text-xs font-bold rounded-full mb-3 border border-blue-500/30">
-                Central Government
-              </span>
-              <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-2">
-                SSC CHSL Recruitment 2026
-              </h1>
-              <p className="text-lg text-gray-300 flex items-center gap-2">
-                <Building className="h-5 w-5" /> Staff Selection Commission (SSC)
-              </p>
-            </div>
-            <button className="p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors border border-white/10">
-              <Share2 className="h-5 w-5" />
-            </button>
-          </div>
-          
-          <div className="flex flex-wrap gap-4 text-sm font-medium text-gray-300">
-            <span className="flex items-center gap-1.5"><MapPin className="h-4 w-4 text-blue-400" /> All India</span>
-            <span className="flex items-center gap-1.5"><Briefcase className="h-4 w-4 text-blue-400" /> 3,712 Posts</span>
-            <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4 text-blue-400" /> Posted: 01 June 2026</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 -mt-12 relative z-10">
+    <div className="bg-[#F4F7FA] min-h-screen py-6 font-sans text-gray-800">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Quick Action Bar */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 md:p-6 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-center sm:text-left">
-            <p className="text-sm text-gray-500 font-semibold uppercase tracking-wider mb-1">Application Deadline</p>
-            <p className="text-xl font-bold text-accent-red">15 August 2026</p>
-          </div>
-          <div className="flex gap-3 w-full sm:w-auto">
-            <Link href="#" className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-6 py-3 bg-brand-light text-brand-navy border border-gray-200 rounded-xl font-bold hover:bg-gray-50 transition-colors">
-              <Download className="h-4 w-4" /> Notification
-            </Link>
-            <Link href="#" className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-8 py-3 bg-brand-blue text-white rounded-xl font-bold hover:bg-blue-700 shadow-md shadow-blue-500/20 transition-colors">
-              Apply Online <ExternalLink className="h-4 w-4" />
-            </Link>
-          </div>
+        {/* Breadcrumb */}
+        <div className="text-[13px] text-gray-500 flex items-center gap-2 mb-6">
+          <Link href="/" className="hover:text-[#0A58CA]">Home</Link>
+          <ChevronDown className="w-3 h-3 -rotate-90" />
+          <Link href="/jobs" className="hover:text-[#0A58CA]">Latest Jobs</Link>
+          <ChevronDown className="w-3 h-3 -rotate-90" />
+          <span className="text-gray-900 font-medium">SSC CGL 2026</span>
         </div>
 
-        {/* Content Tabs / Sections */}
-        <div className="space-y-8">
+        <div className="flex flex-col lg:flex-row gap-6 items-start">
           
-          {/* Job Summary */}
-          <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-brand-navy mb-4 flex items-center gap-2">
-              <FileText className="h-6 w-6 text-brand-blue" />
-              Job Summary
-            </h2>
-            <p className="text-gray-600 leading-relaxed mb-6">
-              Staff Selection Commission (SSC) has released the notification for the Combined Higher Secondary (10+2) Level (CHSL) Examination 2026. Interested candidates who fulfill the eligibility criteria can apply online. The recruitment aims to fill vacancies for Lower Divisional Clerk (LDC), Junior Secretariat Assistant (JSA), and Data Entry Operators (DEO) across various ministries and departments of the Government of India.
-            </p>
+          {/* LEFT MAIN CONTENT */}
+          <div className="flex-1 space-y-6 w-full">
             
-            <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
-              <h3 className="font-bold text-brand-navy mb-2 flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-accent-green" /> Eligibility Quick Check
+            {/* Header Block */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col sm:flex-row gap-6">
+              <div className="w-24 h-24 sm:w-32 sm:h-32 shrink-0 bg-yellow-50 rounded-xl border border-yellow-100 flex items-center justify-center overflow-hidden p-2">
+                {/* Emblem placeholder */}
+                <div className="w-full h-full bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/1024px-Emblem_of_India.svg.png')] bg-contain bg-center bg-no-repeat"></div>
+              </div>
+              <div className="flex-1">
+                <h1 className="text-3xl md:text-4xl font-black text-[#0B1B3D] mb-2 tracking-tight">SSC CGL 2026</h1>
+                <div className="flex items-center gap-2 mb-4">
+                  <h2 className="text-lg font-bold text-gray-700">Staff Selection Commission</h2>
+                  <CheckCircle2 className="w-5 h-5 text-blue-500 fill-blue-50" />
+                </div>
+                <p className="text-sm text-gray-600 mb-5 leading-relaxed max-w-3xl">
+                  Combined Graduate Level (CGL) Examination 2026 for recruitment to various Group B and Group C posts in different Ministries/Departments/Organizations of Government of India.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-[#0A58CA] text-xs font-bold rounded-lg border border-blue-100"><GraduationCap className="w-3.5 h-3.5" /> Graduate</span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-lg border border-indigo-100"><Building2 className="w-3.5 h-3.5" /> Central Govt</span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 text-xs font-bold rounded-lg border border-green-100"><CheckCircle2 className="w-3.5 h-3.5" /> Active</span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-700 text-xs font-bold rounded-lg border border-orange-100"><Clock className="w-3.5 h-3.5" /> Last Date Near</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid 1: Summary & Dates */}
+            <div className="grid md:grid-cols-2 gap-6 items-start">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
+                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><FileText className="w-3.5 h-3.5"/></span>
+                  1. Job Summary
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  SSC CGL is a prestigious examination conducted by the Staff Selection Commission for recruitment to various Group B and Group C posts. It offers excellent career opportunities in Government of India offices.
+                </p>
+              </div>
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
+                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><Clock className="w-3.5 h-3.5"/></span>
+                  2. Important Dates
+                </h3>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-600 font-medium">Online Apply Start Date</span><span className="text-gray-900 font-bold">: 09 Jun 2026</span></div>
+                  <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-600 font-medium">Last Date to Apply</span><span className="text-red-600 font-bold">: 24 Jun 2026</span></div>
+                  <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-600 font-medium">Last Date to Pay Fee</span><span className="text-gray-900 font-bold">: 25 Jun 2026</span></div>
+                  <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-600 font-medium">Tier-I Exam Date</span><span className="text-gray-900 font-bold">: Aug - Sep 2026</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600 font-medium">Tier-II Exam Date</span><span className="text-gray-900 font-bold">: Dec 2026 / Jan 2027</span></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid 2: Fee & Age */}
+            <div className="grid md:grid-cols-2 gap-6 items-start">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
+                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm">₹</span>
+                  3. Application Fee
+                </h3>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-600 font-medium">General / OBC / EWS</span><span className="text-gray-900 font-bold">: ₹ 100/-</span></div>
+                  <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-600 font-medium">SC / ST / PwBD / Female</span><span className="text-green-600 font-bold">: ₹ 0/-</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600 font-medium">Mode of Payment</span><span className="text-gray-900 font-bold">: Online</span></div>
+                </div>
+              </div>
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
+                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><ShieldCheck className="w-3.5 h-3.5"/></span>
+                  4. Age Limit <span className="text-xs text-gray-400 font-normal">(as on 01 Aug 2026)</span>
+                </h3>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-600 font-medium">Minimum Age</span><span className="text-gray-900 font-bold">: 18 Years</span></div>
+                  <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-600 font-medium">Maximum Age</span><span className="text-gray-900 font-bold">: 32 Years</span></div>
+                  <div className="flex justify-between"><span className="text-gray-600 font-medium">Age Relaxation</span><span className="text-gray-900 font-bold">: As per Govt. Rules</span></div>
+                </div>
+              </div>
+            </div>
+
+            {/* 5. Vacancy Details */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><Building2 className="w-3.5 h-3.5"/></span>
+                5. Vacancy Details
               </h3>
-              <ul className="list-disc list-inside text-sm text-gray-700 space-y-1 ml-2">
-                <li>Must have passed 12th Standard or equivalent from a recognized Board.</li>
-                <li>Age must be between 18 to 27 years.</li>
-                <li>Indian Citizenship required.</li>
+              <div className="overflow-x-auto custom-scrollbar border border-gray-100 rounded-lg">
+                <table className="w-full text-sm text-left">
+                  <thead className="text-xs text-[#0B1B3D] uppercase bg-gray-50 border-b border-gray-200">
+                    <tr>
+                      <th className="px-4 py-3 font-bold">Post Name</th>
+                      <th className="px-4 py-3 font-bold">Post Code</th>
+                      <th className="px-4 py-3 font-bold">Department/Ministry</th>
+                      <th className="px-4 py-3 font-bold text-center">Group</th>
+                      <th className="px-4 py-3 font-bold text-right">Vacancies</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {[
+                      { name: "Assistant Section Officer (ASO)", code: "ASO01", dept: "Central Secretariat Service", grp: "B", vac: "2,150" },
+                      { name: "Income Tax Inspector", code: "ITI02", dept: "CBDT", grp: "B", vac: "1,550" },
+                      { name: "Inspector (Central Excise)", code: "ICE03", dept: "CBIC", grp: "B", vac: "950" },
+                      { name: "Sub Inspector (CBI)", code: "SI04", dept: "CBI", grp: "B", vac: "300" },
+                      { name: "Tax Assistant", code: "TA05", dept: "CBDT", grp: "C", vac: "4,000" },
+                    ].map((row, i) => (
+                      <tr key={i} className="hover:bg-gray-50">
+                        <td className="px-4 py-3 text-gray-800 font-medium">{row.name}</td>
+                        <td className="px-4 py-3 text-gray-500 font-mono text-xs">{row.code}</td>
+                        <td className="px-4 py-3 text-gray-600">{row.dept}</td>
+                        <td className="px-4 py-3 text-center text-gray-600">{row.grp}</td>
+                        <td className="px-4 py-3 text-right font-bold text-gray-900">{row.vac}</td>
+                      </tr>
+                    ))}
+                    <tr className="bg-gray-50">
+                      <td colSpan={4} className="px-4 py-3 font-bold text-right text-[#0B1B3D]">Total Vacancies</td>
+                      <td className="px-4 py-3 text-right font-black text-xl text-[#0B1B3D]">8,950</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="mt-3">
+                <Link href="#" className="text-sm font-bold text-[#0A58CA] flex items-center gap-1 hover:underline">View Full Vacancy Details <ArrowRight className="w-3 h-3"/></Link>
+              </div>
+            </div>
+
+            {/* Grid 3: Qual & Selection Process */}
+            <div className="grid md:grid-cols-2 gap-6 items-start">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
+                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><GraduationCap className="w-3.5 h-3.5"/></span>
+                  6. Education Qualification
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                  Bachelor's Degree in any stream from a recognized University/Institution in India. <br/><br/>
+                  <span className="text-xs text-gray-500 font-normal">Candidates must possess essential qualification on or before the last date of application.</span>
+                </p>
+              </div>
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
+                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><CheckSquare className="w-3.5 h-3.5"/></span>
+                  7. Selection Process
+                </h3>
+                <div className="flex items-center justify-between mt-6 px-2">
+                  <div className="flex flex-col items-center text-center w-16">
+                    <div className="w-8 h-8 rounded-full bg-[#0A58CA] text-white flex items-center justify-center font-bold text-xs mb-2 shadow-md">1</div>
+                    <span className="text-[10px] font-bold text-gray-800 leading-tight">Tier-I<br/><span className="font-normal text-gray-400">(CBT)</span></span>
+                  </div>
+                  <div className="flex-1 h-px bg-gray-300 mx-2 -mt-6"></div>
+                  <div className="flex flex-col items-center text-center w-16">
+                    <div className="w-8 h-8 rounded-full bg-[#0A58CA] text-white flex items-center justify-center font-bold text-xs mb-2 shadow-md">2</div>
+                    <span className="text-[10px] font-bold text-gray-800 leading-tight">Tier-II<br/><span className="font-normal text-gray-400">(CBT)</span></span>
+                  </div>
+                  <div className="flex-1 h-px bg-gray-300 mx-2 -mt-6"></div>
+                  <div className="flex flex-col items-center text-center w-16">
+                    <div className="w-8 h-8 rounded-full bg-[#0A58CA] text-white flex items-center justify-center font-bold text-xs mb-2 shadow-md">3</div>
+                    <span className="text-[10px] font-bold text-gray-800 leading-tight">Doc<br/>Verify</span>
+                  </div>
+                  <div className="flex-1 h-px bg-gray-300 mx-2 -mt-6"></div>
+                  <div className="flex flex-col items-center text-center w-16">
+                    <div className="w-8 h-8 rounded-full bg-[#0A58CA] text-white flex items-center justify-center font-bold text-xs mb-2 shadow-md">4</div>
+                    <span className="text-[10px] font-bold text-gray-800 leading-tight">Medical<br/>Exam</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid 4: How to Apply & FAQs */}
+            <div className="grid md:grid-cols-2 gap-6 items-start">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
+                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><Monitor className="w-3.5 h-3.5"/></span>
+                  8. How to Apply
+                </h3>
+                <ul className="space-y-3 text-sm text-gray-600">
+                  <li className="flex items-start gap-3"><span className="w-5 h-5 rounded-full bg-blue-100 text-[#0A58CA] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">1</span> Visit the official website of SSC.</li>
+                  <li className="flex items-start gap-3"><span className="w-5 h-5 rounded-full bg-blue-100 text-[#0A58CA] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">2</span> Click on 'Apply Online' link.</li>
+                  <li className="flex items-start gap-3"><span className="w-5 h-5 rounded-full bg-blue-100 text-[#0A58CA] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">3</span> Register and fill the application form carefully.</li>
+                  <li className="flex items-start gap-3"><span className="w-5 h-5 rounded-full bg-blue-100 text-[#0A58CA] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">4</span> Upload required documents and photograph.</li>
+                  <li className="flex items-start gap-3"><span className="w-5 h-5 rounded-full bg-blue-100 text-[#0A58CA] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">5</span> Pay the application fee online.</li>
+                  <li className="flex items-start gap-3"><span className="w-5 h-5 rounded-full bg-blue-100 text-[#0A58CA] flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">6</span> Submit the form and take a printout for future reference.</li>
+                </ul>
+              </div>
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 h-full">
+                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><FileQuestion className="w-3.5 h-3.5"/></span>
+                  10. FAQs
+                </h3>
+                <div className="space-y-2">
+                  {["What is SSC CGL?", "What is the age limit for SSC CGL 2026?", "What is the application fee for SSC CGL 2026?", "Is there any negative marking in SSC CGL Tier-I?", "Syllabus"].map((q, i) => (
+                    <div key={i} className="flex justify-between items-center p-3 bg-gray-50 border border-gray-100 rounded-lg cursor-pointer hover:bg-gray-100 transition">
+                      <span className="text-xs font-bold text-gray-700">{q}</span>
+                      <ChevronDown className="w-4 h-4 text-gray-400" />
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-3 text-right">
+                  <Link href="#" className="text-xs font-bold text-[#0A58CA] hover:underline">View More FAQs →</Link>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* RIGHT SIDEBAR */}
+          <div className="w-full lg:w-[340px] shrink-0 space-y-6 lg:sticky lg:top-24">
+            
+            {/* Primary Action Buttons */}
+            <div className="space-y-3">
+              <button className="w-full flex justify-center items-center gap-2 py-3.5 bg-[#0A58CA] text-white font-bold rounded-xl shadow-md hover:bg-blue-700 transition">
+                Apply Online <ExternalLink className="w-4 h-4" />
+              </button>
+              <button className="w-full flex justify-center items-center gap-2 py-3 bg-white text-[#0B1B3D] border border-gray-300 font-bold rounded-xl hover:bg-gray-50 transition shadow-sm">
+                <Download className="w-4 h-4 text-blue-600" /> Official Notification
+              </button>
+              <button className="w-full flex justify-center items-center gap-2 py-3 bg-white text-[#0B1B3D] border border-gray-300 font-bold rounded-xl hover:bg-gray-50 transition shadow-sm">
+                <CheckCircle2 className="w-4 h-4 text-green-600" /> Check My Eligibility
+              </button>
+              <button className="w-full flex justify-center items-center gap-2 py-3 bg-white text-[#0B1B3D] border border-gray-300 font-bold rounded-xl hover:bg-gray-50 transition shadow-sm">
+                <Bookmark className="w-4 h-4 text-gray-500" /> Save Job
+              </button>
+            </div>
+
+            {/* Match / Eligibility Card */}
+            <div className="bg-white rounded-xl border border-blue-100 shadow-sm p-6 bg-gradient-to-br from-white to-blue-50/50">
+              <h3 className="font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
+                <Monitor className="w-4 h-4 text-[#0A58CA]"/> Your Match / Eligibility
+              </h3>
+              <div className="border border-blue-200 bg-white rounded-xl p-5 text-center shadow-sm">
+                <div className="w-12 h-12 bg-blue-50 text-[#0A58CA] rounded-full flex items-center justify-center mx-auto mb-3">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <p className="text-sm text-gray-600 mb-4 font-medium">Login to check your eligibility instantly and get a match score.</p>
+                <button className="w-full py-2.5 bg-[#0A58CA] text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition shadow-sm mb-2">Login</button>
+                <button className="w-full py-2.5 text-[#0A58CA] text-sm font-bold hover:underline">Create Profile</button>
+              </div>
+            </div>
+
+            {/* Required Documents */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <h3 className="font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
+                <UploadCloud className="w-4 h-4 text-gray-500"/> Required Documents
+              </h3>
+              <ul className="space-y-2 text-xs text-gray-600 list-disc list-inside ml-1">
+                <li>Passport Size Photograph</li>
+                <li>Signature (Scanned)</li>
+                <li>10th Marksheet</li>
+                <li>12th Marksheet</li>
+                <li>Graduation Degree/Marksheet</li>
+                <li>Caste Certificate (if applicable)</li>
+                <li>PwBD Certificate (if applicable)</li>
+                <li>Photo ID Proof (Aadhaar/PAN/Voter ID)</li>
               </ul>
             </div>
-          </section>
 
-          {/* Important Dates & Fees Grid */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Dates */}
-            <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                <h2 className="text-lg font-bold text-brand-navy">Important Dates</h2>
+            {/* Quick Facts */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <h3 className="font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-gray-500"/> Quick Facts
+              </h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-500 flex items-center gap-2"><Building2 className="w-3 h-3"/> Total Vacancies</span><span className="font-bold text-gray-900">8,950</span></div>
+                <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-500 flex items-center gap-2"><Clock className="w-3 h-3"/> Last Date to Apply</span><span className="font-bold text-red-600">24 Jun 2026</span></div>
+                <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-500 flex items-center gap-2"><MapPin className="w-3 h-3"/> Job Location</span><span className="font-bold text-gray-900">All India</span></div>
+                <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-500 flex items-center gap-2"><Monitor className="w-3 h-3"/> Application Mode</span><span className="font-bold text-gray-900">Online</span></div>
+                <div className="flex justify-between border-b border-gray-50 pb-2"><span className="text-gray-500 flex items-center gap-2"><CheckSquare className="w-3 h-3"/> Exam Mode</span><span className="font-bold text-gray-900">Online</span></div>
+                <div className="flex justify-between"><span className="text-gray-500 flex items-center gap-2"><Briefcase className="w-3 h-3"/> Job Type</span><span className="font-bold text-gray-900">Regular</span></div>
               </div>
-              <div className="p-6">
-                <table className="w-full text-sm text-left text-gray-600">
-                  <tbody>
-                    <tr className="border-b border-gray-50"><td className="py-3 font-medium">Application Start</td><td className="py-3 text-right font-bold text-brand-navy">01 June 2026</td></tr>
-                    <tr className="border-b border-gray-50"><td className="py-3 font-medium">Last Date to Apply</td><td className="py-3 text-right font-bold text-accent-red">15 August 2026</td></tr>
-                    <tr className="border-b border-gray-50"><td className="py-3 font-medium">Fee Payment Last Date</td><td className="py-3 text-right font-bold text-brand-navy">17 August 2026</td></tr>
-                    <tr><td className="py-3 font-medium">Tier-1 Exam Date</td><td className="py-3 text-right font-bold text-brand-navy">Oct-Nov 2026</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
+            </div>
 
-            {/* Application Fee */}
-            <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-100">
-                <h2 className="text-lg font-bold text-brand-navy">Application Fee</h2>
+            {/* Similar Jobs */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <h3 className="font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
+                <Briefcase className="w-4 h-4 text-gray-500"/> Similar Jobs
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { t: "IB Security Assistant 2026", o: "Intelligence Bureau (MHA)", d: "20 Jun 2025" },
+                  { t: "Railway ALP 2025", o: "Railway Recruitment Board", d: "30 Jun 2025" },
+                  { t: "UP Police Constable 2025", o: "UP Police Recruitment Board", d: "17 May 2025" },
+                ].map((sj, i) => (
+                  <div key={i} className="border-b border-gray-50 pb-3 last:border-0 last:pb-0">
+                    <div className="flex justify-between items-start mb-1">
+                      <Link href="#" className="text-sm font-bold text-gray-800 hover:text-[#0A58CA]">{sj.t}</Link>
+                      <div className="text-[10px] text-gray-500 text-right shrink-0">Last Date<br/><span className="text-gray-800 font-bold">{sj.d}</span></div>
+                    </div>
+                    <p className="text-xs text-gray-500">{sj.o}</p>
+                  </div>
+                ))}
               </div>
-              <div className="p-6">
-                <table className="w-full text-sm text-left text-gray-600">
-                  <tbody>
-                    <tr className="border-b border-gray-50"><td className="py-3 font-medium">General / OBC / EWS</td><td className="py-3 text-right font-bold text-brand-navy">₹ 100/-</td></tr>
-                    <tr className="border-b border-gray-50"><td className="py-3 font-medium">SC / ST / PH</td><td className="py-3 text-right font-bold text-accent-green">Nil (₹ 0/-)</td></tr>
-                    <tr><td className="py-3 font-medium">All Category Female</td><td className="py-3 text-right font-bold text-accent-green">Nil (₹ 0/-)</td></tr>
-                  </tbody>
-                </table>
-                <p className="text-xs text-gray-400 mt-4 text-center">Pay the exam fee through Online Debit Card, Credit Card, Net Banking mode only.</p>
+              <div className="mt-4 text-center">
+                <Link href="/jobs" className="text-xs font-bold text-[#0A58CA] hover:underline">View All Similar Jobs →</Link>
               </div>
-            </section>
+            </div>
+
           </div>
-
-          {/* Vacancy Details */}
-          <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="bg-gray-50 px-6 py-4 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-brand-navy">Vacancy Details & Qualification</h2>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left">
-                <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
-                  <tr>
-                    <th className="px-6 py-4 font-semibold">Post Name</th>
-                    <th className="px-6 py-4 font-semibold">Total Posts</th>
-                    <th className="px-6 py-4 font-semibold">Eligibility / Qualification</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-600">
-                  <tr className="border-b border-gray-50 hover:bg-gray-50/50">
-                    <td className="px-6 py-4 font-medium text-brand-navy">Lower Divisional Clerk (LDC) / JSA</td>
-                    <td className="px-6 py-4 font-bold">1,856</td>
-                    <td className="px-6 py-4">Passed 10+2 Intermediate Exam in Any Recognized Board in India.</td>
-                  </tr>
-                  <tr className="border-b border-gray-50 hover:bg-gray-50/50">
-                    <td className="px-6 py-4 font-medium text-brand-navy">Data Entry Operator (DEO)</td>
-                    <td className="px-6 py-4 font-bold">1,856</td>
-                    <td className="px-6 py-4">Passed 10+2 Intermediate Exam with Science Stream and Mathematics as a subject.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {/* How to Apply */}
-          <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
-            <h2 className="text-xl font-bold text-brand-navy mb-4">How to Apply</h2>
-            <div className="prose prose-sm prose-blue max-w-none text-gray-600">
-              <ol className="list-decimal list-outside ml-4 space-y-2">
-                <li>Visit the official SSC website (ssc.nic.in).</li>
-                <li>Register as a new user or log in if you already have an account.</li>
-                <li>Click on 'Apply' in the 'Combined Higher Secondary (10+2) Level Examination 2026' section.</li>
-                <li>Fill in the application form completely and accurately.</li>
-                <li>Upload scanned passport size photograph and signature as per specified dimensions.</li>
-                <li>Pay the application fee online.</li>
-                <li>Submit the form and print the confirmation page for future reference.</li>
-              </ol>
-            </div>
-          </section>
-
         </div>
       </div>
     </div>

@@ -3,46 +3,56 @@
 @theme {
   --color-brand-navy: #0F172A;
   --color-brand-blue: #2563EB;
-  --color-brand-light: #F8FAFC;
-  --color-brand-gray: #64748B;
-  --color-accent-orange: #F97316;
-  --color-accent-green: #10B981;
-  --color-accent-red: #EF4444;
+  --color-brand-navy: #0B1B3D;
+  --color-brand-blue: #0A58CA;
+  --color-brand-light: #F4F7FA;
+  
+  --color-status-green-bg: #E6F4EA;
+  --color-status-green-text: #1E8E3E;
+  --color-status-orange-bg: #FEF7E0;
+  --color-status-orange-text: #E37400;
 
-  --font-sans: var(--font-inter);
+  --font-sans: "Inter", system-ui, sans-serif;
 }
 
-:root {
-  --background: #F8FAFC;
-  --foreground: #0F172A;
+@layer base {
+  body {
+    background-color: var(--color-brand-light);
+    color: #1F2937;
+    font-family: var(--font-sans);
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Custom premium utilities */
-@utility glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-}
-
-@utility glass-dark {
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+@utility container-custom {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 @utility card-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease-in-out;
 }
 
 .card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.1), 0 8px 10px -6px rgba(37, 99, 235, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+}
+
+/* Scrollbar styling for tables */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1; 
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; 
 }

@@ -1,157 +1,194 @@
 import Link from "next/link";
-import { Search, Briefcase, FileText, Award, ChevronRight, TrendingUp, User } from "lucide-react";
+import { Search, MapPin, Briefcase, GraduationCap, Calendar, CheckCircle2, Building2, Bookmark, ChevronRight, FileText, Award } from "lucide-react";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
+
       {/* Hero Section */}
-      <section className="relative bg-brand-navy pt-20 pb-32 overflow-hidden">
-        {/* Abstract Background Shapes */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[80%] rounded-full bg-brand-blue/20 blur-3xl" />
-          <div className="absolute top-[60%] -left-[10%] w-[40%] h-[60%] rounded-full bg-accent-orange/10 blur-3xl" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
-          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 text-blue-300 text-sm font-medium mb-6 border border-blue-500/20">
-            <span className="flex h-2 w-2 rounded-full bg-blue-400 animate-pulse"></span>
-            India's Smartest Government Job Platform
-          </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-            Your Passport to a <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-accent-green">
-              Secure Government Career
-            </span>
-          </h1>
-          <p className="mt-4 text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10">
-            Get instant updates on Sarkari Jobs, Admit Cards, Results, and Answer Keys. 
-            Detailed eligibility checking and smart application tracking.
-          </p>
-
-          {/* Search Bar */}
-          <div className="max-w-3xl mx-auto bg-white p-2 rounded-2xl shadow-2xl flex items-center gap-2">
-            <div className="flex-1 flex items-center px-4 bg-gray-50 rounded-xl">
-              <Search className="h-5 w-5 text-gray-400" />
-              <input 
-                type="text" 
-                placeholder="Search jobs by name, organization, or qualification..." 
-                className="w-full bg-transparent border-none py-4 px-3 text-gray-900 focus:outline-none focus:ring-0"
-              />
+      <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-12 pb-24 px-4 sm:px-6 lg:px-8">
+        {/* Background placeholder for Parliament Illustration */}
+        <div className="absolute right-0 bottom-0 opacity-20 pointer-events-none w-1/2 h-full bg-[url('https://placehold.co/800x400/eeeeee/cccccc?text=Parliament+Illustration')] bg-no-repeat bg-right-bottom bg-contain"></div>
+        
+        <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
+          <div className="w-full md:w-3/5 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-[#0A58CA] text-xs font-bold rounded-full border border-blue-100 mb-2">
+              <CheckCircle2 className="w-4 h-4" /> India's Trusted Government Job Portal
             </div>
-            <button className="bg-brand-blue hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-medium transition-colors hidden sm:block">
-              Search Jobs
-            </button>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#0B1B3D] leading-[1.1] tracking-tight">
+              Latest Government Jobs,<br/>Results, Admit Cards &<br/>Eligibility Updates
+            </h1>
+            <p className="text-lg text-gray-600 max-w-xl">
+              Find verified Sarkari job updates and check your eligibility with Naukri Passport.
+            </p>
+            <div className="flex flex-wrap gap-3 pt-4">
+              <Link href="/jobs" className="px-6 py-3 bg-[#0A58CA] text-white rounded-lg font-bold shadow-md shadow-blue-500/20 hover:bg-blue-700 transition">
+                Latest Jobs
+              </Link>
+              <button className="px-6 py-3 bg-white text-[#0B1B3D] border border-gray-300 rounded-lg font-bold hover:bg-gray-50 flex items-center gap-2 transition">
+                <span className="w-4 h-4 rounded-full border-2 border-gray-400"></span> Create Profile
+              </button>
+              <button className="px-6 py-3 bg-white text-[#0B1B3D] border border-gray-300 rounded-lg font-bold hover:bg-gray-50 flex items-center gap-2 transition">
+                <CheckCircle2 className="w-4 h-4 text-gray-400" /> Check Eligibility
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* Quick Categories */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-16 relative z-10">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { title: "Latest Jobs", icon: Briefcase, color: "bg-blue-500", href: "/jobs" },
-            { title: "Admit Cards", icon: FileText, color: "bg-accent-orange", href: "/admit-cards" },
-            { title: "Results", icon: Award, color: "bg-accent-green", href: "/results" },
-            { title: "Syllabus", icon: TrendingUp, color: "bg-purple-500", href: "/syllabus" },
-          ].map((cat, i) => (
-            <Link key={i} href={cat.href} className="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 flex flex-col items-center text-center card-hover">
-              <div className={`h-12 w-12 ${cat.color} rounded-xl flex items-center justify-center text-white mb-4 shadow-md`}>
-                <cat.icon className="h-6 w-6" />
-              </div>
-              <h3 className="font-semibold text-brand-navy">{cat.title}</h3>
-            </Link>
-          ))}
         </div>
       </section>
 
       {/* Main Content Area */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 w-full grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 space-y-8 pb-16">
         
-        {/* Left Column - Latest Jobs */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-brand-navy flex items-center gap-2">
-              <span className="w-1.5 h-6 bg-brand-blue rounded-full"></span>
-              Latest Job Openings
-            </h2>
-            <Link href="/jobs" className="text-sm font-medium text-brand-blue hover:underline flex items-center">
-              View All <ChevronRight className="h-4 w-4 ml-1" />
-            </Link>
+        {/* Advanced Search Bar */}
+        <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 space-y-4">
+          <div className="relative">
+            <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="Search by job title, organization, qualification, keyword..." 
+              className="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-[#0A58CA]"
+            />
+            <button className="absolute right-2 top-2 px-6 py-1.5 bg-[#0A58CA] text-white font-bold rounded-md hover:bg-blue-700">
+              Search
+            </button>
           </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>Qualification</option></select>
+            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>State</option></select>
+            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>Department</option></select>
+            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>Job Type</option></select>
+            <select className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 outline-none"><option>Last Date</option></select>
+          </div>
+        </div>
 
-          <div className="space-y-4">
-            {/* Dummy Job Cards */}
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 card-hover flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xs font-semibold px-2 py-1 bg-green-100 text-green-700 rounded-md">New</span>
-                    <span className="text-sm text-gray-500">SSC CGL 2026</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-brand-navy hover:text-brand-blue transition-colors cursor-pointer">
-                    Combined Graduate Level Examination 2026
-                  </h3>
-                  <div className="flex flex-wrap gap-4 mt-2 text-sm text-gray-600">
-                    <span className="flex items-center gap-1"><Briefcase className="h-4 w-4"/> 7,500+ Posts</span>
-                    <span className="flex items-center gap-1"><Award className="h-4 w-4"/> Bachelor's Degree</span>
-                  </div>
+        {/* Quick Category Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+          {[
+            { n: 'Latest Jobs', v: '128', icon: Briefcase, c: 'text-blue-600' },
+            { n: 'Admit Card', v: '42', icon: FileText, c: 'text-green-600' },
+            { n: 'Results', v: '31', icon: Award, c: 'text-red-500' },
+            { n: 'Answer Key', v: '26', icon: CheckCircle2, c: 'text-orange-500' },
+            { n: 'Syllabus', v: '57', icon: GraduationCap, c: 'text-purple-600' },
+            { n: 'Admission', v: '18', icon: Building2, c: 'text-teal-600' },
+            { n: 'Maharashtra Jobs', v: '64', icon: MapPin, c: 'text-pink-600' },
+            { n: 'Central Govt. Jobs', v: '92', icon: Building2, c: 'text-indigo-600' }
+          ].map((cat, i) => (
+            <div key={i} className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm flex flex-col items-center justify-center text-center cursor-pointer hover:border-blue-300 hover:shadow-md transition">
+              <cat.icon className={`w-6 h-6 mb-2 ${cat.c}`} />
+              <span className="text-xs font-bold text-[#0B1B3D]">{cat.n}</span>
+              <span className="text-lg font-black mt-1 text-gray-800">{cat.v}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Latest Jobs Table */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="flex justify-between items-center p-5 border-b border-gray-100">
+            <h2 className="text-lg font-bold text-[#0B1B3D]">Latest Jobs</h2>
+            <Link href="/jobs" className="text-sm font-bold text-[#0A58CA] hover:underline">View All</Link>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm text-left">
+              <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="px-6 py-3 font-bold">Post Name</th>
+                  <th className="px-6 py-3 font-bold">Organization</th>
+                  <th className="px-6 py-3 font-bold">Qualification</th>
+                  <th className="px-6 py-3 font-bold text-center">Vacancies</th>
+                  <th className="px-6 py-3 font-bold text-center">Last Date</th>
+                  <th className="px-6 py-3 font-bold text-center">Status</th>
+                  <th className="px-6 py-3 font-bold text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {[
+                  { title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                  { title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                  { title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                  { title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", color: "text-[#E37400] bg-[#FEF7E0]" },
+                  { title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                ].map((job, i) => (
+                  <tr key={i} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 font-bold text-[#0B1B3D]">{job.title}</td>
+                    <td className="px-6 py-4 text-gray-600">{job.org}</td>
+                    <td className="px-6 py-4 text-gray-600">{job.qual}</td>
+                    <td className="px-6 py-4 text-center font-semibold text-gray-800">{job.vac}</td>
+                    <td className="px-6 py-4 text-center text-gray-600">{job.date}</td>
+                    <td className="px-6 py-4 text-center">
+                      <span className={`px-2 py-1 text-xs font-bold rounded ${job.color}`}>{job.status}</span>
+                    </td>
+                    <td className="px-6 py-4 flex items-center justify-end gap-2">
+                      <button className="px-3 py-1.5 text-xs font-bold text-[#0A58CA] border border-blue-200 rounded hover:bg-blue-50">View Details</button>
+                      <button className="px-3 py-1.5 text-xs font-bold text-white bg-[#0A58CA] rounded hover:bg-blue-700">Check Eligibility</button>
+                      <button className="p-1.5 text-gray-400 hover:text-[#0B1B3D] border border-gray-200 rounded"><Bookmark className="w-4 h-4" /></button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* 4-Column Grid for Updates */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            { title: "Latest Admit Cards", items: ["RRB ALP Admit Card 2026", "SSC CHSL Admit Card 2026", "IB ACIO Admit Card 2026", "UP Police Constable Admit Card"] },
+            { title: "Latest Results", items: ["SSC GD Result 2026", "UP Police Constable Result", "IB Security Assistant Result", "Railway Group D Result"] },
+            { title: "Latest Answer Keys", items: ["SSC GD Answer Key 2026", "RRB NTPC Answer Key 2026", "SSC CHSL Answer Key 2026", "UP Police Constable Answer Key"] },
+            { title: "Latest Syllabus", items: ["UPSC CSE Syllabus 2026", "MPSC Group B Syllabus", "SSC CGL Tier 1 Syllabus", "IBPS PO Syllabus 2026"] }
+          ].map((col, i) => (
+            <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                <h3 className="font-bold text-[#0B1B3D]">{col.title}</h3>
+                <Link href="#" className="text-xs font-bold text-[#0A58CA] hover:underline">View All</Link>
+              </div>
+              <ul className="space-y-3">
+                {col.items.map((item, j) => (
+                  <li key={j} className="flex justify-between items-start gap-2">
+                    <Link href="#" className="text-sm text-gray-700 hover:text-[#0A58CA] hover:underline leading-tight">{item}</Link>
+                    <span className="text-[10px] text-gray-400 whitespace-nowrap">20 May 2026</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        {/* Trending Categories */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+          <h3 className="font-bold text-[#0B1B3D] mb-4">Trending Categories</h3>
+          <div className="flex flex-wrap gap-4 justify-between items-center">
+            {['SSC', 'Railway', 'Bank', 'Police', 'Defence', 'UPSC', 'MPSC', 'Teaching', 'PSU', '10th Pass', '12th Pass', 'Graduate'].map((item, i) => (
+              <div key={i} className="flex flex-col items-center gap-2 cursor-pointer group">
+                <div className="w-14 h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:border-[#0A58CA] group-hover:bg-blue-50 transition">
+                  <div className="w-6 h-6 bg-gray-300 rounded-sm"></div>
                 </div>
-                <div className="flex flex-col sm:items-end gap-2 shrink-0">
-                  <span className="text-sm font-medium text-red-600">Last Date: 15 July 2026</span>
-                  <Link href={`/jobs/ssc-cgl-${item}`} className="px-6 py-2 bg-brand-light text-brand-navy hover:bg-brand-blue hover:text-white rounded-lg font-medium transition-colors border border-gray-200 hover:border-transparent">
-                    View Details
-                  </Link>
-                </div>
+                <span className="text-xs font-semibold text-gray-600 group-hover:text-[#0B1B3D]">{item}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Right Column - Updates & Trending */}
-        <div className="space-y-8">
-          {/* Trending Section */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="bg-brand-navy p-4">
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-accent-orange" />
-                Trending Updates
-              </h2>
+        {/* Banner CTA */}
+        <div className="bg-white rounded-2xl border border-blue-100 shadow-sm p-6 flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+          <div className="flex items-center gap-6 relative z-10">
+            <div className="w-20 h-20 bg-blue-50 rounded-xl flex items-center justify-center border border-blue-100 shrink-0">
+              <FileText className="w-10 h-10 text-[#0A58CA]" />
             </div>
-            <div className="p-4 space-y-4">
-              {[
-                { title: "UPSC Civil Services Prelims Result 2026 Declared", tag: "Result", color: "bg-green-100 text-green-700" },
-                { title: "RRB NTPC Phase 2 Admit Card Released", tag: "Admit Card", color: "bg-orange-100 text-orange-700" },
-                { title: "IBPS PO 2026 Notification Expected Next Week", tag: "Upcoming", color: "bg-blue-100 text-blue-700" },
-              ].map((trend, i) => (
-                <div key={i} className="group cursor-pointer">
-                  <span className={`inline-block text-xs font-semibold px-2 py-0.5 rounded-sm mb-1 ${trend.color}`}>
-                    {trend.tag}
-                  </span>
-                  <h4 className="text-sm font-medium text-brand-navy group-hover:text-brand-blue transition-colors">
-                    {trend.title}
-                  </h4>
-                  {i !== 2 && <hr className="mt-3 border-gray-100" />}
-                </div>
-              ))}
+            <div>
+              <h3 className="text-2xl font-bold text-[#0B1B3D] mb-1">Confused whether you are eligible?</h3>
+              <p className="text-gray-600">Create your Naukri Passport profile once and check your eligibility for every job instantly.</p>
             </div>
           </div>
-
-          {/* Quick Links / Resources */}
-          <div className="bg-brand-light rounded-2xl p-6 border border-blue-100 text-center">
-            <div className="h-12 w-12 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm text-brand-blue">
-              <User className="h-6 w-6" />
-            </div>
-            <h3 className="text-lg font-bold text-brand-navy mb-2">Create Your Profile</h3>
-            <p className="text-sm text-gray-600 mb-4">
-              Save jobs, track applications, and check your eligibility automatically.
-            </p>
-            <Link href="/register" className="block w-full py-2.5 bg-brand-blue hover:bg-blue-700 text-white rounded-xl font-medium transition-colors shadow-md shadow-blue-500/20">
-              Sign Up Now
-            </Link>
-          </div>
+          <button className="px-8 py-3 bg-[#0A58CA] text-white font-bold rounded-lg whitespace-nowrap shadow-md shadow-blue-500/20 hover:bg-blue-700 relative z-10">
+            Create Free Profile
+          </button>
         </div>
 
-      </section>
+      </main>
+
     </div>
   );
 }
