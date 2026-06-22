@@ -4,11 +4,14 @@ import { ChevronDown, GraduationCap, CheckCircle2, Clock, FileText, ArrowRight, 
 import { getJobBySlug } from '@/lib/db';
 import { notFound } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(
-  { params }: { params: { slug: string } },
+  { params }: { params: Promise<{ slug: string }> },
   parent: ResolvingMetadata
 ): Promise<Metadata> {
-  const job = await getJobBySlug(params.slug);
+  const { slug } = await params;
+  const job = await getJobBySlug(slug);
   
   if (!job) {
     return {
@@ -22,8 +25,9 @@ export async function generateMetadata(
   }
 }
 
-export default async function JobDetailPage({ params }: { params: { slug: string } }) {
-  const job = await getJobBySlug(params.slug);
+export default async function JobDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const job = await getJobBySlug(slug);
 
   if (!job) {
     notFound();
