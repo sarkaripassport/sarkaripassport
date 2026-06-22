@@ -2,6 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { ChevronDown, GraduationCap, CheckCircle2, Clock, FileText, ArrowRight, Briefcase, Calendar, CreditCard, User, Link as LinkIcon, Download, Globe } from 'lucide-react';
 import { getJobBySlug } from '@/lib/db';
+import VacancyAccordion from '@/components/VacancyAccordion';
 import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
@@ -165,22 +166,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                   </div>
                 </div>
                 
-                <div className="flex flex-col">
-                  {job.vacancies.map((row, i) => (
-                    <div key={i} className="flex items-start gap-3 sm:gap-4 py-3 sm:py-4 border-b border-gray-100 last:border-0 group hover:bg-gray-50/50 transition-colors rounded-lg px-2 -mx-2">
-                      <div className="bg-[#F4F7FA] border border-gray-200 text-[#0B1B3D] font-black text-sm sm:text-base px-2 py-1.5 rounded-lg shrink-0 min-w-[3.5rem] sm:min-w-[4.5rem] text-center shadow-sm group-hover:bg-[#0A58CA] group-hover:text-white group-hover:border-[#0A58CA] transition-all">
-                        {row.vac}
-                      </div>
-                      <div className="flex-1 pt-0.5">
-                        <h4 className="font-bold text-[#0B1B3D] text-[13px] sm:text-[15px] leading-snug group-hover:text-[#0A58CA] transition-colors">{row.name}</h4>
-                        <div className="flex items-start gap-1.5 mt-1.5 bg-white border border-gray-100 rounded p-1.5 sm:px-2 sm:py-1.5 inline-flex w-full sm:w-auto shadow-sm">
-                          <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-500 shrink-0 mt-0.5 sm:mt-0" />
-                          <span className="text-[11px] sm:text-[12px] font-medium text-gray-600 leading-tight">{row.education}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <VacancyAccordion vacancies={job.vacancies} />
               </div>
             )}
 
