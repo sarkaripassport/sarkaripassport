@@ -276,6 +276,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                   })}
                 </div>
               </div>
+            </div>
             )}
 
           </div>
