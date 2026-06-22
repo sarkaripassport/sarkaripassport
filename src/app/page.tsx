@@ -40,7 +40,7 @@ export default function Home() {
       </section>
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 space-y-8 pb-16">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 space-y-4 pb-16">
         
         {/* Advanced Search Bar */}
         <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4 space-y-3">
@@ -94,7 +94,7 @@ export default function Home() {
         </div>
 
         {/* Latest Jobs Table Exact Copy - with Live & Embossed Effects */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-[0_4px_20px_rgb(0,0,0,0.04)] mt-6 overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-[0_4px_20px_rgb(0,0,0,0.04)] overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
           <div className="flex justify-between items-center p-4 border-b border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
             <h2 className="text-lg font-bold text-gray-900 drop-shadow-sm">Latest Jobs</h2>
             <Link href="/jobs" className="text-sm font-semibold text-[#0A58CA] hover:text-blue-700 hover:underline transition-colors">View All</Link>
