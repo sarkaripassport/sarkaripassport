@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Search, MapPin, Briefcase, GraduationCap, Calendar, CheckCircle2, Building2, Bookmark, ChevronRight, FileText, Award, Filter, ChevronDown } from "lucide-react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
 import JobCard from "@/components/JobCard";
 
 export default function Home() {
@@ -12,8 +10,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
-      <Navbar />
-
       {/* Hero Section */}
       <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-6 pb-12 px-4 sm:px-6 lg:px-8">
         {/* Background Emblem for Trust & Authenticity spanning the whole section */}
