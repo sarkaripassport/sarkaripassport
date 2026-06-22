@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Search, ChevronDown, Building2, MapPin, Briefcase, GraduationCap, Users, Shield, Landmark, Train, Monitor, Bookmark, MessageCircle, Filter } from "lucide-react";
+import JobCard from "@/components/JobCard";
 
 export default function JobsListingPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -135,113 +136,26 @@ export default function JobsListingPage() {
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               {(() => {
                 const jobsList = [
-                  { title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", color: "text-[#E37400] bg-[#FEF7E0]" },
-                  { title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "RRB Technician 2026", org: "Railway Recruitment Board", qual: "10th Pass/ITI", vac: "9,144", date: "28 Jun 2026", status: "New", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "UP Police Constable 2026", org: "Uttar Pradesh Police", qual: "12th Pass", vac: "60,244", date: "25 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "IOCL Apprentice 2026", org: "Indian Oil Corporation", qual: "Graduate/Diploma", vac: "2,470", date: "15 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "BSF Constable Tradesman", org: "Border Security Force", qual: "10th Pass", vac: "3,588", date: "22 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
-                  { title: "DRDO CEPTAM 10 2026", org: "DRDO", qual: "ITI/Diploma", vac: "1,904", date: "18 Jun 2026", status: "Active", color: "text-[#1E8E3E] bg-[#E6F4EA]" },
+                  { title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 2 },
+                  { title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 8 },
+                  { title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 23 },
+                  { title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", statusColor: "text-amber-800 bg-amber-100 border border-amber-200", isLive: false, isTrending: false, daysLeft: 4 },
+                  { title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 20 },
+                  { title: "RRB Technician 2026", org: "Railway Recruitment Board", qual: "10th Pass/ITI", vac: "9,144", date: "28 Jun 2026", status: "New", statusColor: "text-blue-800 bg-blue-100 border border-blue-200", isLive: true, isTrending: true, daysLeft: 6 },
+                  { title: "UP Police Constable 2026", org: "Uttar Pradesh Police", qual: "12th Pass", vac: "60,244", date: "25 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 3 },
+                  { title: "IOCL Apprentice 2026", org: "Indian Oil Corporation", qual: "Graduate/Diploma", vac: "2,470", date: "15 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 10 },
+                  { title: "BSF Constable Tradesman", org: "Border Security Force", qual: "10th Pass", vac: "3,588", date: "22 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 12 },
+                  { title: "DRDO CEPTAM 10 2026", org: "DRDO", qual: "ITI/Diploma", vac: "1,904", date: "18 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 18 },
                 ];
 
                 return (
-                  <>
-                    {/* Desktop Table */}
-                    <div className="hidden md:block overflow-x-auto custom-scrollbar">
-                      <table className="w-full text-sm text-left whitespace-nowrap">
-                        <thead className="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-200">
-                          <tr>
-                            <th className="px-6 py-4 font-bold">Post Name</th>
-                            <th className="px-6 py-4 font-bold">Organization</th>
-                            <th className="px-6 py-4 font-bold">Qualification</th>
-                            <th className="px-6 py-4 font-bold text-center">Vacancies</th>
-                            <th className="px-6 py-4 font-bold text-center">Last Date</th>
-                            <th className="px-6 py-4 font-bold text-center">Status</th>
-                            <th className="px-6 py-4 font-bold text-center">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                          {jobsList.map((job, i) => (
-                            <tr key={i} className="hover:bg-gray-50 group">
-                              <td className="px-6 py-5">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-10 h-10 rounded-full border border-gray-200 bg-white flex flex-shrink-0 items-center justify-center p-1">
-                                    <Building2 className="w-5 h-5 text-gray-400" />
-                                  </div>
-                                  <div>
-                                    <div className="font-bold text-[#0B1B3D] flex items-center gap-2">
-                                      {job.title}
-                                      {job.status === 'New' && <span className="px-1.5 py-0.5 text-[10px] bg-blue-50 text-blue-600 rounded">New</span>}
-                                    </div>
-                                  </div>
-                                </div>
-                              </td>
-                              <td className="px-6 py-5 text-gray-600 max-w-[200px] truncate">{job.org}</td>
-                              <td className="px-6 py-5">
-                                <span className={`text-xs font-semibold ${job.qual.includes('Graduate') ? 'text-purple-600' : 'text-pink-600'}`}>{job.qual}</span>
-                              </td>
-                              <td className="px-6 py-5 text-center font-bold text-gray-800">{job.vac}</td>
-                              <td className="px-6 py-5 text-center text-gray-600">{job.date}</td>
-                              <td className="px-6 py-5 text-center">
-                                <span className={`px-2 py-1 text-[11px] font-bold rounded ${job.color}`}>{job.status}</span>
-                              </td>
-                              <td className="px-6 py-5">
-                                <div className="flex items-center justify-center gap-2">
-                                  <Link href={`/jobs/slug-${i}`} className="px-4 py-2 text-xs font-bold text-[#0A58CA] border border-blue-200 rounded-lg hover:bg-blue-50">View Details</Link>
-                                  <button className="px-4 py-2 text-xs font-bold text-white bg-[#0A58CA] rounded-lg hover:bg-blue-700 shadow-md">Check Eligibility</button>
-                                  <button className="p-2 text-gray-400 hover:text-[#0B1B3D] border border-gray-200 rounded-lg hover:bg-gray-50"><Bookmark className="w-4 h-4" /></button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {/* Mobile Cards View */}
-                    <div className="md:hidden flex flex-col divide-y divide-gray-100">
+                  <div className="p-4 sm:p-5 bg-gray-50/50">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                       {jobsList.map((job, i) => (
-                        <div key={i} className="p-4 hover:bg-gray-50 transition-colors">
-                          {/* Header */}
-                          <div className="flex items-start justify-between gap-2 mb-2">
-                            <div>
-                              <h3 className="font-bold text-[#0B1B3D] text-base leading-tight mb-1">{job.title}</h3>
-                              <p className="text-xs text-gray-500 font-medium">{job.org}</p>
-                            </div>
-                            <span className={`shrink-0 px-2 py-1 text-[10px] font-bold rounded ${job.color}`}>{job.status}</span>
-                          </div>
-                          
-                          {/* Details Grid */}
-                          <div className="grid grid-cols-2 gap-3 mb-4 mt-4 bg-gray-50 p-3 rounded-lg border border-gray-100">
-                            <div>
-                              <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-0.5">Qualification</p>
-                              <p className={`text-xs font-bold ${job.qual.includes('Graduate') ? 'text-purple-600' : 'text-pink-600'}`}>{job.qual}</p>
-                            </div>
-                            <div>
-                              <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-0.5">Vacancies</p>
-                              <p className="text-xs font-bold text-gray-800">{job.vac}</p>
-                            </div>
-                            <div className="col-span-2">
-                              <p className="text-[10px] text-gray-400 uppercase font-bold tracking-wider mb-0.5">Last Date</p>
-                              <p className="text-xs font-bold text-red-600">{job.date}</p>
-                            </div>
-                          </div>
-                          
-                          {/* Actions */}
-                          <div className="flex flex-col sm:flex-row gap-2">
-                            <button className="w-full py-2.5 text-xs font-bold text-white bg-[#0A58CA] rounded-lg hover:bg-blue-700 shadow-md">Check Eligibility</button>
-                            <div className="flex gap-2">
-                              <Link href={`/jobs/slug-${i}`} className="flex-1 flex items-center justify-center py-2.5 text-xs font-bold text-[#0A58CA] border border-blue-200 rounded-lg hover:bg-blue-50">View Details</Link>
-                              <button className="p-2.5 flex items-center justify-center text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50"><Bookmark className="w-4 h-4" /></button>
-                            </div>
-                          </div>
-                        </div>
+                        <JobCard key={i} {...job} link={`/jobs/slug-${i}`} />
                       ))}
                     </div>
-                  </>
+                  </div>
                 );
               })()}
 
