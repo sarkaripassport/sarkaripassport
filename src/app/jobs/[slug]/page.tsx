@@ -91,61 +91,68 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Important Dates */}
               {job.important_dates && job.important_dates.length > 0 && (
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:border-blue-200 transition-colors">
-                  <h3 className="font-bold text-[#0B1B3D] text-base mb-4 flex items-center gap-2 border-b border-gray-100 pb-3">
-                    <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><Calendar className="w-3.5 h-3.5"/></span>
-                    Important Dates
-                  </h3>
-                  <ul className="space-y-3">
-                    {job.important_dates.map((item, i) => (
-                      <li key={i} className="flex justify-between items-start gap-4 text-sm">
-                        <span className="text-gray-600 leading-snug">{item.label}</span>
-                        <span className="font-bold text-[#0B1B3D] text-right shrink-0">{item.date}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors">
+                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                    <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
+                    <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Important Dates</h3>
+                  </div>
+                  <div className="p-4 sm:p-5">
+                    <ul className="space-y-3">
+                      {job.important_dates.map((item, i) => (
+                        <li key={i} className="flex justify-between items-start gap-4 text-sm">
+                          <span className="text-gray-600 leading-snug">{item.label}</span>
+                          <span className="font-bold text-[#0B1B3D] text-right shrink-0">{item.date}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               )}
 
               {/* Application Fee */}
               {job.application_fee && job.application_fee.length > 0 && (
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:border-blue-200 transition-colors">
-                  <h3 className="font-bold text-[#0B1B3D] text-base mb-4 flex items-center gap-2 border-b border-gray-100 pb-3">
-                    <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><CreditCard className="w-3.5 h-3.5"/></span>
-                    Application Fee
-                  </h3>
-                  <ul className="space-y-3">
-                    {job.application_fee.map((item, i) => (
-                      <li key={i} className="flex justify-between items-start gap-4 text-sm">
-                        <span className="text-gray-600 leading-snug">{item.category}</span>
-                        <span className="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded text-right shrink-0">{item.amount}</span>
-                      </li>
-                    ))}
-                  </ul>
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors">
+                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                    <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
+                    <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Application Fee</h3>
+                  </div>
+                  <div className="p-4 sm:p-5">
+                    <ul className="space-y-3">
+                      {job.application_fee.map((item, i) => (
+                        <li key={i} className="flex justify-between items-start gap-4 text-sm">
+                          <span className="text-gray-600 leading-snug">{item.category}</span>
+                          <span className="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded text-right shrink-0">{item.amount}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               )}
 
               {/* Age Limit */}
               {job.age_limit && (
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 hover:border-blue-200 transition-colors lg:col-span-1 md:col-span-2">
-                  <h3 className="font-bold text-[#0B1B3D] text-base mb-4 flex items-center gap-2 border-b border-gray-100 pb-3">
-                    <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><User className="w-3.5 h-3.5"/></span>
-                    Age Limit <span className="font-normal text-xs text-gray-500">(As on {job.age_limit.cutoff_date})</span>
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-gray-600">Minimum Age</span>
-                      <span className="font-bold text-[#0B1B3D]">{job.age_limit.min_age}</span>
-                    </div>
-                    <div className="flex justify-between items-center text-sm">
-                      <span className="text-gray-600">Maximum Age</span>
-                      <span className="font-bold text-[#0B1B3D]">{job.age_limit.max_age}</span>
-                    </div>
-                    {job.age_limit.relaxation && (
-                      <div className="mt-4 pt-3 border-t border-dashed border-gray-200 text-xs text-gray-500 italic">
-                        * {job.age_limit.relaxation}
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors lg:col-span-1 md:col-span-2">
+                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                    <User className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
+                    <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase flex-1">Age Limit</h3>
+                    <span className="text-[10px] sm:text-xs text-blue-200 bg-blue-900/30 px-2 py-1 rounded">As on {job.age_limit.cutoff_date}</span>
+                  </div>
+                  <div className="p-4 sm:p-5">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-600">Minimum Age</span>
+                        <span className="font-bold text-[#0B1B3D]">{job.age_limit.min_age}</span>
                       </div>
-                    )}
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-600">Maximum Age</span>
+                        <span className="font-bold text-[#0B1B3D]">{job.age_limit.max_age}</span>
+                      </div>
+                      {job.age_limit.relaxation && (
+                        <div className="mt-4 pt-3 border-t border-dashed border-gray-200 text-xs text-gray-500 italic">
+                          * {job.age_limit.relaxation}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
@@ -153,25 +160,32 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
 
             {/* 3. Vacancy Details */}
             {job.vacancies && job.vacancies.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                <div className="flex items-center justify-between mb-5 border-b border-gray-100 pb-4">
-                  <h3 className="font-bold text-[#0B1B3D] text-lg flex items-center gap-2">
-                    <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><Briefcase className="w-3.5 h-3.5"/></span>
-                    Vacancy Details
-                  </h3>
-                  <div className="bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100">
-                    <span className="text-xs font-bold text-[#0A58CA] uppercase">Total: </span>
-                    <span className="text-sm font-black text-[#0A58CA]">{job.total_vacancies}</span>
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
+                    <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Vacancy Details</h3>
+                  </div>
+                  <div className="bg-white/10 px-3 py-1 rounded border border-white/20">
+                    <span className="text-xs font-bold text-blue-100 uppercase">Total: </span>
+                    <span className="text-sm font-black text-white">{job.total_vacancies}</span>
                   </div>
                 </div>
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mt-4">
+                
+                <div className="p-0">
+                  {/* Hint for horizontal scroll on mobile */}
+                  <div className="md:hidden bg-blue-50/50 border-b border-gray-200 px-4 py-2 flex items-center justify-center gap-2 text-xs font-medium text-[#0A58CA]">
+                    <span>Swipe horizontally to view full table</span>
+                    <ArrowRight className="w-3 h-3 animate-pulse" />
+                  </div>
+                  
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse min-w-[500px]">
                       <thead>
-                        <tr className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] text-white">
-                          <th className="py-3.5 px-5 font-bold text-sm tracking-wider uppercase whitespace-nowrap w-[35%]">Post Name</th>
-                          <th className="py-3.5 px-5 font-bold text-sm tracking-wider uppercase">Educational Qualification</th>
-                          <th className="py-3.5 px-5 font-bold text-sm tracking-wider uppercase text-right whitespace-nowrap w-[15%]">Vacancies</th>
+                        <tr className="bg-gray-50 text-gray-600 border-b border-gray-200">
+                          <th className="py-3 px-5 font-bold text-xs tracking-wider uppercase whitespace-nowrap w-[35%]">Post Name</th>
+                          <th className="py-3 px-5 font-bold text-xs tracking-wider uppercase">Educational Qualification</th>
+                          <th className="py-3 px-5 font-bold text-xs tracking-wider uppercase text-right whitespace-nowrap w-[15%]">Vacancies</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
@@ -203,25 +217,26 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
 
             {/* 4. Extra Information (Rich Text) */}
             {job.description_html && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2 border-b border-gray-100 pb-4">
-                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><FileText className="w-3.5 h-3.5"/></span>
-                  Additional Information
-                </h3>
-                
-                <div className="prose prose-sm sm:prose-base prose-blue max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: job.description_html }} />
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
+                  <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Additional Information</h3>
+                </div>
+                <div className="p-4 sm:p-6">
+                  <div className="prose prose-sm sm:prose-base prose-blue max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: job.description_html }} />
+                </div>
               </div>
             )}
 
             {/* 5. Important Links */}
             {job.important_links && job.important_links.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-                <h3 className="font-bold text-[#0B1B3D] text-lg mb-5 flex items-center gap-2 border-b border-gray-100 pb-4">
-                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><LinkIcon className="w-3.5 h-3.5"/></span>
-                  Important Links
-                </h3>
-                
-                <div className="flex flex-col gap-3">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                  <LinkIcon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
+                  <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Important Links</h3>
+                </div>
+                <div className="p-4 sm:p-6">
+                  <div className="flex flex-col gap-3">
                   {job.important_links.map((link, i) => {
                     const isApply = link.label.toLowerCase().includes('apply');
                     const isDownload = link.label.toLowerCase().includes('download') || link.label.toLowerCase().includes('notification');
