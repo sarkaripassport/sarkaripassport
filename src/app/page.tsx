@@ -74,7 +74,7 @@ export default function Home() {
         </div>
 
         {/* Quick Category Cards */}
-        <div className="grid grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-3">
+        <div className="grid grid-cols-4 lg:grid-cols-8 gap-2">
           {[
             { n: 'Latest Jobs', v: '128', icon: Briefcase, c: 'text-blue-600' },
             { n: 'Admit Card', v: '42', icon: FileText, c: 'text-green-600' },
@@ -82,13 +82,13 @@ export default function Home() {
             { n: 'Answer Key', v: '26', icon: CheckCircle2, c: 'text-orange-500' },
             { n: 'Syllabus', v: '57', icon: GraduationCap, c: 'text-purple-600' },
             { n: 'Admission', v: '18', icon: Building2, c: 'text-teal-600' },
-            { n: 'Maharashtra Jobs', v: '64', icon: MapPin, c: 'text-pink-600' },
-            { n: 'Central Govt. Jobs', v: '92', icon: Building2, c: 'text-indigo-600' }
+            { n: 'Maha Jobs', v: '64', icon: MapPin, c: 'text-pink-600' },
+            { n: 'Central Govt', v: '92', icon: Building2, c: 'text-indigo-600' }
           ].map((cat, i) => (
-            <div key={i} className="bg-white rounded-lg border border-gray-200 p-2 sm:p-4 text-center hover:border-[#0A58CA] hover:shadow-md transition-all cursor-pointer">
-              <cat.icon className={`w-5 h-5 sm:w-8 sm:h-8 mx-auto mb-1.5 sm:mb-2 ${cat.c}`} />
-              <div className="font-bold text-gray-900 text-[10px] sm:text-sm mb-0.5 sm:mb-1 leading-tight break-words">{cat.n}</div>
-              <div className="font-extrabold text-sm sm:text-xl text-gray-800">{cat.v}</div>
+            <div key={i} className="bg-white rounded border border-gray-200 p-1.5 sm:p-2 text-center hover:border-[#0A58CA] hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col items-center justify-center">
+              <cat.icon className={`w-4 h-4 sm:w-5 sm:h-5 mb-1 ${cat.c}`} />
+              <div className="font-bold text-gray-900 text-[9px] sm:text-[11px] mb-0.5 leading-none break-words">{cat.n}</div>
+              <div className="font-extrabold text-[10px] sm:text-xs text-gray-500 leading-none mt-0.5">{cat.v}</div>
             </div>
           ))}
         </div>
