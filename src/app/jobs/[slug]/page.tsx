@@ -92,7 +92,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
               {/* Important Dates */}
               {job.important_dates && job.important_dates.length > 0 && (
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors">
-                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
                     <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
                     <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Important Dates</h3>
                   </div>
@@ -112,7 +112,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
               {/* Application Fee */}
               {job.application_fee && job.application_fee.length > 0 && (
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors">
-                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
                     <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
                     <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Application Fee</h3>
                   </div>
@@ -132,7 +132,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
               {/* Age Limit */}
               {job.age_limit && (
                 <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors lg:col-span-1 md:col-span-2">
-                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
                     <User className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
                     <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase flex-1">Age Limit</h3>
                     <span className="text-[10px] sm:text-xs text-blue-200 bg-blue-900/30 px-2 py-1 rounded">As on {job.age_limit.cutoff_date}</span>
@@ -161,7 +161,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
             {/* 3. Vacancy Details */}
             {job.vacancies && job.vacancies.length > 0 && (
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center justify-between">
+                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center justify-between">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
                     <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Vacancy Details</h3>
@@ -218,7 +218,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
             {/* 4. Extra Information (Rich Text) */}
             {job.description_html && (
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
                   <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
                   <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Additional Information</h3>
                 </div>
@@ -231,7 +231,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
             {/* 5. Important Links */}
             {job.important_links && job.important_links.length > 0 && (
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] p-3 sm:p-4 flex items-center gap-2 sm:gap-3">
+                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
                   <LinkIcon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
                   <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Important Links</h3>
                 </div>
