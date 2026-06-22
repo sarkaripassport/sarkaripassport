@@ -2,7 +2,6 @@ import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { ChevronDown, GraduationCap, CheckCircle2, Clock, FileText, ArrowRight, Briefcase, Calendar, CreditCard, User, Link as LinkIcon, Download, Globe } from 'lucide-react';
 import { getJobBySlug } from '@/lib/db';
-import VacancyAccordion from '@/components/VacancyAccordion';
 import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
@@ -165,8 +164,40 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                     <span className="text-sm font-black text-[#0A58CA]">{job.total_vacancies}</span>
                   </div>
                 </div>
-                
-                <VacancyAccordion vacancies={job.vacancies} />
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mt-4">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse min-w-[500px]">
+                      <thead>
+                        <tr className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] text-white">
+                          <th className="py-3.5 px-5 font-bold text-sm tracking-wider uppercase whitespace-nowrap w-[35%]">Post Name</th>
+                          <th className="py-3.5 px-5 font-bold text-sm tracking-wider uppercase">Educational Qualification</th>
+                          <th className="py-3.5 px-5 font-bold text-sm tracking-wider uppercase text-right whitespace-nowrap w-[15%]">Vacancies</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {job.vacancies.map((row, i) => (
+                          <tr key={i} className="hover:bg-blue-50/50 transition-colors group">
+                            <td className="py-4 px-5 align-top">
+                              <span className="font-extrabold text-[#0B1B3D] text-[15px] group-hover:text-[#0A58CA] transition-colors leading-snug block">{row.name}</span>
+                            </td>
+                            <td className="py-4 px-5 align-top">
+                              <div className="flex items-start gap-2 bg-slate-50/50 rounded-md p-2 border border-slate-100 group-hover:bg-white group-hover:border-blue-100 transition-colors">
+                                <GraduationCap className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                                <span className="text-sm text-gray-700 font-medium leading-relaxed">{row.education}</span>
+                              </div>
+                            </td>
+                            <td className="py-4 px-5 align-top text-right">
+                              <span className="inline-flex flex-col items-center justify-center min-w-[4rem] px-3 py-1.5 rounded-lg bg-[#F4F7FA] border border-gray-200 shadow-sm group-hover:bg-[#0A58CA] group-hover:border-[#0A58CA] transition-all">
+                                <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-0.5 group-hover:text-blue-100 transition-colors">Seats</span>
+                                <span className="text-[#0B1B3D] font-black text-lg leading-none group-hover:text-white transition-colors">{row.vac}</span>
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             )}
 
