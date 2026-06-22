@@ -1,12 +1,11 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
-import { Search, MapPin, Briefcase, GraduationCap, Calendar, CheckCircle2, Building2, Bookmark, ChevronRight, FileText, Award, Filter, ChevronDown } from "lucide-react";
+import { MapPin, Briefcase, GraduationCap, CheckCircle2, Building2, FileText, Award } from "lucide-react";
 import JobCard from "@/components/JobCard";
+import AdvancedSearch from "@/components/AdvancedSearch";
+import { getJobs } from "@/lib/db";
 
-export default function Home() {
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
+export default async function Home() {
+  const latestJobsList = await getJobs();
 
   return (
     <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
@@ -43,35 +42,7 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 space-y-4 pb-16">
         
         {/* Advanced Search Bar */}
-        <div className="bg-white rounded-xl shadow-md border border-gray-100 p-4 space-y-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            <input 
-              type="text" 
-              placeholder="Search by job title, keyword..." 
-              className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-[#0A58CA]"
-            />
-            <button className="absolute right-1.5 top-1.5 px-4 py-1 text-sm bg-[#0A58CA] text-white font-bold rounded-md hover:bg-blue-700 transition-colors">
-              Search
-            </button>
-          </div>
-          
-          <button 
-            onClick={() => setIsFilterOpen(!isFilterOpen)} 
-            className="md:hidden w-full flex items-center justify-center gap-2 py-2 text-sm font-bold text-gray-600 border border-gray-200 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-          >
-            <Filter className="w-4 h-4" /> Advanced Filters
-            <ChevronDown className={`w-4 h-4 transition-transform ${isFilterOpen ? 'rotate-180' : ''}`} />
-          </button>
-
-          <div className={`grid-cols-2 md:grid-cols-5 gap-3 ${isFilterOpen ? 'grid' : 'hidden md:grid'}`}>
-            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Qualification</option></select>
-            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>State</option></select>
-            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Department</option></select>
-            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Job Type</option></select>
-            <select className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none"><option>Last Date</option></select>
-          </div>
-        </div>
+        <AdvancedSearch />
 
         {/* Quick Category Cards */}
         <div className="grid grid-cols-4 lg:grid-cols-8 gap-2">
@@ -100,26 +71,25 @@ export default function Home() {
             <Link href="/jobs" className="text-sm font-semibold text-[#0A58CA] hover:text-blue-700 hover:underline transition-colors">View All</Link>
           </div>
           
-          {(() => {
-            const latestJobsList = [
-              { title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 2 },
-              { title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 8 },
-              { title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 23 },
-              { title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", statusColor: "text-amber-800 bg-amber-100 border border-amber-200", isLive: false, isTrending: false, daysLeft: 4 },
-              { title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 20 },
-              { title: "RRB Technician 2026", org: "Railway Recruitment Board", qual: "10th Pass/ITI", vac: "9,144", date: "28 Jun 2026", status: "New", statusColor: "text-blue-800 bg-blue-100 border border-blue-200", isLive: true, isTrending: true, daysLeft: 6 },
-            ];
-
-            return (
-              <div className="p-4 sm:p-5 bg-gray-50/50">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                  {latestJobsList.map((job, i) => (
-                    <JobCard key={i} {...job} link={`/jobs/slug-${i}`} />
-                  ))}
-                </div>
-              </div>
-            );
-          })()}
+          <div className="p-4 sm:p-5 bg-gray-50/50">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+              {latestJobsList.map((job) => (
+                <JobCard 
+                  key={job.id} 
+                  title={job.title}
+                  org={job.organization}
+                  vac={job.total_vacancies}
+                  date={job.last_date}
+                  status={job.status}
+                  statusColor={job.statusColor}
+                  isLive={job.isLive}
+                  isTrending={job.isTrending}
+                  daysLeft={job.daysLeft}
+                  link={`/jobs/${job.slug}`} 
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* 4-Column Grid for Updates */}
