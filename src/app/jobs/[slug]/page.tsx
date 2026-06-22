@@ -165,19 +165,18 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                   </div>
                 </div>
                 
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col">
                   {job.vacancies.map((row, i) => (
-                    <div key={i} className="bg-white border border-gray-100 rounded-lg p-4 sm:p-5 shadow-sm hover:border-blue-200 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
-                      <div className="flex-1">
-                        <h4 className="font-extrabold text-[#0B1B3D] text-[15px] sm:text-base group-hover:text-[#0A58CA] transition-colors">{row.name}</h4>
-                        <p className="text-xs sm:text-sm text-gray-500 mt-1.5 flex items-start gap-1.5 font-medium">
-                          <GraduationCap className="w-4 h-4 text-gray-400 shrink-0" />
-                          {row.education}
-                        </p>
+                    <div key={i} className="flex items-start gap-3 sm:gap-4 py-3 sm:py-4 border-b border-gray-100 last:border-0 group hover:bg-gray-50/50 transition-colors rounded-lg px-2 -mx-2">
+                      <div className="bg-[#F4F7FA] border border-gray-200 text-[#0B1B3D] font-black text-sm sm:text-base px-2 py-1.5 rounded-lg shrink-0 min-w-[3.5rem] sm:min-w-[4.5rem] text-center shadow-sm group-hover:bg-[#0A58CA] group-hover:text-white group-hover:border-[#0A58CA] transition-all">
+                        {row.vac}
                       </div>
-                      <div className="bg-[#F8FAFC] border border-gray-100 rounded-lg px-4 py-2.5 flex flex-col items-center justify-center min-w-[120px] shrink-0 sm:items-end sm:bg-transparent sm:border-0 sm:p-0">
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Vacancies</span>
-                        <span className="font-black text-xl text-[#0A58CA] leading-tight">{row.vac}</span>
+                      <div className="flex-1 pt-0.5">
+                        <h4 className="font-bold text-[#0B1B3D] text-[13px] sm:text-[15px] leading-snug group-hover:text-[#0A58CA] transition-colors">{row.name}</h4>
+                        <div className="flex items-start gap-1.5 mt-1.5 bg-white border border-gray-100 rounded p-1.5 sm:px-2 sm:py-1.5 inline-flex w-full sm:w-auto shadow-sm">
+                          <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-500 shrink-0 mt-0.5 sm:mt-0" />
+                          <span className="text-[11px] sm:text-[12px] font-medium text-gray-600 leading-tight">{row.education}</span>
+                        </div>
                       </div>
                     </div>
                   ))}
