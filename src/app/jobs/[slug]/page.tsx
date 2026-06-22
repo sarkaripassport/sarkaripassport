@@ -98,46 +98,47 @@ export default function JobDetailPage({ params }: { params: { slug: string } }) 
 
             {/* 5. Vacancy Details */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-              <h3 className="font-bold text-[#0B1B3D] text-lg mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><Building2 className="w-3.5 h-3.5"/></span>
-                5. Vacancy Details
-              </h3>
-              <div className="overflow-x-auto custom-scrollbar border border-gray-100 rounded-lg">
-                <table className="w-full text-sm text-left">
-                  <thead className="text-xs text-[#0B1B3D] uppercase bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th className="px-4 py-3 font-bold">Post Name</th>
-                      <th className="px-4 py-3 font-bold">Post Code</th>
-                      <th className="px-4 py-3 font-bold">Department/Ministry</th>
-                      <th className="px-4 py-3 font-bold text-center">Group</th>
-                      <th className="px-4 py-3 font-bold text-right">Vacancies</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {[
-                      { name: "Assistant Section Officer (ASO)", code: "ASO01", dept: "Central Secretariat Service", grp: "B", vac: "2,150" },
-                      { name: "Income Tax Inspector", code: "ITI02", dept: "CBDT", grp: "B", vac: "1,550" },
-                      { name: "Inspector (Central Excise)", code: "ICE03", dept: "CBIC", grp: "B", vac: "950" },
-                      { name: "Sub Inspector (CBI)", code: "SI04", dept: "CBI", grp: "B", vac: "300" },
-                      { name: "Tax Assistant", code: "TA05", dept: "CBDT", grp: "C", vac: "4,000" },
-                    ].map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-gray-800 font-medium">{row.name}</td>
-                        <td className="px-4 py-3 text-gray-500 font-mono text-xs">{row.code}</td>
-                        <td className="px-4 py-3 text-gray-600">{row.dept}</td>
-                        <td className="px-4 py-3 text-center text-gray-600">{row.grp}</td>
-                        <td className="px-4 py-3 text-right font-bold text-gray-900">{row.vac}</td>
-                      </tr>
-                    ))}
-                    <tr className="bg-gray-50">
-                      <td colSpan={4} className="px-4 py-3 font-bold text-right text-[#0B1B3D]">Total Vacancies</td>
-                      <td className="px-4 py-3 text-right font-black text-xl text-[#0B1B3D]">8,950</td>
-                    </tr>
-                  </tbody>
-                </table>
+              <div className="flex items-center justify-between mb-5">
+                <h3 className="font-bold text-[#0B1B3D] text-lg flex items-center gap-2">
+                  <span className="w-6 h-6 rounded bg-blue-50 text-[#0A58CA] flex items-center justify-center text-sm"><Briefcase className="w-3.5 h-3.5"/></span>
+                  5. Vacancy Details
+                </h3>
               </div>
-              <div className="mt-3">
-                <Link href="#" className="text-sm font-bold text-[#0A58CA] flex items-center gap-1 hover:underline">View Full Vacancy Details <ArrowRight className="w-3 h-3"/></Link>
+              
+              <div className="flex flex-col gap-3">
+                {[
+                  { name: "Assistant Section Officer (ASO)", education: "Bachelor's Degree in any stream", vac: "2,150" },
+                  { name: "Income Tax Inspector", education: "Bachelor's Degree in any stream", vac: "1,550" },
+                  { name: "Inspector (Central Excise)", education: "Bachelor's Degree in any stream", vac: "950" },
+                  { name: "Sub Inspector (CBI)", education: "Bachelor's Degree with 50% Marks", vac: "300" },
+                  { name: "Tax Assistant", education: "Bachelor's Degree + Typing Speed 8000 KDPH", vac: "4,000" },
+                ].map((row, i) => (
+                  <div key={i} className="bg-white border border-gray-100 rounded-lg p-4 sm:p-5 shadow-sm hover:border-blue-200 hover:shadow-md hover:-translate-y-0.5 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 group">
+                    <div className="flex-1">
+                      <h4 className="font-extrabold text-[#0B1B3D] text-[15px] sm:text-base group-hover:text-[#0A58CA] transition-colors">{row.name}</h4>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-1.5 flex items-start gap-1.5 font-medium">
+                        <GraduationCap className="w-4 h-4 text-gray-400 shrink-0" />
+                        {row.education}
+                      </p>
+                    </div>
+                    <div className="bg-[#F8FAFC] border border-gray-100 rounded-lg px-4 py-2.5 flex flex-col items-center justify-center min-w-[120px] shrink-0 sm:items-end sm:bg-transparent sm:border-0 sm:p-0">
+                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">Vacancies</span>
+                      <span className="font-black text-xl text-[#0A58CA] leading-tight">{row.vac}</span>
+                    </div>
+                  </div>
+                ))}
+                
+                {/* Total Summary Footer */}
+                <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-2">
+                   <div className="font-bold text-gray-700 text-base">Total Vacancies</div>
+                   <div className="font-black text-2xl text-[#0B1B3D]">8,950</div>
+                </div>
+              </div>
+
+              <div className="mt-5 text-right">
+                <Link href="#" className="inline-flex items-center gap-1.5 text-sm font-bold text-[#0A58CA] hover:text-blue-700 hover:underline">
+                  View Full Vacancy Details <ArrowRight className="w-4 h-4"/>
+                </Link>
               </div>
             </div>
 
