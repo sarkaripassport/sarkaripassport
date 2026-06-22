@@ -136,23 +136,23 @@ export default function JobsListingPage() {
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               {(() => {
                 const jobsList = [
-                  { title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 2 },
-                  { title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 8 },
-                  { title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 23 },
-                  { title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", statusColor: "text-amber-800 bg-amber-100 border border-amber-200", isLive: false, isTrending: false, daysLeft: 4 },
-                  { title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 20 },
-                  { title: "RRB Technician 2026", org: "Railway Recruitment Board", qual: "10th Pass/ITI", vac: "9,144", date: "28 Jun 2026", status: "New", statusColor: "text-blue-800 bg-blue-100 border border-blue-200", isLive: true, isTrending: true, daysLeft: 6 },
-                  { title: "UP Police Constable 2026", org: "Uttar Pradesh Police", qual: "12th Pass", vac: "60,244", date: "25 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 3 },
-                  { title: "IOCL Apprentice 2026", org: "Indian Oil Corporation", qual: "Graduate/Diploma", vac: "2,470", date: "15 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 10 },
-                  { title: "BSF Constable Tradesman", org: "Border Security Force", qual: "10th Pass", vac: "3,588", date: "22 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 12 },
-                  { title: "DRDO CEPTAM 10 2026", org: "DRDO", qual: "ITI/Diploma", vac: "1,904", date: "18 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 18 },
+                  { slug: "ssc-cgl-2026", title: "SSC CGL 2026", org: "Staff Selection Commission", qual: "Graduate", vac: "12,256", date: "24 Jun 2026", status: "New", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 2 },
+                  { slug: "msc-bank-2026", title: "MSC Bank Bharti 2026", org: "Maharashtra State Co-op Bank", qual: "Graduate", vac: "175", date: "30 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 8 },
+                  { slug: "afcat-02-2026", title: "AFCAT 02/2026", org: "Indian Air Force", qual: "Graduate", vac: "-", date: "15 Jul 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 23 },
+                  { slug: "mppsc-group-b-c", title: "MPPSC Group B & C", org: "Madhya Pradesh Public Service Commission", qual: "Graduate", vac: "385", date: "20 Jul 2026", status: "Last Date Near", statusColor: "text-amber-800 bg-amber-100 border border-amber-200", isLive: false, isTrending: false, daysLeft: 4 },
+                  { slug: "ib-acio-grade-ii", title: "IB ACIO Grade-II", org: "Intelligence Bureau", qual: "Graduate", vac: "995", date: "12 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 20 },
+                  { slug: "rrb-technician-2026", title: "RRB Technician 2026", org: "Railway Recruitment Board", qual: "10th Pass/ITI", vac: "9,144", date: "28 Jun 2026", status: "New", statusColor: "text-blue-800 bg-blue-100 border border-blue-200", isLive: true, isTrending: true, daysLeft: 6 },
+                  { slug: "up-police-constable-2026", title: "UP Police Constable 2026", org: "Uttar Pradesh Police", qual: "12th Pass", vac: "60,244", date: "25 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 3 },
+                  { slug: "iocl-apprentice-2026", title: "IOCL Apprentice 2026", org: "Indian Oil Corporation", qual: "Graduate/Diploma", vac: "2,470", date: "15 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 10 },
+                  { slug: "bsf-constable-tradesman", title: "BSF Constable Tradesman", org: "Border Security Force", qual: "10th Pass", vac: "3,588", date: "22 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: false, daysLeft: 12 },
+                  { slug: "drdo-ceptam-10-2026", title: "DRDO CEPTAM 10 2026", org: "DRDO", qual: "ITI/Diploma", vac: "1,904", date: "18 Jun 2026", status: "Active", statusColor: "text-green-800 bg-green-100 border border-green-200", isLive: true, isTrending: true, daysLeft: 18 },
                 ];
 
                 return (
                   <div className="p-4 sm:p-5 bg-gray-50/50">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
                       {jobsList.map((job, i) => (
-                        <JobCard key={i} {...job} link={`/jobs/slug-${i}`} />
+                        <JobCard key={i} {...job} link={`/jobs/${job.slug}`} />
                       ))}
                     </div>
                   </div>
