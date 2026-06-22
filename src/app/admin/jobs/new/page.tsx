@@ -56,7 +56,7 @@ export default function SmartPublisherPage() {
           <label className="block text-sm font-bold text-[#0B1B3D] flex items-center gap-2">
             <Type className="w-4 h-4 text-gray-500"/> Content Body
           </label>
-          <RichTextEditor value={content} onChange={setContent} />
+          <RichTextEditor content={content} onChange={setContent} />
           <p className="text-xs text-gray-500 mt-2">Use the toolbar to add H1-H6, tables, bullet lists, and images of any size.</p>
         </div>
 

@@ -7,6 +7,28 @@ export interface JobVacancy {
   vac: string;
 }
 
+export interface ImportantDate {
+  label: string;
+  date: string;
+}
+
+export interface ApplicationFee {
+  category: string;
+  amount: string;
+}
+
+export interface AgeLimit {
+  min_age: string;
+  max_age: string;
+  cutoff_date: string;
+  relaxation: string;
+}
+
+export interface ImportantLink {
+  label: string;
+  url: string;
+}
+
 export interface Job {
   id: string;
   slug: string;
@@ -20,6 +42,10 @@ export interface Job {
   daysLeft: number;
   total_vacancies: string;
   vacancies: JobVacancy[];
+  important_dates?: ImportantDate[];
+  application_fee?: ApplicationFee[];
+  age_limit?: AgeLimit;
+  important_links?: ImportantLink[];
   description_html: string;
   seo_title: string;
   seo_description: string;
@@ -53,7 +79,30 @@ async function initDb() {
           { name: "Sub Inspector (CBI)", education: "Bachelor's Degree with 50% Marks", vac: "300" },
           { name: "Tax Assistant", education: "Bachelor's Degree + Typing Speed 8000 KDPH", vac: "4,000" }
         ],
-        description_html: "<h3>Important Dates</h3><ul><li>Application Begin: 01/05/2026</li><li>Last Date for Apply Online: 24/06/2026</li></ul><h3>Application Fee</h3><ul><li>General / OBC / EWS: ₹100</li><li>SC / ST / PH: ₹0</li></ul>",
+        important_dates: [
+          { label: "Application Begin", date: "01/05/2026" },
+          { label: "Last Date for Apply Online", date: "24/06/2026" },
+          { label: "Pay Exam Fee Last Date", date: "25/06/2026" },
+          { label: "Correction Date", date: "27-28 June 2026" },
+          { label: "Tier-I Exam Date", date: "August-September 2026" }
+        ],
+        application_fee: [
+          { category: "General / OBC / EWS", amount: "₹100/-" },
+          { category: "SC / ST / PH", amount: "₹0/-" },
+          { category: "All Category Women", amount: "₹0/-" }
+        ],
+        age_limit: {
+          min_age: "18 Years",
+          max_age: "27-32 Years",
+          cutoff_date: "01/08/2026",
+          relaxation: "Age Relaxation Extra as per SSC CGL 2026 Rules."
+        },
+        important_links: [
+          { label: "Apply Online", url: "#" },
+          { label: "Download Notification", url: "#" },
+          { label: "Official Website", url: "https://ssc.nic.in" }
+        ],
+        description_html: "<p>The Staff Selection Commission will hold the Combined Graduate Level Examination, 2026 for filling up of various Group ‘B’ and Group ‘C’ posts in different Ministries/ Departments/ Organizations of Government of India and various Constitutional Bodies/ Statutory Bodies/ Tribunals, etc. The details of the examination are as follows:</p>",
         seo_title: "SSC CGL 2026 Recruitment - Apply Online for 12,256 Posts",
         seo_description: "Staff Selection Commission has released the SSC CGL 2026 notification for 12,256 vacancies. Check eligibility, syllabus, and apply online.",
         created_at: new Date().toISOString()
