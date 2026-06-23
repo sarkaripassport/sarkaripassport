@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
-import { ChevronDown, GraduationCap, CheckCircle2, Clock, FileText, ArrowRight, Briefcase, Calendar, CreditCard, User, Link as LinkIcon, Download, Globe } from 'lucide-react';
+import { ChevronDown, GraduationCap, CheckCircle2, Clock, FileText, ArrowRight, Briefcase, Calendar, CreditCard, User, Link as LinkIcon, Download, Globe, Hand } from 'lucide-react';
 import { getJobBySlug } from '@/lib/db';
 import { notFound } from 'next/navigation';
 
@@ -174,9 +174,11 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                 
                 <div className="p-0">
                   {/* Hint for horizontal scroll on mobile */}
-                  <div className="md:hidden bg-blue-50/50 border-b border-gray-200 px-4 py-2 flex items-center justify-center gap-2 text-xs font-medium text-[#0A58CA]">
-                    <span>Swipe horizontally to view full table</span>
-                    <ArrowRight className="w-3 h-3 animate-pulse" />
+                  <div className="md:hidden bg-blue-50/50 border-b border-gray-200 px-4 py-3 flex items-center justify-center gap-3 text-xs font-medium text-[#0A58CA]">
+                    <div className="animate-swipe">
+                      <Hand className="w-4 h-4 -rotate-90" />
+                    </div>
+                    <span>Swipe left to view full table</span>
                   </div>
                   
                   <div className="overflow-x-auto">
