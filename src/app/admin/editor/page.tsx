@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Eye, Save, Settings, LayoutTemplate, Calendar, IndianRupee, HelpCircle } from 'lucide-react';
+import { Eye, Save, Settings, LayoutTemplate, Calendar, HelpCircle } from 'lucide-react';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import SeoSidebar from '@/components/admin/SeoSidebar';
 import DynamicVacancyMatrix from '@/components/admin/DynamicVacancyMatrix';
+import DynamicFeeMatrix from '@/components/admin/DynamicFeeMatrix';
 
 export default function AdvancedEditorPage() {
   const [title, setTitle] = useState('');
@@ -16,10 +17,10 @@ export default function AdvancedEditorPage() {
   const [showPreview, setShowPreview] = useState(false);
 
   return (
-    <div className="font-sans text-gray-800 flex flex-col h-full -m-6">
+    <div className="font-sans text-gray-800 flex flex-col h-full">
       
       {/* Editor Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-16 z-40 shadow-sm">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-[#0A58CA] text-white rounded-lg flex items-center justify-center shadow-md">
@@ -67,48 +68,37 @@ export default function AdvancedEditorPage() {
             {/* Dedicated Sarkari Widgets (Dates & Fees) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Important Dates Widget */}
-              <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden h-full">
                 <div className="bg-blue-50 border-b border-blue-100 py-2.5 px-4 flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-[#0A58CA]" />
                   <span className="text-xs font-bold text-[#0B1B3D] uppercase tracking-wider">Important Dates</span>
                 </div>
-                <div className="p-4 space-y-3">
+                <div className="p-4 space-y-3 flex-1 overflow-y-auto">
                   <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-24">Application Start</label>
-                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-[#0A58CA] outline-none" />
+                    <label className="text-xs font-bold text-gray-500 w-32">Application Start</label>
+                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
                   </div>
                   <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-24">Last Date</label>
-                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-[#0A58CA] outline-none" />
+                    <label className="text-xs font-bold text-gray-500 w-32">Last Date Apply</label>
+                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
                   </div>
                   <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-24">Exam Date</label>
-                    <input type="text" placeholder="e.g. Oct 2026" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-[#0A58CA] outline-none" />
+                    <label className="text-xs font-bold text-gray-500 w-32">Pay Fee Last Date</label>
+                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-gray-500 w-32">Correction Date</label>
+                    <input type="text" placeholder="e.g. 10-12 Oct 2026" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-gray-500 w-32">Exam Date</label>
+                    <input type="text" placeholder="e.g. As per schedule" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
                   </div>
                 </div>
               </div>
 
-              {/* Application Fees Widget */}
-              <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                <div className="bg-green-50 border-b border-green-100 py-2.5 px-4 flex items-center gap-2">
-                  <IndianRupee className="w-4 h-4 text-green-700" />
-                  <span className="text-xs font-bold text-green-900 uppercase tracking-wider">Application Fee</span>
-                </div>
-                <div className="p-4 space-y-3">
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-24">Gen / OBC</label>
-                    <input type="text" placeholder="e.g. ₹100" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-green-500 outline-none" />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-24">SC / ST / PH</label>
-                    <input type="text" placeholder="e.g. ₹0" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-green-500 outline-none" />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-24">All Females</label>
-                    <input type="text" placeholder="e.g. ₹0" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-green-500 outline-none" />
-                  </div>
-                </div>
-              </div>
+              {/* Dynamic Application Fees Widget */}
+              <DynamicFeeMatrix />
             </div>
 
             {/* Rich Text Editor */}

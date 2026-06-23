@@ -181,16 +181,20 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                     <span>Swipe left to view full table</span>
                   </div>
                   
-                  <div className="overflow-x-auto">
+                  {(() => {
+                    // Extract dynamic categories (excluding fixed fields)
+                    const fixedFields = ['name', 'education', 'vac'];
+                    const categoryKeys = Array.from(new Set(job.vacancies.flatMap(v => Object.keys(v).filter(k => !fixedFields.includes(k)))));
+                    
+                    return (
+                      <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse min-w-[700px]">
                       <thead>
                         <tr className="bg-blue-50/50 border-b-2 border-blue-100">
                           <th className="p-4 font-bold text-[#0B1B3D]">Post Name</th>
-                          <th className="p-4 font-bold text-[#0B1B3D] text-center">UR</th>
-                          <th className="p-4 font-bold text-[#0B1B3D] text-center">OBC</th>
-                          <th className="p-4 font-bold text-[#0B1B3D] text-center">EWS</th>
-                          <th className="p-4 font-bold text-[#0B1B3D] text-center">SC</th>
-                          <th className="p-4 font-bold text-[#0B1B3D] text-center">ST</th>
+                          {categoryKeys.map((key) => (
+                            <th key={key} className="p-4 font-bold text-[#0B1B3D] text-center uppercase">{key}</th>
+                          ))}
                           <th className="p-4 font-bold text-[#0A58CA] text-center bg-blue-50">Total</th>
                           <th className="p-4 font-bold text-[#0B1B3D]">Eligibility</th>
                         </tr>
@@ -201,11 +205,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                             <td className="p-4 font-bold text-[#0B1B3D] bg-white group-hover:bg-transparent transition-colors">
                               {v.name}
                             </td>
-                            <td className="p-4 text-center text-gray-700 font-medium">{v.ur || '-'}</td>
-                            <td className="p-4 text-center text-gray-700 font-medium">{v.obc || '-'}</td>
-                            <td className="p-4 text-center text-gray-700 font-medium">{v.ews || '-'}</td>
-                            <td className="p-4 text-center text-gray-700 font-medium">{v.sc || '-'}</td>
-                            <td className="p-4 text-center text-gray-700 font-medium">{v.st || '-'}</td>
+                            {categoryKeys.map((key) => (
+                              <td key={key} className="p-4 text-center text-gray-700 font-medium">{v[key] || '-'}</td>
+                            ))}
                             <td className="p-4 text-center bg-blue-50/30 group-hover:bg-transparent transition-colors">
                               <span className="inline-flex flex-col items-center justify-center min-w-[4rem] px-3 py-1.5 rounded-lg bg-[#F4F7FA] border border-gray-200 shadow-sm group-hover:bg-[#0A58CA] group-hover:border-[#0A58CA] transition-all">
                                 <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-0.5 group-hover:text-blue-100 transition-colors">Total</span>
@@ -223,6 +225,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                       </tbody>
                     </table>
                   </div>
+                  );
+                })()}
                 </div>
               </div>
             )}

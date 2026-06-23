@@ -5,11 +5,7 @@ export interface JobVacancy {
   name: string;
   education: string;
   vac: string;
-  ur?: string;
-  obc?: string;
-  sc?: string;
-  st?: string;
-  ews?: string;
+  [key: string]: string | undefined; // Allows dynamic categories like UR, OBC, EWS, SC, ST, PWD, etc.
 }
 
 export interface JobFaq {
