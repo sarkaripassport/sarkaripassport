@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MapPin, Briefcase, GraduationCap, CheckCircle2, Building2, FileText, Award } from "lucide-react";
+import { MapPin, Briefcase, GraduationCap, CheckCircle2, Building2, FileText, Award, Landmark, Train, ShieldCheck, Shield } from "lucide-react";
 import JobCard from "@/components/JobCard";
 import AdvancedSearch from "@/components/AdvancedSearch";
 import { getJobs } from "@/lib/db";
@@ -121,13 +121,26 @@ export default async function Home() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
           <h3 className="font-bold text-[#0B1B3D] mb-4">Trending Categories</h3>
           <div className="flex flex-wrap gap-4 justify-between items-center">
-            {['SSC', 'Railway', 'Bank', 'Police', 'Defence', 'UPSC', 'MPSC', 'Teaching', 'PSU', '10th Pass', '12th Pass', 'Graduate'].map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-2 cursor-pointer group">
-                <div className="w-14 h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:border-[#0A58CA] group-hover:bg-blue-50 transition">
-                  <div className="w-6 h-6 bg-gray-300 rounded-sm"></div>
+            {[
+              { name: 'SSC', icon: Landmark, href: '/jobs' },
+              { name: 'Railway', icon: Train, href: '/jobs' },
+              { name: 'Bank', icon: Building2, href: '/jobs' },
+              { name: 'Police', icon: ShieldCheck, href: '/jobs' },
+              { name: 'Defence', icon: Shield, href: '/jobs' },
+              { name: 'UPSC', icon: Landmark, href: '/jobs' },
+              { name: 'MPSC', icon: MapPin, href: '/jobs' },
+              { name: 'Teaching', icon: GraduationCap, href: '/jobs' },
+              { name: 'PSU', icon: Building2, href: '/jobs' },
+              { name: '10th Pass', icon: FileText, href: '/jobs' },
+              { name: '12th Pass', icon: FileText, href: '/jobs' },
+              { name: 'Graduate', icon: GraduationCap, href: '/jobs' },
+            ].map((item, i) => (
+              <Link key={i} href={item.href} className="flex flex-col items-center gap-2 cursor-pointer group w-[70px]">
+                <div className="w-14 h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:border-[#0A58CA] group-hover:bg-blue-50 transition shadow-sm">
+                  <item.icon className="w-6 h-6 text-gray-500 group-hover:text-[#0A58CA] transition-colors" />
                 </div>
-                <span className="text-xs font-semibold text-gray-600 group-hover:text-[#0B1B3D]">{item}</span>
-              </div>
+                <span className="text-xs font-bold text-gray-600 group-hover:text-[#0A58CA] text-center whitespace-nowrap">{item.name}</span>
+              </Link>
             ))}
           </div>
         </div>
