@@ -66,9 +66,12 @@ export default async function Home() {
 
         {/* Latest Jobs Table Exact Copy - with Live & Embossed Effects */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-[0_4px_20px_rgb(0,0,0,0.04)] overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
-          <div className="flex justify-between items-center p-4 border-b border-gray-100 bg-gradient-to-b from-white to-gray-50/50">
-            <h2 className="text-lg font-bold text-gray-900 drop-shadow-sm">Latest Jobs</h2>
-            <Link href="/jobs" className="text-sm font-semibold text-[#0A58CA] hover:text-blue-700 hover:underline transition-colors">View All</Link>
+          <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-[#002D62] to-[#0A58CA]">
+            <div className="flex items-center gap-2">
+              <Briefcase className="w-5 h-5 text-blue-100" />
+              <h2 className="text-sm sm:text-base font-bold text-white tracking-wider uppercase">Latest Jobs</h2>
+            </div>
+            <Link href="/jobs" className="text-xs font-bold text-blue-100 hover:text-white hover:underline transition-colors uppercase tracking-wider bg-white/10 px-2 py-1 rounded">View All</Link>
           </div>
           
           <div className="p-4 sm:p-5 bg-gray-50/50">
@@ -100,19 +103,21 @@ export default async function Home() {
             { title: "Latest Answer Keys", items: ["SSC GD Answer Key 2026", "RRB NTPC Answer Key 2026", "SSC CHSL Answer Key 2026", "UP Police Constable Answer Key"] },
             { title: "Latest Syllabus", items: ["UPSC CSE Syllabus 2026", "MPSC Group B Syllabus", "SSC CGL Tier 1 Syllabus", "IBPS PO Syllabus 2026"] }
           ].map((col, i) => (
-            <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-              <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
-                <h3 className="font-bold text-[#0B1B3D]">{col.title}</h3>
-                <Link href="#" className="text-xs font-bold text-[#0A58CA] hover:underline">View All</Link>
+            <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
+              <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-4 flex justify-between items-center shrink-0">
+                <h3 className="font-bold text-white text-[11px] tracking-wider uppercase">{col.title}</h3>
+                <Link href="#" className="text-[9px] font-bold text-blue-100 hover:text-white hover:underline uppercase tracking-wider bg-white/10 px-1.5 py-0.5 rounded">All</Link>
               </div>
-              <ul className="space-y-3">
+              <div className="p-4 flex-grow">
+                <ul className="space-y-3">
                 {col.items.map((item, j) => (
                   <li key={j} className="flex justify-between items-start gap-2">
                     <Link href="#" className="text-sm text-gray-700 hover:text-[#0A58CA] hover:underline leading-tight">{item}</Link>
                     <span className="text-[10px] text-gray-400 whitespace-nowrap">20 May 2026</span>
                   </li>
                 ))}
-              </ul>
+                </ul>
+              </div>
             </div>
           ))}
         </div>
