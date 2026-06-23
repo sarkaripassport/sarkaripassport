@@ -1,55 +1,180 @@
-import { LayoutDashboard, Briefcase, FileText, Settings, LogOut, Bell } from "lucide-react";
+'use client';
+
+import { useState } from "react";
 import Link from "next/link";
+import { 
+  LayoutDashboard, Briefcase, FileText, Settings, 
+  LogOut, Bell, ChevronDown, Monitor, Search, Plus, User, 
+  ShieldCheck, BarChart, PenTool, LayoutTemplate, Link as LinkIcon
+} from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="flex h-screen bg-[#F4F7FA] overflow-hidden font-sans">
-      {/* Sidebar */}
-      <aside className="w-64 bg-[#0B1B3D] text-white flex flex-col hidden md:flex shrink-0">
-        <div className="h-16 flex items-center px-6 border-b border-gray-800 font-black text-xl tracking-tight">
-          <span className="text-[#0A58CA]">Naukri</span>Passport <span className="ml-2 text-[10px] bg-red-500 px-1.5 py-0.5 rounded text-white font-bold uppercase tracking-wider">Admin</span>
-        </div>
-        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-          <Link href="/admin" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
-            <LayoutDashboard className="w-5 h-5" /> Dashboard
-          </Link>
-          <Link href="/admin/jobs" className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#0A58CA] text-white font-semibold transition shadow-md">
-            <Briefcase className="w-5 h-5" /> Manage Jobs
-          </Link>
-          <Link href="/admin/editor" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
-            <FileText className="w-5 h-5" /> SEO Post Editor
-          </Link>
-          <Link href="/admin/settings" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
-            <Settings className="w-5 h-5" /> Settings
-          </Link>
-        </nav>
-        <div className="p-4 border-t border-gray-800">
-          <button className="flex items-center gap-3 px-3 py-2.5 w-full rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition">
-            <LogOut className="w-5 h-5" /> Logout
-          </button>
-        </div>
-      </aside>
+  // Mock state for expandable menus
+  const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
+    jobs: true,
+  });
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Topbar */}
-        <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 shrink-0 z-10">
-          <h2 className="font-bold text-[#0B1B3D] text-lg">Smart Publisher</h2>
-          <div className="flex items-center gap-4">
-            <button className="relative text-gray-500 hover:text-[#0B1B3D]">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+  const toggleMenu = (menu: string) => {
+    setOpenMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
+  };
+
+  return (
+    <div className="flex flex-col h-screen bg-[#f0f0f1] font-sans text-[13px] text-[#3c434a]">
+      
+      {/* 1. Global Admin Bar (Top Bar) - WP Style */}
+      <div className="h-8 bg-[#040D21] text-gray-300 flex items-center justify-between px-4 shrink-0 z-50 sticky top-0">
+        <div className="flex items-center h-full">
+          {/* Logo & Site Link */}
+          <Link href="/" className="flex items-center gap-2 h-full px-3 hover:text-white hover:bg-white/10 transition-colors">
+            <ShieldCheck className="w-4 h-4" />
+            <span className="font-semibold tracking-wide">Naukri Passport</span>
+          </Link>
+          
+          {/* Quick Add Menu */}
+          <div className="group relative h-full flex items-center">
+            <button className="flex items-center gap-1 h-full px-3 hover:text-white hover:bg-white/10 transition-colors">
+              <Plus className="w-4 h-4" />
+              <span>New</span>
             </button>
-            <div className="w-8 h-8 bg-blue-100 text-[#0A58CA] font-bold rounded-full flex items-center justify-center">
+            {/* Dropdown would go here in full implementation */}
+          </div>
+        </div>
+
+        <div className="flex items-center h-full">
+          <div className="flex items-center gap-2 h-full px-3 text-white">
+            <span className="text-xs">Howdy, <strong>Super Admin</strong></span>
+            <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-[10px]">
               A
             </div>
           </div>
-        </header>
+        </div>
+      </div>
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6 relative">
+      <div className="flex flex-1 overflow-hidden">
+        
+        {/* 2. Sarkari-Specific WP Sidebar (Left) */}
+        <aside className="w-40 sm:w-48 bg-[#0B1B3D] text-[#b3b9bf] flex flex-col shrink-0 overflow-y-auto custom-scrollbar">
+          
+          <div className="py-2">
+            
+            {/* Dashboard */}
+            <Link href="/admin" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+              <LayoutDashboard className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+              <span className="font-medium">Dashboard</span>
+            </Link>
+
+            <div className="my-2 border-t border-white/10"></div>
+
+            {/* Jobs Menu (Expandable) */}
+            <div>
+              <button 
+                onClick={() => toggleMenu('jobs')}
+                className={`w-full flex items-center justify-between px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group ${openMenus.jobs ? 'text-white bg-[#0A58CA]' : ''}`}
+              >
+                <div className="flex items-center gap-2">
+                  <Briefcase className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+                  <span className="font-medium">Job Postings</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 opacity-70 transition-transform ${openMenus.jobs ? 'rotate-180' : ''}`} />
+              </button>
+              {openMenus.jobs && (
+                <div className="bg-[#061129] py-1 text-[12px]">
+                  <Link href="/admin/jobs" className="block px-10 py-1.5 hover:text-white transition-colors">All Jobs</Link>
+                  <Link href="/admin/editor" className="block px-10 py-1.5 hover:text-white transition-colors">Add New</Link>
+                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">Categories</Link>
+                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">Departments</Link>
+                </div>
+              )}
+            </div>
+
+            {/* Updates Menu (Expandable) */}
+            <div>
+              <button 
+                onClick={() => toggleMenu('updates')}
+                className={`w-full flex items-center justify-between px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group ${openMenus.updates ? 'text-white bg-[#0A58CA]' : ''}`}
+              >
+                <div className="flex items-center gap-2">
+                  <Bell className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+                  <span className="font-medium">Updates</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 opacity-70 transition-transform ${openMenus.updates ? 'rotate-180' : ''}`} />
+              </button>
+              {openMenus.updates && (
+                <div className="bg-[#061129] py-1 text-[12px]">
+                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">Admit Cards</Link>
+                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">Results</Link>
+                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">Answer Keys</Link>
+                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">Syllabus</Link>
+                </div>
+              )}
+            </div>
+
+            <div className="my-2 border-t border-white/10"></div>
+
+            {/* Pages */}
+            <div>
+              <button 
+                onClick={() => toggleMenu('pages')}
+                className={`w-full flex items-center justify-between px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group ${openMenus.pages ? 'text-white bg-[#0A58CA]' : ''}`}
+              >
+                <div className="flex items-center gap-2">
+                  <FileText className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+                  <span className="font-medium">Pages</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 opacity-70 transition-transform ${openMenus.pages ? 'rotate-180' : ''}`} />
+              </button>
+              {openMenus.pages && (
+                <div className="bg-[#061129] py-1 text-[12px]">
+                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">All Pages</Link>
+                  <Link href="/admin/editor" className="block px-10 py-1.5 hover:text-white transition-colors">Add New</Link>
+                </div>
+              )}
+            </div>
+
+            {/* SEO & Tools */}
+            <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+              <Search className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+              <span className="font-medium">SEO Configuration</span>
+            </Link>
+
+            <div className="my-2 border-t border-white/10"></div>
+
+            {/* Advanced WP Items */}
+            <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+              <LayoutTemplate className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+              <span className="font-medium">Appearance</span>
+            </Link>
+            
+            <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+              <User className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+              <span className="font-medium">Users</span>
+            </Link>
+
+            <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+              <PenTool className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+              <span className="font-medium">Tools</span>
+            </Link>
+
+            <Link href="/admin/settings" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+              <Settings className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+              <span className="font-medium">Settings</span>
+            </Link>
+
+          </div>
+          
+          <div className="mt-auto p-3">
+             <button className="flex items-center gap-2 w-full px-2 py-2 text-gray-500 hover:text-white hover:bg-[#0A58CA] rounded transition-colors text-xs font-bold">
+               <LogOut className="w-4 h-4" /> Collapse Menu
+             </button>
+          </div>
+
+        </aside>
+
+        {/* 3. Main Content Workspace */}
+        <main className="flex-1 overflow-y-auto relative">
           {children}
         </main>
+
       </div>
     </div>
   );

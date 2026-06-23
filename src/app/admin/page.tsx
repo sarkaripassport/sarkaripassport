@@ -1,44 +1,141 @@
-import { Users, FileText, CheckCircle, TrendingUp } from "lucide-react";
+'use client';
+
+import Link from "next/link";
+import { Briefcase, FileText, CheckCircle2, TrendingUp, AlertTriangle, PenTool, Globe, Link as LinkIcon, HeartPulse } from "lucide-react";
+import { useState } from "react";
 
 export default function AdminDashboard() {
+  const [draftTitle, setDraftTitle] = useState("");
+  const [draftContent, setDraftContent] = useState("");
+
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+    <div className="p-4 sm:p-6 max-w-[1400px]">
+      <h1 className="text-2xl text-[#1d2327] font-normal mb-6">Dashboard</h1>
       
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {[
-          { title: "Total Users", val: "12,450", icon: Users, color: "text-blue-600 bg-blue-100" },
-          { title: "Active Vacancies", val: "342", icon: FileText, color: "text-orange-600 bg-orange-100" },
-          { title: "Applications Submitted", val: "8,920", icon: CheckCircle, color: "text-green-600 bg-green-100" },
-          { title: "Daily Traffic", val: "45K", icon: TrendingUp, color: "text-purple-600 bg-purple-100" },
-        ].map((stat, i) => (
-          <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-            <div className={`p-3 rounded-xl ${stat.color}`}>
-              <stat.icon className="h-6 w-6" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        
+        {/* At a Glance Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7]">
+            <h2 className="font-semibold text-[#1d2327]">At a Glance</h2>
+          </div>
+          <div className="p-4 flex-grow">
+            <div className="grid grid-cols-2 gap-4">
+              <Link href="/admin/jobs" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
+                <Briefcase className="w-4 h-4" /> 1,281 Jobs
+              </Link>
+              <Link href="#" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
+                <FileText className="w-4 h-4" /> 45 Pages
+              </Link>
+              <Link href="#" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
+                <Globe className="w-4 h-4" /> 15 Admit Cards
+              </Link>
+              <Link href="#" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
+                <TrendingUp className="w-4 h-4" /> 38 Results
+              </Link>
             </div>
-            <div>
-              <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-              <h3 className="text-2xl font-bold text-gray-900">{stat.val}</h3>
+            <div className="mt-4 pt-4 border-t border-[#dcdcde] text-sm text-[#50575e]">
+              Naukri Passport v1.0 running on <strong>Next.js 15</strong>. Theme: <span className="text-[#2271b1]">WP-Sarkari</span>.
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Recent Activity (Placeholder) */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Recent Activity</h2>
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="flex items-center justify-between pb-4 border-b border-gray-50 last:border-0 last:pb-0">
-              <div>
-                <p className="text-sm font-medium text-gray-800">New Vacancy Posted: SSC CHSL 2026</p>
-                <p className="text-xs text-gray-500">by Content Editor • 2 hours ago</p>
-              </div>
-              <span className="px-3 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-full">Published</span>
-            </div>
-          ))}
         </div>
+
+        {/* Quick Draft Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7]">
+            <h2 className="font-semibold text-[#1d2327]">Quick Draft</h2>
+          </div>
+          <div className="p-4 flex-grow space-y-3">
+            <input 
+              type="text" 
+              placeholder="Title (e.g. UPSC Prelims Admit Card)" 
+              value={draftTitle}
+              onChange={(e) => setDraftTitle(e.target.value)}
+              className="w-full px-3 py-1.5 border border-[#8c8f94] text-[13px] text-[#3c434a] focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] focus:outline-none"
+            />
+            <textarea 
+              rows={4}
+              placeholder="What's on your mind?"
+              value={draftContent}
+              onChange={(e) => setDraftContent(e.target.value)}
+              className="w-full px-3 py-1.5 border border-[#8c8f94] text-[13px] text-[#3c434a] focus:border-[#2271b1] focus:ring-1 focus:ring-[#2271b1] focus:outline-none resize-none"
+            />
+            <button className="px-3 py-1.5 border border-[#2271b1] bg-[#f6f7f7] text-[#2271b1] text-[13px] hover:bg-[#f0f0f1] font-semibold transition-colors">
+              Save Draft
+            </button>
+          </div>
+        </div>
+
+        {/* SEO Health Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7] flex justify-between items-center">
+            <h2 className="font-semibold text-[#1d2327]">SEO Health Status</h2>
+            <HeartPulse className="w-4 h-4 text-green-600" />
+          </div>
+          <div className="p-4 flex-grow space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[13px] text-[#3c434a]">Overall Score</span>
+              <span className="bg-green-100 text-green-800 text-xs font-bold px-2 py-0.5 rounded">Good (85/100)</span>
+            </div>
+            
+            <ul className="space-y-2 text-[13px] text-[#3c434a]">
+              <li className="flex items-start gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <span>12 posts missing Focus Keyword</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                <span>5 posts with Meta Description too short</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                <span>No broken links found</span>
+              </li>
+            </ul>
+            <div className="mt-2 pt-3 border-t border-[#dcdcde]">
+              <Link href="#" className="text-[#2271b1] hover:underline hover:text-[#135e96] text-[13px]">Run SEO Audit</Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Activity Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col lg:col-span-2 xl:col-span-3">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7]">
+            <h2 className="font-semibold text-[#1d2327]">Activity</h2>
+          </div>
+          <div className="p-4 flex flex-col sm:flex-row gap-8">
+            <div className="flex-1">
+              <h3 className="font-bold text-[#1d2327] mb-3 text-[13px]">Recently Published</h3>
+              <ul className="space-y-3">
+                <li className="flex gap-4 text-[13px]">
+                  <span className="text-[#50575e] w-24 shrink-0">Today, 8:42 am</span>
+                  <Link href="#" className="text-[#2271b1] hover:underline hover:text-[#135e96]">SSC CGL 2026 Notification Released</Link>
+                </li>
+                <li className="flex gap-4 text-[13px]">
+                  <span className="text-[#50575e] w-24 shrink-0">Yesterday, 4:15 pm</span>
+                  <Link href="#" className="text-[#2271b1] hover:underline hover:text-[#135e96]">Railway RRB ALP Admit Card Download Link</Link>
+                </li>
+                <li className="flex gap-4 text-[13px]">
+                  <span className="text-[#50575e] w-24 shrink-0">Jun 21, 10:00 am</span>
+                  <Link href="#" className="text-[#2271b1] hover:underline hover:text-[#135e96]">UP Police Constable Result Declared</Link>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="w-px bg-[#dcdcde] hidden sm:block"></div>
+            
+            <div className="flex-1">
+              <h3 className="font-bold text-[#1d2327] mb-3 text-[13px]">Recent Drafts</h3>
+              <ul className="space-y-3">
+                <li className="text-[13px]">
+                  <Link href="#" className="font-semibold text-[#2271b1] hover:underline hover:text-[#135e96]">IB ACIO Tier 2 Syllabus 2026</Link>
+                  <div className="text-[#50575e] text-xs mt-0.5">Last modified June 20, 2026</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
