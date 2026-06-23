@@ -32,10 +32,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           
           {/* Quick Add Menu */}
           <div className="group relative h-full flex items-center">
-            <button className="flex items-center gap-1 h-full px-3 hover:text-white hover:bg-white/10 transition-colors">
+            <Link href="/admin/editor" className="flex items-center gap-1 h-full px-3 hover:text-white hover:bg-white/10 transition-colors">
               <Plus className="w-4 h-4" />
-              <span>New</span>
-            </button>
+              <span>New Post</span>
+            </Link>
             {/* Dropdown would go here in full implementation */}
           </div>
         </div>

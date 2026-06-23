@@ -10,7 +10,13 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-4 sm:p-6 max-w-[1400px]">
-      <h1 className="text-2xl text-[#1d2327] font-normal mb-6">Dashboard</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-2xl text-[#1d2327] font-normal">Dashboard</h1>
+        <Link href="/admin/editor" className="bg-[#0A58CA] hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-bold shadow flex items-center gap-2 transition-all hover:scale-105">
+          <PenTool className="w-5 h-5" /> 
+          Go to Advanced CMS Editor 
+        </Link>
+      </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         
