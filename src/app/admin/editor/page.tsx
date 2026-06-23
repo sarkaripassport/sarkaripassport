@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Eye, Save, Settings, LayoutTemplate } from 'lucide-react';
+import { Eye, Save, Settings, LayoutTemplate, Calendar, IndianRupee, HelpCircle } from 'lucide-react';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import SeoSidebar from '@/components/admin/SeoSidebar';
+import DynamicVacancyMatrix from '@/components/admin/DynamicVacancyMatrix';
 
 export default function AdvancedEditorPage() {
   const [title, setTitle] = useState('');
@@ -63,6 +64,53 @@ export default function AdvancedEditorPage() {
               />
             </div>
 
+            {/* Dedicated Sarkari Widgets (Dates & Fees) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Important Dates Widget */}
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="bg-blue-50 border-b border-blue-100 py-2.5 px-4 flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-[#0A58CA]" />
+                  <span className="text-xs font-bold text-[#0B1B3D] uppercase tracking-wider">Important Dates</span>
+                </div>
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-gray-500 w-24">Application Start</label>
+                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-[#0A58CA] outline-none" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-gray-500 w-24">Last Date</label>
+                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-[#0A58CA] outline-none" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-gray-500 w-24">Exam Date</label>
+                    <input type="text" placeholder="e.g. Oct 2026" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-[#0A58CA] outline-none" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Application Fees Widget */}
+              <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                <div className="bg-green-50 border-b border-green-100 py-2.5 px-4 flex items-center gap-2">
+                  <IndianRupee className="w-4 h-4 text-green-700" />
+                  <span className="text-xs font-bold text-green-900 uppercase tracking-wider">Application Fee</span>
+                </div>
+                <div className="p-4 space-y-3">
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-gray-500 w-24">Gen / OBC</label>
+                    <input type="text" placeholder="e.g. ₹100" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-green-500 outline-none" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-gray-500 w-24">SC / ST / PH</label>
+                    <input type="text" placeholder="e.g. ₹0" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-green-500 outline-none" />
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <label className="text-xs font-bold text-gray-500 w-24">All Females</label>
+                    <input type="text" placeholder="e.g. ₹0" className="flex-1 border border-gray-200 rounded px-2 py-1 text-sm focus:border-green-500 outline-none" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Rich Text Editor */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="bg-gray-50 border-b border-gray-200 py-2.5 px-4 flex items-center gap-2">
@@ -71,6 +119,27 @@ export default function AdvancedEditorPage() {
               </div>
               <div className="p-4">
                 <RichTextEditor content={content} onChange={setContent} />
+              </div>
+            </div>
+
+            {/* Dynamic Vacancy Engine Block */}
+            <DynamicVacancyMatrix />
+
+            {/* FAQ & Schema Builder Block */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="bg-amber-50 border-b border-amber-100 py-2.5 px-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <HelpCircle className="w-4 h-4 text-amber-600" />
+                  <span className="text-xs font-bold text-amber-900 uppercase tracking-wider">FAQ Schema Generator (SEO)</span>
+                </div>
+                <span className="text-[10px] font-bold bg-amber-200 text-amber-800 px-2 py-0.5 rounded uppercase">Auto JSON-LD</span>
+              </div>
+              <div className="p-4 space-y-4">
+                <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                  <input type="text" placeholder="Question 1 (e.g. What is the last date to apply?)" className="w-full bg-white border border-gray-200 rounded px-3 py-1.5 text-sm mb-2 font-semibold" />
+                  <textarea placeholder="Answer 1" rows={2} className="w-full bg-white border border-gray-200 rounded px-3 py-1.5 text-sm resize-none"></textarea>
+                </div>
+                <button className="text-sm font-bold text-[#0A58CA] hover:underline">+ Add another FAQ</button>
               </div>
             </div>
 

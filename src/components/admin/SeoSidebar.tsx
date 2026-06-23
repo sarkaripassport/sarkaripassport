@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Search, Type, KeyRound, Code, Target, BarChart2, CheckCircle2, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Search, Type, KeyRound, Code, Target, BarChart2, CheckCircle2, XCircle, ChevronDown, ChevronUp, Zap, Radio, Link as LinkIcon } from 'lucide-react';
 
 interface SeoSidebarProps {
   title: string;
@@ -20,6 +20,10 @@ export default function SeoSidebar({
   title, content, metaTitle, setMetaTitle, metaDescription, setMetaDescription, focusKeyword, setFocusKeyword, postType, setPostType
 }: SeoSidebarProps) {
   const [showSchema, setShowSchema] = useState(false);
+  const [examStatus, setExamStatus] = useState('new'); // new, admit_card, result
+  const [competitorUrl, setCompetitorUrl] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [missingKeywords, setMissingKeywords] = useState<string[]>([]);
 
   // --- Real-time SEO Calculations ---
   
@@ -71,10 +75,19 @@ export default function SeoSidebar({
     return JSON.stringify({
       "@context": "https://schema.org/",
       "@type": "WebPage",
-      "name": title || "Page Title",
       "description": metaDescription || "Page description here..."
     }, null, 2);
   }, [postType, title, metaDescription]);
+
+  const analyzeCompetitor = () => {
+    if (!competitorUrl) return;
+    setIsAnalyzing(true);
+    // Mock API call
+    setTimeout(() => {
+      setIsAnalyzing(false);
+      setMissingKeywords(['Syllabus PDF', 'Previous Year Paper', 'Age Relaxation']);
+    }, 1500);
+  };
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
@@ -115,6 +128,56 @@ export default function SeoSidebar({
               Generic Page
             </button>
           </div>
+        </div>
+
+        <hr className="border-gray-100" />
+
+        {/* Exam Lifecycle (SEO Magic) */}
+        <div className="bg-blue-50 -mx-5 px-5 py-4 border-b border-blue-100">
+          <label className="block text-xs font-bold text-blue-900 uppercase tracking-wider mb-2">Exam Lifecycle Mode</label>
+          <select 
+            value={examStatus}
+            onChange={(e) => setExamStatus(e.target.value)}
+            className="w-full px-3 py-2 text-sm bg-white border border-blue-200 rounded-lg outline-none focus:border-[#0A58CA] text-blue-900 font-medium"
+          >
+            <option value="new">🌟 New Notification (Master Post)</option>
+            <option value="admit_card">🎫 Admit Card Released (Update)</option>
+            <option value="result">🏆 Result Declared (Update)</option>
+          </select>
+          <p className="text-[10px] text-blue-700 mt-1.5 leading-tight">Updating a master post retains 100% SEO juice instead of creating weak duplicate pages.</p>
+        </div>
+
+        {/* Competitor Analyzer */}
+        <div>
+          <label className="flex items-center gap-2 text-sm font-bold text-[#0B1B3D] mb-2">
+            <Radio className="w-4 h-4 text-red-500" /> Competitor Analyzer
+          </label>
+          <div className="flex gap-2 mb-2">
+            <input 
+              type="url" 
+              placeholder="Paste sarkariresult.com link..." 
+              value={competitorUrl}
+              onChange={(e) => setCompetitorUrl(e.target.value)}
+              className="w-full px-3 py-2 text-xs bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-500"
+            />
+            <button 
+              onClick={analyzeCompetitor}
+              disabled={isAnalyzing}
+              className="bg-slate-900 text-white px-3 py-2 rounded-lg text-xs font-bold whitespace-nowrap hover:bg-black disabled:opacity-50"
+            >
+              {isAnalyzing ? '...' : 'Analyze'}
+            </button>
+          </div>
+          {missingKeywords.length > 0 && (
+            <div className="bg-red-50 border border-red-100 rounded-lg p-2 text-xs">
+              <span className="font-bold text-red-800 block mb-1">Missing Keywords:</span>
+              <div className="flex flex-wrap gap-1">
+                {missingKeywords.map(kw => (
+                  <span key={kw} className="bg-white text-red-600 px-1.5 py-0.5 rounded border border-red-200">{kw}</span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <hr className="border-gray-100" />
@@ -216,6 +279,20 @@ export default function SeoSidebar({
           )}
         </div>
 
+      </div>
+      
+      {/* Footer Publishing Actions */}
+      <div className="p-4 bg-gray-50 border-t border-gray-200">
+        <div className="flex flex-col gap-2 mb-4">
+          <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
+            <input type="checkbox" className="rounded text-[#0A58CA]" defaultChecked />
+            Instant Indexing (Google + Bing API)
+          </label>
+          <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer">
+            <input type="checkbox" className="rounded text-[#0A58CA]" defaultChecked />
+            Broadcast to Telegram & WhatsApp
+          </label>
+        </div>
       </div>
     </div>
   );
