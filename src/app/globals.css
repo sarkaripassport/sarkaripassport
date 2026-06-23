@@ -13,6 +13,17 @@
   --color-status-orange-text: #E37400;
 
   --font-sans: "Inter", system-ui, sans-serif;
+
+  --animate-swipe: swipe 1.5s ease-in-out infinite;
+
+  @keyframes swipe {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(-15px);
+    }
+  }
 }
 
 @layer base {
@@ -57,15 +68,3 @@
   background: #94a3b8; 
 }
 
-@keyframes swipe {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(-15px);
-  }
-}
-
-.animate-swipe {
-  animation: swipe 1.5s ease-in-out infinite;
-}
