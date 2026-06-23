@@ -5,7 +5,7 @@ import { Plus, Trash2, Settings, Table as TableIcon } from 'lucide-react';
 
 export default function DynamicVacancyMatrix() {
   const [columns, setColumns] = useState(['Post Name', 'UR', 'OBC', 'SC', 'ST', 'Total', 'Eligibility']);
-  const [rows, setRows] = useState([
+  const [rows, setRows] = useState<{id: number, data: Record<string, string>}[]>([
     { id: 1, data: { 'Post Name': '', 'UR': '', 'OBC': '', 'SC': '', 'ST': '', 'Total': '', 'Eligibility': '' } }
   ]);
   const [newColName, setNewColName] = useState('');
@@ -25,7 +25,7 @@ export default function DynamicVacancyMatrix() {
   const removeColumn = (colToRemove: string) => {
     setColumns(columns.filter(col => col !== colToRemove));
     const updatedRows = rows.map(row => {
-      const newData = { ...row.data };
+      const newData: Record<string, string> = { ...row.data };
       delete newData[colToRemove];
       return { ...row, data: newData };
     });
