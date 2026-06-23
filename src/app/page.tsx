@@ -66,7 +66,7 @@ export default async function Home() {
 
         {/* Latest Jobs Table Exact Copy - with Live & Embossed Effects */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-[0_4px_20px_rgb(0,0,0,0.04)] overflow-hidden transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
-          <div className="flex justify-between items-center p-3 sm:p-4 bg-gradient-to-r from-[#002D62] to-[#0A58CA]">
+          <div className="flex justify-between items-center py-2.5 px-3 sm:px-4 bg-gradient-to-r from-[#002D62] to-[#0A58CA]">
             <div className="flex items-center gap-2">
               <Briefcase className="w-5 h-5 text-blue-100" />
               <h2 className="text-sm sm:text-base font-bold text-white tracking-wider uppercase">Latest Jobs</h2>
@@ -104,7 +104,7 @@ export default async function Home() {
             { title: "Latest Syllabus", items: ["UPSC CSE Syllabus 2026", "MPSC Group B Syllabus", "SSC CGL Tier 1 Syllabus", "IBPS PO Syllabus 2026"] }
           ].map((col, i) => (
             <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
-              <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-4 flex justify-between items-center shrink-0">
+              <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2 px-4 flex justify-between items-center shrink-0">
                 <h3 className="font-bold text-white text-[11px] tracking-wider uppercase">{col.title}</h3>
                 <Link href="#" className="text-[9px] font-bold text-blue-100 hover:text-white hover:underline uppercase tracking-wider bg-white/10 px-1.5 py-0.5 rounded">All</Link>
               </div>
