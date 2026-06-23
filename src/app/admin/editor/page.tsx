@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import { Eye, Save, Settings, LayoutTemplate } from 'lucide-react';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import SeoSidebar from '@/components/admin/SeoSidebar';
@@ -17,8 +15,7 @@ export default function AdvancedEditorPage() {
   const [showPreview, setShowPreview] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800 flex flex-col">
-      <Navbar />
+    <div className="font-sans text-gray-800 flex flex-col h-full -m-6">
       
       {/* Editor Header */}
       <div className="bg-white border-b border-gray-200 sticky top-16 z-40 shadow-sm">

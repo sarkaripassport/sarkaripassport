@@ -16,8 +16,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link href="/admin/jobs" className="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-[#0A58CA] text-white font-semibold transition shadow-md">
             <Briefcase className="w-5 h-5" /> Manage Jobs
           </Link>
-          <Link href="/admin/content" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
-            <FileText className="w-5 h-5" /> Content / Pages
+          <Link href="/admin/editor" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
+            <FileText className="w-5 h-5" /> SEO Post Editor
           </Link>
           <Link href="/admin/settings" className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition">
             <Settings className="w-5 h-5" /> Settings
