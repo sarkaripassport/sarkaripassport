@@ -1,6 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
-import { ChevronDown, GraduationCap, CheckCircle2, Clock, FileText, ArrowRight, Briefcase, Calendar, CreditCard, User, Link as LinkIcon, Download, Globe, Hand } from 'lucide-react';
+import { ChevronDown, GraduationCap, CheckCircle2, Clock, FileText, ArrowRight, Briefcase, Calendar, CreditCard, User, Link as LinkIcon, Download, Globe, Hand, HelpCircle } from 'lucide-react';
 import { getJobBySlug } from '@/lib/db';
 import { notFound } from 'next/navigation';
 
@@ -182,31 +182,41 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                   </div>
                   
                   <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse min-w-[500px]">
+                    <table className="w-full text-left border-collapse min-w-[700px]">
                       <thead>
-                        <tr className="bg-gray-50 text-gray-600 border-b border-gray-200">
-                          <th className="py-3 px-5 font-bold text-xs tracking-wider uppercase whitespace-nowrap w-[35%]">Post Name</th>
-                          <th className="py-3 px-5 font-bold text-xs tracking-wider uppercase">Educational Qualification</th>
-                          <th className="py-3 px-5 font-bold text-xs tracking-wider uppercase text-right whitespace-nowrap w-[15%]">Vacancies</th>
+                        <tr className="bg-blue-50/50 border-b-2 border-blue-100">
+                          <th className="p-4 font-bold text-[#0B1B3D]">Post Name</th>
+                          <th className="p-4 font-bold text-[#0B1B3D] text-center">UR</th>
+                          <th className="p-4 font-bold text-[#0B1B3D] text-center">OBC</th>
+                          <th className="p-4 font-bold text-[#0B1B3D] text-center">EWS</th>
+                          <th className="p-4 font-bold text-[#0B1B3D] text-center">SC</th>
+                          <th className="p-4 font-bold text-[#0B1B3D] text-center">ST</th>
+                          <th className="p-4 font-bold text-[#0A58CA] text-center bg-blue-50">Total</th>
+                          <th className="p-4 font-bold text-[#0B1B3D]">Eligibility</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-gray-100">
-                        {job.vacancies.map((row, i) => (
+                        {job.vacancies.map((v, i) => (
                           <tr key={i} className="hover:bg-blue-50/50 transition-colors group">
-                            <td className="py-4 px-5 align-top">
-                              <span className="font-extrabold text-[#0B1B3D] text-[15px] group-hover:text-[#0A58CA] transition-colors leading-snug block">{row.name}</span>
+                            <td className="p-4 font-bold text-[#0B1B3D] bg-white group-hover:bg-transparent transition-colors">
+                              {v.name}
                             </td>
-                            <td className="py-4 px-5 align-top">
-                              <div className="flex items-start gap-2 bg-slate-50/50 rounded-md p-2 border border-slate-100 group-hover:bg-white group-hover:border-blue-100 transition-colors">
-                                <GraduationCap className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                                <span className="text-sm text-gray-700 font-medium leading-relaxed">{row.education}</span>
-                              </div>
-                            </td>
-                            <td className="py-4 px-5 align-top text-right">
+                            <td className="p-4 text-center text-gray-700 font-medium">{v.ur || '-'}</td>
+                            <td className="p-4 text-center text-gray-700 font-medium">{v.obc || '-'}</td>
+                            <td className="p-4 text-center text-gray-700 font-medium">{v.ews || '-'}</td>
+                            <td className="p-4 text-center text-gray-700 font-medium">{v.sc || '-'}</td>
+                            <td className="p-4 text-center text-gray-700 font-medium">{v.st || '-'}</td>
+                            <td className="p-4 text-center bg-blue-50/30 group-hover:bg-transparent transition-colors">
                               <span className="inline-flex flex-col items-center justify-center min-w-[4rem] px-3 py-1.5 rounded-lg bg-[#F4F7FA] border border-gray-200 shadow-sm group-hover:bg-[#0A58CA] group-hover:border-[#0A58CA] transition-all">
-                                <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-0.5 group-hover:text-blue-100 transition-colors">Seats</span>
-                                <span className="text-[#0B1B3D] font-black text-lg leading-none group-hover:text-white transition-colors">{row.vac}</span>
+                                <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-0.5 group-hover:text-blue-100 transition-colors">Total</span>
+                                <span className="text-[#0B1B3D] font-black text-lg leading-none group-hover:text-white transition-colors">{v.vac}</span>
                               </span>
+                            </td>
+                            <td className="p-4">
+                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <GraduationCap className="w-4 h-4 text-blue-400 shrink-0" />
+                                {v.education}
+                              </div>
                             </td>
                           </tr>
                         ))}
@@ -279,6 +289,28 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
                 </div>
               </div>
             </div>
+            )}
+
+            {/* 6. Frequently Asked Questions (FAQs) */}
+            {job.faqs && job.faqs.length > 0 && (
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
+                  <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
+                  <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Frequently Asked Questions</h3>
+                </div>
+                <div className="p-4 sm:p-6 divide-y divide-gray-100">
+                  {job.faqs.map((faq, i) => (
+                    <div key={i} className="py-4 first:pt-0 last:pb-0">
+                      <h4 className="font-bold text-[#0B1B3D] text-base mb-2 flex gap-2">
+                        <span className="text-[#0A58CA]">Q:</span> {faq.question}
+                      </h4>
+                      <p className="text-gray-600 text-sm leading-relaxed flex gap-2">
+                        <span className="font-bold text-gray-400">A:</span> {faq.answer}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             )}
 
           </div>

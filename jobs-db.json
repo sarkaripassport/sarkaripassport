@@ -15,27 +15,52 @@
       {
         "name": "Assistant Section Officer (ASO)",
         "education": "Bachelor's Degree in any stream",
-        "vac": "2,150"
+        "vac": "2,150",
+        "ur": "900",
+        "obc": "500",
+        "ews": "200",
+        "sc": "350",
+        "st": "200"
       },
       {
         "name": "Income Tax Inspector",
         "education": "Bachelor's Degree in any stream",
-        "vac": "1,550"
+        "vac": "1,550",
+        "ur": "650",
+        "obc": "400",
+        "ews": "150",
+        "sc": "250",
+        "st": "100"
       },
       {
         "name": "Inspector (Central Excise)",
         "education": "Bachelor's Degree in any stream",
-        "vac": "950"
+        "vac": "950",
+        "ur": "400",
+        "obc": "250",
+        "ews": "90",
+        "sc": "150",
+        "st": "60"
       },
       {
         "name": "Sub Inspector (CBI)",
         "education": "Bachelor's Degree with 50% Marks",
-        "vac": "300"
+        "vac": "300",
+        "ur": "150",
+        "obc": "80",
+        "ews": "30",
+        "sc": "30",
+        "st": "10"
       },
       {
         "name": "Tax Assistant",
         "education": "Bachelor's Degree + Typing Speed 8000 KDPH",
-        "vac": "4,000"
+        "vac": "4,000",
+        "ur": "1,800",
+        "obc": "1,000",
+        "ews": "400",
+        "sc": "500",
+        "st": "300"
       }
     ],
     "important_dates": [
@@ -97,6 +122,20 @@
     "description_html": "<p>The Staff Selection Commission will hold the Combined Graduate Level Examination, 2026 for filling up of various Group ‘B’ and Group ‘C’ posts in different Ministries/ Departments/ Organizations of Government of India and various Constitutional Bodies/ Statutory Bodies/ Tribunals, etc. The details of the examination are as follows:</p>",
     "seo_title": "SSC CGL 2026 Recruitment - Apply Online for 12,256 Posts",
     "seo_description": "Staff Selection Commission has released the SSC CGL 2026 notification for 12,256 vacancies. Check eligibility, syllabus, and apply online.",
-    "created_at": "2026-06-22T17:35:09.548Z"
+    "created_at": "2026-06-22T17:35:09.548Z",
+    "faqs": [
+      {
+        "question": "What is the last date to apply for SSC CGL 2026?",
+        "answer": "The last date to apply online is 24th June 2026."
+      },
+      {
+        "question": "Can final year students apply?",
+        "answer": "Yes, candidates appearing in the final year of their graduation can also apply, provided they possess essential qualification on or before the cut-off date."
+      },
+      {
+        "question": "Is there any negative marking in the exam?",
+        "answer": "Yes, there is negative marking of 0.50 marks for each wrong answer in Tier-I."
+      }
+    ]
   }
 ]

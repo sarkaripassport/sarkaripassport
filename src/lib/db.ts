@@ -5,6 +5,16 @@ export interface JobVacancy {
   name: string;
   education: string;
   vac: string;
+  ur?: string;
+  obc?: string;
+  sc?: string;
+  st?: string;
+  ews?: string;
+}
+
+export interface JobFaq {
+  question: string;
+  answer: string;
 }
 
 export interface ImportantDate {
@@ -46,6 +56,7 @@ export interface Job {
   application_fee?: ApplicationFee[];
   age_limit?: AgeLimit;
   important_links?: ImportantLink[];
+  faqs?: JobFaq[];
   description_html: string;
   seo_title: string;
   seo_description: string;
@@ -73,11 +84,11 @@ async function initDb() {
         daysLeft: 2,
         total_vacancies: "12,256",
         vacancies: [
-          { name: "Assistant Section Officer (ASO)", education: "Bachelor's Degree in any stream", vac: "2,150" },
-          { name: "Income Tax Inspector", education: "Bachelor's Degree in any stream", vac: "1,550" },
-          { name: "Inspector (Central Excise)", education: "Bachelor's Degree in any stream", vac: "950" },
-          { name: "Sub Inspector (CBI)", education: "Bachelor's Degree with 50% Marks", vac: "300" },
-          { name: "Tax Assistant", education: "Bachelor's Degree + Typing Speed 8000 KDPH", vac: "4,000" }
+          { name: "Assistant Section Officer (ASO)", education: "Bachelor's Degree in any stream", vac: "2,150", ur: "900", obc: "500", ews: "200", sc: "350", st: "200" },
+          { name: "Income Tax Inspector", education: "Bachelor's Degree in any stream", vac: "1,550", ur: "650", obc: "400", ews: "150", sc: "250", st: "100" },
+          { name: "Inspector (Central Excise)", education: "Bachelor's Degree in any stream", vac: "950", ur: "400", obc: "250", ews: "90", sc: "150", st: "60" },
+          { name: "Sub Inspector (CBI)", education: "Bachelor's Degree with 50% Marks", vac: "300", ur: "150", obc: "80", ews: "30", sc: "30", st: "10" },
+          { name: "Tax Assistant", education: "Bachelor's Degree + Typing Speed 8000 KDPH", vac: "4,000", ur: "1,800", obc: "1,000", ews: "400", sc: "500", st: "300" }
         ],
         important_dates: [
           { label: "Application Begin", date: "01/05/2026" },
@@ -101,6 +112,11 @@ async function initDb() {
           { label: "Apply Online", url: "#" },
           { label: "Download Notification", url: "#" },
           { label: "Official Website", url: "https://ssc.nic.in" }
+        ],
+        faqs: [
+          { question: "What is the last date to apply for SSC CGL 2026?", answer: "The last date to apply online is 24th June 2026." },
+          { question: "Can final year students apply?", answer: "Yes, candidates appearing in the final year of their graduation can also apply, provided they possess essential qualification on or before the cut-off date." },
+          { question: "Is there any negative marking in the exam?", answer: "Yes, there is negative marking of 0.50 marks for each wrong answer in Tier-I." }
         ],
         description_html: "<p>The Staff Selection Commission will hold the Combined Graduate Level Examination, 2026 for filling up of various Group ‘B’ and Group ‘C’ posts in different Ministries/ Departments/ Organizations of Government of India and various Constitutional Bodies/ Statutory Bodies/ Tribunals, etc. The details of the examination are as follows:</p>",
         seo_title: "SSC CGL 2026 Recruitment - Apply Online for 12,256 Posts",
