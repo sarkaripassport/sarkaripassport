@@ -1,20 +1,88 @@
 'use client';
 
 import { useState } from 'react';
-import { Eye, Save, Settings, LayoutTemplate, Calendar, HelpCircle } from 'lucide-react';
+import { Eye, Save, LayoutTemplate, HelpCircle, Plus, ArrowUp, ArrowDown, Trash2, GripVertical, Image as ImageIcon, Type, Calendar, Link as LinkIcon } from 'lucide-react';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 import SeoSidebar from '@/components/admin/SeoSidebar';
 import DynamicVacancyMatrix from '@/components/admin/DynamicVacancyMatrix';
 import DynamicFeeMatrix from '@/components/admin/DynamicFeeMatrix';
+import ImportantDatesWidget from '@/components/admin/ImportantDatesWidget';
+import FaqWidget from '@/components/admin/FaqWidget';
+import ImageWidget from '@/components/admin/ImageWidget';
+
+type BlockType = 'RICHTEXT' | 'DATES' | 'FEES' | 'VACANCY' | 'FAQ' | 'IMAGE';
+
+interface Block {
+  id: string;
+  type: BlockType;
+  content?: string;
+}
 
 export default function AdvancedEditorPage() {
   const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
   const [metaTitle, setMetaTitle] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
   const [focusKeyword, setFocusKeyword] = useState('');
   const [postType, setPostType] = useState('job'); // 'job' or 'page'
   const [showPreview, setShowPreview] = useState(false);
+
+  // Block Builder State
+  const [blocks, setBlocks] = useState<Block[]>([
+    { id: '1', type: 'DATES' },
+    { id: '2', type: 'FEES' },
+    { id: '3', type: 'RICHTEXT', content: '' },
+    { id: '4', type: 'VACANCY' },
+    { id: '5', type: 'FAQ' },
+  ]);
+
+  const addBlock = (index: number, type: BlockType) => {
+    const newBlocks = [...blocks];
+    newBlocks.splice(index + 1, 0, { id: Date.now().toString(), type, content: '' });
+    setBlocks(newBlocks);
+  };
+
+  const removeBlock = (id: string) => {
+    setBlocks(blocks.filter(b => b.id !== id));
+  };
+
+  const moveBlock = (index: number, direction: 'up' | 'down') => {
+    if (direction === 'up' && index === 0) return;
+    if (direction === 'down' && index === blocks.length - 1) return;
+    
+    const newBlocks = [...blocks];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    [newBlocks[index], newBlocks[targetIndex]] = [newBlocks[targetIndex], newBlocks[index]];
+    setBlocks(newBlocks);
+  };
+
+  const updateBlockContent = (id: string, content: string) => {
+    setBlocks(blocks.map(b => b.id === id ? { ...b, content } : b));
+  };
+
+  const renderBlock = (block: Block) => {
+    switch (block.type) {
+      case 'DATES': return <ImportantDatesWidget />;
+      case 'FEES': return <DynamicFeeMatrix />;
+      case 'VACANCY': return <DynamicVacancyMatrix />;
+      case 'FAQ': return <FaqWidget />;
+      case 'IMAGE': return <ImageWidget />;
+      case 'RICHTEXT': 
+        return (
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-gray-50 border-b border-gray-200 py-2.5 px-4 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Type className="w-4 h-4 text-gray-500" />
+                <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Rich Text & Tables</span>
+              </div>
+            </div>
+            <div className="p-4">
+              <RichTextEditor content={block.content || ''} onChange={(c) => updateBlockContent(block.id, c)} />
+            </div>
+          </div>
+        );
+      default: return null;
+    }
+  };
 
   return (
     <div className="font-sans text-gray-800 flex flex-col h-full">
@@ -65,72 +133,54 @@ export default function AdvancedEditorPage() {
               />
             </div>
 
-            {/* Dedicated Sarkari Widgets (Dates & Fees) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Important Dates Widget */}
-              <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden h-full">
-                <div className="bg-blue-50 border-b border-blue-100 py-2.5 px-4 flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-[#0A58CA]" />
-                  <span className="text-xs font-bold text-[#0B1B3D] uppercase tracking-wider">Important Dates</span>
-                </div>
-                <div className="p-4 space-y-3 flex-1 overflow-y-auto">
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-32">Application Start</label>
-                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
+            {/* Block Builder Area */}
+            <div className="space-y-4">
+              {blocks.map((block, index) => (
+                <div key={block.id} className="relative group/block">
+                  
+                  {/* Block Controls */}
+                  <div className="absolute -left-12 top-4 flex flex-col items-center gap-1 opacity-0 group-hover/block:opacity-100 transition-opacity">
+                    <button onClick={() => moveBlock(index, 'up')} disabled={index === 0} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-500 hover:text-blue-600 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-gray-500">
+                      <ArrowUp className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => moveBlock(index, 'down')} disabled={index === blocks.length - 1} className="p-1.5 rounded-md hover:bg-gray-100 text-gray-500 hover:text-blue-600 disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-gray-500">
+                      <ArrowDown className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => removeBlock(block.id)} className="p-1.5 rounded-md hover:bg-red-50 text-gray-500 hover:text-red-600 mt-2">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-32">Last Date Apply</label>
-                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-32">Pay Fee Last Date</label>
-                    <input type="date" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-32">Correction Date</label>
-                    <input type="text" placeholder="e.g. 10-12 Oct 2026" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <label className="text-xs font-bold text-gray-500 w-32">Exam Date</label>
-                    <input type="text" placeholder="e.g. As per schedule" className="flex-1 border border-gray-200 rounded px-2 py-1.5 text-sm focus:border-[#0A58CA] outline-none" />
-                  </div>
-                </div>
-              </div>
 
-              {/* Dynamic Application Fees Widget */}
-              <DynamicFeeMatrix />
-            </div>
+                  {/* Render Actual Block */}
+                  {renderBlock(block)}
 
-            {/* Rich Text Editor */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="bg-gray-50 border-b border-gray-200 py-2.5 px-4 flex items-center gap-2">
-                <Settings className="w-4 h-4 text-gray-500" />
-                <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Content Editor</span>
-              </div>
-              <div className="p-4">
-                <RichTextEditor content={content} onChange={setContent} />
-              </div>
-            </div>
-
-            {/* Dynamic Vacancy Engine Block */}
-            <DynamicVacancyMatrix />
-
-            {/* FAQ & Schema Builder Block */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-              <div className="bg-amber-50 border-b border-amber-100 py-2.5 px-4 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4 text-amber-600" />
-                  <span className="text-xs font-bold text-amber-900 uppercase tracking-wider">FAQ Schema Generator (SEO)</span>
+                  {/* Inline Add Block Button */}
+                  <div className="relative flex justify-center opacity-0 hover:opacity-100 transition-opacity mt-4 mb-2 py-2">
+                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-blue-200 border-dashed"></div></div>
+                    <div className="relative flex gap-1 bg-white px-3 py-1.5 rounded-full shadow-sm border border-blue-100 items-center">
+                      <span className="text-[10px] font-bold text-gray-400 uppercase mr-2 tracking-widest">Add Block</span>
+                      <button onClick={() => addBlock(index, 'RICHTEXT')} className="p-1.5 rounded hover:bg-blue-50 text-gray-600 hover:text-[#0A58CA]" title="Rich Text">
+                        <Type className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => addBlock(index, 'DATES')} className="p-1.5 rounded hover:bg-blue-50 text-gray-600 hover:text-[#0A58CA]" title="Important Dates">
+                        <Calendar className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => addBlock(index, 'FEES')} className="text-[10px] font-bold px-2 py-1 rounded hover:bg-blue-50 text-gray-600 hover:text-[#0A58CA]">
+                        FEES
+                      </button>
+                      <button onClick={() => addBlock(index, 'VACANCY')} className="text-[10px] font-bold px-2 py-1 rounded hover:bg-blue-50 text-gray-600 hover:text-[#0A58CA]">
+                        VACANCY
+                      </button>
+                      <button onClick={() => addBlock(index, 'IMAGE')} className="p-1.5 rounded hover:bg-blue-50 text-gray-600 hover:text-[#0A58CA]" title="Image">
+                        <ImageIcon className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => addBlock(index, 'FAQ')} className="p-1.5 rounded hover:bg-blue-50 text-gray-600 hover:text-[#0A58CA]" title="FAQ">
+                        <HelpCircle className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <span className="text-[10px] font-bold bg-amber-200 text-amber-800 px-2 py-0.5 rounded uppercase">Auto JSON-LD</span>
-              </div>
-              <div className="p-4 space-y-4">
-                <div className="border border-gray-200 rounded-lg p-3 bg-gray-50">
-                  <input type="text" placeholder="Question 1 (e.g. What is the last date to apply?)" className="w-full bg-white border border-gray-200 rounded px-3 py-1.5 text-sm mb-2 font-semibold" />
-                  <textarea placeholder="Answer 1" rows={2} className="w-full bg-white border border-gray-200 rounded px-3 py-1.5 text-sm resize-none"></textarea>
-                </div>
-                <button className="text-sm font-bold text-[#0A58CA] hover:underline">+ Add another FAQ</button>
-              </div>
+              ))}
             </div>
 
             {/* Live Preview Toggle Area */}
@@ -145,8 +195,16 @@ export default function AdvancedEditorPage() {
                 </div>
                 <div className="p-8 prose prose-blue max-w-none text-gray-800">
                   {title && <h1 className="text-3xl font-extrabold text-[#0B1B3D] mb-6">{title}</h1>}
-                  {!title && !content && <div className="text-gray-400 italic text-center py-10">Start typing to see preview...</div>}
-                  <div dangerouslySetInnerHTML={{ __html: content }} />
+                  {!title && blocks.every(b => !b.content) && <div className="text-gray-400 italic text-center py-10">Start typing to see preview...</div>}
+                  {blocks.map(block => {
+                    if (block.type === 'RICHTEXT' && block.content) {
+                      return <div key={block.id} dangerouslySetInnerHTML={{ __html: block.content }} />
+                    }
+                    if (block.type !== 'RICHTEXT') {
+                      return <div key={block.id} className="p-4 my-4 border border-dashed border-gray-300 bg-gray-50 text-gray-500 text-center rounded">[{block.type} Widget Preview]</div>
+                    }
+                    return null;
+                  })}
                 </div>
               </div>
             )}
@@ -156,7 +214,7 @@ export default function AdvancedEditorPage() {
           <div className="w-full lg:w-[400px] shrink-0 sticky top-[140px]">
             <SeoSidebar 
               title={title}
-              content={content}
+              content={blocks.filter(b => b.type === 'RICHTEXT').map(b => b.content).join(' ')}
               metaTitle={metaTitle}
               setMetaTitle={setMetaTitle}
               metaDescription={metaDescription}
