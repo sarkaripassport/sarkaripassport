@@ -5,8 +5,10 @@ export async function POST(req: Request) {
   try {
     const data = await req.json();
     
-    // Auto-generate slug from title if not provided
-    if (!data.slug) {
+    // Sanitize or auto-generate slug
+    if (data.slug) {
+      data.slug = data.slug.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    } else {
       data.slug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
     }
 
