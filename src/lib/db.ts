@@ -144,9 +144,11 @@ export interface Job {
   // Section 17: Official Links
   important_links: ImportantLink[];
   
-  category?: string; // Optional for backward compatibility, but UI will set it
+  category?: string; // Kept for backward compatibility
+  categories?: string[]; // Array of categories this job belongs to (e.g. ['Latest Jobs', 'Admit Card'])
 
   created_at: string;
+  updated_at?: string; // Used for bumping posts
 }
 
 const DB_PATH = path.join(process.cwd(), 'jobs-db.json');
@@ -318,7 +320,11 @@ async function initDb() {
           { label: "Official Website", url: "https://upsc.gov.in", is_primary: false }
         ],
         
-        created_at: new Date().toISOString()
+        category: "Latest Jobs",
+        categories: ["Latest Jobs", "Admit Card", "UPSC"],
+        
+        created_at: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days ago
+        updated_at: new Date().toISOString() // updated today
       }
     ];
     await fs.writeFile(DB_PATH, JSON.stringify(defaultData, null, 2));

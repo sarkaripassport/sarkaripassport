@@ -27,7 +27,7 @@ export default async function SyllabusPage() {
   const pageData = settings.pages?.['syllabus'];
   
   // Filter jobs by category "Syllabus"
-  const syllabusJobs = jobs.filter(j => j.category === 'Syllabus');
+  const syllabusJobs = jobs.filter(j => j.category === 'Syllabus' || j.categories?.includes('Syllabus'));
 
   return (
     <>

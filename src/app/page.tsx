@@ -35,9 +35,19 @@ export default async function Home() {
   const quickLinks = categories.filter(c => c.isQuickLink);
   const trendingCategories = categories.filter(c => c.isTrending);
 
-  // Helper to get top 5 jobs for a category
+  // Helper to get top 5 jobs for a category with dual sorting
   const getJobsForCategory = (catName: string) => {
-    return jobs.filter(j => j.category === catName).slice(0, 5);
+    return jobs
+      .filter(j => j.category === catName || j.categories?.includes(catName))
+      .sort((a, b) => {
+        if (catName === 'Latest Jobs') {
+          // Latest Jobs strict chronological sort
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        }
+        // Others bump to top based on updated_at
+        return new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime();
+      })
+      .slice(0, 5);
   };
 
   // Structured Data (JSON-LD)
@@ -106,7 +116,7 @@ export default async function Home() {
           <div className="grid grid-cols-4 lg:grid-cols-8 gap-2">
             {quickLinks.map((cat) => {
               const Icon = ICON_MAP[cat.icon] || Briefcase;
-              const count = jobs.filter(j => j.category === cat.name).length;
+              const count = jobs.filter(j => j.category === cat.name || j.categories?.includes(cat.name)).length;
               return (
                 <Link href={`/jobs?cat=${cat.slug}`} key={cat.id} className="bg-white rounded border border-gray-200 p-1.5 sm:p-2 text-center hover:border-[#0A58CA] hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col items-center justify-center">
                   <Icon className="w-4 h-4 sm:w-5 sm:h-5 mb-1 text-[#0A58CA]" />
@@ -129,7 +139,11 @@ export default async function Home() {
             
             <div className="p-4 sm:p-5 bg-gray-50/50">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                {jobs.slice(0, 9).map((job) => (
+                {jobs
+                  .filter(j => j.category === 'Latest Jobs' || j.categories?.includes('Latest Jobs') || (!j.category && (!j.categories || j.categories.length === 0))) // fallback
+                  .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+                  .slice(0, 9)
+                  .map((job) => (
                   <JobCard 
                     key={job.id} 
                     title={job.title}

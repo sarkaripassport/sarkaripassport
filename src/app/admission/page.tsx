@@ -27,7 +27,7 @@ export default async function AdmissionPage() {
   const pageData = settings.pages?.['admission'];
   
   // Filter jobs by category "Admission"
-  const admissionJobs = jobs.filter(j => j.category === 'Admission');
+  const admissionJobs = jobs.filter(j => j.category === 'Admission' || j.categories?.includes('Admission'));
 
   return (
     <>

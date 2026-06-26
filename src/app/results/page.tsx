@@ -27,7 +27,7 @@ export default async function ResultsPage() {
   const pageData = settings.pages?.['results'];
   
   // Filter jobs by category "Results"
-  const resultJobs = jobs.filter(j => j.category === 'Results');
+  const resultJobs = jobs.filter(j => j.category === 'Results' || j.categories?.includes('Results'));
 
   return (
     <>

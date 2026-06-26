@@ -27,7 +27,7 @@ export default async function AdmitCardPage() {
   const pageData = settings.pages?.['admit-card'];
   
   // Filter jobs by category "Admit Card"
-  const admitCardJobs = jobs.filter(j => j.category === 'Admit Card');
+  const admitCardJobs = jobs.filter(j => j.category === 'Admit Card' || j.categories?.includes('Admit Card'));
 
   return (
     <>

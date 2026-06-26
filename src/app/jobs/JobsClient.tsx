@@ -45,11 +45,20 @@ export default function JobsClient({ jobs, categories }: { jobs: Job[], categori
     router.push("/jobs");
   };
 
-  // Filter Jobs
+  // Filter and Sort Jobs
   const filteredJobs = jobs.filter(j => {
-    const matchesCat = selectedCategory === "all" ? true : j.category.toLowerCase() === categories.find(c => c.slug === selectedCategory)?.name.toLowerCase();
+    const catName = categories.find(c => c.slug === selectedCategory)?.name;
+    const matchesCat = selectedCategory === "all" ? true : (
+      j.category === catName || j.categories?.includes(catName || "")
+    );
     const matchesSearch = searchQuery ? (j.title.toLowerCase().includes(searchQuery.toLowerCase()) || j.organization.toLowerCase().includes(searchQuery.toLowerCase())) : true;
     return matchesCat && matchesSearch;
+  }).sort((a, b) => {
+    // Dual Sorting Logic
+    if (selectedCategory === "all" || selectedCategory === "latest-jobs") {
+      return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    }
+    return new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime();
   });
 
   const quickCategories = categories.filter(c => c.isQuickLink);
@@ -138,7 +147,7 @@ export default function JobsClient({ jobs, categories }: { jobs: Job[], categori
                         <span className={selectedCategory === item.slug ? "font-bold text-[#0A58CA]" : ""}>{item.name}</span>
                       </span>
                       <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-600">
-                        {jobs.filter(j => j.category === item.name).length}
+                        {jobs.filter(j => j.category === item.name || j.categories?.includes(item.name)).length}
                       </span>
                     </button>
                   </li>

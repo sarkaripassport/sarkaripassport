@@ -27,7 +27,7 @@ export default async function AnswerKeyPage() {
   const pageData = settings.pages?.['answer-key'];
   
   // Filter jobs by category "Answer Key"
-  const answerKeyJobs = jobs.filter(j => j.category === 'Answer Key');
+  const answerKeyJobs = jobs.filter(j => j.category === 'Answer Key' || j.categories?.includes('Answer Key'));
 
   return (
     <>
