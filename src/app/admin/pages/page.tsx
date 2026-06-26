@@ -4,15 +4,14 @@ import { useState, useEffect } from "react";
 import { Save, CheckCircle2, FileText, ChevronDown } from "lucide-react";
 import type { HomepageSettings } from "@/lib/db";
 
-const PAGE_KEYS = ['admit-card', 'results', 'answer-key', 'syllabus', 'admission'] as const;
+const PAGE_KEYS = ['admit-card', 'results', 'answer-key', 'syllabus'] as const;
 type PageKey = typeof PAGE_KEYS[number];
 
 const PAGE_NAMES: Record<PageKey, string> = {
   'admit-card': 'Admit Card',
   'results': 'Results',
   'answer-key': 'Answer Key',
-  'syllabus': 'Syllabus',
-  'admission': 'Admission'
+  'syllabus': 'Syllabus'
 };
 
 export default function PagesManager() {
@@ -31,8 +30,7 @@ export default function PagesManager() {
             'admit-card': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
             'results': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
             'answer-key': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
-            'syllabus': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
-            'admission': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
+            'syllabus': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } }
           };
         }
         setSettings(data);

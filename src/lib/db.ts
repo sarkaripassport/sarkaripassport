@@ -207,7 +207,6 @@ export interface HomepageSettings {
     'results': PageSettings;
     'answer-key': PageSettings;
     'syllabus': PageSettings;
-    'admission': PageSettings;
   };
 }
 
@@ -392,10 +391,6 @@ async function initDb() {
         'syllabus': {
           seo: { title: "Syllabus - SarkariJob", description: "Download exam syllabus", keywords: "syllabus" },
           hero: { title: "Exam Syllabus", subtitle: "Prepare with the official syllabus" }
-        },
-        'admission': {
-          seo: { title: "Admissions - SarkariJob", description: "Latest university admissions", keywords: "admission" },
-          hero: { title: "University Admissions", subtitle: "Apply for top universities" }
         }
       }
     };
