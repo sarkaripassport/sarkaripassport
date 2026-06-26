@@ -81,8 +81,8 @@ export default async function Home() {
                   key={job.id} 
                   title={job.title}
                   org={job.organization}
-                  vac={job.total_vacancies}
-                  date={job.last_date}
+                  vac={job.quick_facts?.vacancies || '-'}
+                  date={job.quick_facts?.last_date || '-'}
                   status={job.status}
                   statusColor={job.statusColor}
                   isLive={job.isLive}

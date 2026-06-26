@@ -1,8 +1,8 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
-import { ChevronDown, GraduationCap, CheckCircle2, Clock, FileText, ArrowRight, Briefcase, Calendar, CreditCard, User, Link as LinkIcon, Download, Globe, Hand, HelpCircle } from 'lucide-react';
-import { getJobBySlug } from '@/lib/db';
 import { notFound } from 'next/navigation';
+import { getJobBySlug } from '@/lib/db';
+import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, FileText, ArrowRight, CheckSquare, ListOrdered, Share2, HelpCircle } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,7 +21,7 @@ export async function generateMetadata(
 
   return {
     title: job.seo_title || `${job.title} Recruitment`,
-    description: job.seo_description || `Apply now for ${job.title} at ${job.organization}.`,
+    description: job.seo_description || job.job_summary,
   }
 }
 
@@ -33,327 +33,313 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
     notFound();
   }
 
-  // Generate Google JobPosting JSON-LD Schema
+  // Generate JSON-LD
   const jsonLd = {
     '@context': 'https://schema.org/',
     '@type': 'JobPosting',
     'title': job.title,
-    'description': job.description_html,
+    'description': job.job_summary,
     'hiringOrganization': {
       '@type': 'Organization',
       'name': job.organization,
+      'logo': job.logo_url
     },
     'datePosted': job.created_at,
-    'validThrough': job.last_date,
+    'validThrough': job.quick_facts?.last_date,
   };
 
   return (
-    <div className="bg-[#F4F7FA] min-h-screen py-6 font-sans text-gray-800">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Breadcrumb */}
-        <div className="text-[13px] text-gray-500 flex items-center gap-2 mb-6">
-          <Link href="/" className="hover:text-[#0A58CA]">Home</Link>
+    <div className="bg-[#F8FAFC] min-h-screen pb-24 md:pb-6 font-sans text-gray-800">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm hidden md:block">
+        <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-2 text-xs text-gray-500 font-medium">
+          <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
           <ChevronDown className="w-3 h-3 -rotate-90" />
-          <Link href="/jobs" className="hover:text-[#0A58CA]">Latest Jobs</Link>
+          <Link href="/jobs" className="hover:text-blue-600 transition-colors">Latest Jobs</Link>
           <ChevronDown className="w-3 h-3 -rotate-90" />
-          <span className="text-gray-900 font-medium">{job.title}</span>
+          <span className="text-gray-900 truncate max-w-[300px]">{job.title}</span>
         </div>
+      </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 items-start">
+      {/* Main Content Area */}
+      <div className="max-w-[1000px] mx-auto px-0 md:px-4 mt-0 md:mt-6 space-y-2 md:space-y-6">
+        
+        {/* Section 1: Hero Section */}
+        <section className="bg-white md:rounded-2xl border-b md:border border-gray-200 p-5 md:p-8 relative overflow-hidden shadow-sm">
+          {/* Decorative background shape */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
           
-          {/* LEFT MAIN CONTENT */}
-          <div className="flex-1 space-y-6 w-full">
+          <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left gap-4">
+            {job.logo_url && (
+              <div className="w-20 h-20 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center p-2 mb-2">
+                <img src={job.logo_url} alt={job.organization} className="max-w-full max-h-full object-contain" />
+              </div>
+            )}
             
-            {/* 1. Header Block */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 flex flex-col sm:flex-row gap-6">
-              <div className="w-24 h-24 sm:w-32 sm:h-32 shrink-0 bg-yellow-50 rounded-xl border border-yellow-100 flex items-center justify-center overflow-hidden p-2">
-                <div className="w-full h-full bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Emblem_of_India.svg/1024px-Emblem_of_India.svg.png')] bg-contain bg-center bg-no-repeat"></div>
-              </div>
-              <div className="flex-1">
-                <h1 className="text-3xl md:text-4xl font-black text-[#0B1B3D] mb-2 tracking-tight">{job.title}</h1>
-                <div className="flex items-center gap-2 mb-4">
-                  <h2 className="text-lg font-bold text-gray-700">{job.organization}</h2>
-                  <CheckCircle2 className="w-5 h-5 text-blue-500 fill-blue-50" />
+            <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-2">
+              <span className={`inline-flex items-center px-2.5 py-1 text-[10px] font-black uppercase tracking-wider rounded ${job.statusColor}`}>{job.status}</span>
+              <span className="inline-flex items-center px-2.5 py-1 bg-red-50 text-red-700 border border-red-100 text-[10px] font-black uppercase tracking-wider rounded"><Clock className="w-3 h-3 mr-1" /> {job.daysLeft} Days Left</span>
+            </div>
+            
+            <h1 className="text-2xl md:text-4xl font-black text-[#0B1B3D] leading-tight tracking-tight">{job.title}</h1>
+            <p className="text-sm md:text-base font-bold text-gray-500">{job.organization}</p>
+          </div>
+        </section>
+
+        {/* Section 14: Eligibility Match Widget (Simulated) */}
+        {job.eligibility_rules && job.eligibility_rules.length > 0 && (
+          <section className="bg-gradient-to-br from-indigo-900 to-[#0B1B3D] md:rounded-2xl p-5 md:p-6 text-white shadow-lg mx-4 md:mx-0 rounded-2xl">
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="w-full md:w-auto flex flex-col items-center justify-center shrink-0">
+                <div className="w-20 h-20 rounded-full border-4 border-green-400 flex items-center justify-center relative">
+                  <span className="text-xl font-black">?%</span>
+                  <div className="absolute -bottom-2 -right-2 bg-yellow-400 text-yellow-900 text-[9px] font-black px-2 py-0.5 rounded-full uppercase">Analyze</div>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg ${job.statusColor}`}><CheckCircle2 className="w-3.5 h-3.5" /> {job.status}</span>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-50 text-orange-700 text-xs font-bold rounded-lg border border-orange-100"><Clock className="w-3.5 h-3.5" /> Last Date: {job.last_date}</span>
+              </div>
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="font-bold text-lg mb-1">Are you eligible for this post?</h3>
+                <p className="text-indigo-200 text-sm mb-4 leading-relaxed">Create your profile once and our smart engine will instantly calculate your eligibility score for {job.organization}.</p>
+                <div className="flex justify-center md:justify-start gap-3">
+                  <button className="bg-white text-indigo-900 px-5 py-2.5 rounded-lg text-sm font-bold shadow hover:bg-gray-50 transition-colors">Complete Profile</button>
+                  <button className="bg-indigo-800 border border-indigo-700 text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-indigo-700 transition-colors">Login</button>
                 </div>
               </div>
             </div>
+          </section>
+        )}
 
-            {/* 2. At a Glance Grid (Dates, Fees, Age) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Important Dates */}
-              {job.important_dates && job.important_dates.length > 0 && (
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors">
-                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
-                    <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
-                    <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Important Dates</h3>
-                  </div>
-                  <div className="p-4 sm:p-5">
-                    <ul className="space-y-3">
-                      {job.important_dates.map((item, i) => (
-                        <li key={i} className="flex justify-between items-start gap-4 text-sm">
-                          <span className="text-gray-600 leading-snug">{item.label}</span>
-                          <span className="font-bold text-[#0B1B3D] text-right shrink-0">{item.date}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {/* Application Fee */}
-              {job.application_fee && job.application_fee.length > 0 && (
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors">
-                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
-                    <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
-                    <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Application Fee</h3>
-                  </div>
-                  <div className="p-4 sm:p-5">
-                    <ul className="space-y-3">
-                      {job.application_fee.map((item, i) => (
-                        <li key={i} className="flex justify-between items-start gap-4 text-sm">
-                          <span className="text-gray-600 leading-snug">{item.category}</span>
-                          <span className="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded text-right shrink-0">{item.amount}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              )}
-
-              {/* Age Limit */}
-              {job.age_limit && (
-                <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:border-blue-200 transition-colors lg:col-span-1 md:col-span-2">
-                  <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
-                    <User className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
-                    <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase flex-1">Age Limit</h3>
-                    <span className="text-[10px] sm:text-xs text-blue-200 bg-blue-900/30 px-2 py-1 rounded">As on {job.age_limit.cutoff_date}</span>
-                  </div>
-                  <div className="p-4 sm:p-5">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600">Minimum Age</span>
-                        <span className="font-bold text-[#0B1B3D]">{job.age_limit.min_age}</span>
-                      </div>
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600">Maximum Age</span>
-                        <span className="font-bold text-[#0B1B3D]">{job.age_limit.max_age}</span>
-                      </div>
-                      {job.age_limit.relaxation && (
-                        <div className="mt-4 pt-3 border-t border-dashed border-gray-200 text-xs text-gray-500 italic">
-                          * {job.age_limit.relaxation}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* 3. Vacancy Details */}
-            {job.vacancies && job.vacancies.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center justify-between">
-                  <div className="flex items-center gap-2 sm:gap-3">
-                    <Briefcase className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
-                    <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Vacancy Details</h3>
-                  </div>
-                  <div className="bg-white/10 px-3 py-1 rounded border border-white/20">
-                    <span className="text-xs font-bold text-blue-100 uppercase">Total: </span>
-                    <span className="text-sm font-black text-white">{job.total_vacancies}</span>
-                  </div>
-                </div>
-                
-                <div className="p-0">
-                  {/* Hint for horizontal scroll on mobile */}
-                  <div className="md:hidden bg-blue-50/50 border-b border-gray-200 px-4 py-3 flex items-center justify-center gap-3 text-xs font-medium text-[#0A58CA]">
-                    <div className="animate-swipe">
-                      <Hand className="w-4 h-4 -rotate-90" />
-                    </div>
-                    <span>Swipe left to view full table</span>
-                  </div>
-                  
-                  {(() => {
-                    // Extract dynamic categories (excluding fixed fields)
-                    const fixedFields = ['name', 'education', 'vac'];
-                    const categoryKeys = Array.from(new Set(job.vacancies.flatMap(v => Object.keys(v).filter(k => !fixedFields.includes(k)))));
-                    
-                    return (
-                      <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse min-w-[700px]">
-                      <thead>
-                        <tr className="bg-blue-50/50 border-b-2 border-blue-100">
-                          <th className="p-4 font-bold text-[#0B1B3D]">Post Name</th>
-                          {categoryKeys.map((key) => (
-                            <th key={key} className="p-4 font-bold text-[#0B1B3D] text-center uppercase">{key}</th>
-                          ))}
-                          <th className="p-4 font-bold text-[#0A58CA] text-center bg-blue-50">Total</th>
-                          <th className="p-4 font-bold text-[#0B1B3D]">Eligibility</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-100">
-                        {job.vacancies.map((v, i) => (
-                          <tr key={i} className="hover:bg-blue-50/50 transition-colors group">
-                            <td className="p-4 font-bold text-[#0B1B3D] bg-white group-hover:bg-transparent transition-colors">
-                              {v.name}
-                            </td>
-                            {categoryKeys.map((key) => (
-                              <td key={key} className="p-4 text-center text-gray-700 font-medium">{v[key] || '-'}</td>
-                            ))}
-                            <td className="p-4 text-center bg-blue-50/30 group-hover:bg-transparent transition-colors">
-                              <span className="inline-flex flex-col items-center justify-center min-w-[4rem] px-3 py-1.5 rounded-lg bg-[#F4F7FA] border border-gray-200 shadow-sm group-hover:bg-[#0A58CA] group-hover:border-[#0A58CA] transition-all">
-                                <span className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-0.5 group-hover:text-blue-100 transition-colors">Total</span>
-                                <span className="text-[#0B1B3D] font-black text-lg leading-none group-hover:text-white transition-colors">{v.vac}</span>
-                              </span>
-                            </td>
-                            <td className="p-4">
-                              <div className="flex items-center gap-2 text-sm text-gray-600">
-                                <GraduationCap className="w-4 h-4 text-blue-400 shrink-0" />
-                                {v.education}
-                              </div>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                  );
-                })()}
-                </div>
+        {/* Section 2: Quick Facts */}
+        {job.quick_facts && (
+          <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+            <h2 className="text-base font-black text-[#0B1B3D] mb-4 flex items-center gap-2 border-b border-gray-100 pb-3"><Info className="w-5 h-5 text-blue-600" /> At a Glance</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase"><Users className="w-3.5 h-3.5" /> Vacancies</div>
+                <div className="font-black text-[#0B1B3D] text-lg">{job.quick_facts.vacancies}</div>
               </div>
-            )}
-
-            {/* 4. Extra Information (Rich Text) */}
-            {job.description_html && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
-                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
-                  <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Additional Information</h3>
-                </div>
-                <div className="p-4 sm:p-6">
-                  <div className="prose prose-sm sm:prose-base prose-blue max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: job.description_html }} />
-                </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase"><GraduationCap className="w-3.5 h-3.5" /> Qualification</div>
+                <div className="font-black text-[#0B1B3D]">{job.quick_facts.qualification}</div>
               </div>
-            )}
-
-            {/* 5. Important Links */}
-            {job.important_links && job.important_links.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
-                  <LinkIcon className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
-                  <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Important Links</h3>
-                </div>
-                <div className="p-4 sm:p-6">
-                  <div className="flex flex-col gap-3">
-                  {job.important_links.map((link, i) => {
-                    const isApply = link.label.toLowerCase().includes('apply');
-                    const isDownload = link.label.toLowerCase().includes('download') || link.label.toLowerCase().includes('notification');
-                    
-                    return (
-                      <a 
-                        key={i} 
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`
-                          flex items-center justify-between p-4 rounded-xl border transition-all group
-                          ${isApply 
-                            ? 'bg-gradient-to-r from-[#0A58CA] to-blue-600 border-[#084298] text-white hover:shadow-lg hover:-translate-y-0.5' 
-                            : 'bg-gray-50 border-gray-200 text-[#0B1B3D] hover:border-blue-300 hover:bg-blue-50'
-                          }
-                        `}
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className={`
-                            w-10 h-10 rounded-lg flex items-center justify-center shrink-0
-                            ${isApply ? 'bg-white/20' : 'bg-white border border-gray-200 text-[#0A58CA] shadow-sm'}
-                          `}>
-                            {isApply ? <ArrowRight className="w-5 h-5 text-white" /> : 
-                             isDownload ? <Download className="w-5 h-5" /> : 
-                             <Globe className="w-5 h-5" />}
-                          </div>
-                          <span className={`font-extrabold ${isApply ? 'text-lg text-white' : 'text-base'}`}>
-                            {link.label}
-                          </span>
-                        </div>
-                        <div className={`text-sm font-bold ${isApply ? 'text-blue-100' : 'text-[#0A58CA]'}`}>
-                          Click Here
-                        </div>
-                      </a>
-                    );
-                  })}
-                </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase"><MapPin className="w-3.5 h-3.5" /> Location</div>
+                <div className="font-black text-[#0B1B3D]">{job.quick_facts.job_location}</div>
+              </div>
+              <div className="space-y-1">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase"><DollarSign className="w-3.5 h-3.5" /> Salary</div>
+                <div className="font-black text-green-700">{job.quick_facts.salary}</div>
               </div>
             </div>
+          </section>
+        )}
+
+        {/* Desktop Two-Column Layout */}
+        <div className="flex flex-col md:flex-row gap-6">
+          <div className="flex-1 space-y-2 md:space-y-6 w-full">
+            
+            {/* Section 3: Summary */}
+            {job.job_summary && (
+              <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+                <h2 className="text-base font-black text-[#0B1B3D] mb-3">Job Summary</h2>
+                <p className="text-sm leading-relaxed text-gray-600">{job.job_summary}</p>
+              </section>
             )}
 
-            {/* 6. Frequently Asked Questions (FAQs) */}
-            {job.faqs && job.faqs.length > 0 && (
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2.5 px-3 sm:px-4 flex items-center gap-2 sm:gap-3">
-                  <HelpCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-100" />
-                  <h3 className="font-bold text-white text-sm sm:text-base tracking-wider uppercase">Frequently Asked Questions</h3>
-                </div>
-                <div className="p-4 sm:p-6 divide-y divide-gray-100">
-                  {job.faqs.map((faq, i) => (
-                    <div key={i} className="py-4 first:pt-0 last:pb-0">
-                      <h4 className="font-bold text-[#0B1B3D] text-base mb-2 flex gap-2">
-                        <span className="text-[#0A58CA]">Q:</span> {faq.question}
-                      </h4>
-                      <p className="text-gray-600 text-sm leading-relaxed flex gap-2">
-                        <span className="font-bold text-gray-400">A:</span> {faq.answer}
-                      </p>
+            {/* Section 4: Timelines */}
+            {job.important_dates && job.important_dates.length > 0 && (
+              <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+                <h2 className="text-base font-black text-[#0B1B3D] mb-5 flex items-center gap-2"><Calendar className="w-5 h-5 text-blue-600" /> Important Dates</h2>
+                <div className="relative border-l-2 border-blue-100 ml-3 space-y-6">
+                  {job.important_dates.map((date, idx) => (
+                    <div key={idx} className="relative pl-6">
+                      <div className="absolute w-3 h-3 bg-blue-500 rounded-full -left-[7px] top-1.5 ring-4 ring-white"></div>
+                      <h4 className="text-sm font-bold text-[#0B1B3D]">{date.label}</h4>
+                      <p className="text-sm text-blue-600 font-bold mt-0.5">{date.date}</p>
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
+            )}
+
+            {/* Section 7: Vacancies */}
+            {job.vacancy_cards && job.vacancy_cards.length > 0 && (
+              <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+                <h2 className="text-base font-black text-[#0B1B3D] mb-5 flex items-center gap-2"><Users className="w-5 h-5 text-blue-600" /> Vacancy Details ({job.quick_facts?.vacancies})</h2>
+                
+                {/* Mobile Cards (Hidden on md+) */}
+                <div className="space-y-4 md:hidden">
+                  {job.vacancy_cards.map((vac, idx) => (
+                    <div key={idx} className="border border-gray-200 rounded-xl p-4 shadow-sm bg-gray-50/50">
+                      <h3 className="font-bold text-[#0B1B3D] mb-3 border-b border-gray-200 pb-2">{vac.post_name}</h3>
+                      <div className="flex justify-between items-center mb-3">
+                        <span className="text-xs font-bold text-gray-500 uppercase">Total Posts</span>
+                        <span className="bg-blue-100 text-blue-800 font-black px-2.5 py-1 rounded text-sm">{vac.total}</span>
+                      </div>
+                      <div className="flex justify-between items-center mb-4">
+                        <span className="text-xs font-bold text-gray-500 uppercase">Qualification</span>
+                        <span className="text-sm font-bold text-gray-800 text-right max-w-[60%] leading-tight">{vac.education}</span>
+                      </div>
+                      <div className="bg-white border border-gray-200 rounded-lg p-3">
+                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">Category Wise Distribution</span>
+                        <div className="flex flex-wrap gap-2">
+                          {Object.entries(vac.categories).map(([cat, val]) => (
+                            <div key={cat} className="flex-1 min-w-[3rem] bg-gray-50 border border-gray-100 rounded text-center py-1.5">
+                              <div className="text-[9px] font-bold text-gray-500 uppercase">{cat}</div>
+                              <div className="text-sm font-black text-[#0B1B3D]">{val}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table (Hidden on mobile) */}
+                <div className="hidden md:block overflow-hidden border border-gray-200 rounded-xl">
+                  <table className="w-full text-left border-collapse text-sm">
+                    <thead className="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th className="p-3 font-bold text-[#0B1B3D]">Post Name</th>
+                        <th className="p-3 font-bold text-[#0B1B3D]">Total</th>
+                        <th className="p-3 font-bold text-[#0B1B3D]">Qualification</th>
+                        <th className="p-3 font-bold text-[#0B1B3D] border-l border-gray-200">Category Breakdown</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {job.vacancy_cards.map((vac, idx) => (
+                        <tr key={idx} className="hover:bg-gray-50/50">
+                          <td className="p-3 font-bold text-[#0B1B3D] align-top">{vac.post_name}</td>
+                          <td className="p-3 font-black text-blue-600 align-top"><span className="bg-blue-50 px-2.5 py-1 rounded border border-blue-100">{vac.total}</span></td>
+                          <td className="p-3 text-gray-700 font-medium align-top leading-snug max-w-[200px]">{vac.education}</td>
+                          <td className="p-3 border-l border-gray-100 align-top">
+                            <div className="flex gap-2 flex-wrap">
+                              {Object.entries(vac.categories).map(([cat, val]) => (
+                                <span key={cat} className="inline-flex flex-col border border-gray-200 rounded px-2 py-1 text-center bg-white min-w-[3rem]">
+                                  <span className="text-[9px] text-gray-500 font-bold uppercase">{cat}</span>
+                                  <span className="text-sm font-black text-gray-800 leading-none mt-0.5">{val}</span>
+                                </span>
+                              ))}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
+
+            {/* Section 10: Selection Process */}
+            {job.selection_process && job.selection_process.length > 0 && (
+              <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+                <h2 className="text-base font-black text-[#0B1B3D] mb-5 flex items-center gap-2"><ListOrdered className="w-5 h-5 text-blue-600" /> Selection Process</h2>
+                <div className="space-y-4">
+                  {job.selection_process.map((step) => (
+                    <div key={step.step_number} className="flex gap-4">
+                      <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black flex items-center justify-center shrink-0 border border-blue-200">{step.step_number}</div>
+                      <div>
+                        <h4 className="font-bold text-[#0B1B3D] mb-1">{step.title}</h4>
+                        <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Section 13: How To Apply */}
+            {job.how_to_apply && job.how_to_apply.length > 0 && (
+              <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+                <h2 className="text-base font-black text-[#0B1B3D] mb-5 flex items-center gap-2"><CheckSquare className="w-5 h-5 text-blue-600" /> How to Apply</h2>
+                <div className="space-y-3">
+                  {job.how_to_apply.map((step) => (
+                    <div key={step.step_number} className="flex gap-3 text-sm bg-gray-50 p-3 rounded-lg border border-gray-100">
+                      <span className="font-black text-blue-400 shrink-0">Step {step.step_number}:</span>
+                      <span className="text-gray-700">{step.instruction}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+            
+            {/* Section 16: FAQs */}
+            {job.faqs && job.faqs.length > 0 && (
+              <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+                <h2 className="text-base font-black text-[#0B1B3D] mb-5 flex items-center gap-2"><HelpCircle className="w-5 h-5 text-blue-600" /> Frequently Asked Questions</h2>
+                <div className="space-y-4">
+                  {job.faqs.map((faq, idx) => (
+                    <details key={idx} className="group bg-gray-50 border border-gray-200 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+                      <summary className="flex items-center justify-between p-4 cursor-pointer font-bold text-gray-800">
+                        {faq.question}
+                        <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
+                      </summary>
+                      <div className="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 bg-white leading-relaxed">
+                        {faq.answer}
+                      </div>
+                    </details>
+                  ))}
+                </div>
+              </section>
             )}
 
           </div>
-          
-          {/* RIGHT SIDEBAR */}
-          <div className="w-full lg:w-[350px] shrink-0 space-y-6 lg:sticky lg:top-6">
-             <div className="bg-[#0A58CA] rounded-xl text-white p-6 shadow-md border-b-4 border-[#084298]">
-               <h3 className="font-bold text-xl mb-2">Apply Online Now</h3>
-               <p className="text-blue-100 text-sm mb-5 leading-relaxed">Submit your application before <strong className="text-white">{job.last_date}</strong> to avoid last minute server issues.</p>
-               
-               {job.important_links?.find(l => l.label.toLowerCase().includes('apply')) ? (
-                 <a 
-                   href={job.important_links.find(l => l.label.toLowerCase().includes('apply'))?.url}
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   className="w-full py-3 bg-white text-[#0A58CA] rounded-lg font-bold hover:bg-gray-50 transition-colors shadow-sm flex items-center justify-center gap-2"
-                 >
-                   Proceed to Application <ArrowRight className="w-4 h-4" />
-                 </a>
-               ) : (
-                 <button className="w-full py-3 bg-white/20 text-white rounded-lg font-bold cursor-not-allowed">
-                   Link Not Available Yet
-                 </button>
-               )}
+
+          {/* Right Sidebar (Sticky on Desktop) */}
+          <div className="w-full md:w-[350px] shrink-0 space-y-4 md:space-y-6 md:sticky md:top-20 h-fit">
+             
+             {/* Desktop Quick Apply Card */}
+             <div className="hidden md:block bg-gradient-to-b from-[#0A58CA] to-[#084298] rounded-2xl text-white p-6 shadow-lg relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <h3 className="font-black text-xl mb-2">Ready to Apply?</h3>
+                <p className="text-blue-100 text-sm mb-5 leading-relaxed">Submit your application before <strong className="text-white">{job.quick_facts?.last_date}</strong>.</p>
+                <a href={job.important_links?.[0]?.url || '#'} className="w-full py-3.5 bg-yellow-400 text-yellow-950 hover:bg-yellow-300 rounded-xl font-black transition-colors shadow flex items-center justify-center gap-2 text-sm uppercase tracking-wide">
+                  Apply Online Now <ArrowRight className="w-4 h-4" />
+                </a>
              </div>
 
-             {/* Quick Actions */}
-             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-3">
-               <h3 className="font-bold text-[#0B1B3D] text-sm mb-2 border-b border-gray-100 pb-2">Quick Actions</h3>
-               <button className="w-full py-2.5 flex items-center justify-center gap-2 text-sm font-bold text-gray-700 bg-gray-50 border border-gray-200 rounded hover:bg-gray-100 transition-colors">
-                 <FileText className="w-4 h-4 text-gray-500" /> Save for Later
-               </button>
-               <button className="w-full py-2.5 flex items-center justify-center gap-2 text-sm font-bold text-gray-700 bg-gray-50 border border-gray-200 rounded hover:bg-gray-100 transition-colors">
-                 <Globe className="w-4 h-4 text-gray-500" /> Share with Friends
-               </button>
-             </div>
+             {/* Application Fee Card */}
+             {job.application_fee && job.application_fee.length > 0 && (
+               <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                 <h3 className="text-sm font-black text-[#0B1B3D] uppercase tracking-wider mb-4">Application Fee</h3>
+                 <ul className="space-y-3">
+                   {job.application_fee.map((fee, idx) => (
+                     <li key={idx} className="flex justify-between items-center text-sm border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+                       <span className="text-gray-600">{fee.category}</span>
+                       <span className="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded">{fee.amount}</span>
+                     </li>
+                   ))}
+                 </ul>
+               </div>
+             )}
+
+             {/* Important Links Card */}
+             {job.important_links && job.important_links.length > 0 && (
+               <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                 <h3 className="text-sm font-black text-[#0B1B3D] uppercase tracking-wider mb-4">Important Links</h3>
+                 <div className="space-y-2">
+                   {job.important_links.map((link, idx) => (
+                     <a key={idx} href={link.url} target="_blank" className={`flex items-center justify-between p-3 rounded-lg border text-sm font-bold transition-colors ${link.is_primary ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100' : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'}`}>
+                       {link.label}
+                       <ArrowRight className="w-4 h-4" />
+                     </a>
+                   ))}
+                 </div>
+               </div>
+             )}
           </div>
-
         </div>
+      </div>
+
+      {/* Mobile Sticky CTA Bar */}
+      <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] p-3 z-50 flex items-center gap-3">
+        <button className="flex-1 py-3 bg-white border border-[#0A58CA] text-[#0A58CA] rounded-xl font-bold text-sm shadow-sm flex items-center justify-center gap-1.5">
+          <CheckCircle2 className="w-4 h-4" /> Eligibility
+        </button>
+        <a href={job.important_links?.[0]?.url || '#'} className="flex-1 py-3 bg-[#0A58CA] text-white rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-1.5 uppercase tracking-wide">
+          Apply Now <ArrowRight className="w-4 h-4" />
+        </a>
       </div>
     </div>
   );

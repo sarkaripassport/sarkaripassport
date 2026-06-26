@@ -3,11 +3,14 @@
 import { useState } from 'react';
 import { Plus, Trash2, Settings, Table as TableIcon } from 'lucide-react';
 
-export default function DynamicVacancyMatrix() {
-  const [columns, setColumns] = useState(['Post Name', 'UR', 'OBC', 'SC', 'ST', 'Total', 'Eligibility']);
-  const [rows, setRows] = useState<{id: number, data: Record<string, string>}[]>([
-    { id: 1, data: { 'Post Name': '', 'UR': '', 'OBC': '', 'SC': '', 'ST': '', 'Total': '', 'Eligibility': '' } }
-  ]);
+export default function DynamicVacancyMatrix({ initialData }: { initialData?: any }) {
+  const defaultColumns = ['Post Name', 'UR', 'OBC', 'SC', 'ST', 'Total', 'Eligibility'];
+  const defaultRows = [{ id: 1, data: { 'Post Name': '', 'UR': '', 'OBC': '', 'SC': '', 'ST': '', 'Total': '', 'Eligibility': '' } }];
+
+  const [columns, setColumns] = useState<string[]>(initialData?.columns || defaultColumns);
+  const [rows, setRows] = useState<{id: number, data: Record<string, string>}[]>(
+    initialData?.rows || defaultRows
+  );
   const [newColName, setNewColName] = useState('');
 
   const addColumn = () => {
