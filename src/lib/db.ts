@@ -144,6 +144,8 @@ export interface Job {
   // Section 17: Official Links
   important_links: ImportantLink[];
   
+  category?: string; // Optional for backward compatibility, but UI will set it
+
   created_at: string;
 }
 

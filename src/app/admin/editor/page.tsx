@@ -8,6 +8,7 @@ export default function AdvancedEditorPage() {
   const [jobData, setJobData] = useState<any>({
     title: '',
     slug: '',
+    category: 'Latest Jobs', // Default category
     organization: '',
     logo_url: '',
     status: 'Active',
@@ -79,6 +80,19 @@ export default function AdvancedEditorPage() {
     updateField(field, newArr);
   };
 
+  const setCategoryValue = (cardIndex: number, catName: string, catValue: string) => {
+    const newArr = [...jobData.vacancy_cards];
+    if (!newArr[cardIndex].categories) newArr[cardIndex].categories = {};
+    newArr[cardIndex].categories[catName] = catValue;
+    updateField('vacancy_cards', newArr);
+  };
+
+  const removeCategory = (cardIndex: number, catName: string) => {
+    const newArr = [...jobData.vacancy_cards];
+    delete newArr[cardIndex].categories[catName];
+    updateField('vacancy_cards', newArr);
+  };
+
   return (
     <div className="font-sans text-gray-800 flex flex-col h-full bg-gray-50 min-h-screen">
       {/* Editor Header */}
@@ -127,8 +141,40 @@ export default function AdvancedEditorPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div><label className="block text-sm font-bold mb-1">Job Title</label><input type="text" className="w-full border rounded p-2" value={jobData.title} onChange={e => updateField('title', e.target.value)} /></div>
                     <div><label className="block text-sm font-bold mb-1">URL Slug</label><input type="text" className="w-full border rounded p-2" value={jobData.slug} onChange={e => updateField('slug', e.target.value)} /></div>
+                    <div>
+                      <label className="block text-sm font-bold mb-1">Category</label>
+                      <input type="text" list="job-categories" className="w-full border rounded p-2" value={jobData.category} onChange={e => updateField('category', e.target.value)} placeholder="Select or type custom category" />
+                      <datalist id="job-categories">
+                        <option value="Latest Jobs" />
+                        <option value="Admit Card" />
+                        <option value="Result" />
+                        <option value="Answer Key" />
+                        <option value="Syllabus" />
+                        <option value="Admission" />
+                      </datalist>
+                    </div>
                     <div><label className="block text-sm font-bold mb-1">Organization</label><input type="text" className="w-full border rounded p-2" value={jobData.organization} onChange={e => updateField('organization', e.target.value)} /></div>
-                    <div><label className="block text-sm font-bold mb-1">Logo URL</label><input type="text" className="w-full border rounded p-2" value={jobData.logo_url} onChange={e => updateField('logo_url', e.target.value)} /></div>
+                    <div>
+                      <label className="block text-sm font-bold mb-1">Logo URL</label>
+                      <div className="flex gap-2">
+                        <input type="text" className="w-full border rounded p-2" placeholder="https://" value={jobData.logo_url} onChange={e => updateField('logo_url', e.target.value)} />
+                        <label className="bg-gray-100 hover:bg-gray-200 border rounded px-3 py-2 cursor-pointer flex items-center justify-center shrink-0 shadow-sm transition text-sm font-bold">
+                          Upload
+                          <input type="file" className="hidden" accept="image/*" onChange={async (e) => {
+                            if (e.target.files?.[0]) {
+                              const formData = new FormData();
+                              formData.append('file', e.target.files[0]);
+                              try {
+                                const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                                const data = await res.json();
+                                if (data.url) updateField('logo_url', data.url);
+                                else alert('Upload failed: ' + data.error);
+                              } catch (err) { alert('Upload error'); }
+                            }
+                          }} />
+                        </label>
+                      </div>
+                    </div>
                   </div>
                   <div><label className="block text-sm font-bold mb-1">Job Summary (Short Description)</label><textarea className="w-full border rounded p-2 h-24" value={jobData.job_summary} onChange={e => updateField('job_summary', e.target.value)} /></div>
                   <div><label className="block text-sm font-bold mb-1">Salary & Benefits (HTML)</label><textarea className="w-full border rounded p-2 h-24" value={jobData.salary_benefits} onChange={e => updateField('salary_benefits', e.target.value)} /></div>
@@ -157,6 +203,31 @@ export default function AdvancedEditorPage() {
                           <div><label className="text-xs font-bold">Post Name</label><input type="text" className="w-full border rounded p-1" value={card.post_name} onChange={e => updateArrayItem('vacancy_cards', index, 'post_name', e.target.value)} /></div>
                           <div><label className="text-xs font-bold">Total Vacancies</label><input type="text" className="w-full border rounded p-1" value={card.total} onChange={e => updateArrayItem('vacancy_cards', index, 'total', e.target.value)} /></div>
                           <div><label className="text-xs font-bold">Education</label><input type="text" className="w-full border rounded p-1" value={card.education} onChange={e => updateArrayItem('vacancy_cards', index, 'education', e.target.value)} /></div>
+                        </div>
+                        <div className="border border-gray-200 rounded p-3 bg-white">
+                          <label className="text-xs font-bold uppercase text-gray-500 mb-2 block">Category Wise Vacancies</label>
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {Object.entries(card.categories || {}).map(([cat, val]) => (
+                              <div key={cat} className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded px-2 py-1">
+                                <span className="text-xs font-bold">{cat}:</span>
+                                <input type="text" className="w-12 text-xs border rounded px-1" value={val as string} onChange={e => setCategoryValue(index, cat, e.target.value)} />
+                                <button className="text-red-500 hover:text-red-700 ml-1" onClick={() => removeCategory(index, cat)}>&times;</button>
+                              </div>
+                            ))}
+                          </div>
+                          <div className="flex gap-2 items-center mt-2">
+                            <input type="text" placeholder="Category (e.g. UR, OBC)" className="text-xs border rounded p-1 w-32" id={`cat-name-${index}`} />
+                            <input type="text" placeholder="Count" className="text-xs border rounded p-1 w-20" id={`cat-val-${index}`} />
+                            <button className="bg-gray-200 hover:bg-gray-300 text-xs font-bold px-2 py-1 rounded" onClick={() => {
+                              const nameInput = document.getElementById(`cat-name-${index}`) as HTMLInputElement;
+                              const valInput = document.getElementById(`cat-val-${index}`) as HTMLInputElement;
+                              if (nameInput.value && valInput.value) {
+                                setCategoryValue(index, nameInput.value, valInput.value);
+                                nameInput.value = '';
+                                valInput.value = '';
+                              }
+                            }}>Add</button>
+                          </div>
                         </div>
                       </div>
                     ))}
