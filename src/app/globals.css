@@ -15,6 +15,7 @@
   --font-sans: "Inter", system-ui, sans-serif;
 
   --animate-swipe: swipe 1.5s ease-in-out infinite;
+  --animate-marquee: marquee 25s linear infinite;
 
   @keyframes swipe {
     0%, 100% {
@@ -23,6 +24,11 @@
     50% {
       transform: translateX(-15px);
     }
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-50%); }
   }
 }
 

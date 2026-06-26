@@ -1,0 +1,33 @@
+{
+  "seo": {
+    "title": "SarkariJob - Latest Government Jobs, Results & Admit Cards",
+    "description": "Find the latest Sarkari jobs, admit cards, results, and syllabus updates. Check your eligibility and apply online instantly.",
+    "keywords": "sarkari job, sarkari result, admit card, latest govt jobs"
+  },
+  "hero": {
+    "title": "Latest Government Jobs, Results, Admit Cards & Eligibility Updates",
+    "subtitle": "Create your Naukri Passport profile once and check your eligibility for every job instantly."
+  },
+  "four_columns": {
+    "col1_category": "Admit Card",
+    "col2_category": "Results",
+    "col3_category": "Answer Key",
+    "col4_category": "Syllabus"
+  },
+  "announcements": [
+    {
+      "id": "a1",
+      "text": "SSC CGL 2026 Notification Released - Apply Now!",
+      "link": "/jobs/ssc-cgl-2026",
+      "isActive": true,
+      "priority": "high"
+    },
+    {
+      "id": "a2",
+      "text": "UPSC Civil Services Prelims Admit Card Available",
+      "link": "/jobs/upsc-civil-services-2026",
+      "isActive": true,
+      "priority": "normal"
+    }
+  ]
+}

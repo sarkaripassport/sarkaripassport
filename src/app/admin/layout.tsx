@@ -81,8 +81,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="bg-[#061129] py-1 text-[12px]">
                   <Link href="/admin/jobs" className="block px-10 py-1.5 hover:text-white transition-colors">All Jobs</Link>
                   <Link href="/admin/editor" className="block px-10 py-1.5 hover:text-white transition-colors">Add New</Link>
-                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">Categories</Link>
-                  <Link href="#" className="block px-10 py-1.5 hover:text-white transition-colors">Departments</Link>
+                  <Link href="/admin/categories" className="block px-10 py-1.5 hover:text-white transition-colors">Categories</Link>
                 </div>
               )}
             </div>
@@ -140,9 +139,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="my-2 border-t border-white/10"></div>
 
             {/* Advanced WP Items */}
-            <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+            <Link href="/admin/homepage" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
               <LayoutTemplate className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
-              <span className="font-medium">Appearance</span>
+              <span className="font-medium">Homepage Layout</span>
             </Link>
             
             <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">

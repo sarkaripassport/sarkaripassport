@@ -150,6 +150,44 @@ export interface Job {
 }
 
 const DB_PATH = path.join(process.cwd(), 'jobs-db.json');
+const CATEGORIES_DB = path.join(process.cwd(), 'categories-db.json');
+const SETTINGS_DB = path.join(process.cwd(), 'settings-db.json');
+
+export interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
+  isTrending: boolean;
+  isQuickLink: boolean;
+}
+
+export interface Announcement {
+  id: string;
+  text: string;
+  link: string;
+  isActive: boolean;
+  priority: 'high' | 'normal';
+}
+
+export interface HomepageSettings {
+  seo: {
+    title: string;
+    description: string;
+    keywords: string;
+  };
+  hero: {
+    title: string;
+    subtitle: string;
+  };
+  four_columns: {
+    col1_category: string;
+    col2_category: string;
+    col3_category: string;
+    col4_category: string;
+  };
+  announcements: Announcement[];
+}
 
 // Initialize the database with premium mock data
 async function initDb() {
@@ -265,6 +303,75 @@ async function initDb() {
     ];
     await fs.writeFile(DB_PATH, JSON.stringify(defaultData, null, 2));
   }
+
+  // Init Categories
+  try {
+    await fs.access(CATEGORIES_DB);
+  } catch (error) {
+    const defaultCategories: Category[] = [
+      { id: 'c1', name: 'Latest Jobs', slug: 'latest-jobs', icon: 'Briefcase', isTrending: false, isQuickLink: true },
+      { id: 'c2', name: 'Admit Card', slug: 'admit-card', icon: 'FileText', isTrending: false, isQuickLink: true },
+      { id: 'c3', name: 'Results', slug: 'results', icon: 'Award', isTrending: false, isQuickLink: true },
+      { id: 'c4', name: 'Answer Key', slug: 'answer-key', icon: 'CheckCircle2', isTrending: false, isQuickLink: true },
+      { id: 'c5', name: 'Syllabus', slug: 'syllabus', icon: 'GraduationCap', isTrending: false, isQuickLink: true },
+      { id: 'c6', name: 'Admission', slug: 'admission', icon: 'Building2', isTrending: false, isQuickLink: true },
+      { id: 'c7', name: 'SSC', slug: 'ssc', icon: 'Landmark', isTrending: true, isQuickLink: false },
+      { id: 'c8', name: 'Railway', slug: 'railway', icon: 'Train', isTrending: true, isQuickLink: false },
+      { id: 'c9', name: 'Bank', slug: 'bank', icon: 'Building2', isTrending: true, isQuickLink: false },
+      { id: 'c10', name: 'Police', slug: 'police', icon: 'ShieldCheck', isTrending: true, isQuickLink: false },
+      { id: 'c11', name: 'Defence', slug: 'defence', icon: 'Shield', isTrending: true, isQuickLink: false },
+      { id: 'c12', name: 'UPSC', slug: 'upsc', icon: 'Landmark', isTrending: true, isQuickLink: false }
+    ];
+    await fs.writeFile(CATEGORIES_DB, JSON.stringify(defaultCategories, null, 2));
+  }
+
+  // Init Settings
+  try {
+    await fs.access(SETTINGS_DB);
+  } catch (error) {
+    const defaultSettings: HomepageSettings = {
+      seo: {
+        title: "SarkariJob - Latest Government Jobs, Results & Admit Cards",
+        description: "Find the latest Sarkari jobs, admit cards, results, and syllabus updates. Check your eligibility and apply online instantly.",
+        keywords: "sarkari job, sarkari result, admit card, latest govt jobs"
+      },
+      hero: {
+        title: "Latest Government Jobs, Results, Admit Cards & Eligibility Updates",
+        subtitle: "Create your Naukri Passport profile once and check your eligibility for every job instantly."
+      },
+      four_columns: {
+        col1_category: "Admit Card",
+        col2_category: "Results",
+        col3_category: "Answer Key",
+        col4_category: "Syllabus"
+      },
+      announcements: [
+        { id: 'a1', text: "SSC CGL 2026 Notification Released - Apply Now!", link: "/jobs/ssc-cgl-2026", isActive: true, priority: "high" },
+        { id: 'a2', text: "UPSC Civil Services Prelims Admit Card Available", link: "/jobs/upsc-civil-services-2026", isActive: true, priority: "normal" }
+      ]
+    };
+    await fs.writeFile(SETTINGS_DB, JSON.stringify(defaultSettings, null, 2));
+  }
+}
+
+export async function getCategories(): Promise<Category[]> {
+  await initDb();
+  const data = await fs.readFile(CATEGORIES_DB, 'utf-8');
+  return JSON.parse(data);
+}
+
+export async function saveCategories(categories: Category[]): Promise<void> {
+  await fs.writeFile(CATEGORIES_DB, JSON.stringify(categories, null, 2));
+}
+
+export async function getSettings(): Promise<HomepageSettings> {
+  await initDb();
+  const data = await fs.readFile(SETTINGS_DB, 'utf-8');
+  return JSON.parse(data);
+}
+
+export async function saveSettings(settings: HomepageSettings): Promise<void> {
+  await fs.writeFile(SETTINGS_DB, JSON.stringify(settings, null, 2));
 }
 
 export async function getJobs(): Promise<Job[]> {

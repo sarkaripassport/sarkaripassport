@@ -1,0 +1,98 @@
+[
+  {
+    "id": "c1",
+    "name": "Latest Jobs",
+    "slug": "latest-jobs",
+    "icon": "Briefcase",
+    "isTrending": false,
+    "isQuickLink": true
+  },
+  {
+    "id": "c2",
+    "name": "Admit Card",
+    "slug": "admit-card",
+    "icon": "FileText",
+    "isTrending": false,
+    "isQuickLink": true
+  },
+  {
+    "id": "c3",
+    "name": "Results",
+    "slug": "results",
+    "icon": "Award",
+    "isTrending": false,
+    "isQuickLink": true
+  },
+  {
+    "id": "c4",
+    "name": "Answer Key",
+    "slug": "answer-key",
+    "icon": "CheckCircle2",
+    "isTrending": false,
+    "isQuickLink": true
+  },
+  {
+    "id": "c5",
+    "name": "Syllabus",
+    "slug": "syllabus",
+    "icon": "GraduationCap",
+    "isTrending": false,
+    "isQuickLink": true
+  },
+  {
+    "id": "c6",
+    "name": "Admission",
+    "slug": "admission",
+    "icon": "Building2",
+    "isTrending": false,
+    "isQuickLink": true
+  },
+  {
+    "id": "c7",
+    "name": "SSC",
+    "slug": "ssc",
+    "icon": "Landmark",
+    "isTrending": true,
+    "isQuickLink": false
+  },
+  {
+    "id": "c8",
+    "name": "Railway",
+    "slug": "railway",
+    "icon": "Train",
+    "isTrending": true,
+    "isQuickLink": false
+  },
+  {
+    "id": "c9",
+    "name": "Bank",
+    "slug": "bank",
+    "icon": "Building2",
+    "isTrending": true,
+    "isQuickLink": false
+  },
+  {
+    "id": "c10",
+    "name": "Police",
+    "slug": "police",
+    "icon": "ShieldCheck",
+    "isTrending": true,
+    "isQuickLink": false
+  },
+  {
+    "id": "c11",
+    "name": "Defence",
+    "slug": "defence",
+    "icon": "Shield",
+    "isTrending": true,
+    "isQuickLink": false
+  },
+  {
+    "id": "c12",
+    "name": "UPSC",
+    "slug": "upsc",
+    "icon": "Landmark",
+    "isTrending": true,
+    "isQuickLink": false
+  }
+]
