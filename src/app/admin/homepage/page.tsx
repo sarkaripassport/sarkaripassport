@@ -121,6 +121,17 @@ export default function HomepageManager() {
             />
             <p className="text-xs text-gray-500 mt-1">Comma separated</p>
           </div>
+
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-1">Google Search Console Verification ID</label>
+            <input 
+              type="text" 
+              value={settings.seo.gscVerification || ""}
+              onChange={(e) => setSettings({...settings, seo: {...settings.seo, gscVerification: e.target.value}})}
+              placeholder="e.g. d1q8f7k... (Just the content value)"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none font-mono text-sm"
+            />
+          </div>
         </div>
 
         {/* Hero Settings */}

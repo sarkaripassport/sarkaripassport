@@ -94,5 +94,29 @@
     "icon": "Landmark",
     "isTrending": true,
     "isQuickLink": false
+  },
+  {
+    "id": "c1782453701759",
+    "name": "State Gov",
+    "slug": "state-gov",
+    "icon": "Briefcase",
+    "isTrending": true,
+    "isQuickLink": false
+  },
+  {
+    "id": "c1782453734620",
+    "name": "PSU",
+    "slug": "psu",
+    "icon": "Briefcase",
+    "isTrending": true,
+    "isQuickLink": false
+  },
+  {
+    "id": "c1782453735900",
+    "name": "Central Gov",
+    "slug": "central-gov",
+    "icon": "Briefcase",
+    "isTrending": true,
+    "isQuickLink": false
   }
 ]

@@ -4,6 +4,15 @@ import { Search, ShieldCheck } from "lucide-react";
 export default function Navbar() {
   return (
     <nav className="bg-[#0B1B3D] text-white border-b border-gray-800 sticky top-0 z-50">
+      {/* Top Utility Bar */}
+      <div className="bg-[#061129] py-1 border-b border-gray-800">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex justify-end">
+          <Link href="/sitemap.xml" className="text-[10px] text-gray-400 hover:text-white transition-colors">
+            Sitemap
+          </Link>
+        </div>
+      </div>
+
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           

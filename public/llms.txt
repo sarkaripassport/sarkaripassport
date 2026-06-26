@@ -1,0 +1,18 @@
+# Naukri Passport
+
+> Naukri Passport is India's Smartest Government Job Platform. We provide the latest Sarkari jobs, admit cards, results, answer keys, and syllabus updates.
+
+## Core Features
+- Users can browse the latest government jobs across India (Central Govt, State Govt, Banking, Defence, SSC, UPSC, Railway, Police, etc).
+- Jobs are updated daily with accurate vacancy counts, application dates, required qualifications, and selection processes.
+- Candidates can create a "Naukri Passport" profile to automatically check their eligibility against any job post.
+
+## Site Structure
+- Homepage: `https://naukripassport.com/` - Features trending categories, live updates, and a fast-filter grid.
+- Job Listings: `https://naukripassport.com/jobs` - A powerful search engine to filter jobs by qualification, state, and category.
+- Job Details: `https://naukripassport.com/jobs/[slug]` - Deep dive into a specific job's requirements, dates, and official notification links.
+
+## Official Links
+- Home: https://naukripassport.com
+- Jobs: https://naukripassport.com/jobs
+- Sitemap: https://naukripassport.com/sitemap.xml

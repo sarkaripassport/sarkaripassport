@@ -188,7 +188,7 @@ export default async function Home() {
 
           {/* Trending Categories */}
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-            <h3 className="font-bold text-[#0B1B3D] mb-4">Trending Categories</h3>
+            <h2 className="font-bold text-[#0B1B3D] mb-4 text-lg">Trending Categories</h2>
             <div className="flex flex-wrap gap-4 justify-start items-center">
               {trendingCategories.map((item) => {
                 const Icon = ICON_MAP[item.icon] || Briefcase;
@@ -211,7 +211,7 @@ export default async function Home() {
                 <FileText className="w-10 h-10 text-[#0A58CA]" />
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-[#0B1B3D] mb-1">Confused whether you are eligible?</h3>
+                <h2 className="text-2xl font-bold text-[#0B1B3D] mb-1">Confused whether you are eligible?</h2>
                 <p className="text-gray-600">Create your Naukri Passport profile once and check your eligibility for every job instantly.</p>
               </div>
             </div>

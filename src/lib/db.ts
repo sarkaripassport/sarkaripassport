@@ -175,6 +175,7 @@ export interface HomepageSettings {
     title: string;
     description: string;
     keywords: string;
+    gscVerification?: string;
   };
   hero: {
     title: string;
@@ -333,7 +334,8 @@ async function initDb() {
       seo: {
         title: "SarkariJob - Latest Government Jobs, Results & Admit Cards",
         description: "Find the latest Sarkari jobs, admit cards, results, and syllabus updates. Check your eligibility and apply online instantly.",
-        keywords: "sarkari job, sarkari result, admit card, latest govt jobs"
+        keywords: "sarkari job, sarkari result, admit card, latest govt jobs",
+        gscVerification: ""
       },
       hero: {
         title: "Latest Government Jobs, Results, Admit Cards & Eligibility Updates",
