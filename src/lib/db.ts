@@ -445,3 +445,16 @@ export async function createJob(job: Omit<Job, 'id' | 'created_at'>): Promise<Jo
   await fs.writeFile(DB_PATH, JSON.stringify(jobs, null, 2));
   return newJob;
 }
+
+export async function deleteJob(id: string): Promise<boolean> {
+  const jobs = await getJobs();
+  const initialLength = jobs.length;
+  const updatedJobs = jobs.filter(j => j.id !== id);
+  
+  if (updatedJobs.length === initialLength) {
+    return false; // Job not found
+  }
+  
+  await fs.writeFile(DB_PATH, JSON.stringify(updatedJobs, null, 2));
+  return true;
+}
