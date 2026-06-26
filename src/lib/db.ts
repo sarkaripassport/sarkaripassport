@@ -170,6 +170,18 @@ export interface Announcement {
   priority: 'high' | 'normal';
 }
 
+export interface PageSettings {
+  seo: {
+    title: string;
+    description: string;
+    keywords: string;
+  };
+  hero: {
+    title: string;
+    subtitle: string;
+  };
+}
+
 export interface HomepageSettings {
   seo: {
     title: string;
@@ -188,6 +200,13 @@ export interface HomepageSettings {
     col4_category: string;
   };
   announcements: Announcement[];
+  pages?: {
+    'admit-card': PageSettings;
+    'results': PageSettings;
+    'answer-key': PageSettings;
+    'syllabus': PageSettings;
+    'admission': PageSettings;
+  };
 }
 
 // Initialize the database with premium mock data
@@ -350,7 +369,29 @@ async function initDb() {
       announcements: [
         { id: 'a1', text: "SSC CGL 2026 Notification Released - Apply Now!", link: "/jobs/ssc-cgl-2026", isActive: true, priority: "high" },
         { id: 'a2', text: "UPSC Civil Services Prelims Admit Card Available", link: "/jobs/upsc-civil-services-2026", isActive: true, priority: "normal" }
-      ]
+      ],
+      pages: {
+        'admit-card': {
+          seo: { title: "Admit Cards - SarkariJob", description: "Download latest admit cards", keywords: "admit card" },
+          hero: { title: "Download Admit Cards", subtitle: "Get your hall tickets for upcoming exams" }
+        },
+        'results': {
+          seo: { title: "Results - SarkariJob", description: "Check latest exam results", keywords: "results, exam results" },
+          hero: { title: "Exam Results", subtitle: "Check your selection status instantly" }
+        },
+        'answer-key': {
+          seo: { title: "Answer Keys - SarkariJob", description: "Download exam answer keys", keywords: "answer key" },
+          hero: { title: "Exam Answer Keys", subtitle: "Verify your answers and calculate scores" }
+        },
+        'syllabus': {
+          seo: { title: "Syllabus - SarkariJob", description: "Download exam syllabus", keywords: "syllabus" },
+          hero: { title: "Exam Syllabus", subtitle: "Prepare with the official syllabus" }
+        },
+        'admission': {
+          seo: { title: "Admissions - SarkariJob", description: "Latest university admissions", keywords: "admission" },
+          hero: { title: "University Admissions", subtitle: "Apply for top universities" }
+        }
+      }
     };
     await fs.writeFile(SETTINGS_DB, JSON.stringify(defaultSettings, null, 2));
   }

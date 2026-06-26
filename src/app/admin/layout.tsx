@@ -143,6 +143,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <LayoutTemplate className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
               <span className="font-medium">Homepage Layout</span>
             </Link>
+
+            <Link href="/admin/pages" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+              <FileText className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+              <span className="font-medium">Landing Pages</span>
+            </Link>
             
             <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
               <User className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
