@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { 
   LayoutDashboard, Briefcase, FileText, Settings, 
   LogOut, Bell, ChevronDown, Monitor, Search, Plus, User, Megaphone, 
@@ -9,6 +10,9 @@ import {
 } from "lucide-react";
 
 export default function AdminClientShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isEditor = pathname === '/admin/editor';
+
   // Mock state for expandable menus
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
     jobs: true,
@@ -52,6 +56,7 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
       <div className="flex flex-1 overflow-hidden">
         
         {/* 2. Sarkari-Specific WP Sidebar (Left) */}
+        {!isEditor && (
         <aside className="w-40 sm:w-48 bg-[#0B1B3D] text-[#b3b9bf] flex flex-col shrink-0 overflow-y-auto custom-scrollbar">
           
           <div className="py-2">
@@ -181,6 +186,7 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
           </div>
 
         </aside>
+        )}
 
         {/* 3. Main Content Workspace */}
         <main className="flex-1 overflow-y-auto relative">

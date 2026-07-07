@@ -235,10 +235,10 @@ function EditorContent() {
       </div>
 
       <main className="flex-grow max-w-[1600px] w-full mx-auto px-4 py-6">
-        <div className="flex flex-col lg:flex-row gap-6 items-start">
+        <div className="flex flex-col lg:flex-row gap-6 items-start w-full">
           
           {/* Main Writing Area */}
-          <div className="flex-grow w-full space-y-6">
+          <div className="flex-grow min-w-0 w-full space-y-6">
             
             <div className="relative border-b border-gray-200">
               <div className="flex bg-white rounded-t-xl overflow-x-auto shadow-sm sticky top-[70px] z-30 scrollbar-hide no-scrollbar snap-x snap-mandatory pb-1">
@@ -557,7 +557,7 @@ function EditorContent() {
           </div>
           
           {/* Right Sidebar: SEO & Live Previews */}
-          <div className="w-full lg:w-[350px] shrink-0 space-y-6">
+          <div className="w-full lg:w-80 shrink-0 space-y-6 max-w-full min-w-0 overflow-hidden">
             {/* Breaking News Toggle */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
               <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
