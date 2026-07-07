@@ -2,7 +2,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getJobBySlug, getCategories } from '@/lib/db';
-import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
 import JobComments from '@/components/jobs/JobComments';
 import { AutoLinkedText } from '@/lib/autoLinker';
 import SalaryCalculator from '@/components/jobs/SalaryCalculator';
@@ -289,6 +289,23 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       <div className="absolute w-3 h-3 bg-blue-500 rounded-full -left-[7px] top-1.5 ring-4 ring-white"></div>
                       <h4 className="text-sm font-bold text-[#0B1B3D]">{date.label[lang]}</h4>
                       <p className="text-sm text-blue-600 font-bold mt-0.5">{date.date[lang]}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Application Fees */}
+            {job.application_fee && job.application_fee.length > 0 && (
+              <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+                <h2 className="text-base font-black text-[#0B1B3D] mb-5 flex items-center gap-2">
+                  <IndianRupee className="w-5 h-5 text-green-600" /> Application Fees
+                </h2>
+                <div className="grid grid-cols-1 gap-3">
+                  {job.application_fee.map((fee, idx) => (
+                    <div key={idx} className="flex justify-between items-center p-3 rounded-lg border border-green-100 bg-green-50/30">
+                      <span className="text-sm font-semibold text-gray-700">{fee.category[lang]}</span>
+                      <span className="text-sm font-black text-green-700">{fee.amount[lang]}</span>
                     </div>
                   ))}
                 </div>

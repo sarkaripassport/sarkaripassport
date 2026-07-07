@@ -5,6 +5,7 @@ import { Eye, Save, LayoutTemplate, Plus, Trash2, ArrowUp, ArrowDown, HelpCircle
 import { useRouter, useSearchParams } from 'next/navigation';
 import SeoMatrixWidget from '@/components/admin/SeoMatrixWidget';
 import SalaryCalcWidget from '@/components/admin/SalaryCalcWidget';
+import ApplicationFeeWidget from '@/components/admin/ApplicationFeeWidget';
 
 function EditorContent() {
   const router = useRouter();
@@ -239,16 +240,18 @@ function EditorContent() {
           {/* Main Writing Area */}
           <div className="flex-grow w-full space-y-6">
             
-            <div className="flex bg-white rounded-t-xl border-b border-gray-200 overflow-x-auto shadow-sm sticky top-[70px] z-30">
-              {['general', 'quick_facts', 'vacancies', 'eligibility', 'timelines', 'checklists', 'links', 'syllabus', 'salary', 'seo'].map(tab => (
-                <button 
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-3 text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-colors ${activeTab === tab ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/50' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'}`}
-                >
-                  {tab.replace('_', ' ')}
-                </button>
-              ))}
+            <div className="relative border-b border-gray-200">
+              <div className="flex bg-white rounded-t-xl overflow-x-auto shadow-sm sticky top-[70px] z-30 scrollbar-hide no-scrollbar snap-x snap-mandatory pb-1">
+                {['general', 'fees', 'quick_facts', 'vacancies', 'eligibility', 'timelines', 'checklists', 'links', 'syllabus', 'salary', 'seo'].map(tab => (
+                  <button 
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`px-5 py-3 text-sm font-bold uppercase tracking-wider whitespace-nowrap transition-colors snap-start ${activeTab === tab ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50/50' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-800'}`}
+                  >
+                    {tab.replace('_', ' ')}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <div className="bg-white rounded-b-xl border border-t-0 border-gray-200 shadow-sm p-6 min-h-[600px]">
@@ -534,6 +537,12 @@ function EditorContent() {
                   <div className="mt-8">
                     <SeoMatrixWidget job={jobData} updateJob={(updates) => setJobData({ ...jobData, ...updates })} />
                   </div>
+                </div>
+              )}
+
+              {activeTab === 'fees' && (
+                <div className="space-y-6 max-w-4xl">
+                  <ApplicationFeeWidget job={jobData} editLang={editLang} onChange={(updates) => setJobData({ ...jobData, ...updates })} />
                 </div>
               )}
 
