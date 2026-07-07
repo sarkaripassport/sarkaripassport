@@ -575,8 +575,6 @@ function EditorContent() {
                 </div>
               </div>
 
-              <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
-                
               <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm shadow-sm font-sans">
                 <div className="text-[#1a0dab] text-[18px] hover:underline cursor-pointer truncate max-w-full inline-block mb-1">
                   {jobData.seo_title?.[editLang] || jobData.title?.[editLang] || 'Job Title Example'}
