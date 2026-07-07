@@ -85,12 +85,12 @@ export default function JobCard({
         {/* Title and Logo */}
         <div className="flex gap-3 items-start mb-3">
           {logoUrl ? (
-            <div className="w-12 h-12 shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-2 group-hover:scale-105 transition-transform duration-300">
+            <div className="w-16 h-16 shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-1.5 group-hover:scale-105 transition-transform duration-300">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={logoUrl} alt={`${org} logo`} className="max-w-full max-h-full object-contain" />
             </div>
           ) : (
-            <div className="w-12 h-12 shrink-0 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl shadow-sm flex items-center justify-center text-blue-600 font-bold text-lg group-hover:scale-105 transition-transform duration-300">
+            <div className="w-16 h-16 shrink-0 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl shadow-sm flex items-center justify-center text-blue-600 font-bold text-2xl group-hover:scale-105 transition-transform duration-300">
               {org.charAt(0)}
             </div>
           )}
