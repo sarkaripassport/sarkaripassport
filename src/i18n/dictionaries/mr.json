@@ -1,0 +1,52 @@
+{
+  "navigation": {
+    "home": "मुख्यपृष्ठ",
+    "latestJobs": "नवीनतम नोकऱ्या",
+    "admitCard": "प्रवेशपत्र",
+    "results": "निकाल",
+    "answerKey": "उत्तरतालिका",
+    "syllabus": "अभ्यासक्रम",
+    "adminPanel": "अॅडमिन पॅनेल",
+    "login": "लॉग इन",
+    "register": "रजिस्टर"
+  },
+  "home": {
+    "trending": "ट्रेंडिंग",
+    "quickLinks": "क्विक लिंक्स",
+    "searchPlaceholder": "नोकरीचे शीर्षक किंवा संस्था शोधा...",
+    "allCategories": "सर्व श्रेणी",
+    "viewAllJobs": "सर्व नोकऱ्या पहा",
+    "daysLeft": "दिवस बाकी"
+  },
+  "job": {
+    "status": "स्थिती",
+    "applyNow": "आता अर्ज करा",
+    "downloadAdmitCard": "प्रवेशपत्र डाउनलोड करा",
+    "checkResult": "निकाल तपासा",
+    "quickFacts": "संक्षिप्त माहिती",
+    "vacancies": "रिक्त पदे",
+    "lastDate": "अंतिम तारीख",
+    "qualification": "पात्रता",
+    "ageLimit": "वयोमर्यादा",
+    "salary": "पगार",
+    "location": "ठिकाण",
+    "jobSummary": "नोकरीचा सारांश",
+    "importantDates": "महत्त्वाच्या तारखा",
+    "applicationFee": "अर्ज शुल्क",
+    "vacancyDetails": "रिक्त पदांचा तपशील",
+    "selectionProcess": "निवड प्रक्रिया",
+    "howToApply": "अर्ज कसा करावा",
+    "similarJobs": "समान नोकऱ्या",
+    "faqs": "वारंवार विचारले जाणारे प्रश्न",
+    "importantLinks": "महत्त्वाच्या लिंक्स"
+  },
+  "footer": {
+    "about": "SarkariJob हे सरकारी नोकरी अलर्ट, प्रवेशपत्र आणि निकालांसाठी भारताचे सर्वात विश्वासार्ह पोर्टल आहे.",
+    "links": "महत्त्वाच्या लिंक्स",
+    "legal": "कायदेशीर",
+    "privacy": "गोपनीयता धोरण",
+    "terms": "सेवा अटी",
+    "contact": "संपर्क साधा",
+    "rights": "सर्व हक्क राखीव."
+  }
+}

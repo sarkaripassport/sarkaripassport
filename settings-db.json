@@ -1,12 +1,32 @@
 {
   "seo": {
-    "title": "SarkariJob - Latest Government Jobs, Results & Admit Cards",
-    "description": "Find the latest Sarkari jobs, admit cards, results, and syllabus updates. Check your eligibility and apply online instantly.",
-    "keywords": "sarkari job, sarkari result, admit card, latest govt jobs"
+    "title": {
+      "en": "NaukariPassport - Latest Government Jobs, Sarkari Result & Admit Cards, Answerkey, SarkariJob",
+      "hi": "SarkariJob - Latest Government Jobs, Results & Admit Cards (hi)",
+      "mr": "SarkariJob - Latest Government Jobs, Results & Admit Cards (mr)"
+    },
+    "description": {
+      "en": "Find the latest Sarkari jobs, admit cards, results, and syllabus updates. Check your eligibility and apply online instantly for sarkari job, sarkari result. ",
+      "hi": "Find the latest Sarkari jobs, admit cards, results, and syllabus updates. Check your eligibility and apply online instantly. (hi)",
+      "mr": "Find the latest Sarkari jobs, admit cards, results, and syllabus updates. Check your eligibility and apply online instantly. (mr)"
+    },
+    "keywords": {
+      "en": "sarkari job, sarkari result, admit card, latest govt jobs, gov jobs, ",
+      "hi": "sarkari job, sarkari result, admit card, latest govt jobs (hi)",
+      "mr": "sarkari job, sarkari result, admit card, latest govt jobs (mr)"
+    }
   },
   "hero": {
-    "title": "Latest Government Jobs, Results, Admit Cards & Eligibility Updates",
-    "subtitle": "Create your Naukri Passport profile once and check your eligibility for every job instantly."
+    "title": {
+      "en": "Latest Government Jobs, Results, Admit Cards & Eligibility Updates",
+      "hi": "Latest Government Jobs, Results, Admit Cards & Eligibility Updates (hi)",
+      "mr": "Latest Government Jobs, Results, Admit Cards & Eligibility Updates (mr)"
+    },
+    "subtitle": {
+      "en": "Check the Latest Sarkari Jobs on naukari passport.com and apply instantly online.",
+      "hi": "Create your Naukri Passport profile once and check your eligibility for every job instantly. (hi)",
+      "mr": "Create your Naukri Passport profile once and check your eligibility for every job instantly. (mr)"
+    }
   },
   "four_columns": {
     "col1_category": "Admit Card",
@@ -16,18 +36,15 @@
   },
   "announcements": [
     {
-      "id": "a1",
-      "text": "SSC CGL 2026 Notification Released - Apply Now!",
-      "link": "/jobs/ssc-cgl-2026",
-      "isActive": true,
-      "priority": "high"
-    },
-    {
-      "id": "a2",
-      "text": "UPSC Civil Services Prelims Admit Card Available",
-      "link": "/jobs/upsc-civil-services-2026",
-      "isActive": true,
-      "priority": "normal"
+      "id": "a1783436267770",
+      "text": {
+        "en": "\nServer is Under Maintainance Website is not live now, checked it try again later",
+        "hi": "",
+        "mr": ""
+      },
+      "link": "",
+      "priority": "high",
+      "isActive": true
     }
   ]
 }

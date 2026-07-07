@@ -7,6 +7,38 @@ import { useState } from "react";
 export default function AdminDashboard() {
   const [draftTitle, setDraftTitle] = useState("");
   const [draftContent, setDraftContent] = useState("");
+  const [analytics, setAnalytics] = useState<any>(null);
+
+  require('react').useEffect(() => {
+    fetch('/api/analytics')
+      .then(r => r.json())
+      .then(data => setAnalytics(data))
+      .catch(e => console.error(e));
+  }, []);
+  const [analytics, setAnalytics] = useState<any>(null);
+
+  require('react').useEffect(() => {
+    fetch('/api/analytics')
+      .then(r => r.json())
+      .then(data => setAnalytics(data))
+      .catch(e => console.error(e));
+  }, []);
+  const [analytics, setAnalytics] = useState<any>(null);
+
+  require('react').useEffect(() => {
+    fetch('/api/analytics')
+      .then(r => r.json())
+      .then(data => setAnalytics(data))
+      .catch(e => console.error(e));
+  }, []);
+  const [analytics, setAnalytics] = useState<any>(null);
+
+  require('react').useEffect(() => {
+    fetch('/api/analytics')
+      .then(r => r.json())
+      .then(data => setAnalytics(data))
+      .catch(e => console.error(e));
+  }, []);
 
   return (
     <div className="p-4 sm:p-6 max-w-[1400px]">
@@ -42,8 +74,152 @@ export default function AdminDashboard() {
             </div>
             <div className="mt-4 pt-4 border-t border-[#dcdcde] text-sm text-[#50575e]">
               Naukri Passport v1.0 running on <strong>Next.js 15</strong>. Theme: <span className="text-[#2271b1]">WP-Sarkari</span>.
-            </div>
+            
+
+        {/* Real-time Analytics Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col xl:col-span-3">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7] flex justify-between items-center">
+            <h2 className="font-semibold text-[#1d2327]">Real-time Traffic & Analytics</h2>
+            <TrendingUp className="w-4 h-4 text-blue-600" />
           </div>
+          <div className="p-6">
+            {!analytics ? (
+              <div className="text-sm text-gray-500">Loading metrics...</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-blue-50 rounded-lg p-4 text-center border border-blue-100">
+                  <div className="text-sm text-blue-600 font-semibold mb-1">Today's Views</div>
+                  <div className="text-4xl font-bold text-blue-900">{analytics.global.daily['2026-07-07'] || 0}
+
+        {/* Real-time Analytics Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col xl:col-span-3">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7] flex justify-between items-center">
+            <h2 className="font-semibold text-[#1d2327]">Real-time Traffic & Analytics</h2>
+            <TrendingUp className="w-4 h-4 text-blue-600" />
+          </div>
+          <div className="p-6">
+            {!analytics ? (
+              <div className="text-sm text-gray-500">Loading metrics...</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-blue-50 rounded-lg p-4 text-center border border-blue-100">
+                  <div className="text-sm text-blue-600 font-semibold mb-1">Today's Views</div>
+                  <div className="text-4xl font-bold text-blue-900">{analytics.global.daily['2026-07-07'] || 0}
+
+        {/* Real-time Analytics Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col xl:col-span-3">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7] flex justify-between items-center">
+            <h2 className="font-semibold text-[#1d2327]">Real-time Traffic & Analytics</h2>
+            <TrendingUp className="w-4 h-4 text-blue-600" />
+          </div>
+          <div className="p-6">
+            {!analytics ? (
+              <div className="text-sm text-gray-500">Loading metrics...</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-blue-50 rounded-lg p-4 text-center border border-blue-100">
+                  <div className="text-sm text-blue-600 font-semibold mb-1">Today's Views</div>
+                  <div className="text-4xl font-bold text-blue-900">{analytics.global.daily['2026-07-07'] || 0}
+
+        {/* Real-time Analytics Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col xl:col-span-3">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7] flex justify-between items-center">
+            <h2 className="font-semibold text-[#1d2327]">Real-time Traffic & Analytics</h2>
+            <TrendingUp className="w-4 h-4 text-blue-600" />
+          </div>
+          <div className="p-6">
+            {!analytics ? (
+              <div className="text-sm text-gray-500">Loading metrics...</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-blue-50 rounded-lg p-4 text-center border border-blue-100">
+                  <div className="text-sm text-blue-600 font-semibold mb-1">Today's Views</div>
+                  <div className="text-4xl font-bold text-blue-900">{analytics.global.daily['2026-07-07'] || 0}</div>
+                </div>
+                <div className="bg-indigo-50 rounded-lg p-4 text-center border border-indigo-100">
+                  <div className="text-sm text-indigo-600 font-semibold mb-1">This Month</div>
+                  <div className="text-4xl font-bold text-indigo-900">{analytics.global.monthly['2026-07'] || 0}</div>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 text-center border border-purple-100">
+                  <div className="text-sm text-purple-600 font-semibold mb-1">All-Time Views</div>
+                  <div className="text-4xl font-bold text-purple-900">{analytics.global.total || 0}</div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 text-center border border-green-100">
+                  <div className="text-sm text-green-600 font-semibold mb-1">Top Performing Job</div>
+                  <div className="text-lg font-bold text-green-900 truncate px-2" title={Object.keys(analytics.jobs)[0] || 'N/A'}>
+                    {Object.keys(analytics.jobs).sort((a, b) => analytics.jobs[b].total - analytics.jobs[a].total)[0] || 'N/A'}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+    
+      </div>
+    </div>
+                <div className="bg-indigo-50 rounded-lg p-4 text-center border border-indigo-100">
+                  <div className="text-sm text-indigo-600 font-semibold mb-1">This Month</div>
+                  <div className="text-4xl font-bold text-indigo-900">{analytics.global.monthly['2026-07'] || 0}</div>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 text-center border border-purple-100">
+                  <div className="text-sm text-purple-600 font-semibold mb-1">All-Time Views</div>
+                  <div className="text-4xl font-bold text-purple-900">{analytics.global.total || 0}</div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 text-center border border-green-100">
+                  <div className="text-sm text-green-600 font-semibold mb-1">Top Performing Job</div>
+                  <div className="text-lg font-bold text-green-900 truncate px-2" title={Object.keys(analytics.jobs)[0] || 'N/A'}>
+                    {Object.keys(analytics.jobs).sort((a, b) => analytics.jobs[b].total - analytics.jobs[a].total)[0] || 'N/A'}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+    
+      </div>
+    </div>
+                <div className="bg-indigo-50 rounded-lg p-4 text-center border border-indigo-100">
+                  <div className="text-sm text-indigo-600 font-semibold mb-1">This Month</div>
+                  <div className="text-4xl font-bold text-indigo-900">{analytics.global.monthly['2026-07'] || 0}</div>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 text-center border border-purple-100">
+                  <div className="text-sm text-purple-600 font-semibold mb-1">All-Time Views</div>
+                  <div className="text-4xl font-bold text-purple-900">{analytics.global.total || 0}</div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 text-center border border-green-100">
+                  <div className="text-sm text-green-600 font-semibold mb-1">Top Performing Job</div>
+                  <div className="text-lg font-bold text-green-900 truncate px-2" title={Object.keys(analytics.jobs)[0] || 'N/A'}>
+                    {Object.keys(analytics.jobs).sort((a, b) => analytics.jobs[b].total - analytics.jobs[a].total)[0] || 'N/A'}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+    
+      </div>
+    </div>
+                <div className="bg-indigo-50 rounded-lg p-4 text-center border border-indigo-100">
+                  <div className="text-sm text-indigo-600 font-semibold mb-1">This Month</div>
+                  <div className="text-4xl font-bold text-indigo-900">{analytics.global.monthly['2026-07'] || 0}</div>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 text-center border border-purple-100">
+                  <div className="text-sm text-purple-600 font-semibold mb-1">All-Time Views</div>
+                  <div className="text-4xl font-bold text-purple-900">{analytics.global.total || 0}</div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 text-center border border-green-100">
+                  <div className="text-sm text-green-600 font-semibold mb-1">Top Performing Job</div>
+                  <div className="text-lg font-bold text-green-900 truncate px-2" title={Object.keys(analytics.jobs)[0] || 'N/A'}>
+                    {Object.keys(analytics.jobs).sort((a, b) => analytics.jobs[b].total - analytics.jobs[a].total)[0] || 'N/A'}
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+    
+      </div>
+    </div>
         </div>
 
         {/* Quick Draft Widget */}
@@ -139,6 +315,39 @@ export default function AdminDashboard() {
                 </li>
               </ul>
             </div>
+          </div>
+        </div>
+        {/* Real-time Analytics Widget */}
+        <div className="bg-white border border-[#c3c4c7] shadow-sm flex flex-col xl:col-span-3">
+          <div className="p-3 border-b border-[#c3c4c7] bg-[#f6f7f7] flex justify-between items-center">
+            <h2 className="font-semibold text-[#1d2327]">Real-time Traffic & Analytics</h2>
+            <TrendingUp className="w-4 h-4 text-blue-600" />
+          </div>
+          <div className="p-6">
+            {!analytics ? (
+              <div className="text-sm text-gray-500">Loading metrics...</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div className="bg-blue-50 rounded-lg p-4 text-center border border-blue-100">
+                  <div className="text-sm text-blue-600 font-semibold mb-1">Today's Views</div>
+                  <div className="text-4xl font-bold text-blue-900">{analytics?.global?.daily?.[new Date().toISOString().split('T')[0]] || 0}</div>
+                </div>
+                <div className="bg-indigo-50 rounded-lg p-4 text-center border border-indigo-100">
+                  <div className="text-sm text-indigo-600 font-semibold mb-1">This Month</div>
+                  <div className="text-4xl font-bold text-indigo-900">{analytics?.global?.monthly?.[new Date().toISOString().split('T')[0].substring(0, 7)] || 0}</div>
+                </div>
+                <div className="bg-purple-50 rounded-lg p-4 text-center border border-purple-100">
+                  <div className="text-sm text-purple-600 font-semibold mb-1">All-Time Views</div>
+                  <div className="text-4xl font-bold text-purple-900">{analytics?.global?.total || 0}</div>
+                </div>
+                <div className="bg-green-50 rounded-lg p-4 text-center border border-green-100">
+                  <div className="text-sm text-green-600 font-semibold mb-1">Top Performing Job</div>
+                  <div className="text-lg font-bold text-green-900 truncate px-2" title={Object.keys(analytics?.jobs || {})[0] || 'N/A'}>
+                    {Object.keys(analytics?.jobs || {}).sort((a, b) => analytics.jobs[b].total - analytics.jobs[a].total)[0] || 'N/A'}
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

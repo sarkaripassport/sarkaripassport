@@ -40,7 +40,7 @@ export default function CategoryManager() {
   const addCategory = () => {
     setCategories([
       ...categories,
-      { id: `c${Date.now()}`, name: '', slug: '', icon: 'Briefcase', isTrending: false, isQuickLink: false }
+      { id: `c${Date.now()}`, name: { en: '', hi: '', mr: '' }, slug: '', icon: 'Briefcase', isTrending: false, isQuickLink: false }
     ]);
   };
 
@@ -54,7 +54,8 @@ export default function CategoryManager() {
         const updated = { ...c, [field]: value };
         // Auto-generate slug from name if name is updated
         if (field === 'name') {
-          updated.slug = value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+          const enName = typeof value === 'string' ? value : (value?.en || '');
+          updated.slug = enName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
         }
         return updated;
       }
@@ -105,8 +106,14 @@ export default function CategoryManager() {
                     <label className="block text-[10px] font-bold text-gray-500 uppercase">Category Name</label>
                     <input 
                       type="text" 
-                      value={cat.name}
-                      onChange={(e) => updateCategory(cat.id, 'name', e.target.value)}
+                      value={typeof cat.name === 'string' ? cat.name : (cat.name?.en || '')}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        const newName = typeof cat.name === 'string' 
+                          ? { en: val, hi: '', mr: '' } 
+                          : { ...(cat.name as any), en: val };
+                        updateCategory(cat.id, 'name', newName);
+                      }}
                       className="w-full px-2 py-1 text-sm border-b border-gray-300 bg-transparent focus:border-[#0A58CA] outline-none"
                     />
                   </div>

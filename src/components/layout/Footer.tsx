@@ -1,7 +1,18 @@
+"use client";
+
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { ShieldCheck, Heart } from "lucide-react";
 
 export default function Footer() {
+  const params = useParams();
+  const lang = (params?.lang as 'en' | 'hi' | 'mr') || 'en';
+
+  const getLink = (path: string) => {
+    if (path.startsWith('http') || path.startsWith(`/${lang}`)) return path;
+    return `/${lang}${path.startsWith('/') ? '' : '/'}${path}`;
+  };
+
   return (
     <footer className="bg-[#0B1B3D] text-gray-300 pt-16 pb-8 border-t-4 border-[#0A58CA]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,42 +52,42 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-bold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="/jobs" className="hover:text-white transition">Latest Jobs</Link></li>
-              <li><Link href="/admit-card" className="hover:text-white transition">Admit Card</Link></li>
-              <li><Link href="/results" className="hover:text-white transition">Results</Link></li>
-              <li><Link href="/answer-key" className="hover:text-white transition">Answer Key</Link></li>
-              <li><Link href="/syllabus" className="hover:text-white transition">Syllabus</Link></li>
-              <li><Link href="/admission" className="hover:text-white transition">Admission</Link></li>
+              <li><Link href={getLink("/jobs")} className="hover:text-white transition">Latest Jobs</Link></li>
+              <li><Link href={getLink("/admit-card")} className="hover:text-white transition">Admit Card</Link></li>
+              <li><Link href={getLink("/results")} className="hover:text-white transition">Results</Link></li>
+              <li><Link href={getLink("/answer-key")} className="hover:text-white transition">Answer Key</Link></li>
+              <li><Link href={getLink("/syllabus")} className="hover:text-white transition">Syllabus</Link></li>
+              <li><Link href={getLink("/admission")} className="hover:text-white transition">Admission</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-4">Tools</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="#" className="hover:text-white transition flex items-center gap-2">Eligibility Checker <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
-              <li><Link href="#" className="hover:text-white transition flex items-center gap-2">Document Readiness <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
-              <li><Link href="#" className="hover:text-white transition flex items-center gap-2">Application Tracker <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
-              <li><Link href="#" className="hover:text-white transition">Notification Alerts</Link></li>
-              <li><Link href="#" className="hover:text-white transition">Saved Jobs</Link></li>
+              <li><Link href={getLink("/eligibility-checker")} className="hover:text-white transition flex items-center gap-2">Eligibility Checker <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
+              <li><Link href={getLink("/document-readiness")} className="hover:text-white transition flex items-center gap-2">Document Readiness <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
+              <li><Link href={getLink("/application-tracker")} className="hover:text-white transition flex items-center gap-2">Application Tracker <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
+              <li><Link href={getLink("/alerts")} className="hover:text-white transition">Notification Alerts</Link></li>
+              <li><Link href={getLink("/saved-jobs")} className="hover:text-white transition">Saved Jobs</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-4">Company</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="/about" className="hover:text-white transition">About Us</Link></li>
-              <li><Link href="/careers" className="hover:text-white transition">Careers</Link></li>
-              <li><Link href="/press" className="hover:text-white transition">Press & Media</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition">Contact Us</Link></li>
+              <li><Link href={getLink("/about")} className="hover:text-white transition">About Us</Link></li>
+              <li><Link href={getLink("/careers")} className="hover:text-white transition">Careers</Link></li>
+              <li><Link href={getLink("/press")} className="hover:text-white transition">Press & Media</Link></li>
+              <li><Link href={getLink("/contact")} className="hover:text-white transition">Contact Us</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-4">Legal</h4>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li><Link href="/privacy" className="hover:text-white transition">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-white transition">Terms & Conditions</Link></li>
-              <li><Link href="/disclaimer" className="hover:text-white transition">Disclaimer</Link></li>
+              <li><Link href={getLink("/privacy")} className="hover:text-white transition">Privacy Policy</Link></li>
+              <li><Link href={getLink("/terms")} className="hover:text-white transition">Terms & Conditions</Link></li>
+              <li><Link href={getLink("/disclaimer")} className="hover:text-white transition">Disclaimer</Link></li>
             </ul>
           </div>
 

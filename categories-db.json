@@ -1,7 +1,11 @@
 [
   {
     "id": "c1",
-    "name": "Latest Jobs",
+    "name": {
+      "en": "Latest Jobs",
+      "hi": "Latest Jobs (hi)",
+      "mr": "Latest Jobs (mr)"
+    },
     "slug": "latest-jobs",
     "icon": "Briefcase",
     "isTrending": false,
@@ -9,7 +13,11 @@
   },
   {
     "id": "c2",
-    "name": "Admit Card",
+    "name": {
+      "en": "Admit Card",
+      "hi": "Admit Card (hi)",
+      "mr": "Admit Card (mr)"
+    },
     "slug": "admit-card",
     "icon": "FileText",
     "isTrending": false,
@@ -17,7 +25,11 @@
   },
   {
     "id": "c3",
-    "name": "Results",
+    "name": {
+      "en": "Results",
+      "hi": "Results (hi)",
+      "mr": "Results (mr)"
+    },
     "slug": "results",
     "icon": "Award",
     "isTrending": false,
@@ -25,7 +37,11 @@
   },
   {
     "id": "c4",
-    "name": "Answer Key",
+    "name": {
+      "en": "Answer Key",
+      "hi": "Answer Key (hi)",
+      "mr": "Answer Key (mr)"
+    },
     "slug": "answer-key",
     "icon": "CheckCircle2",
     "isTrending": false,
@@ -33,7 +49,11 @@
   },
   {
     "id": "c5",
-    "name": "Syllabus",
+    "name": {
+      "en": "Syllabus",
+      "hi": "Syllabus (hi)",
+      "mr": "Syllabus (mr)"
+    },
     "slug": "syllabus",
     "icon": "GraduationCap",
     "isTrending": false,
@@ -41,7 +61,11 @@
   },
   {
     "id": "c6",
-    "name": "Admission",
+    "name": {
+      "en": "Admission",
+      "hi": "Admission (hi)",
+      "mr": "Admission (mr)"
+    },
     "slug": "admission",
     "icon": "Building2",
     "isTrending": false,
@@ -49,7 +73,11 @@
   },
   {
     "id": "c7",
-    "name": "SSC",
+    "name": {
+      "en": "SSC",
+      "hi": "SSC (hi)",
+      "mr": "SSC (mr)"
+    },
     "slug": "ssc",
     "icon": "Landmark",
     "isTrending": true,
@@ -57,7 +85,11 @@
   },
   {
     "id": "c8",
-    "name": "Railway",
+    "name": {
+      "en": "Railway",
+      "hi": "Railway (hi)",
+      "mr": "Railway (mr)"
+    },
     "slug": "railway",
     "icon": "Train",
     "isTrending": true,
@@ -65,7 +97,11 @@
   },
   {
     "id": "c9",
-    "name": "Bank",
+    "name": {
+      "en": "Bank",
+      "hi": "Bank (hi)",
+      "mr": "Bank (mr)"
+    },
     "slug": "bank",
     "icon": "Building2",
     "isTrending": true,
@@ -73,7 +109,11 @@
   },
   {
     "id": "c10",
-    "name": "Police",
+    "name": {
+      "en": "Police",
+      "hi": "Police (hi)",
+      "mr": "Police (mr)"
+    },
     "slug": "police",
     "icon": "ShieldCheck",
     "isTrending": true,
@@ -81,7 +121,11 @@
   },
   {
     "id": "c11",
-    "name": "Defence",
+    "name": {
+      "en": "Defence",
+      "hi": "Defence (hi)",
+      "mr": "Defence (mr)"
+    },
     "slug": "defence",
     "icon": "Shield",
     "isTrending": true,
@@ -89,7 +133,11 @@
   },
   {
     "id": "c12",
-    "name": "UPSC",
+    "name": {
+      "en": "UPSC",
+      "hi": "UPSC (hi)",
+      "mr": "UPSC (mr)"
+    },
     "slug": "upsc",
     "icon": "Landmark",
     "isTrending": true,
@@ -97,7 +145,11 @@
   },
   {
     "id": "c1782453701759",
-    "name": "State Gov",
+    "name": {
+      "en": "State Gov",
+      "hi": "State Gov (hi)",
+      "mr": "State Gov (mr)"
+    },
     "slug": "state-gov",
     "icon": "Briefcase",
     "isTrending": true,
@@ -105,7 +157,11 @@
   },
   {
     "id": "c1782453734620",
-    "name": "PSU",
+    "name": {
+      "en": "PSU",
+      "hi": "PSU (hi)",
+      "mr": "PSU (mr)"
+    },
     "slug": "psu",
     "icon": "Briefcase",
     "isTrending": true,
@@ -113,7 +169,11 @@
   },
   {
     "id": "c1782453735900",
-    "name": "Central Gov",
+    "name": {
+      "en": "Central Gov",
+      "hi": "Central Gov (hi)",
+      "mr": "Central Gov (mr)"
+    },
     "slug": "central-gov",
     "icon": "Briefcase",
     "isTrending": true,

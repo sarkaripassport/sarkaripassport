@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock, Copy } from "lucide-react";
 import type { Job, Category } from "@/lib/db";
 import { deleteJobAction } from "./actions";
 
@@ -46,7 +46,7 @@ export default function JobsManagerClient({
     
     // Search Filter
     const matchesSearch = searchQuery 
-      ? job.title.toLowerCase().includes(searchQuery.toLowerCase()) || job.organization.toLowerCase().includes(searchQuery.toLowerCase())
+      ? job.title.en.toLowerCase().includes(searchQuery.toLowerCase()) || job.organization.en.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
 
     return matchesCategory && matchesSearch;
@@ -82,7 +82,7 @@ export default function JobsManagerClient({
             >
               <option value="all">All Categories</option>
               {categories.map(cat => (
-                <option key={cat.id} value={cat.name}>{cat.name}</option>
+                <option key={cat.id} value={cat.name.en}>{cat.name.en}</option>
               ))}
             </select>
             <ChevronDown className="w-4 h-4 absolute right-3 top-2.5 text-gray-400 pointer-events-none" />
@@ -121,8 +121,8 @@ export default function JobsManagerClient({
               filteredJobs.map((job) => (
                 <tr key={job.id} className="hover:bg-blue-50/50 transition group">
                   <td className="p-4">
-                    <div className="font-bold text-[#0B1B3D] mb-1 line-clamp-1">{job.title}</div>
-                    <div className="text-gray-500 text-xs">{job.organization}</div>
+                    <div className="font-bold text-[#0B1B3D] mb-1 line-clamp-1">{job.title.en}</div>
+                    <div className="text-gray-500 text-xs">{job.organization.en}</div>
                   </td>
                   
                   <td className="p-4">
@@ -164,6 +164,13 @@ export default function JobsManagerClient({
                   <td className="p-4 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                       <Link 
+                        href={`/admin/editor?cloneId=${job.id}`}
+                        className="p-1.5 text-green-600 hover:bg-green-100 rounded transition"
+                        title="Clone Job (e.g. for Admit Card)"
+                      >
+                        <Copy className="w-4 h-4" />
+                      </Link>
+                      <Link 
                         href={`/admin/editor?id=${job.id}`}
                         className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition"
                         title="Edit Job"
@@ -171,7 +178,7 @@ export default function JobsManagerClient({
                         <Edit className="w-4 h-4" />
                       </Link>
                       <button 
-                        onClick={() => handleDelete(job.id, job.title)}
+                        onClick={() => handleDelete(job.id, job.title.en)}
                         disabled={isDeleting === job.id}
                         className="p-1.5 text-red-600 hover:bg-red-100 rounded transition disabled:opacity-50"
                         title="Delete Job"

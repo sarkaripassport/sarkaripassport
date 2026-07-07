@@ -1,63 +1,145 @@
 'use client';
 
-import { useState } from 'react';
-import { Eye, Save, LayoutTemplate, Plus, Trash2, ArrowUp, ArrowDown, HelpCircle, FileText, CheckCircle, Smartphone, Monitor } from 'lucide-react';
-import SeoSidebar from '@/components/admin/SeoSidebar';
+import { useState, useEffect } from 'react';
+import { Eye, Save, LayoutTemplate, Plus, Trash2, ArrowUp, ArrowDown, HelpCircle, FileText, CheckCircle, Smartphone, Monitor, Globe, Search } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function AdvancedEditorPage() {
+function EditorContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const editId = searchParams.get('id');
+  const cloneId = searchParams.get('cloneId');
+
+  const [editLang, setEditLang] = useState<'en'|'hi'|'mr'>('en');
+
+  
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    setLoading(true);
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.url) {
+        setJobData((prev: any) => ({ ...prev, logo_url: data.url }));
+      }
+    } catch(err) {
+      alert("Upload failed");
+    }
+    setLoading(false);
+  };
+
+  const initLocalized = () => ({ en: '', hi: '', mr: '' });
+
   const [jobData, setJobData] = useState<any>({
-    title: '',
+    title: initLocalized(),
     slug: '',
-    category: 'Latest Jobs', // Default category
-    organization: '',
+    category: 'Latest Jobs', 
+    categories: [],
+    organization: initLocalized(),
     logo_url: '',
     status: 'Active',
     statusColor: 'text-green-800 bg-green-100 border-green-200',
     isLive: true,
     isTrending: false,
     daysLeft: 30,
-    seo_title: '',
-    seo_description: '',
-    focus_keyword: '',
+    seo_title: initLocalized(),
+    seo_description: initLocalized(),
+    focus_keyword: initLocalized(),
     seo_score: 0,
     quick_facts: {
-      vacancies: '', last_date: '', qualification: '', age_limit: '', job_location: '', salary: '', application_mode: 'Online'
+      vacancies: '', 
+      last_date: initLocalized(), 
+      qualification: initLocalized(), 
+      age_limit: initLocalized(), 
+      job_location: initLocalized(), 
+      salary: initLocalized(), 
+      application_mode: initLocalized()
     },
-    job_summary: '',
+    job_summary: initLocalized(),
     important_dates: [],
     application_fee: [],
-    age_limit: { min_age: '', max_age: '', cutoff_date: '', relaxation: '' },
+    age_limit: { min_age: '', max_age: '', cutoff_date: '', relaxation: initLocalized() },
     vacancy_cards: [],
-    education_qualification: '',
+    education_qualification: initLocalized(),
     required_documents: [],
     selection_process: [],
-    salary_benefits: '',
-    physical_standards: '',
+    salary_benefits: initLocalized(),
+    physical_standards: initLocalized(),
     how_to_apply: [],
     eligibility_rules: [],
     similar_jobs: [],
     faqs: [],
+
+    schema_settings: {
+      enable_job_schema: true,
+      enable_faq_schema: true,
+      enable_syllabus_schema: true
+    },
+    seo_matrix: { states: [], cities: [], qualifications: [], departments: [] }
+
     important_links: []
   });
 
   const [activeTab, setActiveTab] = useState('general');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchId = editId || cloneId;
+    if (fetchId) {
+      setLoading(true);
+      fetch(`/api/jobs?id=${fetchId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.error) {
+            if (cloneId) {
+              delete data.id;
+              data.slug = data.slug + '-copy-' + Math.floor(Math.random() * 1000);
+            }
+            setJobData(data);
+          }
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [editId, cloneId]);
 
   const handleSave = async () => {
     try {
-      const res = await fetch('/api/jobs', {
-        method: 'POST',
+      const url = editId ? `/api/jobs?id=${editId}` : '/api/jobs';
+      const method = editId ? 'PUT' : 'POST';
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(jobData)
       });
-      if (res.ok) alert('Job Published Successfully!');
+      if (res.ok) {
+        alert(`Job ${editId ? 'Updated' : 'Published'} Successfully!`);
+        router.push('/admin/jobs');
+      }
       else alert('Failed to publish');
     } catch (e) {
       alert('Error publishing job');
     }
   };
 
+  const updateLocalizedField = (field: string, value: string) => {
+    setJobData({ ...jobData, [field]: { ...jobData[field], [editLang]: value } });
+  };
+
   const updateField = (field: string, value: any) => {
     setJobData({ ...jobData, [field]: value });
+  };
+
+  const updateNestedLocalizedField = (parent: string, field: string, value: string) => {
+    setJobData({ 
+      ...jobData, 
+      [parent]: { 
+        ...jobData[parent], 
+        [field]: { ...jobData[parent][field], [editLang]: value } 
+      } 
+    });
   };
 
   const updateNestedField = (parent: string, field: string, value: any) => {
@@ -74,42 +156,77 @@ export default function AdvancedEditorPage() {
     updateField(field, newArr);
   };
 
+  const updateArrayItemLocalized = (field: string, index: number, key: string, value: string) => {
+    const newArr = [...jobData[field]];
+    if (!newArr[index][key]) newArr[index][key] = initLocalized();
+    newArr[index][key][editLang] = value;
+    updateField(field, newArr);
+  };
+
   const updateArrayItem = (field: string, index: number, key: string, value: any) => {
     const newArr = [...jobData[field]];
     newArr[index][key] = value;
     updateField(field, newArr);
   };
 
-  const setCategoryValue = (cardIndex: number, catName: string, catValue: string) => {
-    const newArr = [...jobData.vacancy_cards];
-    if (!newArr[cardIndex].categories) newArr[cardIndex].categories = {};
-    newArr[cardIndex].categories[catName] = catValue;
-    updateField('vacancy_cards', newArr);
-  };
+  if (loading) return <div className="p-10 text-center">Loading Job Data...</div>;
 
-  const removeCategory = (cardIndex: number, catName: string) => {
-    const newArr = [...jobData.vacancy_cards];
-    delete newArr[cardIndex].categories[catName];
-    updateField('vacancy_cards', newArr);
+  
+  // Live SEO Scoring Algorithm
+  const calculateSEOScore = () => {
+    let score = 0;
+    const title = jobData.seo_title?.[editLang] || jobData.title?.[editLang] || '';
+    const desc = jobData.seo_description?.[editLang] || jobData.job_summary?.[editLang] || '';
+    const keyword = jobData.focus_keyword?.[editLang] || '';
+    
+    if (title.length >= 40 && title.length <= 70) score += 20;
+    if (desc.length >= 100 && desc.length <= 160) score += 20;
+    if (jobData.logo_url && jobData.logo_url.length > 5) score += 20;
+    
+    if (keyword) {
+      if (title.toLowerCase().includes(keyword.toLowerCase())) score += 20;
+      if (desc.toLowerCase().includes(keyword.toLowerCase())) score += 20;
+    }
+    return score;
   };
+  const seoScore = calculateSEOScore();
 
   return (
     <div className="font-sans text-gray-800 flex flex-col h-full bg-gray-50 min-h-screen">
       {/* Editor Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#0A58CA] text-white rounded-lg flex items-center justify-center shadow-md">
-              <LayoutTemplate className="w-5 h-5" />
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-[#0A58CA] text-white rounded-lg flex items-center justify-center shadow-md">
+                <LayoutTemplate className="w-5 h-5" />
+              </div>
+              <div>
+                <h1 className="font-bold text-[#0B1B3D] leading-none">Vacancy Builder</h1>
+                <span className="text-xs text-gray-500 font-medium">{editId ? 'Editing Job' : 'Creating New Job'}</span>
+              </div>
             </div>
-            <div>
-              <h1 className="font-bold text-[#0B1B3D] leading-none">Vacancy Builder</h1>
-              <span className="text-xs text-gray-500 font-medium">Premium Job Detail Architecture</span>
+            
+            <div className="h-8 w-px bg-gray-200"></div>
+            
+            {/* Language Toggle */}
+            <div className="flex items-center gap-2 bg-gray-100 p-1 rounded-lg border border-gray-200 shadow-inner">
+              <Globe className="w-4 h-4 text-gray-400 ml-2" />
+              {(['en', 'hi', 'mr'] as const).map(lang => (
+                <button
+                  key={lang}
+                  onClick={() => setEditLang(lang)}
+                  className={`px-4 py-1.5 text-xs font-bold uppercase rounded-md transition-all ${editLang === lang ? 'bg-white text-[#0A58CA] shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
+                >
+                  {lang === 'en' ? 'English' : lang === 'hi' ? 'Hindi' : 'Marathi'}
+                </button>
+              ))}
             </div>
           </div>
+          
           <div className="flex items-center gap-3">
             <button className="px-5 py-2 bg-[#0A58CA] text-white text-sm font-bold rounded-lg flex items-center gap-2 hover:bg-blue-700 shadow-md transition-colors" onClick={handleSave}>
-              <Save className="w-4 h-4" /> Publish Job
+              <Save className="w-4 h-4" /> {editId ? 'Update Job' : 'Publish Job'}
             </button>
           </div>
         </div>
@@ -118,11 +235,11 @@ export default function AdvancedEditorPage() {
       <main className="flex-grow max-w-[1600px] w-full mx-auto px-4 py-6">
         <div className="flex flex-col lg:flex-row gap-6 items-start">
           
-          {/* Main Writing Area (Left Column) */}
+          {/* Main Writing Area */}
           <div className="flex-grow w-full space-y-6">
             
             <div className="flex bg-white rounded-t-xl border-b border-gray-200 overflow-x-auto shadow-sm sticky top-[70px] z-30">
-              {['general', 'quick_facts', 'vacancies', 'eligibility', 'timelines', 'checklists', 'seo'].map(tab => (
+              {['general', 'quick_facts', 'vacancies', 'eligibility', 'timelines', 'checklists', 'links', 'seo'].map(tab => (
                 <button 
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -137,13 +254,22 @@ export default function AdvancedEditorPage() {
               
               {activeTab === 'general' && (
                 <div className="space-y-6 max-w-4xl">
-                  <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2">General Information</h2>
+                  <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2 flex items-center justify-between">
+                    General Information
+                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Editing: {editLang.toUpperCase()}</span>
+                  </h2>
                   <div className="grid grid-cols-2 gap-4">
-                    <div><label className="block text-sm font-bold mb-1">Job Title</label><input type="text" className="w-full border rounded p-2" value={jobData.title} onChange={e => updateField('title', e.target.value)} /></div>
-                    <div><label className="block text-sm font-bold mb-1">URL Slug</label><input type="text" className="w-full border rounded p-2" value={jobData.slug} onChange={e => updateField('slug', e.target.value)} /></div>
                     <div>
-                      <label className="block text-sm font-bold mb-1">Category</label>
-                      <input type="text" list="job-categories" className="w-full border rounded p-2" value={jobData.category} onChange={e => updateField('category', e.target.value)} placeholder="Select or type custom category" />
+                      <label className="block text-sm font-bold mb-1">Job Title</label>
+                      <input type="text" className="w-full border rounded p-2" value={jobData.title?.[editLang] || ''} onChange={e => updateLocalizedField('title', e.target.value)} />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold mb-1">URL Slug</label>
+                      <input type="text" className="w-full border rounded p-2" value={jobData.slug} onChange={e => updateField('slug', e.target.value)} />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-bold mb-1">Category (Primary)</label>
+                      <input type="text" list="job-categories" className="w-full border rounded p-2" value={jobData.category} onChange={e => updateField('category', e.target.value)} />
                       <datalist id="job-categories">
                         <option value="Latest Jobs" />
                         <option value="Admit Card" />
@@ -153,31 +279,35 @@ export default function AdvancedEditorPage() {
                         <option value="Admission" />
                       </datalist>
                     </div>
-                    <div><label className="block text-sm font-bold mb-1">Organization</label><input type="text" className="w-full border rounded p-2" value={jobData.organization} onChange={e => updateField('organization', e.target.value)} /></div>
                     <div>
-                      <label className="block text-sm font-bold mb-1">Logo URL</label>
+                      <label className="block text-sm font-bold mb-1">Organization</label>
+                      <input type="text" className="w-full border rounded p-2" value={jobData.organization?.[editLang] || ''} onChange={e => updateLocalizedField('organization', e.target.value)} />
+                    </div>
+                  
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold mb-1">Tags / Multiple Categories (Comma Separated)</label>
+                      <input type="text" className="w-full border rounded p-2" placeholder="e.g. Bank Jobs, Central Govt, 10th Pass" value={jobData.categories?.join(', ') || ''} onChange={e => updateField('categories', e.target.value.split(',').map(s=>s.trim()).filter(Boolean))} />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block text-sm font-bold mb-1">Organization Logo</label>
                       <div className="flex gap-2">
-                        <input type="text" className="w-full border rounded p-2" placeholder="https://" value={jobData.logo_url} onChange={e => updateField('logo_url', e.target.value)} />
-                        <label className="bg-gray-100 hover:bg-gray-200 border rounded px-3 py-2 cursor-pointer flex items-center justify-center shrink-0 shadow-sm transition text-sm font-bold">
-                          Upload
-                          <input type="file" className="hidden" accept="image/*" onChange={async (e) => {
-                            if (e.target.files?.[0]) {
-                              const formData = new FormData();
-                              formData.append('file', e.target.files[0]);
-                              try {
-                                const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                                const data = await res.json();
-                                if (data.url) updateField('logo_url', data.url);
-                                else alert('Upload failed: ' + data.error);
-                              } catch (err) { alert('Upload error'); }
-                            }
-                          }} />
+                        <input type="text" className="flex-1 border rounded p-2" placeholder="Image URL..." value={jobData.logo_url || ''} onChange={e => updateField('logo_url', e.target.value)} />
+                        <label className="bg-blue-50 text-blue-700 border border-blue-200 rounded px-4 py-2 cursor-pointer hover:bg-blue-100 font-bold flex items-center">
+                          Upload Logo
+                          <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
                         </label>
                       </div>
                     </div>
                   </div>
-                  <div><label className="block text-sm font-bold mb-1">Job Summary (Short Description)</label><textarea className="w-full border rounded p-2 h-24" value={jobData.job_summary} onChange={e => updateField('job_summary', e.target.value)} /></div>
-                  <div><label className="block text-sm font-bold mb-1">Salary & Benefits (HTML)</label><textarea className="w-full border rounded p-2 h-24" value={jobData.salary_benefits} onChange={e => updateField('salary_benefits', e.target.value)} /></div>
+
+                  <div>
+                    <label className="block text-sm font-bold mb-1">Job Summary</label>
+                    <textarea className="w-full border rounded p-2 h-24" value={jobData.job_summary?.[editLang] || ''} onChange={e => updateLocalizedField('job_summary', e.target.value)} />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold mb-1">Salary & Benefits (HTML)</label>
+                    <textarea className="w-full border rounded p-2 h-24" value={jobData.salary_benefits?.[editLang] || ''} onChange={e => updateLocalizedField('salary_benefits', e.target.value)} />
+                  </div>
                 </div>
               )}
 
@@ -185,9 +315,16 @@ export default function AdvancedEditorPage() {
                 <div className="space-y-6 max-w-4xl">
                   <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2">Quick Facts Panel</h2>
                   <div className="grid grid-cols-2 gap-4">
-                    {['vacancies', 'last_date', 'qualification', 'age_limit', 'job_location', 'salary', 'application_mode'].map(key => (
-                       <div key={key}><label className="block text-sm font-bold mb-1 capitalize">{key.replace('_', ' ')}</label><input type="text" className="w-full border rounded p-2" value={jobData.quick_facts[key]} onChange={e => updateNestedField('quick_facts', key, e.target.value)} /></div>
+                    {['last_date', 'qualification', 'age_limit', 'job_location', 'salary', 'application_mode'].map(key => (
+                       <div key={key}>
+                         <label className="block text-sm font-bold mb-1 capitalize">{key.replace('_', ' ')}</label>
+                         <input type="text" className="w-full border rounded p-2" value={jobData.quick_facts[key]?.[editLang] || ''} onChange={e => updateNestedLocalizedField('quick_facts', key, e.target.value)} />
+                       </div>
                     ))}
+                    <div>
+                      <label className="block text-sm font-bold mb-1">Total Vacancies (Number)</label>
+                      <input type="text" className="w-full border rounded p-2" value={jobData.quick_facts.vacancies} onChange={e => updateNestedField('quick_facts', 'vacancies', e.target.value)} />
+                    </div>
                   </div>
                 </div>
               )}
@@ -200,38 +337,13 @@ export default function AdvancedEditorPage() {
                       <div key={index} className="border border-gray-200 rounded p-4 bg-gray-50 relative">
                         <button className="absolute top-2 right-2 text-red-500" onClick={() => removeArrayItem('vacancy_cards', index)}><Trash2 className="w-4 h-4"/></button>
                         <div className="grid grid-cols-3 gap-4 mb-3">
-                          <div><label className="text-xs font-bold">Post Name</label><input type="text" className="w-full border rounded p-1" value={card.post_name} onChange={e => updateArrayItem('vacancy_cards', index, 'post_name', e.target.value)} /></div>
+                          <div><label className="text-xs font-bold">Post Name</label><input type="text" className="w-full border rounded p-1" value={card.post_name?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'post_name', e.target.value)} /></div>
                           <div><label className="text-xs font-bold">Total Vacancies</label><input type="text" className="w-full border rounded p-1" value={card.total} onChange={e => updateArrayItem('vacancy_cards', index, 'total', e.target.value)} /></div>
-                          <div><label className="text-xs font-bold">Education</label><input type="text" className="w-full border rounded p-1" value={card.education} onChange={e => updateArrayItem('vacancy_cards', index, 'education', e.target.value)} /></div>
-                        </div>
-                        <div className="border border-gray-200 rounded p-3 bg-white">
-                          <label className="text-xs font-bold uppercase text-gray-500 mb-2 block">Category Wise Vacancies</label>
-                          <div className="flex flex-wrap gap-2 mb-2">
-                            {Object.entries(card.categories || {}).map(([cat, val]) => (
-                              <div key={cat} className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded px-2 py-1">
-                                <span className="text-xs font-bold">{cat}:</span>
-                                <input type="text" className="w-12 text-xs border rounded px-1" value={val as string} onChange={e => setCategoryValue(index, cat, e.target.value)} />
-                                <button className="text-red-500 hover:text-red-700 ml-1" onClick={() => removeCategory(index, cat)}>&times;</button>
-                              </div>
-                            ))}
-                          </div>
-                          <div className="flex gap-2 items-center mt-2">
-                            <input type="text" placeholder="Category (e.g. UR, OBC)" className="text-xs border rounded p-1 w-32" id={`cat-name-${index}`} />
-                            <input type="text" placeholder="Count" className="text-xs border rounded p-1 w-20" id={`cat-val-${index}`} />
-                            <button className="bg-gray-200 hover:bg-gray-300 text-xs font-bold px-2 py-1 rounded" onClick={() => {
-                              const nameInput = document.getElementById(`cat-name-${index}`) as HTMLInputElement;
-                              const valInput = document.getElementById(`cat-val-${index}`) as HTMLInputElement;
-                              if (nameInput.value && valInput.value) {
-                                setCategoryValue(index, nameInput.value, valInput.value);
-                                nameInput.value = '';
-                                valInput.value = '';
-                              }
-                            }}>Add</button>
-                          </div>
+                          <div><label className="text-xs font-bold">Education</label><input type="text" className="w-full border rounded p-1" value={card.education?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'education', e.target.value)} /></div>
                         </div>
                       </div>
                     ))}
-                    <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('vacancy_cards', {post_name:'', total:'', education:'', categories:{}})}>+ Add Vacancy</button>
+                    <button className="bg-blue-100 text-blue-700 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('vacancy_cards', {post_name: initLocalized(), total:'', education: initLocalized(), categories:{}})}>+ Add Vacancy</button>
                   </div>
                 </div>
               )}
@@ -239,20 +351,17 @@ export default function AdvancedEditorPage() {
               {activeTab === 'eligibility' && (
                 <div className="space-y-6">
                   <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2">Dynamic Eligibility Builder</h2>
-                  <div className="bg-blue-50 border border-blue-200 p-4 rounded mb-6">
-                    <p className="text-sm text-blue-800">Combine rules using AND/OR logic. This powers the "Check Eligibility" widget on the frontend.</p>
-                  </div>
                   <div className="space-y-3 max-w-3xl">
                     {jobData.eligibility_rules.map((rule: any, index: number) => (
                       <div key={index} className="flex gap-3 items-center">
-                        <input type="text" className="flex-1 border rounded p-2" placeholder="Condition e.g. 10th Pass, 18 Years Age" value={rule.condition} onChange={e => updateArrayItem('eligibility_rules', index, 'condition', e.target.value)} />
+                        <input type="text" className="flex-1 border rounded p-2" placeholder="Condition e.g. 10th Pass" value={rule.condition?.[editLang] || ''} onChange={e => updateArrayItemLocalized('eligibility_rules', index, 'condition', e.target.value)} />
                         <select className="border rounded p-2 w-24 bg-gray-100" value={rule.operator || ''} onChange={e => updateArrayItem('eligibility_rules', index, 'operator', e.target.value)}>
                           <option value="">None</option><option value="AND">AND</option><option value="OR">OR</option>
                         </select>
                         <button className="p-2 text-red-500 hover:bg-red-50 rounded" onClick={() => removeArrayItem('eligibility_rules', index)}><Trash2 className="w-5 h-5"/></button>
                       </div>
                     ))}
-                    <button className="bg-green-100 text-green-700 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('eligibility_rules', {id: Date.now().toString(), condition: '', operator: 'AND'})}>+ Add Rule</button>
+                    <button className="bg-green-100 text-green-700 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('eligibility_rules', {id: Date.now().toString(), condition: initLocalized(), operator: 'AND'})}>+ Add Rule</button>
                   </div>
                 </div>
               )}
@@ -264,12 +373,12 @@ export default function AdvancedEditorPage() {
                     <div className="space-y-3 max-w-2xl">
                       {jobData.important_dates.map((date: any, index: number) => (
                         <div key={index} className="flex gap-3">
-                          <input type="text" placeholder="Label (e.g. Apply Start)" className="flex-1 border rounded p-2" value={date.label} onChange={e => updateArrayItem('important_dates', index, 'label', e.target.value)} />
-                          <input type="text" placeholder="Date (e.g. 10 Jun 2026)" className="flex-1 border rounded p-2" value={date.date} onChange={e => updateArrayItem('important_dates', index, 'date', e.target.value)} />
+                          <input type="text" placeholder="Label" className="flex-1 border rounded p-2" value={date.label?.[editLang] || ''} onChange={e => updateArrayItemLocalized('important_dates', index, 'label', e.target.value)} />
+                          <input type="text" placeholder="Date" className="flex-1 border rounded p-2" value={date.date?.[editLang] || ''} onChange={e => updateArrayItemLocalized('important_dates', index, 'date', e.target.value)} />
                           <button className="text-red-500 p-2" onClick={() => removeArrayItem('important_dates', index)}><Trash2 className="w-5 h-5"/></button>
                         </div>
                       ))}
-                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('important_dates', {label:'', date:''})}>+ Add Date</button>
+                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('important_dates', {label: initLocalized(), date: initLocalized()})}>+ Add Date</button>
                     </div>
                   </div>
 
@@ -280,13 +389,13 @@ export default function AdvancedEditorPage() {
                         <div key={index} className="flex gap-3 items-start border p-3 rounded bg-gray-50">
                           <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0">{index + 1}</div>
                           <div className="flex-1 space-y-2">
-                            <input type="text" placeholder="Step Title (e.g. Prelims Exam)" className="w-full border rounded p-2 font-bold" value={step.title} onChange={e => updateArrayItem('selection_process', index, 'title', e.target.value)} />
-                            <textarea placeholder="Description..." className="w-full border rounded p-2 text-sm" value={step.description} onChange={e => updateArrayItem('selection_process', index, 'description', e.target.value)} />
+                            <input type="text" placeholder="Step Title" className="w-full border rounded p-2 font-bold" value={step.title?.[editLang] || ''} onChange={e => updateArrayItemLocalized('selection_process', index, 'title', e.target.value)} />
+                            <textarea placeholder="Description..." className="w-full border rounded p-2 text-sm" value={step.description?.[editLang] || ''} onChange={e => updateArrayItemLocalized('selection_process', index, 'description', e.target.value)} />
                           </div>
                           <button className="text-red-500 p-2" onClick={() => removeArrayItem('selection_process', index)}><Trash2 className="w-5 h-5"/></button>
                         </div>
                       ))}
-                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('selection_process', {step_number: jobData.selection_process.length + 1, title:'', description:''})}>+ Add Step</button>
+                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('selection_process', {step_number: jobData.selection_process.length + 1, title: initLocalized(), description: initLocalized()})}>+ Add Step</button>
                     </div>
                   </div>
                 </div>
@@ -295,117 +404,209 @@ export default function AdvancedEditorPage() {
               {activeTab === 'checklists' && (
                 <div className="space-y-10 max-w-3xl">
                   <div>
-                    <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2 mb-4">Required Documents Checklist</h2>
-                    <div className="space-y-2">
-                      {jobData.required_documents.map((doc: any, index: number) => (
-                        <div key={index} className="flex gap-3 items-center">
-                          <input type="checkbox" checked={doc.is_required} onChange={e => updateArrayItem('required_documents', index, 'is_required', e.target.checked)} className="w-5 h-5" />
-                          <input type="text" placeholder="Document Name" className="flex-1 border rounded p-2" value={doc.item} onChange={e => updateArrayItem('required_documents', index, 'item', e.target.value)} />
-                          <button className="text-red-500 p-2" onClick={() => removeArrayItem('required_documents', index)}><Trash2 className="w-5 h-5"/></button>
-                        </div>
-                      ))}
-                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold mt-2" onClick={() => addArrayItem('required_documents', {id: Date.now().toString(), item:'', is_required: true})}>+ Add Document</button>
-                    </div>
-                  </div>
-                  <div>
                     <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2 mb-4">How to Apply Steps</h2>
                     <div className="space-y-2">
                       {jobData.how_to_apply.map((step: any, index: number) => (
                         <div key={index} className="flex gap-3 items-center">
                           <span className="font-bold text-gray-400">{index + 1}.</span>
-                          <input type="text" placeholder="Instruction" className="flex-1 border rounded p-2" value={step.instruction} onChange={e => updateArrayItem('how_to_apply', index, 'instruction', e.target.value)} />
+                          <input type="text" placeholder="Instruction" className="flex-1 border rounded p-2" value={step.instruction?.[editLang] || ''} onChange={e => updateArrayItemLocalized('how_to_apply', index, 'instruction', e.target.value)} />
                           <button className="text-red-500 p-2" onClick={() => removeArrayItem('how_to_apply', index)}><Trash2 className="w-5 h-5"/></button>
                         </div>
                       ))}
-                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold mt-2" onClick={() => addArrayItem('how_to_apply', {step_number: jobData.how_to_apply.length + 1, instruction: ''})}>+ Add Instruction</button>
+                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold mt-2" onClick={() => addArrayItem('how_to_apply', {step_number: jobData.how_to_apply.length + 1, instruction: initLocalized()})}>+ Add Instruction</button>
                     </div>
                   </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2 mb-4">Important Links</h2>
-                    <div className="space-y-2">
-                      {jobData.important_links.map((link: any, index: number) => (
-                        <div key={index} className="flex gap-3 items-center">
-                          <input type="text" placeholder="Label" className="w-1/3 border rounded p-2" value={link.label} onChange={e => updateArrayItem('important_links', index, 'label', e.target.value)} />
-                          <input type="url" placeholder="URL" className="flex-1 border rounded p-2 text-blue-600" value={link.url} onChange={e => updateArrayItem('important_links', index, 'url', e.target.value)} />
-                          <button className="text-red-500 p-2" onClick={() => removeArrayItem('important_links', index)}><Trash2 className="w-5 h-5"/></button>
-                        </div>
-                      ))}
-                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold mt-2" onClick={() => addArrayItem('important_links', {label:'', url:''})}>+ Add Link</button>
-                    </div>
-                  </div>
+                  
                   <div>
                     <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2 mb-4">FAQs</h2>
                     <div className="space-y-4">
                       {jobData.faqs.map((faq: any, index: number) => (
                         <div key={index} className="border rounded p-3 bg-gray-50 relative">
                           <button className="absolute top-2 right-2 text-red-500" onClick={() => removeArrayItem('faqs', index)}><Trash2 className="w-4 h-4"/></button>
-                          <input type="text" placeholder="Question" className="w-full border rounded p-2 mb-2 font-bold" value={faq.question} onChange={e => updateArrayItem('faqs', index, 'question', e.target.value)} />
-                          <textarea placeholder="Answer" className="w-full border rounded p-2" value={faq.answer} onChange={e => updateArrayItem('faqs', index, 'answer', e.target.value)} />
+                          <input type="text" placeholder="Question" className="w-full border rounded p-2 mb-2 font-bold" value={faq.question?.[editLang] || ''} onChange={e => updateArrayItemLocalized('faqs', index, 'question', e.target.value)} />
+                          <textarea placeholder="Answer" className="w-full border rounded p-2" value={faq.answer?.[editLang] || ''} onChange={e => updateArrayItemLocalized('faqs', index, 'answer', e.target.value)} />
                         </div>
                       ))}
-                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold mt-2" onClick={() => addArrayItem('faqs', {question:'', answer:''})}>+ Add FAQ</button>
+                      <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold mt-2" onClick={() => addArrayItem('faqs', {question: initLocalized(), answer: initLocalized()})}>+ Add FAQ</button>
                     </div>
                   </div>
                 </div>
               )}
 
-              {activeTab === 'seo' && (
+              
+              {activeTab === 'links' && (
+                <div className="space-y-6 max-w-4xl">
+                  <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2">Important Links</h2>
+                  <div className="space-y-4">
+                    {jobData.important_links?.map((link: any, index: number) => (
+                      <div key={index} className="flex gap-3 items-center border p-3 rounded bg-gray-50">
+                        <input type="text" placeholder="Link Label (e.g. Apply Online)" className="flex-1 border rounded p-2 font-bold" value={link.label?.[editLang] || ''} onChange={e => updateArrayItemLocalized('important_links', index, 'label', e.target.value)} />
+                        <input type="text" placeholder="URL (https://...)" className="flex-1 border rounded p-2" value={link.url || ''} onChange={e => {
+                          const newArr = [...(jobData.important_links || [])];
+                          newArr[index] = { ...newArr[index], url: e.target.value };
+                          setJobData({ ...jobData, important_links: newArr });
+                        }} />
+                        <button className="text-red-500 p-2" onClick={() => removeArrayItem('important_links', index)}><Trash2 className="w-5 h-5"/></button>
+                      </div>
+                    ))}
+                    <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold" onClick={() => addArrayItem('important_links', {label: initLocalized(), url: ''})}>+ Add Important Link</button>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'syllabus' && (
+          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2 mb-4">Syllabus Configuration</h2>
+            
+            {(jobData.syllabus || []).map((section, sIndex) => (
+              <div key={sIndex} className="mb-6 p-4 border border-blue-100 bg-blue-50/50 rounded-lg">
+                <div className="flex justify-between items-center mb-3">
+                  <input
+                    type="text"
+                    value={section.subject[editLang] || ''}
+                    onChange={(e) => {
+                      const newSyllabus = [...(jobData.syllabus || [])];
+                      newSyllabus[sIndex].subject[editLang] = e.target.value;
+                      setJobData({ ...jobData, syllabus: newSyllabus });
+                    }}
+                    className="w-full px-3 py-2 border rounded font-semibold text-blue-900"
+                    placeholder="Subject Name (e.g., General Knowledge)"
+                  />
+                  <button onClick={() => {
+                    const newSyllabus = [...(jobData.syllabus || [])];
+                    newSyllabus.splice(sIndex, 1);
+                    setJobData({ ...jobData, syllabus: newSyllabus });
+                  }} className="ml-4 text-red-500 hover:text-red-700">Remove Subject</button>
+                </div>
+                
+                <div className="pl-4 space-y-2 border-l-2 border-blue-200">
+                  {section.topics.map((topic, tIndex) => (
+                    <div key={tIndex} className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                      <input
+                        type="text"
+                        value={topic.title[editLang] || ''}
+                        onChange={(e) => {
+                          const newSyllabus = [...(jobData.syllabus || [])];
+                          newSyllabus[sIndex].topics[tIndex].title[editLang] = e.target.value;
+                          setJobData({ ...jobData, syllabus: newSyllabus });
+                        }}
+                        className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm"
+                        placeholder="Topic (e.g., Indian History)"
+                      />
+                      <button onClick={() => {
+                        const newSyllabus = [...(jobData.syllabus || [])];
+                        newSyllabus[sIndex].topics.splice(tIndex, 1);
+                        setJobData({ ...jobData, syllabus: newSyllabus });
+                      }} className="text-red-400 hover:text-red-600">×</button>
+                    </div>
+                  ))}
+                  <button onClick={() => {
+                    const newSyllabus = [...(jobData.syllabus || [])];
+                    newSyllabus[sIndex].topics.push({ title: { en: '', hi: '', mr: '' } });
+                    setJobData({ ...jobData, syllabus: newSyllabus });
+                  }} className="text-sm text-blue-600 hover:underline mt-2 inline-block">+ Add Topic</button>
+                </div>
+              </div>
+            ))}
+            
+            <button
+              onClick={() => {
+                const newSyllabus = [...(jobData.syllabus || []), { subject: { en: '', hi: '', mr: '' }, topics: [] }];
+                setJobData({ ...jobData, syllabus: newSyllabus });
+              }}
+              className="mt-4 px-4 py-2 bg-blue-100 text-blue-700 font-semibold rounded hover:bg-blue-200"
+            >
+              + Add Syllabus Subject
+            </button>
+          </div>
+        )}
+
+        {activeTab === 'seo' && (
                 <div className="space-y-6 max-w-4xl">
                   <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2">SEO Meta Details</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    <div><label className="block text-sm font-bold mb-1">SEO Title</label><input type="text" className="w-full border rounded p-2" value={jobData.seo_title} onChange={e => updateField('seo_title', e.target.value)} /></div>
-                    <div><label className="block text-sm font-bold mb-1">SEO Description</label><textarea className="w-full border rounded p-2 h-20" value={jobData.seo_description} onChange={e => updateField('seo_description', e.target.value)} /></div>
-                    <div><label className="block text-sm font-bold mb-1">Focus Keyword</label><input type="text" className="w-full border rounded p-2" value={jobData.focus_keyword} onChange={e => updateField('focus_keyword', e.target.value)} /></div>
+                    <div><label className="block text-sm font-bold mb-1">SEO Title</label><input type="text" className="w-full border rounded p-2" value={jobData.seo_title?.[editLang] || ''} onChange={e => updateLocalizedField('seo_title', e.target.value)} /></div>
+                    <div><label className="block text-sm font-bold mb-1">SEO Description</label><textarea className="w-full border rounded p-2 h-20" value={jobData.seo_description?.[editLang] || ''} onChange={e => updateLocalizedField('seo_description', e.target.value)} /></div>
+                    <div><label className="block text-sm font-bold mb-1">Focus Keyword</label><input type="text" className="w-full border rounded p-2" value={jobData.focus_keyword?.[editLang] || ''} onChange={e => updateLocalizedField('focus_keyword', e.target.value)} /></div>
                   </div>
                 </div>
               )}
 
             </div>
+
           </div>
-
-          {/* SEO Sidebar (Right Column) */}
-          <div className="w-full lg:w-[400px] shrink-0 sticky top-[70px]">
-             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="bg-slate-900 text-white p-4">
-                  <h3 className="font-bold text-lg flex items-center gap-2"><Monitor className="w-5 h-5"/> SEO Smart Publisher</h3>
-                  <p className="text-slate-400 text-xs mt-1">Real-time analysis and preview</p>
+          
+          {/* Right Sidebar: SEO & Live Previews */}
+          <div className="w-full lg:w-[350px] shrink-0 space-y-6">
+            {/* Breaking News Toggle */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+              <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
+                <Globe className="w-4 h-4 text-red-500" /> Visibility
+              </h3>
+              <button 
+                className={`w-full py-2.5 rounded-lg font-bold border transition-colors ${jobData.isTrending ? 'bg-red-50 text-red-700 border-red-200' : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'}`}
+                onClick={() => setJobData({...jobData, isTrending: !jobData.isTrending})}
+              >
+                {jobData.isTrending ? '🔴 Live Breaking News' : 'Make Breaking News'}
+              </button>
+            </div>
+            
+            
+            {/* Live SEO Analyzer */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sticky top-[70px]">
+              <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
+                <Search className="w-4 h-4 text-[#4285f4]" /> Live SEO Analyzer
+              </h3>
+              
+              <div className="mb-4">
+                <div className="flex justify-between items-end mb-1">
+                  <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">Optimization Score</span>
+                  <span className={`text-lg font-black ${seoScore >= 80 ? 'text-green-600' : seoScore >= 50 ? 'text-yellow-600' : 'text-red-600'}`}>{seoScore}/100</span>
                 </div>
-                <div className="p-5 space-y-6">
-                  {/* Score */}
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-gray-700">SEO Score</span>
-                    <span className={`text-2xl font-black ${jobData.seo_title && jobData.seo_description ? 'text-green-500' : 'text-red-500'}`}>
-                      {jobData.seo_title && jobData.seo_description ? '95/100' : '45/100'}
-                    </span>
-                  </div>
-                  
-                  {/* Checks */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2 text-sm"><CheckCircle className={`w-4 h-4 ${jobData.title ? 'text-green-500' : 'text-gray-300'}`}/> H1 Title Present</div>
-                    <div className="flex items-center gap-2 text-sm"><CheckCircle className={`w-4 h-4 ${jobData.seo_title ? 'text-green-500' : 'text-gray-300'}`}/> Meta Title Optimized</div>
-                    <div className="flex items-center gap-2 text-sm"><CheckCircle className={`w-4 h-4 ${jobData.seo_description ? 'text-green-500' : 'text-gray-300'}`}/> Meta Description Added</div>
-                    <div className="flex items-center gap-2 text-sm"><CheckCircle className={`w-4 h-4 ${jobData.faqs.length > 0 ? 'text-green-500' : 'text-gray-300'}`}/> FAQ Schema Ready</div>
-                  </div>
-
-                  {/* Preview */}
-                  <div className="bg-gray-50 border border-gray-200 rounded p-4">
-                    <div className="flex items-center gap-2 mb-3 border-b pb-2">
-                      <Smartphone className="w-4 h-4 text-gray-500"/> <span className="text-xs font-bold text-gray-500 uppercase">Google Mobile Preview</span>
-                    </div>
-                    <div className="text-xs text-gray-800 flex items-center gap-1 mb-1">
-                      <img src="https://www.google.com/favicon.ico" className="w-3 h-3" /> 
-                      <span className="truncate">sarkarijob.com › {jobData.slug || 'slug'}</span>
-                    </div>
-                    <h4 className="text-[16px] text-[#1a0dab] font-medium leading-tight mb-1 cursor-pointer hover:underline">{jobData.seo_title || jobData.title || 'Add an SEO Title to see preview'}</h4>
-                    <p className="text-[13px] text-[#4d5156] leading-snug line-clamp-2">{jobData.seo_description || 'Add an SEO Description to see preview'}</p>
-                  </div>
+                <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                  <div className={`h-2.5 rounded-full transition-all duration-500 ${seoScore >= 80 ? 'bg-green-500' : seoScore >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`} style={{ width: `${Math.max(10, seoScore)}%` }}></div>
                 </div>
-             </div>
+                <div className="mt-2 text-[11px] text-gray-500 flex flex-col gap-1">
+                  <div className="flex justify-between"><span>Title Length (40-70)</span> {jobData.seo_title?.[editLang]?.length >= 40 && jobData.seo_title?.[editLang]?.length <= 70 ? '✅' : '❌'}</div>
+                  <div className="flex justify-between"><span>Desc Length (100-160)</span> {jobData.seo_description?.[editLang]?.length >= 100 && jobData.seo_description?.[editLang]?.length <= 160 ? '✅' : '❌'}</div>
+                  <div className="flex justify-between"><span>Keyword in Title</span> {jobData.focus_keyword?.[editLang] && (jobData.seo_title?.[editLang]||jobData.title?.[editLang])?.toLowerCase().includes(jobData.focus_keyword?.[editLang]?.toLowerCase()) ? '✅' : '❌'}</div>
+                  <div className="flex justify-between"><span>Keyword in Desc</span> {jobData.focus_keyword?.[editLang] && (jobData.seo_description?.[editLang]||jobData.job_summary?.[editLang])?.toLowerCase().includes(jobData.focus_keyword?.[editLang]?.toLowerCase()) ? '✅' : '❌'}</div>
+                  <div className="flex justify-between"><span>Featured Image/Logo</span> {jobData.logo_url ? '✅' : '❌'}</div>
+                </div>
+              </div>
+
+              <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
+                
+              <div className="bg-white border border-gray-200 rounded-lg p-3 text-sm shadow-sm font-sans">
+                <div className="text-[#1a0dab] text-[18px] hover:underline cursor-pointer truncate max-w-full inline-block mb-1">
+                  {jobData.seo_title?.[editLang] || jobData.title?.[editLang] || 'Job Title Example'}
+                </div>
+                <div className="text-[#006621] text-[13px] mb-1 truncate">
+                  https://sarkaripassport.com/{editLang}/jobs/{jobData.slug || 'example-slug'}
+                </div>
+                <div className="text-[#545454] text-[13px] leading-[1.4] line-clamp-2">
+                  {jobData.seo_description?.[editLang] || jobData.job_summary?.[editLang] || 'This is the meta description that will appear in search results to attract candidates.'}
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mt-3 text-center">Live preview for Google Search Results.</p>
+            </div>
           </div>
           
         </div>
       </main>
+
       
     </div>
+  );
+}
+
+
+import { Suspense } from 'react';
+export default function AdvancedEditorPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading editor...</div>}>
+      <EditorContent />
+    </Suspense>
   );
 }

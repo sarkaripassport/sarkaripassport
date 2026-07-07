@@ -1,0 +1,52 @@
+{
+  "navigation": {
+    "home": "Home",
+    "latestJobs": "Latest Jobs",
+    "admitCard": "Admit Card",
+    "results": "Results",
+    "answerKey": "Answer Key",
+    "syllabus": "Syllabus",
+    "adminPanel": "Admin Panel",
+    "login": "Login",
+    "register": "Register"
+  },
+  "home": {
+    "trending": "Trending Now",
+    "quickLinks": "Quick Links",
+    "searchPlaceholder": "Search by job title or organization...",
+    "allCategories": "All Categories",
+    "viewAllJobs": "View All Jobs",
+    "daysLeft": "days left"
+  },
+  "job": {
+    "status": "Status",
+    "applyNow": "Apply Now",
+    "downloadAdmitCard": "Download Admit Card",
+    "checkResult": "Check Result",
+    "quickFacts": "Quick Facts",
+    "vacancies": "Vacancies",
+    "lastDate": "Last Date",
+    "qualification": "Qualification",
+    "ageLimit": "Age Limit",
+    "salary": "Salary",
+    "location": "Location",
+    "jobSummary": "Job Summary",
+    "importantDates": "Important Dates",
+    "applicationFee": "Application Fee",
+    "vacancyDetails": "Vacancy Details",
+    "selectionProcess": "Selection Process",
+    "howToApply": "How to Apply",
+    "similarJobs": "Similar Jobs",
+    "faqs": "Frequently Asked Questions",
+    "importantLinks": "Important Links"
+  },
+  "footer": {
+    "about": "SarkariJob is India's most trusted portal for government job alerts, admit cards, and results.",
+    "links": "Important Links",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact Us",
+    "rights": "All rights reserved."
+  }
+}

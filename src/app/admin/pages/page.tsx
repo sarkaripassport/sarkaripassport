@@ -128,8 +128,8 @@ export default function PagesManager() {
               <label className="block text-sm font-bold text-gray-700 mb-1">Meta Title</label>
               <input 
                 type="text" 
-                value={currentPageData.seo.title}
-                onChange={(e) => updatePageSettings('seo', 'title', e.target.value)}
+                value={typeof currentPageData.seo.title === 'string' ? currentPageData.seo.title : currentPageData.seo.title?.en || ''}
+                onChange={(e) => updatePageSettings('seo', 'title', typeof currentPageData.seo.title === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(currentPageData.seo.title as any), en: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none"
               />
               <p className="text-xs text-gray-500 mt-1">Recommended: 50-60 characters</p>
@@ -139,8 +139,8 @@ export default function PagesManager() {
               <label className="block text-sm font-bold text-gray-700 mb-1">Meta Description</label>
               <textarea 
                 rows={3}
-                value={currentPageData.seo.description}
-                onChange={(e) => updatePageSettings('seo', 'description', e.target.value)}
+                value={typeof currentPageData.seo.description === 'string' ? currentPageData.seo.description : currentPageData.seo.description?.en || ''}
+                onChange={(e) => updatePageSettings('seo', 'description', typeof currentPageData.seo.description === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(currentPageData.seo.description as any), en: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none resize-none"
               ></textarea>
               <p className="text-xs text-gray-500 mt-1">Recommended: 150-160 characters</p>
@@ -150,8 +150,8 @@ export default function PagesManager() {
               <label className="block text-sm font-bold text-gray-700 mb-1">Keywords</label>
               <input 
                 type="text" 
-                value={currentPageData.seo.keywords}
-                onChange={(e) => updatePageSettings('seo', 'keywords', e.target.value)}
+                value={typeof currentPageData.seo.keywords === 'string' ? currentPageData.seo.keywords : currentPageData.seo.keywords?.en || ''}
+                onChange={(e) => updatePageSettings('seo', 'keywords', typeof currentPageData.seo.keywords === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(currentPageData.seo.keywords as any), en: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none"
               />
               <p className="text-xs text-gray-500 mt-1">Comma separated</p>
@@ -167,8 +167,8 @@ export default function PagesManager() {
               <label className="block text-sm font-bold text-gray-700 mb-1">H1 Main Heading</label>
               <input 
                 type="text" 
-                value={currentPageData.hero.title}
-                onChange={(e) => updatePageSettings('hero', 'title', e.target.value)}
+                value={typeof currentPageData.hero.title === 'string' ? currentPageData.hero.title : currentPageData.hero.title?.en || ''}
+                onChange={(e) => updatePageSettings('hero', 'title', typeof currentPageData.hero.title === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(currentPageData.hero.title as any), en: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none"
               />
             </div>
@@ -177,8 +177,8 @@ export default function PagesManager() {
               <label className="block text-sm font-bold text-gray-700 mb-1">Subtitle</label>
               <textarea 
                 rows={2}
-                value={currentPageData.hero.subtitle}
-                onChange={(e) => updatePageSettings('hero', 'subtitle', e.target.value)}
+                value={typeof currentPageData.hero.subtitle === 'string' ? currentPageData.hero.subtitle : currentPageData.hero.subtitle?.en || ''}
+                onChange={(e) => updatePageSettings('hero', 'subtitle', typeof currentPageData.hero.subtitle === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(currentPageData.hero.subtitle as any), en: e.target.value})}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none resize-none"
               ></textarea>
             </div>

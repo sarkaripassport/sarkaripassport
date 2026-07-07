@@ -42,7 +42,7 @@ export default function HomepageManager() {
       ...settings,
       announcements: [
         ...settings.announcements,
-        { id: `a${Date.now()}`, text: '', link: '', isActive: true, priority: 'normal' }
+        { id: `a${Date.now()}`, text: { en: '', hi: '', mr: '' } as any, link: '', isActive: true, priority: 'normal' }
       ]
     });
   };
@@ -95,8 +95,8 @@ export default function HomepageManager() {
             <label className="block text-sm font-bold text-gray-700 mb-1">Meta Title</label>
             <input 
               type="text" 
-              value={settings.seo.title}
-              onChange={(e) => setSettings({...settings, seo: {...settings.seo, title: e.target.value}})}
+              value={typeof settings.seo.title === 'string' ? settings.seo.title : settings.seo.title?.en || ''}
+              onChange={(e) => setSettings({...settings, seo: {...settings.seo, title: typeof settings.seo.title === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(settings.seo.title as any), en: e.target.value}}})}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none"
             />
           </div>
@@ -104,8 +104,8 @@ export default function HomepageManager() {
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">Meta Description</label>
             <textarea 
-              value={settings.seo.description}
-              onChange={(e) => setSettings({...settings, seo: {...settings.seo, description: e.target.value}})}
+              value={typeof settings.seo.description === 'string' ? settings.seo.description : settings.seo.description?.en || ''}
+              onChange={(e) => setSettings({...settings, seo: {...settings.seo, description: typeof settings.seo.description === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(settings.seo.description as any), en: e.target.value}}})}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none"
             />
@@ -115,8 +115,8 @@ export default function HomepageManager() {
             <label className="block text-sm font-bold text-gray-700 mb-1">Keywords</label>
             <input 
               type="text" 
-              value={settings.seo.keywords}
-              onChange={(e) => setSettings({...settings, seo: {...settings.seo, keywords: e.target.value}})}
+              value={typeof settings.seo.keywords === 'string' ? settings.seo.keywords : settings.seo.keywords?.en || ''}
+              onChange={(e) => setSettings({...settings, seo: {...settings.seo, keywords: typeof settings.seo.keywords === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(settings.seo.keywords as any), en: e.target.value}}})}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none"
             />
             <p className="text-xs text-gray-500 mt-1">Comma separated</p>
@@ -142,8 +142,8 @@ export default function HomepageManager() {
             <label className="block text-sm font-bold text-gray-700 mb-1">Main Title (H1)</label>
             <input 
               type="text" 
-              value={settings.hero.title}
-              onChange={(e) => setSettings({...settings, hero: {...settings.hero, title: e.target.value}})}
+              value={typeof settings.hero.title === 'string' ? settings.hero.title : settings.hero.title?.en || ''}
+              onChange={(e) => setSettings({...settings, hero: {...settings.hero, title: typeof settings.hero.title === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(settings.hero.title as any), en: e.target.value}}})}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none"
             />
           </div>
@@ -151,8 +151,8 @@ export default function HomepageManager() {
           <div>
             <label className="block text-sm font-bold text-gray-700 mb-1">Subtitle</label>
             <textarea 
-              value={settings.hero.subtitle}
-              onChange={(e) => setSettings({...settings, hero: {...settings.hero, subtitle: e.target.value}})}
+              value={typeof settings.hero.subtitle === 'string' ? settings.hero.subtitle : settings.hero.subtitle?.en || ''}
+              onChange={(e) => setSettings({...settings, hero: {...settings.hero, subtitle: typeof settings.hero.subtitle === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(settings.hero.subtitle as any), en: e.target.value}}})}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0A58CA] outline-none"
             />
@@ -175,8 +175,8 @@ export default function HomepageManager() {
               <input 
                 type="text" 
                 placeholder="Announcement Text..."
-                value={ann.text}
-                onChange={(e) => updateAnnouncement(ann.id, 'text', e.target.value)}
+                value={typeof ann.text === 'string' ? ann.text : (ann.text as any)?.en || ''}
+                onChange={(e) => updateAnnouncement(ann.id, 'text', typeof ann.text === 'string' ? {en: e.target.value, hi: '', mr: ''} : {...(ann.text as any), en: e.target.value})}
                 className="flex-1 min-w-[200px] px-3 py-1.5 text-sm border border-gray-300 rounded-md"
               />
               <input 
@@ -228,7 +228,7 @@ export default function HomepageManager() {
                 >
                   <option value="">Select Category</option>
                   {categories.map(c => (
-                    <option key={c.slug} value={c.name}>{c.name}</option>
+                    <option key={c.slug} value={c.name.en}>{c.name.en}</option>
                   ))}
                 </select>
               </div>

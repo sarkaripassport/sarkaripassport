@@ -1,0 +1,52 @@
+{
+  "navigation": {
+    "home": "होम",
+    "latestJobs": "नवीनतम नौकरियां",
+    "admitCard": "एडमिट कार्ड",
+    "results": "परिणाम",
+    "answerKey": "उत्तर कुंजी",
+    "syllabus": "पाठ्यक्रम",
+    "adminPanel": "व्यवस्थापक पैनल",
+    "login": "लॉग इन",
+    "register": "रजिस्टर"
+  },
+  "home": {
+    "trending": "ट्रेंडिंग",
+    "quickLinks": "त्वरित लिंक",
+    "searchPlaceholder": "नौकरी का शीर्षक या संगठन खोजें...",
+    "allCategories": "सभी श्रेणियां",
+    "viewAllJobs": "सभी नौकरियां देखें",
+    "daysLeft": "दिन शेष"
+  },
+  "job": {
+    "status": "स्थिति",
+    "applyNow": "अभी आवेदन करें",
+    "downloadAdmitCard": "एडमिट कार्ड डाउनलोड करें",
+    "checkResult": "परिणाम देखें",
+    "quickFacts": "संक्षिप्त तथ्य",
+    "vacancies": "रिक्तियां",
+    "lastDate": "अंतिम तिथि",
+    "qualification": "योग्यता",
+    "ageLimit": "आयु सीमा",
+    "salary": "वेतन",
+    "location": "स्थान",
+    "jobSummary": "नौकरी का सारांश",
+    "importantDates": "महत्वपूर्ण तिथियां",
+    "applicationFee": "आवेदन शुल्क",
+    "vacancyDetails": "रिक्ति विवरण",
+    "selectionProcess": "चयन प्रक्रिया",
+    "howToApply": "आवेदन कैसे करें",
+    "similarJobs": "समान नौकरियां",
+    "faqs": "अक्सर पूछे जाने वाले प्रश्न",
+    "importantLinks": "महत्वपूर्ण लिंक"
+  },
+  "footer": {
+    "about": "SarkariJob सरकारी नौकरी अलर्ट, एडमिट कार्ड और परिणामों के लिए भारत का सबसे भरोसेमंद पोर्टल है।",
+    "links": "महत्वपूर्ण लिंक",
+    "legal": "कानूनी",
+    "privacy": "गोपनीयता नीति",
+    "terms": "सेवा की शर्तें",
+    "contact": "संपर्क करें",
+    "rights": "सर्वाधिकार सुरक्षित।"
+  }
+}
