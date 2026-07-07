@@ -27,7 +27,7 @@ export default function AdminLoginPage() {
       setError(error.message);
       setIsLoading(false);
     } else {
-      router.push('/admin/dashboard');
+      router.push('/admin');
       router.refresh(); // Force refresh to get the updated session in layout/middleware
     }
   };
