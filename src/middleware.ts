@@ -1,7 +1,13 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+const locales = ['en', 'hi', 'mr'];
+const defaultLocale = 'en';
+
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  
+  // 1. Setup Supabase SSR client for Auth
   let supabaseResponse = NextResponse.next({
     request,
   })
@@ -27,24 +33,43 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  // Do not require auth for the login page itself
-  if (request.nextUrl.pathname.startsWith('/admin/login')) {
-    return supabaseResponse
-  }
+  // 2. Admin Route Protection
+  if (pathname.startsWith('/admin')) {
+    // Skip auth check for login page
+    if (pathname.startsWith('/admin/login')) {
+      return supabaseResponse;
+    }
 
-  // Check auth for all other /admin routes
-  if (request.nextUrl.pathname.startsWith('/admin')) {
     const { data: { user } } = await supabase.auth.getUser()
-
     if (!user) {
-      // no user, redirect to login
       const url = request.nextUrl.clone()
       url.pathname = '/admin/login'
       return NextResponse.redirect(url)
     }
+    
+    return supabaseResponse;
   }
 
-  return supabaseResponse
+  // 3. Locale Redirection (migrated from proxy.ts)
+  if (
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_next') ||
+    pathname.includes('.') // typically indicates a file request like .css, .js, .jpg, etc.
+  ) {
+    return supabaseResponse;
+  }
+
+  const pathnameHasLocale = locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
+
+  if (!pathnameHasLocale) {
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = `/${defaultLocale}${pathname}`;
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  return supabaseResponse;
 }
 
 export const config = {
