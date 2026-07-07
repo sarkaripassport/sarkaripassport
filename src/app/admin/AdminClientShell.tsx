@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { 
   LayoutDashboard, Briefcase, FileText, Settings, 
   LogOut, Bell, ChevronDown, Monitor, Search, Plus, User, Megaphone, 
@@ -11,7 +12,15 @@ import {
 
 export default function AdminClientShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const isEditor = pathname === '/admin/editor';
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push('/admin/login');
+    router.refresh();
+  };
 
   // Mock state for expandable menus
   const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({
@@ -44,12 +53,16 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
         </div>
 
         <div className="flex items-center h-full">
-          <div className="flex items-center gap-2 h-full px-3 text-white">
-            <span className="text-xs">Howdy, <strong>Super Admin</strong></span>
+          <div className="flex items-center gap-2 h-full px-3 text-white border-r border-white/10 pr-4">
+            <span className="text-xs">Howdy, <strong>Admin</strong></span>
             <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-[10px]">
               A
             </div>
           </div>
+          <button onClick={handleLogout} className="flex items-center gap-1.5 h-full px-4 hover:text-white hover:bg-red-500/20 text-gray-300 transition-colors">
+            <LogOut className="w-4 h-4" />
+            <span className="text-xs font-semibold">Logout</span>
+          </button>
         </div>
       </div>
 
