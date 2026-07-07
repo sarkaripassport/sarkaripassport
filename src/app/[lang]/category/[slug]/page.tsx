@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { ChevronDown, FolderOpen, AlertCircle } from 'lucide-react';
 import { getDictionary, Locale } from '@/i18n/getDictionary';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function generateMetadata(
   { params }: { params: Promise<{ lang: string, slug: string }> },

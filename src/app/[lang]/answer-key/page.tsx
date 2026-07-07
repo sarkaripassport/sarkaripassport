@@ -3,7 +3,7 @@ import JobsClient from "@/app/[lang]/jobs/JobsClient";
 import type { Metadata } from "next";
 import { getDictionary, Locale } from "@/i18n/getDictionary";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
   const settings = await getSettings();

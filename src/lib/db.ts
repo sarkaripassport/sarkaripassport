@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { cache } from 'react';
 
 // Advanced Schema Types
 
@@ -416,31 +417,31 @@ async function initDb() {
   }
 }
 
-export async function getCategories(): Promise<Category[]> {
+export const getCategories = cache(async (): Promise<Category[]> => {
   await initDb();
   const data = await fs.readFile(CATEGORIES_DB, 'utf-8');
   return JSON.parse(data);
-}
+});
 
 export async function saveCategories(categories: Category[]): Promise<void> {
   await fs.writeFile(CATEGORIES_DB, JSON.stringify(categories, null, 2));
 }
 
-export async function getSettings(): Promise<HomepageSettings> {
+export const getSettings = cache(async (): Promise<HomepageSettings> => {
   await initDb();
   const data = await fs.readFile(SETTINGS_DB, 'utf-8');
   return JSON.parse(data);
-}
+});
 
 export async function saveSettings(settings: HomepageSettings): Promise<void> {
   await fs.writeFile(SETTINGS_DB, JSON.stringify(settings, null, 2));
 }
 
-export async function getJobs(): Promise<Job[]> {
+export const getJobs = cache(async (): Promise<Job[]> => {
   await initDb();
   const data = await fs.readFile(DB_PATH, 'utf-8');
   return JSON.parse(data);
-}
+});
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   const categories = await getCategories();
