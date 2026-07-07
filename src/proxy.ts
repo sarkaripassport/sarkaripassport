@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 const locales = ['en', 'hi', 'mr'];
 const defaultLocale = 'en';
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   
   // 1. Setup Supabase SSR client for Auth
