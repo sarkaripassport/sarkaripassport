@@ -15,30 +15,7 @@ export default function AdminDashboard() {
       .then(data => setAnalytics(data))
       .catch(e => console.error(e));
   }, []);
-  const [analytics, setAnalytics] = useState<any>(null);
 
-  require('react').useEffect(() => {
-    fetch('/api/analytics')
-      .then(r => r.json())
-      .then(data => setAnalytics(data))
-      .catch(e => console.error(e));
-  }, []);
-  const [analytics, setAnalytics] = useState<any>(null);
-
-  require('react').useEffect(() => {
-    fetch('/api/analytics')
-      .then(r => r.json())
-      .then(data => setAnalytics(data))
-      .catch(e => console.error(e));
-  }, []);
-  const [analytics, setAnalytics] = useState<any>(null);
-
-  require('react').useEffect(() => {
-    fetch('/api/analytics')
-      .then(r => r.json())
-      .then(data => setAnalytics(data))
-      .catch(e => console.error(e));
-  }, []);
 
   return (
     <div className="p-4 sm:p-6 max-w-[1400px]">

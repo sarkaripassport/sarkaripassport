@@ -78,8 +78,7 @@ function EditorContent() {
       enable_faq_schema: true,
       enable_syllabus_schema: true
     },
-    seo_matrix: { states: [], cities: [], qualifications: [], departments: [] }
-
+    seo_matrix: { states: [], cities: [], qualifications: [], departments: [] },
     important_links: []
   });
 
