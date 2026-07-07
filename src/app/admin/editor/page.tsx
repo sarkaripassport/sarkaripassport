@@ -344,12 +344,20 @@ function EditorContent() {
                     </div>
                     <div className="col-span-2">
                       <label className="block text-sm font-bold mb-1">Organization Logo</label>
-                      <div className="flex gap-2">
-                        <input type="text" className="flex-1 border rounded p-2" placeholder="Image URL..." value={jobData.logo_url || ''} onChange={e => updateField('logo_url', e.target.value)} />
-                        <label className="bg-blue-50 text-blue-700 border border-blue-200 rounded px-4 py-2 cursor-pointer hover:bg-blue-100 font-bold flex items-center">
-                          Upload Logo
-                          <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
-                        </label>
+                      <div className="flex gap-4 items-start">
+                        {jobData.logo_url && (
+                          <div className="shrink-0 w-16 h-16 border rounded bg-gray-50 flex items-center justify-center overflow-hidden">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={jobData.logo_url} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
+                          </div>
+                        )}
+                        <div className="flex-1 flex gap-2">
+                          <input type="text" className="flex-1 border rounded p-2 h-10" placeholder="Image URL..." value={jobData.logo_url || ''} onChange={e => updateField('logo_url', e.target.value)} />
+                          <label className="bg-blue-50 text-blue-700 border border-blue-200 rounded px-4 py-2 h-10 cursor-pointer hover:bg-blue-100 font-bold flex items-center shrink-0">
+                            Upload Logo
+                            <input type="file" className="hidden" accept="image/*" onChange={handleLogoUpload} />
+                          </label>
+                        </div>
                       </div>
                     </div>
                   </div>
