@@ -14,7 +14,7 @@ function EditorContent() {
   const cloneId = searchParams.get('cloneId');
 
   const [editLang, setEditLang] = useState<'en'|'hi'|'mr'>('en');
-
+  const [tagInput, setTagInput] = useState('');
   
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -87,6 +87,7 @@ function EditorContent() {
 
   const [activeTab, setActiveTab] = useState('general');
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchId = editId || cloneId;
@@ -108,6 +109,7 @@ function EditorContent() {
   }, [editId, cloneId]);
 
   const handleSave = async () => {
+    setSaving(true);
     try {
       const url = editId ? `/api/jobs?id=${editId}` : '/api/jobs';
       const method = editId ? 'PUT' : 'POST';
@@ -289,8 +291,56 @@ function EditorContent() {
                     </div>
                   
                     <div className="col-span-2">
-                      <label className="block text-sm font-bold mb-1">Tags / Multiple Categories (Comma Separated)</label>
-                      <input type="text" className="w-full border rounded p-2" placeholder="e.g. Bank Jobs, Central Govt, 10th Pass" value={jobData.categories?.join(', ') || ''} onChange={e => updateField('categories', e.target.value.split(',').map(s=>s.trim()).filter(Boolean))} />
+                      <label className="block text-sm font-bold mb-1">Tags / Multiple Categories</label>
+                      <div className="flex gap-2 mb-2">
+                        <input 
+                          type="text" 
+                          className="flex-1 border rounded p-2" 
+                          placeholder="e.g. Bank Jobs, Central Govt, 10th Pass" 
+                          value={tagInput} 
+                          onChange={e => setTagInput(e.target.value)} 
+                          onKeyDown={e => {
+                            if (e.key === 'Enter' && tagInput.trim()) {
+                              e.preventDefault();
+                              updateField('categories', [...(jobData.categories || []), tagInput.trim()]);
+                              setTagInput('');
+                            }
+                          }}
+                        />
+                        <button 
+                          type="button" 
+                          className="px-4 py-2 bg-blue-100 text-blue-700 border border-blue-200 rounded font-bold hover:bg-blue-200 transition-colors"
+                          onClick={() => {
+                            if (tagInput.trim()) {
+                              updateField('categories', [...(jobData.categories || []), tagInput.trim()]);
+                              setTagInput('');
+                            }
+                          }}
+                        >
+                          Add Tag
+                        </button>
+                      </div>
+                      <div className="flex flex-wrap gap-2 mt-2">
+                        {jobData.categories?.map((tag: string, idx: number) => (
+                          <span key={idx} className="bg-gray-100 border border-gray-200 px-3 py-1 rounded-full text-xs font-bold text-gray-700 flex items-center gap-1">
+                            {tag}
+                            <button 
+                              type="button" 
+                              className="text-red-500 hover:text-red-700 ml-1 text-base leading-none" 
+                              onClick={() => {
+                                const newCats = [...(jobData.categories || [])];
+                                newCats.splice(idx, 1);
+                                updateField('categories', newCats);
+                              }}
+                            >
+                              &times;
+                            </button>
+                          </span>
+                        ))}
+                        {(!jobData.categories || jobData.categories.length === 0) && (
+                          <span className="text-xs text-gray-400 italic">No tags added yet.</span>
+                        )}
+                      </div>
                     </div>
                     <div className="col-span-2">
                       <label className="block text-sm font-bold mb-1">Organization Logo</label>
