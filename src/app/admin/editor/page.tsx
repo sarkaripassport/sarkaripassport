@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { Eye, Save, LayoutTemplate, Plus, Trash2, ArrowUp, ArrowDown, HelpCircle, FileText, CheckCircle, Smartphone, Monitor, Globe, Search } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import SeoMatrixWidget from '@/components/admin/SeoMatrixWidget';
+import SalaryCalcWidget from '@/components/admin/SalaryCalcWidget';
 
 function EditorContent() {
   const router = useRouter();
@@ -238,7 +240,7 @@ function EditorContent() {
           <div className="flex-grow w-full space-y-6">
             
             <div className="flex bg-white rounded-t-xl border-b border-gray-200 overflow-x-auto shadow-sm sticky top-[70px] z-30">
-              {['general', 'quick_facts', 'vacancies', 'eligibility', 'timelines', 'checklists', 'links', 'seo'].map(tab => (
+              {['general', 'quick_facts', 'vacancies', 'eligibility', 'timelines', 'checklists', 'links', 'syllabus', 'salary', 'seo'].map(tab => (
                 <button 
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -529,6 +531,15 @@ function EditorContent() {
                     <div><label className="block text-sm font-bold mb-1">SEO Description</label><textarea className="w-full border rounded p-2 h-20" value={jobData.seo_description?.[editLang] || ''} onChange={e => updateLocalizedField('seo_description', e.target.value)} /></div>
                     <div><label className="block text-sm font-bold mb-1">Focus Keyword</label><input type="text" className="w-full border rounded p-2" value={jobData.focus_keyword?.[editLang] || ''} onChange={e => updateLocalizedField('focus_keyword', e.target.value)} /></div>
                   </div>
+                  <div className="mt-8">
+                    <SeoMatrixWidget job={jobData} updateJob={(updates) => setJobData({ ...jobData, ...updates })} />
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'salary' && (
+                <div className="space-y-6 max-w-4xl">
+                  <SalaryCalcWidget job={jobData} onChange={(updates) => setJobData({ ...jobData, ...updates })} />
                 </div>
               )}
 
