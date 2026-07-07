@@ -168,13 +168,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent pointer-events-none"></div>
           
           {job.logo_url ? (
-            <div className="w-14 h-14 md:w-16 md:h-16 shrink-0 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center p-1.5 relative z-10 mt-1">
+            <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center p-2 relative z-10 mt-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={job.logo_url} alt={job.organization[lang]} className="max-w-full max-h-full object-contain" />
             </div>
           ) : (
-            <div className="w-14 h-14 md:w-16 md:h-16 shrink-0 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center p-1.5 relative z-10 mt-1">
-              <span className="text-gray-400 font-bold text-lg md:text-xl">{job.organization[lang].charAt(0)}</span>
+            <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center p-2 relative z-10 mt-1">
+              <span className="text-gray-400 font-bold text-2xl md:text-3xl">{job.organization[lang].charAt(0)}</span>
             </div>
           )}
           
