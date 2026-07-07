@@ -1,6 +1,7 @@
 import { broadcastToTelegram, broadcastToWhatsApp } from '@/lib/distribution';
 import { NextResponse } from 'next/server';
-import { createJob } from '@/lib/db';
+import { createJob, updateJob } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export async function POST(req: Request) {
   try {
@@ -50,7 +51,6 @@ export async function POST(req: Request) {
 
     const job = await createJob(data);
 
-    
     // Trigger Distribution Broadcasts
     if (data.broadcast_now) {
       // Async so we don't block the API response
@@ -60,8 +60,35 @@ export async function POST(req: Request) {
       ]).catch(e => console.error("Broadcast failed:", e));
     }
 
+    // Bust the Next.js cache so new jobs are visible instantly
+    revalidatePath('/', 'layout');
+
     return NextResponse.json({ success: true, job }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to save job" }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    if (!id) return NextResponse.json({ error: "Missing job ID" }, { status: 400 });
+
+    const data = await req.json();
+
+    const localize = (val: any) => typeof val === 'string' ? { en: val, hi: '', mr: '' } : val;
+    if (data.title) data.title = localize(data.title);
+    if (data.seo_title) data.seo_title = localize(data.seo_title);
+    if (data.seo_description) data.seo_description = localize(data.seo_description);
+
+    const job = await updateJob(id, data);
+    
+    // Bust the Next.js cache so changes are visible instantly
+    revalidatePath('/', 'layout');
+
+    return NextResponse.json({ success: true, job }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to update job" }, { status: 500 });
   }
 }
