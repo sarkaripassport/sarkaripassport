@@ -457,7 +457,7 @@ function EditorContent() {
           <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
             <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2 mb-4">Syllabus Configuration</h2>
             
-            {(jobData.syllabus || []).map((section, sIndex) => (
+            {(jobData.syllabus || []).map((section: any, sIndex: number) => (
               <div key={sIndex} className="mb-6 p-4 border border-blue-100 bg-blue-50/50 rounded-lg">
                 <div className="flex justify-between items-center mb-3">
                   <input
@@ -479,7 +479,7 @@ function EditorContent() {
                 </div>
                 
                 <div className="pl-4 space-y-2 border-l-2 border-blue-200">
-                  {section.topics.map((topic, tIndex) => (
+                  {section.topics.map((topic: any, tIndex: number) => (
                     <div key={tIndex} className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
                       <input
