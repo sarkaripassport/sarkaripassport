@@ -1,7 +1,27 @@
 import { broadcastToTelegram, broadcastToWhatsApp } from '@/lib/distribution';
 import { NextResponse } from 'next/server';
-import { createJob, updateJob } from '@/lib/db';
+import { createJob, updateJob, getJobs } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+    
+    if (id) {
+      const jobs = await getJobs();
+      const job = jobs.find(j => j.id === id);
+      if (!job) return NextResponse.json({ error: "Job not found" }, { status: 404 });
+      return NextResponse.json(job);
+    }
+    
+    // Return all if no ID
+    const jobs = await getJobs();
+    return NextResponse.json(jobs);
+  } catch (error) {
+    return NextResponse.json({ error: "Failed to fetch jobs" }, { status: 500 });
+  }
+}
 
 export async function POST(req: Request) {
   try {

@@ -27,9 +27,11 @@ function EditorContent() {
       const data = await res.json();
       if (data.url) {
         setJobData((prev: any) => ({ ...prev, logo_url: data.url }));
+      } else {
+        alert(data.error || "Upload failed");
       }
-    } catch(err) {
-      alert("Upload failed");
+    } catch(err: any) {
+      alert("Upload failed: " + err.message);
     }
     setLoading(false);
   };
@@ -402,6 +404,29 @@ function EditorContent() {
                           <div><label className="text-xs font-bold">Post Name</label><input type="text" className="w-full border rounded p-1" value={card.post_name?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'post_name', e.target.value)} /></div>
                           <div><label className="text-xs font-bold">Total Vacancies</label><input type="text" className="w-full border rounded p-1" value={card.total} onChange={e => updateArrayItem('vacancy_cards', index, 'total', e.target.value)} /></div>
                           <div><label className="text-xs font-bold">Education</label><input type="text" className="w-full border rounded p-1" value={card.education?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'education', e.target.value)} /></div>
+                        </div>
+                        
+                        <div className="border-t border-gray-200 pt-3 mt-3">
+                          <label className="text-xs font-bold mb-2 block">Category Wise Breakdown</label>
+                          <div className="grid grid-cols-5 gap-2">
+                            {['UR', 'OBC', 'EWS', 'SC', 'ST'].map(cat => (
+                              <div key={cat}>
+                                <label className="text-[10px] text-gray-500 font-semibold">{cat}</label>
+                                <input 
+                                  type="text" 
+                                  className="w-full border rounded p-1 text-xs" 
+                                  placeholder="0"
+                                  value={card.categories?.[cat] || ''} 
+                                  onChange={e => {
+                                    const newCards = [...jobData.vacancy_cards];
+                                    if (!newCards[index].categories) newCards[index].categories = {};
+                                    newCards[index].categories[cat] = e.target.value;
+                                    setJobData({ ...jobData, vacancy_cards: newCards });
+                                  }} 
+                                />
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       </div>
                     ))}
