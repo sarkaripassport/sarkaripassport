@@ -19,11 +19,25 @@ function EditorContent() {
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
+    
+    // Prevent Vercel 4.5MB payload limit by enforcing 2MB limit on frontend
+    if (file.size > 2 * 1024 * 1024) {
+      alert("File is too large! Please upload a logo smaller than 2MB.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append('file', file);
     setLoading(true);
     try {
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      
+      if (!res.ok) {
+        if (res.status === 413) throw new Error("File is too large (exceeds server limit).");
+        const text = await res.text();
+        throw new Error(text || res.statusText);
+      }
+      
       const data = await res.json();
       if (data.url) {
         setJobData((prev: any) => ({ ...prev, logo_url: data.url }));
@@ -408,10 +422,10 @@ function EditorContent() {
                         
                         <div className="border-t border-gray-200 pt-3 mt-3">
                           <label className="text-xs font-bold mb-2 block">Category Wise Breakdown</label>
-                          <div className="grid grid-cols-5 gap-2">
-                            {['UR', 'OBC', 'EWS', 'SC', 'ST'].map(cat => (
-                              <div key={cat}>
-                                <label className="text-[10px] text-gray-500 font-semibold">{cat}</label>
+                          <div className="flex flex-wrap gap-2">
+                            {Array.from(new Set(['UR', 'OBC', 'EWS', 'SC', 'ST', ...Object.keys(card.categories || {})])).map(cat => (
+                              <div key={cat} className="w-16">
+                                <label className="text-[10px] text-gray-500 font-semibold truncate block">{cat}</label>
                                 <input 
                                   type="text" 
                                   className="w-full border rounded p-1 text-xs" 
@@ -426,6 +440,23 @@ function EditorContent() {
                                 />
                               </div>
                             ))}
+                            <div className="w-16 flex items-end pb-[1px]">
+                              <button 
+                                className="w-full bg-gray-200 text-gray-700 text-xs py-1.5 rounded font-bold hover:bg-gray-300 transition-colors"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  const customCat = window.prompt("Enter Custom Category Name (e.g., PwD, Ex-SM, Female):");
+                                  if (customCat && customCat.trim() !== "") {
+                                    const newCards = [...jobData.vacancy_cards];
+                                    if (!newCards[index].categories) newCards[index].categories = {};
+                                    if (newCards[index].categories[customCat.trim()] === undefined) {
+                                      newCards[index].categories[customCat.trim()] = "";
+                                      setJobData({ ...jobData, vacancy_cards: newCards });
+                                    }
+                                  }
+                                }}
+                              >+ Add</button>
+                            </div>
                           </div>
                         </div>
                       </div>
