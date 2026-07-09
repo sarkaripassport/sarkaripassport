@@ -36,11 +36,11 @@ export default function Navbar({ lang = 'en' }: { lang?: string }) {
           {/* Navigation Links (Desktop) */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8 text-sm font-semibold">
             <Link href={getLink("/jobs")} className="hover:text-[#0A58CA] transition-colors border-b-2 border-transparent hover:border-[#0A58CA] py-5">Latest Jobs</Link>
-            <Link href={getLink("/admit-card")} className="text-gray-300 hover:text-white transition-colors py-5">Admit Card</Link>
-            <Link href={getLink("/results")} className="text-gray-300 hover:text-white transition-colors py-5">Results</Link>
-            <Link href={getLink("/answer-key")} className="text-gray-300 hover:text-white transition-colors py-5">Answer Key</Link>
-            <Link href={getLink("/syllabus")} className="text-gray-300 hover:text-white transition-colors py-5">Syllabus</Link>
-            <Link href={getLink("/admission")} className="text-gray-300 hover:text-white transition-colors py-5">Admission</Link>
+            <Link href={getLink("/category/admit-card")} className="text-gray-300 hover:text-white transition-colors py-5">Admit Card</Link>
+            <Link href={getLink("/category/results")} className="text-gray-300 hover:text-white transition-colors py-5">Results</Link>
+            <Link href={getLink("/category/answer-key")} className="text-gray-300 hover:text-white transition-colors py-5">Answer Key</Link>
+            <Link href={getLink("/category/syllabus")} className="text-gray-300 hover:text-white transition-colors py-5">Syllabus</Link>
+            <Link href={getLink("/category/admission")} className="text-gray-300 hover:text-white transition-colors py-5">Admission</Link>
             <Link href={getLink("/tools")} className="text-gray-300 hover:text-white transition-colors py-5 flex items-center gap-1">
               Tools <span className="bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-sm font-bold uppercase">New</span>
             </Link>

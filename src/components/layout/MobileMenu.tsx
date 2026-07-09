@@ -14,11 +14,11 @@ export default function MobileMenu({ lang = 'en' }: { lang?: string }) {
 
   const navLinks = [
     { name: "Latest Jobs", href: "/jobs" },
-    { name: "Admit Card", href: "/admit-card" },
-    { name: "Results", href: "/results" },
-    { name: "Answer Key", href: "/answer-key" },
-    { name: "Syllabus", href: "/syllabus" },
-    { name: "Admission", href: "/admission" },
+    { name: "Admit Card", href: "/category/admit-card" },
+    { name: "Results", href: "/category/results" },
+    { name: "Answer Key", href: "/category/answer-key" },
+    { name: "Syllabus", href: "/category/syllabus" },
+    { name: "Admission", href: "/category/admission" },
     { name: "Tools", href: "/tools", isNew: true },
   ];
 
