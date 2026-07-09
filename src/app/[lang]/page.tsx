@@ -94,14 +94,14 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
       <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
         
         {/* Hero Section */}
-        <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-2 pb-4 md:pt-4 md:pb-6 px-4 sm:px-6 lg:px-8">
+        <section className="relative bg-white border-b border-gray-200 overflow-hidden py-3 md:py-6 px-4 sm:px-6 lg:px-8">
           
           <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
-            <div className="w-full md:w-4/5 space-y-4">
-              <div className="flex items-center gap-1.5 text-[#0A58CA] font-bold text-xs sm:text-sm uppercase tracking-widest mb-2">
-                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" /> India's Trusted Government Job Portal
+            <div className="w-full md:w-4/5 space-y-2 md:space-y-4">
+              <div className="flex items-center gap-1.5 text-[#0A58CA] font-bold text-[10px] sm:text-xs uppercase tracking-widest mb-1 md:mb-2">
+                <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> India's Trusted Government Job Portal
               </div>
-              <h1 className="flex items-center flex-wrap gap-3 text-lg md:text-xl lg:text-2xl font-extrabold text-[#0B1B3D] tracking-tight">
+              <h1 className="flex items-center flex-wrap gap-2 md:gap-3 text-base md:text-xl lg:text-2xl font-extrabold text-[#0B1B3D] tracking-tight">
                 <span className="relative flex h-3 w-3 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
@@ -155,7 +155,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                 {jobs
                   .filter(j => j.category === 'Latest Jobs' || j.categories?.includes('Latest Jobs') || (!j.category && (!j.categories || j.categories.length === 0))) // fallback
                   .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-                  .slice(0, 15)
+                  .slice(0, 6)
                   .map((job) => (
                   <JobCard 
                     key={job.id} 

@@ -40,13 +40,17 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         'mr': '/mr'
       }
     },
+    formatDetection: {
+      telephone: false,
+    },
     appleWebApp: {
       capable: true,
       statusBarStyle: 'default',
       title: 'GovJobWala',
     },
-    formatDetection: {
-      telephone: false,
+    icons: {
+      icon: '/icon-192x192.png',
+      apple: '/icon-192x192.png',
     }
   };
 }
