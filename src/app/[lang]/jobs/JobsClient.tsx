@@ -312,12 +312,20 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                   <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-4">
                     <Search className="w-8 h-8 text-gray-300" />
                   </div>
-                  <h3 className="text-xl font-black text-[#0B1B3D] mb-2">No exact matches found</h3>
+                  <h3 className="text-xl font-black text-[#0B1B3D] mb-2">
+                    {activeFiltersCount === 0 && selectedCategory !== 'all' && !searchQuery 
+                      ? "No updates found" 
+                      : "No exact matches found"}
+                  </h3>
                   <p className="text-gray-500 max-w-md mx-auto leading-relaxed mb-6">
-                    We couldn't find any jobs matching all your current filters. Try removing some filters to see more results.
+                    {activeFiltersCount === 0 && selectedCategory !== 'all' && !searchQuery 
+                      ? "We couldn't find any recent jobs or updates for this category right now."
+                      : "We couldn't find any jobs matching all your current filters. Try removing some filters to see more results."}
                   </p>
                   <button onClick={handleReset} className="px-6 py-3 bg-[#0B1B3D] text-white font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-md flex items-center gap-2">
-                    <X className="w-4 h-4" /> Clear All Filters
+                    {activeFiltersCount === 0 && selectedCategory !== 'all' && !searchQuery 
+                      ? "Browse All Jobs"
+                      : <><X className="w-4 h-4" /> Clear All Filters</>}
                   </button>
                 </div>
               ) : (
