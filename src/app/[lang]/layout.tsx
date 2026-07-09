@@ -4,6 +4,7 @@ import "../globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import BreakingNews from "@/components/layout/BreakingNews";
+import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 
 import { getSettings } from "@/lib/db";
 import Script from "next/script";
@@ -77,6 +78,7 @@ export default async function RootLayout({
         <Navbar lang={resolvedParams.lang || 'en'} />
         <BreakingNews lang={resolvedParams.lang as 'en' | 'hi' | 'mr'} />
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
+        <WhatsAppFloat />
         <Footer />
         
         {/* Google Analytics */}

@@ -326,12 +326,12 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       
                       <div className="p-4 border-b border-gray-100 border-dashed">
                         <div className="flex justify-between items-start gap-2 mb-2">
-                          <h3 className="font-black text-[#0B1B3D] leading-tight text-lg">{vac.post_name[lang]}</h3>
+                          <h3 className="font-black text-[#0B1B3D] leading-tight text-lg" dangerouslySetInnerHTML={{ __html: vac.post_name[lang] || '' }} />
                           <span className="bg-blue-600 text-white font-black px-2.5 py-1 rounded text-sm shrink-0 shadow-sm">{vac.total} Posts</span>
                         </div>
                         <div className="flex items-start gap-2 mt-3 text-sm text-gray-700 bg-gray-50 p-2.5 rounded-lg border border-gray-100">
                           <GraduationCap className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                          <span className="font-semibold leading-snug">{vac.education[lang]}</span>
+                          <span className="font-semibold leading-snug" dangerouslySetInnerHTML={{ __html: vac.education[lang] || '' }} />
                         </div>
                       </div>
                       <div className="p-3 bg-gray-50/50">
@@ -363,14 +363,14 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                     <tbody className="divide-y divide-gray-100">
                       {job.vacancy_cards.map((vac, idx) => (
                         <tr key={idx} className="hover:bg-blue-50/30 transition-colors group">
-                          <td className="px-5 py-4 font-black text-[#0B1B3D] align-top text-base group-hover:text-blue-700 transition-colors">{vac.post_name[lang]}</td>
+                          <td className="px-5 py-4 font-black text-[#0B1B3D] align-top text-base group-hover:text-blue-700 transition-colors" dangerouslySetInnerHTML={{ __html: vac.post_name[lang] || '' }} />
                           <td className="px-5 py-4 align-top">
                             <span className="inline-flex items-center justify-center bg-blue-100 text-blue-700 font-black px-3 py-1 rounded-md min-w-[3rem] text-sm border border-blue-200 shadow-sm">{vac.total}</span>
                           </td>
                           <td className="px-5 py-4 text-gray-700 font-medium align-top leading-snug max-w-[250px] text-sm">
                             <div className="flex items-start gap-2">
                               <GraduationCap className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" />
-                              {vac.education[lang]}
+                              <span dangerouslySetInnerHTML={{ __html: vac.education[lang] || '' }} />
                             </div>
                           </td>
                           <td className="px-5 py-4 border-l border-gray-50 align-top bg-gray-50/30">

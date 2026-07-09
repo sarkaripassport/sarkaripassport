@@ -414,11 +414,20 @@ function EditorContent() {
                     {jobData.vacancy_cards.map((card: any, index: number) => (
                       <div key={index} className="border border-gray-200 rounded p-4 bg-gray-50 relative">
                         <button className="absolute top-2 right-2 text-red-500" onClick={() => removeArrayItem('vacancy_cards', index)}><Trash2 className="w-4 h-4"/></button>
-                        <div className="grid grid-cols-3 gap-4 mb-3">
-                          <div><label className="text-xs font-bold">Post Name</label><input type="text" className="w-full border rounded p-1" value={card.post_name?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'post_name', e.target.value)} /></div>
-                          <div><label className="text-xs font-bold">Total Vacancies</label><input type="text" className="w-full border rounded p-1" value={card.total} onChange={e => updateArrayItem('vacancy_cards', index, 'total', e.target.value)} /></div>
-                          <div><label className="text-xs font-bold">Education</label><input type="text" className="w-full border rounded p-1" value={card.education?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'education', e.target.value)} /></div>
-                        </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                            <div className="col-span-1 md:col-span-2">
+                              <label className="text-xs font-bold text-gray-500 block mb-1">Post Name <span className="font-normal text-[10px] text-blue-500">(HTML supported for links e.g., &lt;a href="url"&gt;text&lt;/a&gt;)</span></label>
+                              <textarea rows={2} className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="Enter post name or HTML..." value={card.post_name?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'post_name', e.target.value)} />
+                            </div>
+                            <div>
+                              <label className="text-xs font-bold text-gray-500 block mb-1">Total Vacancies</label>
+                              <input type="text" className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="e.g. 10" value={card.total} onChange={e => updateArrayItem('vacancy_cards', index, 'total', e.target.value)} />
+                            </div>
+                            <div>
+                              <label className="text-xs font-bold text-gray-500 block mb-1">Education <span className="font-normal text-[10px] text-blue-500">(HTML supported)</span></label>
+                              <textarea rows={2} className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="Enter education qualification..." value={card.education?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'education', e.target.value)} />
+                            </div>
+                          </div>
                         
                         <div className="border-t border-gray-200 pt-3 mt-3">
                           <label className="text-xs font-bold mb-2 block">Category Wise Breakdown</label>
