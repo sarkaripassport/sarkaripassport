@@ -1,5 +1,7 @@
 import { Metadata } from 'next';
-import { getJobs, Job } from '@/lib/db';
+import { getJobs, Job, getMatrixPage } from '@/lib/db';
+
+export const revalidate = 3600; // 1 hour ISR
 import JobCard from '@/components/JobCard';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -22,8 +24,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tags = matrix.map(slug => 
     slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
   );
-  
   const tagString = tags.join(' ');
+  const matrixSlug = matrix.join('/');
+  const customPage = await getMatrixPage(matrixSlug);
   
 
 
@@ -43,8 +46,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 
   return {
-    title: translations[lang].title,
-    description: translations[lang].description,
+    title: customPage?.h1?.[lang] || translations[lang].title,
+    description: customPage?.intro?.[lang] || translations[lang].description,
   };
 }
 
@@ -52,6 +55,8 @@ export default async function ExploreMatrixPage({ params }: Props) {
   const { lang, matrix } = params;
   const dict = await getDictionary(lang);
   const allJobs = await getJobs();
+  const matrixSlug = matrix.join('/');
+  const customPage = await getMatrixPage(matrixSlug);
   
   // Filter jobs based on matrix tags
   const matchedJobs = allJobs.filter((job) => {
@@ -141,10 +146,12 @@ export default async function ExploreMatrixPage({ params }: Props) {
           </div>
 
           <h1 className="text-3xl md:text-4xl font-black text-[#0B1B3D]">
-            Latest <span className="text-blue-600">{pageTitle}</span> {t.jobs}
+            {customPage ? customPage.h1[lang] : (
+              <>Latest <span className="text-blue-600">{pageTitle}</span> {t.jobs}</>
+            )}
           </h1>
           <p className="text-gray-600 mt-2 text-lg">
-            {matchedJobs.length} {t.found}
+            {customPage ? customPage.intro[lang] : `${matchedJobs.length} ${t.found}`}
           </p>
         </div>
       </div>
@@ -176,6 +183,20 @@ export default async function ExploreMatrixPage({ params }: Props) {
             />
           ))}
         </div>
+
+        {customPage?.faqs && customPage.faqs.length > 0 && (
+          <div className="mt-12 bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-[#0B1B3D] mb-6">Frequently Asked Questions</h2>
+            <div className="space-y-4">
+              {customPage.faqs.map((faq, idx) => (
+                <div key={idx} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{faq.q[lang]}</h3>
+                  <p className="text-gray-600">{faq.a[lang]}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
     </main>

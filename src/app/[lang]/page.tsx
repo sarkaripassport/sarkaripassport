@@ -4,6 +4,8 @@ import { getJobs, getSettings, getCategories } from "@/lib/db";
 import JobCard from "@/components/JobCard";
 import AdvancedSearch from "@/components/AdvancedSearch";
 
+
+
 import { 
   Briefcase, FileText, Award, CheckCircle2, GraduationCap, Building2, MapPin, 
   Landmark, Train, ShieldCheck, Shield 
@@ -29,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
   };
 }
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function Home({ params }: { params: Promise<{ lang: Locale }> }) {
   const resolvedParams = await params;

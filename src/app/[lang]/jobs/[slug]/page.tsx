@@ -1,5 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
+
+
 import { notFound } from 'next/navigation';
 import { getJobBySlug, getCategories, getJobs } from '@/lib/db';
 import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
@@ -8,7 +10,7 @@ import { AutoLinkedText } from '@/lib/autoLinker';
 import SalaryCalculator from '@/components/jobs/SalaryCalculator';
 
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour ISR
 
 export async function generateMetadata(
   { params }: { params: Promise<{ lang: string, slug: string }> },

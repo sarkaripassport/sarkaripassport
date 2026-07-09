@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Briefcase, Clock, Flame, ChevronRight, FileText, MapPin, GraduationCap, Building2 } from "lucide-react";
 import { Locale } from "@/i18n/getDictionary";
 
@@ -85,9 +86,8 @@ export default function JobCard({
         {/* Title and Logo */}
         <div className="flex gap-3 items-start mb-3">
           {logoUrl ? (
-            <div className="w-16 h-16 shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-1.5 group-hover:scale-105 transition-transform duration-300">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={logoUrl} alt={`${org} logo`} className="max-w-full max-h-full object-contain" />
+            <div className="w-16 h-16 shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-1.5 group-hover:scale-105 transition-transform duration-300 relative">
+              <Image src={logoUrl} alt={`${org} logo`} fill className="object-contain p-1" sizes="(max-width: 64px) 100vw, 64px" />
             </div>
           ) : (
             <div className="w-16 h-16 shrink-0 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl shadow-sm flex items-center justify-center text-blue-600 font-bold text-2xl group-hover:scale-105 transition-transform duration-300">

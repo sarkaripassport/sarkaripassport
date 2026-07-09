@@ -99,6 +99,13 @@ export interface SimilarJob {
   last_date: LocalizedString;
 }
 
+export interface MatrixPage {
+  slug: string; // e.g., 'upsc/mechanical-engineering'
+  h1: LocalizedString;
+  intro: LocalizedString;
+  faqs?: { q: LocalizedString; a: LocalizedString }[];
+}
+
 export interface Job {
   id: string;
   slug: string;
@@ -395,4 +402,45 @@ export async function addJobComment(slug: string, comment: Omit<JobComment, 'id'
   }).eq('id', row.id);
   
   return newComment;
+}
+
+// MOCK: Programmatic SEO Matrix Pages Database
+const mockMatrixPages: Record<string, MatrixPage> = {
+  'upsc/mechanical-engineering': {
+    slug: 'upsc/mechanical-engineering',
+    h1: {
+      en: 'UPSC Recruitment for Mechanical Engineers 2026',
+      hi: 'मैकेनिकल इंजीनियर्स के लिए यूपीएससी भर्ती 2026',
+      mr: 'मेकॅनिकल इंजिनिअर्ससाठी UPSC भरती 2026'
+    },
+    intro: {
+      en: 'Discover the latest and upcoming UPSC jobs specifically for Mechanical Engineering graduates. Find eligibility, syllabus, and apply online.',
+      hi: 'मैकेनिकल इंजीनियरिंग स्नातकों के लिए नवीनतम और आगामी यूपीएससी नौकरियों की खोज करें।',
+      mr: 'मेकॅनिकल इंजिनिअरिंग पदवीधरांसाठी नवीनतम आणि आगामी UPSC नोकऱ्या शोधा.'
+    },
+    faqs: [
+      {
+        q: { en: 'What is the age limit for UPSC Engineering Services?', hi: 'यूपीएससी इंजीनियरिंग सेवा के लिए आयु सीमा क्या है?', mr: 'UPSC अभियांत्रिकी सेवांसाठी वयोमर्यादा काय आहे?' },
+        a: { en: 'The general age limit is 21 to 30 years. Relaxations apply for reserved categories.', hi: 'सामान्य आयु सीमा 21 से 30 वर्ष है। आरक्षित श्रेणियों के लिए छूट लागू है।', mr: 'सामान्य वयोमर्यादा 21 ते 30 वर्षे आहे. राखीव प्रवर्गांसाठी सवलत लागू आहे.' }
+      }
+    ]
+  },
+  '10th-pass/maharashtra': {
+    slug: '10th-pass/maharashtra',
+    h1: {
+      en: '10th Pass Government Jobs in Maharashtra 2026',
+      hi: 'महाराष्ट्र में 10वीं पास सरकारी नौकरियां 2026',
+      mr: 'महाराष्ट्रात 10 वी पास सरकारी नोकऱ्या 2026'
+    },
+    intro: {
+      en: 'Find thousands of 10th pass govt jobs in Maharashtra across Police, Railway, and State Departments.',
+      hi: 'पुलिस, रेलवे और राज्य विभागों में महाराष्ट्र में हजारों 10वीं पास सरकारी नौकरियां खोजें।',
+      mr: 'पोलीस, रेल्वे आणि राज्य विभागांमध्ये महाराष्ट्रात हजारो 10 वी पास सरकारी नोकऱ्या शोधा.'
+    }
+  }
+};
+
+export async function getMatrixPage(slug: string): Promise<MatrixPage | null> {
+  // In production, this would query Supabase: await supabaseAdmin.from('matrix_pages').select('*').eq('slug', slug).single()
+  return mockMatrixPages[slug] || null;
 }
