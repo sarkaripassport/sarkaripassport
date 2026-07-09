@@ -1,13 +1,17 @@
 import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
+import { getSettings } from '@/lib/db';
 
-export default function WhatsAppFloat() {
+export default async function WhatsAppFloat() {
+  const settings = await getSettings();
+  const whatsappLink = settings.whatsapp_link || "https://whatsapp.com/channel/0029VaA2KzV7T8bd5WEGk90n";
+
   return (
     <Link 
-      href="https://whatsapp.com/channel/0029VaA2KzV7T8bd5WEGk90n" // Update this with actual GovJobWala WhatsApp Channel link
+      href={whatsappLink}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-3.5 rounded-full shadow-lg hover:shadow-2xl hover:scale-110 transition-all flex items-center justify-center group border-2 border-white"
+      className="fixed bottom-24 md:bottom-6 right-6 z-50 bg-[#25D366] text-white p-3.5 rounded-full shadow-lg hover:shadow-2xl hover:scale-110 transition-all flex items-center justify-center group border-2 border-white"
     >
       <MessageCircle className="w-8 h-8" />
       

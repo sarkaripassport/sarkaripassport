@@ -1,11 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Eye, Save, LayoutTemplate, Plus, Trash2, ArrowUp, ArrowDown, HelpCircle, FileText, CheckCircle, Smartphone, Monitor, Globe, Search } from 'lucide-react';
+import { Suspense, useState, useEffect } from 'react';
+import { Eye, Save, LayoutTemplate, Plus, Trash2, ArrowUp, ArrowDown, HelpCircle, FileText, CheckCircle, Smartphone, Monitor, Globe, Search, Link as LinkIcon } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SeoMatrixWidget from '@/components/admin/SeoMatrixWidget';
 import SalaryCalcWidget from '@/components/admin/SalaryCalcWidget';
 import ApplicationFeeWidget from '@/components/admin/ApplicationFeeWidget';
+import FloatingLinkToolbar from '@/components/admin/FloatingLinkToolbar';
+import { useTextSelection } from '@/hooks/useTextSelection';
 
 function EditorContent() {
   const router = useRouter();
@@ -15,6 +17,24 @@ function EditorContent() {
 
   const [editLang, setEditLang] = useState<'en'|'hi'|'mr'>('en');
   const [tagInput, setTagInput] = useState('');
+  
+  // Selection hook for sidebar hyperlink tool
+  const { selection, setSelection } = useTextSelection();
+  const [sidebarLink, setSidebarLink] = useState('');
+
+  // Keep selection link in sync
+  useEffect(() => {
+    if (selection) setSidebarLink('');
+  }, [selection]);
+
+  const applySidebarLink = () => {
+    if (!selection || !sidebarLink || !selection.element) return;
+    const { text, element, start, end } = selection;
+    const newText = `<a href="${sidebarLink}" target="_blank" class="text-blue-600 underline font-semibold">${text}</a>`;
+    element.setRangeText(newText, start, end, 'end');
+    element.dispatchEvent(new Event('input', { bubbles: true }));
+    setSelection(null);
+  };
   
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
@@ -212,7 +232,9 @@ function EditorContent() {
   const seoScore = calculateSEOScore();
 
   return (
-    <div className="font-sans text-gray-800 flex flex-col h-full bg-gray-50 min-h-screen">
+    <>
+      <FloatingLinkToolbar />
+      <div className="font-sans text-gray-800 flex flex-col h-full bg-gray-50 min-h-screen">
       {/* Editor Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
         <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between">
@@ -678,10 +700,41 @@ function EditorContent() {
             </div>
 
           </div>
-          
-          {/* Right Sidebar: SEO & Live Previews */}
-          <div className="w-full lg:w-80 shrink-0 space-y-6 max-w-full min-w-0 overflow-hidden">
-            {/* Breaking News Toggle */}
+                    {/* Right Sidebar: SEO & Live Previews */}
+            <div className="w-full lg:w-80 shrink-0 space-y-6 max-w-full min-w-0 overflow-hidden">
+              {/* Hyperlink Tool */}
+              <div className={`bg-white rounded-xl border ${selection ? 'border-blue-400 shadow-blue-100/50' : 'border-gray-200'} shadow-sm p-5 transition-all duration-300`}>
+                <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
+                  <LinkIcon className={`w-4 h-4 ${selection ? 'text-blue-500' : 'text-gray-400'}`} /> Quick Link Tool
+                </h3>
+                {selection ? (
+                  <div className="space-y-3 animate-in fade-in zoom-in-95">
+                    <p className="text-sm text-gray-600 bg-blue-50 p-2 rounded border border-blue-100">
+                      Selected: <strong>{selection.text.length > 20 ? selection.text.substring(0, 20) + '...' : selection.text}</strong>
+                    </p>
+                    <input 
+                      type="url" 
+                      placeholder="https://" 
+                      value={sidebarLink}
+                      onChange={e => setSidebarLink(e.target.value)}
+                      onKeyDown={e => { if (e.key === 'Enter') applySidebarLink(); }}
+                      className="w-full text-sm border border-gray-300 rounded p-2 focus:border-blue-500 outline-none"
+                    />
+                    <button 
+                      onClick={applySidebarLink}
+                      className="w-full py-2 bg-[#0A58CA] text-white rounded font-bold hover:bg-blue-700 transition"
+                    >
+                      Apply Link
+                    </button>
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-500 italic">
+                    Highlight any text in the editor to add a hyperlink here.
+                  </p>
+                )}
+              </div>
+
+              {/* Breaking News Toggle */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
               <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
                 <Globe className="w-4 h-4 text-red-500" /> Visibility
@@ -738,6 +791,7 @@ function EditorContent() {
 
       
     </div>
+    </>
   );
 }
 

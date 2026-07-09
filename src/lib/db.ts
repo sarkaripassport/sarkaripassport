@@ -216,6 +216,7 @@ export interface HomepageSettings {
     col4_category: string;
   };
   announcements: Announcement[];
+  whatsapp_link?: string;
   pages?: {
     'admit-card': PageSettings;
     'results': PageSettings;
@@ -245,6 +246,7 @@ const defaultSettings: HomepageSettings = {
     { id: 'a1', text: { en: "SSC CGL 2026 Notification Released - Apply Now!", hi: "", mr: "" }, link: "/jobs/ssc-cgl-2026", isActive: true, priority: "high" },
     { id: 'a2', text: { en: "UPSC Civil Services Prelims Admit Card Available", hi: "", mr: "" }, link: "/jobs/upsc-civil-services-2026", isActive: true, priority: "normal" }
   ],
+  whatsapp_link: "https://whatsapp.com/channel/0029VaA2KzV7T8bd5WEGk90n",
   pages: {
     'admit-card': {
       seo: { title: { en: "Admit Cards - SarkariJob", hi: "", mr: "" }, description: { en: "Download latest admit cards", hi: "", mr: "" }, keywords: { en: "admit card", hi: "", mr: "" } },
