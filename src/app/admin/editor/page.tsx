@@ -17,23 +17,7 @@ function EditorContent() {
   const [editLang, setEditLang] = useState<'en'|'hi'|'mr'>('en');
   const [tagInput, setTagInput] = useState('');
   
-  // Selection hook for sidebar hyperlink tool
-  const { selection, setSelection } = useTextSelection();
-  const [sidebarLink, setSidebarLink] = useState('');
 
-  // Keep selection link in sync
-  useEffect(() => {
-    if (selection) setSidebarLink('');
-  }, [selection]);
-
-  const applySidebarLink = () => {
-    if (!selection || !sidebarLink || !selection.element) return;
-    const { text, element, start, end } = selection;
-    const newText = `<a href="${sidebarLink}" target="_blank" class="text-blue-600 underline font-semibold">${text}</a>`;
-    element.setRangeText(newText, start, end, 'end');
-    element.dispatchEvent(new Event('input', { bubbles: true }));
-    setSelection(null);
-  };
   
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
