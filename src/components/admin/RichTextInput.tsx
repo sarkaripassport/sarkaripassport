@@ -1,10 +1,10 @@
 "use client";
 
-import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
+import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import { useEffect, useState } from 'react';
-import { Link as LinkIcon, Unlink, Check, X } from 'lucide-react';
+import { Link as LinkIcon, Unlink, Check, X, Bold, Italic } from 'lucide-react';
 
 interface RichTextInputProps {
   value: string;
@@ -29,17 +29,15 @@ export default function RichTextInput({ value, onChange, placeholder, className 
     ],
     content: value,
     onUpdate: ({ editor }) => {
-      // Return raw HTML
       onChange(editor.getHTML());
     },
     editorProps: {
       attributes: {
-        class: `prose prose-sm max-w-none focus:outline-none min-h-[40px] px-3 py-2 border border-gray-300 rounded-lg bg-white ${className}`,
+        class: `prose prose-sm max-w-none focus:outline-none min-h-[40px] px-3 py-2 bg-white ${className}`,
       },
     },
   });
 
-  // Keep content in sync if value changes externally
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value, false);
@@ -52,9 +50,9 @@ export default function RichTextInput({ value, onChange, placeholder, className 
     if (linkUrl === null) return;
     if (linkUrl === '') {
       editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      setIsEditingLink(false);
       return;
     }
-    // ensure valid url protocol
     const formattedUrl = /^https?:\/\//.test(linkUrl) ? linkUrl : `https://${linkUrl}`;
     editor.chain().focus().extendMarkRange('link').setLink({ href: formattedUrl }).run();
     setIsEditingLink(false);
@@ -66,17 +64,30 @@ export default function RichTextInput({ value, onChange, placeholder, className 
   };
 
   return (
-    <>
-      <EditorContent editor={editor} />
-      
-      {/* Visual Floating Link Menu for TipTap */}
-      <BubbleMenu editor={editor} tippyOptions={{ duration: 100 }} className="bg-white rounded-lg shadow-xl border border-gray-200 flex items-center p-1.5 gap-1 animate-in fade-in zoom-in-95 z-50">
+    <div className="border border-gray-300 rounded-lg overflow-hidden focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-colors">
+      <div className="bg-gray-50 border-b border-gray-200 px-2 py-1.5 flex items-center gap-1 flex-wrap">
+        <button
+          onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleBold().run(); }}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('bold') ? 'bg-gray-200 text-blue-600' : 'text-gray-600'}`}
+          title="Bold"
+        >
+          <Bold className="w-4 h-4" />
+        </button>
+        <button
+          onClick={(e) => { e.preventDefault(); editor.chain().focus().toggleItalic().run(); }}
+          className={`p-1.5 rounded hover:bg-gray-200 transition-colors ${editor.isActive('italic') ? 'bg-gray-200 text-blue-600' : 'text-gray-600'}`}
+          title="Italic"
+        >
+          <Italic className="w-4 h-4" />
+        </button>
+        <div className="w-px h-4 bg-gray-300 mx-1"></div>
+        
         {!isEditingLink ? (
           <>
             {editor.isActive('link') ? (
               <button
                 onClick={(e) => { e.preventDefault(); removeLink(); }}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-md font-bold text-sm transition-colors"
+                className="flex items-center gap-1.5 px-2 py-1 text-red-600 hover:bg-red-50 rounded text-sm font-semibold transition-colors"
                 title="Remove Hyperlink"
               >
                 <Unlink className="w-4 h-4" /> Unlink
@@ -89,7 +100,7 @@ export default function RichTextInput({ value, onChange, placeholder, className 
                   setLinkUrl(previousUrl || '');
                   setIsEditingLink(true);
                 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 hover:bg-blue-50 text-blue-600 rounded-md font-bold text-sm transition-colors"
+                className="flex items-center gap-1.5 px-2 py-1 text-blue-600 hover:bg-blue-50 rounded text-sm font-semibold transition-colors"
                 title="Add Hyperlink"
               >
                 <LinkIcon className="w-4 h-4" /> Link
@@ -97,7 +108,7 @@ export default function RichTextInput({ value, onChange, placeholder, className 
             )}
           </>
         ) : (
-          <div className="flex items-center gap-2 px-1">
+          <div className="flex items-center gap-1">
             <input
               type="url"
               autoFocus
@@ -108,17 +119,18 @@ export default function RichTextInput({ value, onChange, placeholder, className 
                 if (e.key === 'Enter') { e.preventDefault(); setLink(); }
                 if (e.key === 'Escape') { e.preventDefault(); setIsEditingLink(false); }
               }}
-              className="w-48 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+              className="w-40 md:w-56 px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             />
             <button onClick={(e) => { e.preventDefault(); setLink(); }} className="p-1 text-green-600 hover:bg-green-50 rounded">
               <Check className="w-4 h-4" />
             </button>
-            <button onClick={(e) => { e.preventDefault(); setIsEditingLink(false); }} className="p-1 text-gray-500 hover:bg-gray-100 rounded">
+            <button onClick={(e) => { e.preventDefault(); setIsEditingLink(false); }} className="p-1 text-gray-500 hover:bg-gray-200 rounded">
               <X className="w-4 h-4" />
             </button>
           </div>
         )}
-      </BubbleMenu>
-    </>
+      </div>
+      <EditorContent editor={editor} />
+    </div>
   );
 }
