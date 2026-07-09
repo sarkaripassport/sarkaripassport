@@ -2,7 +2,7 @@ import { Megaphone, Mail, Download, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Press & Media | Naukri Passport",
+  title: "Press & Media | GovJobWala",
   description: "Press releases, media kits, and contact information for journalists and media professionals.",
 };
 
@@ -20,7 +20,7 @@ export default function PressPage() {
             Press & <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">Media</span>
           </h1>
           <p className="text-blue-100/80 md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Resources, press releases, and brand assets for journalists and media professionals covering Naukri Passport.
+            Resources, press releases, and brand assets for journalists and media professionals covering GovJobWala.
           </p>
         </div>
       </div>
@@ -35,9 +35,9 @@ export default function PressPage() {
               
               <div className="space-y-6">
                 {[
-                  { date: "October 15, 2026", title: "Naukri Passport Launches AI-Powered Eligibility Predictor", desc: "Revolutionizing how government job aspirants find suitable vacancies." },
+                  { date: "October 15, 2026", title: "GovJobWala Launches AI-Powered Eligibility Predictor", desc: "Revolutionizing how government job aspirants find suitable vacancies." },
                   { date: "August 22, 2026", title: "Over 1 Million Active Users Reached in Tier 2 & Tier 3 Cities", desc: "Bridging the information gap for rural and semi-urban candidates." },
-                  { date: "June 05, 2026", title: "Naukri Passport Introduces Native Marathi and Hindi Support", desc: "Ensuring language is never a barrier to a government career." }
+                  { date: "June 05, 2026", title: "GovJobWala Introduces Native Marathi and Hindi Support", desc: "Ensuring language is never a barrier to a government career." }
                 ].map((item, i) => (
                   <div key={i} className="group border-b border-gray-100 last:border-0 pb-6 last:pb-0">
                     <p className="text-sm font-bold text-[#0A58CA] mb-2">{item.date}</p>
@@ -54,7 +54,7 @@ export default function PressPage() {
             <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
               <h2 className="text-2xl font-bold text-[#0B1B3D] mb-4">Brand Guidelines</h2>
               <p className="text-gray-600 mb-6">
-                When using the Naukri Passport brand, please adhere to our official brand guidelines to ensure consistency. Do not alter our logo colors, stretch the logo, or use it on unapproved backgrounds.
+                When using the GovJobWala brand, please adhere to our official brand guidelines to ensure consistency. Do not alter our logo colors, stretch the logo, or use it on unapproved backgrounds.
               </p>
               <button className="bg-gray-100 text-[#0B1B3D] font-bold px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2">
                 <Download className="w-5 h-5" />

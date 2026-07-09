@@ -20,7 +20,7 @@ export async function generateMetadata(
   
   if (!job) {
     return {
-      title: 'Job Not Found - Naukri Passport',
+      title: 'Job Not Found - GovJobWala',
     }
   }
 

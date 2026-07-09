@@ -2,8 +2,8 @@ import { ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Naukri Passport",
-  description: "Read our Privacy Policy to understand how Naukri Passport collects, uses, and protects your personal information.",
+  title: "Privacy Policy | GovJobWala",
+  description: "Read our Privacy Policy to understand how GovJobWala collects, uses, and protects your personal information.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -25,7 +25,7 @@ export default function PrivacyPolicyPage() {
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12 prose prose-blue max-w-none">
           <p className="text-lg text-gray-600 leading-relaxed mb-8">
-            At <strong>Naukri Passport</strong>, we respect your privacy and are committed to protecting it. This Privacy Policy explains our practices regarding the collection, use, and disclosure of information that we receive through our website and services.
+            At <strong>GovJobWala</strong>, we respect your privacy and are committed to protecting it. This Privacy Policy explains our practices regarding the collection, use, and disclosure of information that we receive through our website and services.
           </p>
 
           <h2 className="text-2xl font-bold text-[#0B1B3D] mt-10 mb-4">1. Information We Collect</h2>
@@ -64,7 +64,7 @@ export default function PrivacyPolicyPage() {
             If there are any questions regarding this privacy policy, you may contact us using the information below:
           </p>
           <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 inline-block">
-            <p className="font-bold text-[#0B1B3D] mb-1">Naukri Passport HQ</p>
+            <p className="font-bold text-[#0B1B3D] mb-1">GovJobWala HQ</p>
             <p className="text-gray-600 mb-2">Nashik, Maharashtra, India</p>
             <a href="mailto:support.naukaripassport@gmail.com" className="text-[#0A58CA] font-bold hover:underline">
               support.naukaripassport@gmail.com

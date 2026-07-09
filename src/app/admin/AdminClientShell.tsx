@@ -40,7 +40,7 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
           {/* Logo & Site Link */}
           <Link href="/" className="flex items-center gap-2 h-full px-3 hover:text-white hover:bg-white/10 transition-colors">
             <ShieldCheck className="w-4 h-4" />
-            <span className="font-semibold tracking-wide">Naukri Passport</span>
+            <span className="font-semibold tracking-wide">GovJobWala</span>
           </Link>
           
           {/* Quick Add Menu */}

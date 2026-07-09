@@ -2,8 +2,8 @@ import { Briefcase, MapPin, Users, Rocket, Coffee, GraduationCap } from "lucide-
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Careers | Naukri Passport",
-  description: "Join the Naukri Passport team and help millions of Indians achieve their government job dreams.",
+  title: "Careers | GovJobWala",
+  description: "Join the GovJobWala team and help millions of Indians achieve their government job dreams.",
 };
 
 export default function CareersPage() {
@@ -29,7 +29,7 @@ export default function CareersPage() {
         
         {/* Perks Section */}
         <div className="mb-20">
-          <h2 className="text-3xl font-black text-[#0B1B3D] text-center mb-12">Life at Naukri Passport</h2>
+          <h2 className="text-3xl font-black text-[#0B1B3D] text-center mb-12">Life at GovJobWala</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm text-center">
               <div className="w-14 h-14 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6">

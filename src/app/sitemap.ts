@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { getJobs, getCategories } from '@/lib/db'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://naukripassport.com'
+  const baseUrl = 'https://govjobwala.com'
 
   const [jobs, categories] = await Promise.all([
     getJobs(),

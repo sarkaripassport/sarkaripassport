@@ -2,8 +2,8 @@ import { AlertTriangle } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Disclaimer | Naukri Passport",
-  description: "Read the disclaimer for Naukri Passport. We are an independent educational portal and not affiliated with any government organization.",
+  title: "Disclaimer | GovJobWala",
+  description: "Read the disclaimer for GovJobWala. We are an independent educational portal and not affiliated with any government organization.",
 };
 
 export default function DisclaimerPage() {
@@ -27,17 +27,17 @@ export default function DisclaimerPage() {
           <div className="bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r-lg mb-8">
             <h3 className="text-amber-800 font-bold mt-0 mb-2">Important Notice</h3>
             <p className="text-amber-700 m-0 leading-relaxed">
-              <strong>Naukri Passport (naukripassport.com) is NOT a government website.</strong> We are an independent educational portal providing aggregated information about government jobs, results, and admit cards.
+              <strong>GovJobWala (govjobwala.com) is NOT a government website.</strong> We are an independent educational portal providing aggregated information about government jobs, results, and admit cards.
             </p>
           </div>
 
           <p className="text-lg text-gray-600 leading-relaxed mb-8">
-            Please read this disclaimer carefully before using the Naukri Passport website.
+            Please read this disclaimer carefully before using the GovJobWala website.
           </p>
 
           <h2 className="text-2xl font-bold text-[#0B1B3D] mt-10 mb-4">No Government Affiliation</h2>
           <p className="text-gray-600 leading-relaxed mb-6">
-            Naukri Passport operates as an independent entity. We are not affiliated with, endorsed by, or in any way officially connected with the Government of India, any State Governments, or any of their agencies, departments, or public sector undertakings (PSUs). The official websites of the respective government organizations should always be your primary source of information.
+            GovJobWala operates as an independent entity. We are not affiliated with, endorsed by, or in any way officially connected with the Government of India, any State Governments, or any of their agencies, departments, or public sector undertakings (PSUs). The official websites of the respective government organizations should always be your primary source of information.
           </p>
 
           <h2 className="text-2xl font-bold text-[#0B1B3D] mt-10 mb-4">Accuracy of Information</h2>
@@ -49,12 +49,12 @@ export default function DisclaimerPage() {
 
           <h2 className="text-2xl font-bold text-[#0B1B3D] mt-10 mb-4">No Liability</h2>
           <p className="text-gray-600 leading-relaxed mb-6">
-            Under no circumstances will Naukri Passport, its owners, employees, or affiliates be held liable for any direct, indirect, incidental, or consequential damages arising out of the use of or inability to use this website. This includes, but is not limited to, missing a deadline, application rejection, or financial loss due to reliance on the information provided on this platform.
+            Under no circumstances will GovJobWala, its owners, employees, or affiliates be held liable for any direct, indirect, incidental, or consequential damages arising out of the use of or inability to use this website. This includes, but is not limited to, missing a deadline, application rejection, or financial loss due to reliance on the information provided on this platform.
           </p>
           
           <h2 className="text-2xl font-bold text-[#0B1B3D] mt-10 mb-4">External Links</h2>
           <p className="text-gray-600 leading-relaxed mb-6">
-            Through this website, you are able to link to other websites which are not under the control of Naukri Passport. We have no control over the nature, content, and availability of those sites. The inclusion of any links does not necessarily imply a recommendation or endorse the views expressed within them.
+            Through this website, you are able to link to other websites which are not under the control of GovJobWala. We have no control over the nature, content, and availability of those sites. The inclusion of any links does not necessarily imply a recommendation or endorse the views expressed within them.
           </p>
         </div>
       </div>

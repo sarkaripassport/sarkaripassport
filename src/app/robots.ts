@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/', '/api/'],
     },
-    sitemap: 'https://naukripassport.com/sitemap.xml',
+    sitemap: 'https://govjobwala.com/sitemap.xml',
   }
 }

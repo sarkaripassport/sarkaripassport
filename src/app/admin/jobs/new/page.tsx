@@ -107,7 +107,7 @@ export default function SmartPublisherPage() {
           <div className="bg-gray-50 p-3 rounded-lg border border-gray-200 mt-2">
             <div className="text-[10px] font-bold text-gray-500 mb-2 uppercase tracking-wide">Google Preview</div>
             <div className="text-sm text-[#1a0dab] font-bold hover:underline cursor-pointer truncate">SSC CGL 2026 Notification, Apply Online...</div>
-            <div className="text-xs text-[#006621] truncate">https://naukripassport.com/jobs/ssc-cgl-2026</div>
+            <div className="text-xs text-[#006621] truncate">https://govjobwala.com/jobs/ssc-cgl-2026</div>
             <div className="text-xs text-gray-600 line-clamp-2 mt-1">Get complete details of SSC CGL 2026 recruitment including eligibility, dates, and vacancies.</div>
           </div>
         </div>

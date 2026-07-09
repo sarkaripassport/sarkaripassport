@@ -2,8 +2,8 @@ import { ShieldCheck, Target, Zap, Heart, CheckCircle2 } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About Us | Naukri Passport",
-  description: "Learn about Naukri Passport - Your trusted companion for government jobs, results, admit cards, and eligibility checking.",
+  title: "About Us | GovJobWala",
+  description: "Learn about GovJobWala - Your trusted companion for government jobs, results, admit cards, and eligibility checking.",
 };
 
 export default function AboutPage() {
@@ -22,7 +22,7 @@ export default function AboutPage() {
             Your Trusted Companion for <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-red-400">Government Jobs</span>
           </h1>
           <p className="text-blue-100/80 md:text-xl max-w-3xl mx-auto leading-relaxed">
-            At Naukri Passport, we believe finding a government job shouldn't be complicated. We bridge the gap between aspirants and opportunities with genuine, lightning-fast updates.
+            At GovJobWala, we believe finding a government job shouldn't be complicated. We bridge the gap between aspirants and opportunities with genuine, lightning-fast updates.
           </p>
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function AboutPage() {
 
         {/* Why Choose Us */}
         <div className="mb-16">
-          <h2 className="text-3xl font-black text-[#0B1B3D] text-center mb-10">Why Choose Naukri Passport?</h2>
+          <h2 className="text-3xl font-black text-[#0B1B3D] text-center mb-10">Why Choose GovJobWala?</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               { title: "Lightning Fast Updates", desc: "Get notified about new vacancies and admit cards the moment they are released by the government." },
@@ -79,7 +79,7 @@ export default function AboutPage() {
             <Heart className="w-12 h-12 text-red-400 fill-current mx-auto mb-6" />
             <h2 className="text-3xl md:text-4xl font-black mb-4">Join Our Community</h2>
             <p className="text-blue-100 max-w-2xl mx-auto mb-8 text-lg">
-              Thousands of aspirants trust Naukri Passport daily. Let us help you secure your dream government job.
+              Thousands of aspirants trust GovJobWala daily. Let us help you secure your dream government job.
             </p>
             <a href="/jobs" className="inline-block bg-white text-[#0A58CA] font-bold px-8 py-3.5 rounded-lg hover:bg-gray-50 transition-colors shadow-md">
               Explore Latest Jobs

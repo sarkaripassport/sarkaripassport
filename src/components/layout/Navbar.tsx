@@ -28,7 +28,7 @@ export default function Navbar({ lang = 'en' }: { lang?: string }) {
               <ShieldCheck className="w-6 h-6 text-white" />
             </div>
             <div>
-              <Link href={getLink("/")} className="text-xl font-bold tracking-tight block leading-none">Naukri Passport</Link>
+              <Link href={getLink("/")} className="text-xl font-bold tracking-tight block leading-none">GovJobWala</Link>
               <span className="text-[10px] text-gray-400 font-medium tracking-wide">Sarkari Jobs + Eligibility Assistant</span>
             </div>
           </div>

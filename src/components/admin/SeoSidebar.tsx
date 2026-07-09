@@ -213,10 +213,10 @@ export default function SeoSidebar({
           {/* Preview Card */}
           <div className={`bg-white border border-gray-200 p-3 rounded-lg font-sans ${serpView === 'desktop' ? 'max-w-[600px]' : 'max-w-[375px] mx-auto shadow-sm'}`}>
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-6 h-6 bg-[#0A58CA] rounded-full flex items-center justify-center text-[10px] font-bold text-white">NP</div>
+              <div className="w-6 h-6 bg-[#0A58CA] rounded-full flex items-center justify-center text-[10px] font-bold text-white">GW</div>
               <div>
-                <div className="text-[12px] text-[#202124] leading-tight">Naukri Passport</div>
-                <div className="text-[11px] text-[#4d5156] leading-tight">https://naukripassport.com › job</div>
+                <div className="text-[12px] text-[#202124] leading-tight">GovJobWala</div>
+                <div className="text-[11px] text-[#4d5156] leading-tight">https://govjobwala.com › job</div>
               </div>
             </div>
             <div className="text-[18px] text-[#1a0dab] font-normal hover:underline leading-tight mb-1 truncate">

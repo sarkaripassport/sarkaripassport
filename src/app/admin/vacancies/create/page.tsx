@@ -143,7 +143,7 @@ export default function SmartPublisher() {
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Google Search</p>
               <div className="p-3 bg-white border border-gray-200 rounded-lg">
-                <p className="text-[12px] text-gray-800 break-all mb-1">https://naukripassport.com/jobs/{formData.slug || 'slug'}</p>
+                <p className="text-[12px] text-gray-800 break-all mb-1">https://govjobwala.com/jobs/{formData.slug || 'slug'}</p>
                 <h4 className="text-blue-700 font-medium text-sm hover:underline cursor-pointer">{formData.title || 'Your Job Title Here'}</h4>
                 <p className="text-xs text-gray-600 mt-1 line-clamp-2">{formData.metaDescription || 'Your meta description will appear here. Make it descriptive and include the focus keyword to attract applicants.'}</p>
               </div>
@@ -154,7 +154,7 @@ export default function SmartPublisher() {
               <p className="text-xs font-semibold text-gray-500 uppercase mb-2 flex items-center gap-1"><Smartphone className="h-3 w-3" /> Mobile App View</p>
               <div className="mx-auto w-[240px] h-[360px] border-[6px] border-gray-900 rounded-3xl overflow-hidden relative bg-gray-50 shadow-inner flex flex-col">
                 <div className="bg-brand-navy p-3 text-white">
-                  <h5 className="text-[10px] font-bold opacity-70">Naukri Passport</h5>
+                  <h5 className="text-[10px] font-bold opacity-70">GovJobWala</h5>
                   <h4 className="text-sm font-bold mt-1 leading-tight line-clamp-2">{formData.title || 'Job Title Preview'}</h4>
                 </div>
                 <div className="p-3 space-y-2">

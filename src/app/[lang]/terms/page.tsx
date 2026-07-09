@@ -2,8 +2,8 @@ import { FileText } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions | Naukri Passport",
-  description: "Read the terms and conditions for using Naukri Passport.",
+  title: "Terms & Conditions | GovJobWala",
+  description: "Read the terms and conditions for using GovJobWala.",
 };
 
 export default function TermsPage() {
@@ -25,12 +25,12 @@ export default function TermsPage() {
         {/* Content */}
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12 prose prose-blue max-w-none">
           <p className="text-lg text-gray-600 leading-relaxed mb-8">
-            Welcome to <strong>Naukri Passport</strong>. By accessing this website, we assume you accept these terms and conditions. Do not continue to use Naukri Passport if you do not agree to take all of the terms and conditions stated on this page.
+            Welcome to <strong>GovJobWala</strong>. By accessing this website, we assume you accept these terms and conditions. Do not continue to use GovJobWala if you do not agree to take all of the terms and conditions stated on this page.
           </p>
 
           <h2 className="text-2xl font-bold text-[#0B1B3D] mt-10 mb-4">1. General Information</h2>
           <p className="text-gray-600 leading-relaxed mb-6">
-            Naukri Passport is an independent job portal that aggregates information about government jobs, results, and admit cards from various public sources. We are <strong>not</strong> affiliated with, endorsed by, or sponsored by any government organization or agency. All information provided on this website is for educational and informational purposes only.
+            GovJobWala is an independent job portal that aggregates information about government jobs, results, and admit cards from various public sources. We are <strong>not</strong> affiliated with, endorsed by, or sponsored by any government organization or agency. All information provided on this website is for educational and informational purposes only.
           </p>
 
           <h2 className="text-2xl font-bold text-[#0B1B3D] mt-10 mb-4">2. Accuracy of Information</h2>

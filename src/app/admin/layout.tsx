@@ -2,8 +2,8 @@ import "../globals.css";
 import AdminClientShell from "./AdminClientShell";
 
 export const metadata = {
-  title: 'Admin Dashboard - Naukri Passport',
-  description: 'Administration panel for Naukri Passport',
+  title: 'Admin Dashboard - GovJobWala',
+  description: 'Administration panel for GovJobWala',
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

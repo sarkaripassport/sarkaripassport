@@ -233,7 +233,7 @@ const defaultSettings: HomepageSettings = {
   },
   hero: {
     title: { en: "Latest Government Jobs, Results, Admit Cards & Eligibility Updates", hi: "", mr: "" },
-    subtitle: { en: "Create your Naukri Passport profile once and check your eligibility for every job instantly.", hi: "", mr: "" }
+    subtitle: { en: "Create your GovJobWala profile once and check your eligibility for every job instantly.", hi: "", mr: "" }
   },
   four_columns: {
     col1_category: "Admit Card",

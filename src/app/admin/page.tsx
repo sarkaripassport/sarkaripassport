@@ -49,7 +49,7 @@ export default function AdminDashboard() {
               </Link>
             </div>
             <div className="mt-4 pt-4 border-t border-[#dcdcde] text-sm text-[#50575e]">
-              Naukri Passport v1.0 running on <strong>Next.js 15</strong>. Theme: <span className="text-[#2271b1]">WP-Sarkari</span>.
+              GovJobWala v1.0 running on <strong>Next.js 15</strong>. Theme: <span className="text-[#2271b1]">WP-Sarkari</span>.
             </div>
           </div>
         </div>

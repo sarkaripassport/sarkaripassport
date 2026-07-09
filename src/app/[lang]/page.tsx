@@ -64,11 +64,11 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Naukri Passport",
-    "url": "https://naukripassport.com", // Replace with real domain
+    "name": "GovJobWala",
+    "url": "https://govjobwala.com", // Replace with real domain
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://naukripassport.com/jobs?q={search_term_string}",
+      "target": "https://govjobwala.com/jobs?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };

@@ -2,8 +2,8 @@ import { Mail, MapPin, Send, MessageSquare, Phone } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact Us | Naukri Passport",
-  description: "Get in touch with the Naukri Passport team. We are here to help you with government job queries, feedback, and support.",
+  title: "Contact Us | GovJobWala",
+  description: "Get in touch with the GovJobWala team. We are here to help you with government job queries, feedback, and support.",
 };
 
 export default function ContactPage() {

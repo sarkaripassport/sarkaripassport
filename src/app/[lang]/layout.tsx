@@ -20,10 +20,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const lang = resolvedParams.lang || 'en';
   
   return {
-    metadataBase: new URL('https://naukripassport.com'),
+    metadataBase: new URL('https://govjobwala.com'),
     title: {
       default: (settings.seo.title as any)[lang] || settings.seo.title.en,
-      template: '%s | Naukri Passport'
+      template: '%s | GovJobWala'
     },
     description: (settings.seo.description as any)[lang] || settings.seo.description.en,
     keywords: (settings.seo.keywords as any)[lang] || settings.seo.keywords.en,
@@ -53,13 +53,13 @@ export default async function RootLayout({
   const orgSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Naukri Passport",
-    "url": "https://naukripassport.com",
-    "logo": "https://naukripassport.com/logo.png",
+    "name": "GovJobWala",
+    "url": "https://govjobwala.com",
+    "logo": "https://govjobwala.com/logo.png",
     "sameAs": [
-      "https://facebook.com/naukripassport",
-      "https://twitter.com/naukripassport",
-      "https://linkedin.com/company/naukripassport"
+      "https://facebook.com/govjobwala",
+      "https://twitter.com/govjobwala",
+      "https://linkedin.com/company/govjobwala"
     ]
   };
 
