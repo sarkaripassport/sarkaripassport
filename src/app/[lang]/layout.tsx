@@ -97,7 +97,7 @@ export default async function RootLayout({
         {settings.analytics?.adsense_id && (
           <Script
             id="adsbygoogle-init"
-            strategy="afterInteractive"
+            strategy="lazyOnload"
             crossOrigin="anonymous"
             src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.analytics.adsense_id}`}
           />
