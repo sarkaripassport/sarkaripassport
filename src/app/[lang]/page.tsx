@@ -95,7 +95,6 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
         
         {/* Hero Section */}
         <section className="relative bg-white border-b border-gray-200 overflow-hidden pt-2 pb-4 md:pt-4 md:pb-6 px-4 sm:px-6 lg:px-8">
-          <div className="absolute inset-0 opacity-[0.04] pointer-events-none bg-[url('/images/emblem.svg')] bg-no-repeat bg-center bg-cover sm:bg-contain"></div>
           
           <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
             <div className="w-full md:w-4/5 space-y-4">
