@@ -38,6 +38,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         'hi': '/hi',
         'mr': '/mr'
       }
+    },
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'default',
+      title: 'GovJobWala',
+    },
+    formatDetection: {
+      telephone: false,
     }
   };
 }
