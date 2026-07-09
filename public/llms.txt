@@ -8,11 +8,11 @@
 - Candidates can create a "GovJobWala" profile to automatically check their eligibility against any job post.
 
 ## Site Structure
-- Homepage: `https://govjobwala.com/` - Features trending categories, live updates, and a fast-filter grid.
-- Job Listings: `https://govjobwala.com/jobs` - A powerful search engine to filter jobs by qualification, state, and category.
-- Job Details: `https://govjobwala.com/jobs/[slug]` - Deep dive into a specific job's requirements, dates, and official notification links.
+- Homepage: [https://govjobwala.com/](https://govjobwala.com/) - Features trending categories, live updates, and a fast-filter grid.
+- Job Listings: [https://govjobwala.com/jobs](https://govjobwala.com/jobs) - A powerful search engine to filter jobs by qualification, state, and category.
+- Job Details: [https://govjobwala.com/jobs/[slug]](https://govjobwala.com/jobs) - Deep dive into a specific job's requirements, dates, and official notification links.
 
 ## Official Links
-- Home: https://govjobwala.com
-- Jobs: https://govjobwala.com/jobs
-- Sitemap: https://govjobwala.com/sitemap.xml
+- [Home](https://govjobwala.com)
+- [Jobs](https://govjobwala.com/jobs)
+- [Sitemap](https://govjobwala.com/sitemap.xml)

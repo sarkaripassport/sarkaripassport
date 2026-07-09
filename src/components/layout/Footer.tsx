@@ -24,12 +24,9 @@ export default function Footer() {
               <div className="w-10 h-10 bg-[#0A58CA] rounded-lg flex items-center justify-center">
                 <ShieldCheck className="w-6 h-6 text-white" />
               </div>
-              <div>
-                <span className="text-xl font-bold tracking-tight block leading-none text-white">GovJobWala</span>
-                <span className="text-[10px] text-gray-400 font-medium tracking-wide">Sarkari Jobs + Eligibility Assistant</span>
-              </div>
+              <Link href={getLink("/")} className="text-2xl font-bold tracking-tight text-white block leading-none">GovJobWala</Link>
             </div>
-            <p className="text-sm text-gray-400 leading-relaxed mb-6">
+            <p className="text-sm text-gray-300 leading-relaxed mb-6">
               Your trusted companion for government job updates, results, admit cards, answer keys and more.
             </p>
             <div className="flex gap-4">
@@ -51,12 +48,12 @@ export default function Footer() {
           {/* Links Cols */}
           <div>
             <h2 className="text-white font-bold mb-4">Top Categories</h2>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li><Link href={getLink("/explore/10th-pass")} className="hover:text-white transition">10th Pass Jobs</Link></li>
               <li><Link href={getLink("/explore/12th-pass")} className="hover:text-white transition">12th Pass Jobs</Link></li>
-              <li><Link href={getLink("/explore/bank")} className="hover:text-white transition">Bank Jobs</Link></li>
-              <li><Link href={getLink("/explore/police-defense")} className="hover:text-white transition">Police & Defense</Link></li>
-              <li><Link href={getLink("/explore/railway")} className="hover:text-white transition">Railway Jobs</Link></li>
+              <li><Link href={getLink("/explore/graduate")} className="hover:text-white transition">Graduate Jobs</Link></li>
+              <li><Link href={getLink("/explore/police")} className="hover:text-white transition">Police Jobs</Link></li>
+              <li><Link href={getLink("/explore/banking")} className="hover:text-white transition">Banking Jobs</Link></li>
               <li><Link href={getLink("/explore/up")} className="hover:text-white transition">UP Govt Jobs</Link></li>
               <li><Link href={getLink("/explore/bihar")} className="hover:text-white transition">Bihar Govt Jobs</Link></li>
             </ul>
@@ -64,7 +61,7 @@ export default function Footer() {
 
           <div>
             <h2 className="text-white font-bold mb-4">Quick Links</h2>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li><Link href={getLink("/jobs")} className="hover:text-white transition">Latest Jobs</Link></li>
               <li><Link href={getLink("/admit-card")} className="hover:text-white transition">Admit Card</Link></li>
               <li><Link href={getLink("/results")} className="hover:text-white transition">Results</Link></li>
@@ -76,10 +73,10 @@ export default function Footer() {
 
           <div>
             <h2 className="text-white font-bold mb-4">Tools</h2>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li><Link href={getLink("/eligibility-checker")} className="hover:text-white transition flex items-center gap-2">Eligibility Checker <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
               <li><Link href={getLink("/document-readiness")} className="hover:text-white transition flex items-center gap-2">Document Readiness <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
-              <li><Link href={getLink("/application-tracker")} className="hover:text-white transition flex items-center gap-2">Application Tracker <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
+              <li><Link href={getLink("/application-tracker")} className="hover:text-white transition flex items-center gap-2">Application Tracker</Link></li>
               <li><Link href={getLink("/alerts")} className="hover:text-white transition">Notification Alerts</Link></li>
               <li><Link href={getLink("/saved-jobs")} className="hover:text-white transition">Saved Jobs</Link></li>
             </ul>
@@ -87,11 +84,11 @@ export default function Footer() {
 
           <div>
             <h2 className="text-white font-bold mb-4">Company & Legal</h2>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               <li><Link href={getLink("/about")} className="hover:text-white transition">About Us</Link></li>
               <li><Link href={getLink("/contact")} className="hover:text-white transition">Contact Us</Link></li>
               <li><Link href={getLink("/privacy")} className="hover:text-white transition">Privacy Policy</Link></li>
-              <li><Link href={getLink("/terms")} className="hover:text-white transition">Terms & Conditions</Link></li>
+              <li><Link href={getLink("/terms")} className="hover:text-white transition">Terms of Service</Link></li>
               <li><Link href={getLink("/disclaimer")} className="hover:text-white transition">Disclaimer</Link></li>
             </ul>
           </div>
@@ -99,10 +96,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-400">
+        <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-300">
           <div className="flex flex-col md:flex-row items-center gap-4">
             <p>© 2026 GovJobWala. All Rights Reserved.</p>
-            <span suppressHydrationWarning className="px-2 py-1 bg-gray-800/50 rounded-md text-gray-400 font-medium tracking-wide">
+            <span suppressHydrationWarning className="px-2 py-1 bg-gray-800/50 rounded-md text-gray-300 font-medium tracking-wide">
               Last Updated: {new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
             </span>
           </div>

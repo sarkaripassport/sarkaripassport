@@ -13,7 +13,7 @@ export default function Navbar({ lang = 'en' }: { lang?: string }) {
       {/* Top Utility Bar */}
       <div className="bg-[#061129] py-1 border-b border-gray-800">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex justify-end">
-          <Link href="/sitemap.xml" className="text-[10px] text-gray-400 hover:text-white transition-colors">
+          <Link href="/sitemap.xml" className="text-[10px] text-gray-300 hover:text-white transition-colors">
             Sitemap
           </Link>
         </div>
@@ -29,7 +29,7 @@ export default function Navbar({ lang = 'en' }: { lang?: string }) {
             </div>
             <div>
               <Link href={getLink("/")} className="text-xl font-bold tracking-tight block leading-none">GovJobWala</Link>
-              <span className="text-[10px] text-gray-400 font-medium tracking-wide">Sarkari Jobs + Eligibility Assistant</span>
+              <span className="text-[10px] text-gray-300 font-medium tracking-wide">Sarkari Jobs + Eligibility Assistant</span>
             </div>
           </div>
 
