@@ -115,7 +115,7 @@ export default function JobCard({
               <GraduationCap className="w-3 h-3 text-gray-500" />
             </div>
             <div className="min-w-0">
-              <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Education</p>
+              <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">Education</p>
               <p className="text-[11px] font-black text-[#0B1B3D] truncate">{qual || '-'}</p>
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function JobCard({
               <FileText className="w-3 h-3 text-gray-500" />
             </div>
             <div className="min-w-0">
-              <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider">Posts</p>
+              <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider">Posts</p>
               <p className="text-[11px] font-black text-[#0B1B3D] truncate">{vac}</p>
             </div>
           </div>
@@ -134,8 +134,8 @@ export default function JobCard({
       {/* Footer Area */}
       <div className="bg-gray-50 px-4 py-3 border-t border-gray-100 flex items-center justify-between relative z-10 group-hover:bg-[#0A58CA]/5 transition-colors">
         <div>
-          <p className="text-[9px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">{labels.lastDate}</p>
-          <p className="text-xs font-black text-[#0B1B3D] group-hover:text-[#0A58CA] transition-colors">{date}</p>
+          <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">{labels.lastDate}</p>
+          <p className="text-xs font-black text-red-600 group-hover:text-red-700 transition-colors">{date}</p>
         </div>
         <Link 
           href={link}
