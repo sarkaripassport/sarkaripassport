@@ -1,7 +1,7 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getJobBySlug, getCategories } from '@/lib/db';
+import { getJobBySlug, getCategories, getJobs } from '@/lib/db';
 import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
 import JobComments from '@/components/jobs/JobComments';
 import { AutoLinkedText } from '@/lib/autoLinker';
@@ -46,14 +46,20 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   const resolvedParams = await params;
   const { lang, slug } = resolvedParams;
   const dict = await getDictionary(lang);
-  const [job, categories] = await Promise.all([
+  const [job, categories, allJobs] = await Promise.all([
     getJobBySlug(slug),
-    getCategories()
+    getCategories(),
+    getJobs()
   ]);
 
   if (!job) {
     notFound();
   }
+
+  // Get 4 most recent live jobs excluding the current one
+  const recentJobs = allJobs
+    .filter(j => j.id !== job.id && j.isLive)
+    .slice(0, 4);
 
   // Extract YouTube Video ID if present
   let youtubeVideoId = null;
@@ -547,6 +553,44 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           </div>
         </div>
       </div>
+
+      {/* Recent Jobs Section */}
+      {recentJobs.length > 0 && (
+        <div className="max-w-[1200px] mx-auto px-4 mt-8 lg:mt-12 mb-10">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-black text-[#0B1B3D]">Latest Government Jobs</h2>
+            <Link href={`/${lang}/jobs`} className="text-sm font-bold text-blue-600 hover:underline flex items-center gap-1">
+              View All <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {recentJobs.map((rJob) => (
+              <Link key={rJob.id} href={`/${lang}/jobs/${rJob.slug}`} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-blue-300 transition-all group flex flex-col h-full">
+                <div className="flex items-center gap-3 mb-3">
+                  {rJob.logo_url ? (
+                    <img src={rJob.logo_url} alt="Logo" className="w-10 h-10 object-contain rounded bg-gray-50 p-1" />
+                  ) : (
+                    <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded flex items-center justify-center font-bold text-lg">
+                      {rJob.organization[lang]?.charAt(0) || 'G'}
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wide truncate">{rJob.organization[lang]}</p>
+                    <h3 className="font-bold text-[#0B1B3D] text-sm leading-tight line-clamp-2 group-hover:text-blue-700 transition-colors">{rJob.title[lang]}</h3>
+                  </div>
+                </div>
+                
+                <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-gray-600">
+                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {rJob.quick_facts?.job_location?.[lang] || 'All India'}</span>
+                  {rJob.quick_facts?.last_date && (
+                    <span className="flex items-center gap-1 text-red-600 bg-red-50 px-2 py-0.5 rounded"><Calendar className="w-3.5 h-3.5" /> {rJob.quick_facts.last_date[lang]}</span>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Mobile Sticky CTA Bar */}
       <div className="md:hidden fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] p-3 z-50 flex items-center gap-3">

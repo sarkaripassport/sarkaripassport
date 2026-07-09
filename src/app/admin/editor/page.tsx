@@ -6,8 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import SeoMatrixWidget from '@/components/admin/SeoMatrixWidget';
 import SalaryCalcWidget from '@/components/admin/SalaryCalcWidget';
 import ApplicationFeeWidget from '@/components/admin/ApplicationFeeWidget';
-import FloatingLinkToolbar from '@/components/admin/FloatingLinkToolbar';
-import { useTextSelection } from '@/hooks/useTextSelection';
+import RichTextInput from '@/components/admin/RichTextInput';
 
 function EditorContent() {
   const router = useRouter();
@@ -233,7 +232,7 @@ function EditorContent() {
 
   return (
     <>
-      <FloatingLinkToolbar />
+      
       <div className="font-sans text-gray-800 flex flex-col h-full bg-gray-50 min-h-screen">
       {/* Editor Header */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
@@ -402,11 +401,11 @@ function EditorContent() {
 
                   <div>
                     <label className="block text-sm font-bold mb-1">Job Summary</label>
-                    <textarea className="w-full border rounded p-2 h-24" value={jobData.job_summary?.[editLang] || ''} onChange={e => updateLocalizedField('job_summary', e.target.value)} />
+                    <RichTextInput className="w-full border rounded p-2 min-h-[96px]" value={jobData.job_summary?.[editLang] || ''} onChange={val => updateLocalizedField('job_summary', val)} />
                   </div>
                   <div>
                     <label className="block text-sm font-bold mb-1">Salary & Benefits (HTML)</label>
-                    <textarea className="w-full border rounded p-2 h-24" value={jobData.salary_benefits?.[editLang] || ''} onChange={e => updateLocalizedField('salary_benefits', e.target.value)} />
+                    <RichTextInput className="w-full border rounded p-2 min-h-[96px]" value={jobData.salary_benefits?.[editLang] || ''} onChange={val => updateLocalizedField('salary_benefits', val)} />
                   </div>
                 </div>
               )}
@@ -539,7 +538,7 @@ function EditorContent() {
                           <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0">{index + 1}</div>
                           <div className="flex-1 space-y-2">
                             <input type="text" placeholder="Step Title" className="w-full border rounded p-2 font-bold" value={step.title?.[editLang] || ''} onChange={e => updateArrayItemLocalized('selection_process', index, 'title', e.target.value)} />
-                            <textarea placeholder="Description..." className="w-full border rounded p-2 text-sm" value={step.description?.[editLang] || ''} onChange={e => updateArrayItemLocalized('selection_process', index, 'description', e.target.value)} />
+                            <RichTextInput className="w-full border rounded p-2 text-sm" placeholder="Description..." value={step.description?.[editLang] || ''} onChange={val => updateArrayItemLocalized('selection_process', index, 'description', val)} />
                           </div>
                           <button className="text-red-500 p-2" onClick={() => removeArrayItem('selection_process', index)}><Trash2 className="w-5 h-5"/></button>
                         </div>
@@ -573,7 +572,7 @@ function EditorContent() {
                         <div key={index} className="border rounded p-3 bg-gray-50 relative">
                           <button className="absolute top-2 right-2 text-red-500" onClick={() => removeArrayItem('faqs', index)}><Trash2 className="w-4 h-4"/></button>
                           <input type="text" placeholder="Question" className="w-full border rounded p-2 mb-2 font-bold" value={faq.question?.[editLang] || ''} onChange={e => updateArrayItemLocalized('faqs', index, 'question', e.target.value)} />
-                          <textarea placeholder="Answer" className="w-full border rounded p-2" value={faq.answer?.[editLang] || ''} onChange={e => updateArrayItemLocalized('faqs', index, 'answer', e.target.value)} />
+                          <RichTextInput className="w-full border rounded p-2" placeholder="Answer..." value={faq.answer?.[editLang] || ''} onChange={val => updateArrayItemLocalized('faqs', index, 'answer', val)} />
                         </div>
                       ))}
                       <button className="bg-gray-100 px-4 py-2 rounded text-sm font-bold mt-2" onClick={() => addArrayItem('faqs', {question: initLocalized(), answer: initLocalized()})}>+ Add FAQ</button>
@@ -702,38 +701,6 @@ function EditorContent() {
           </div>
                     {/* Right Sidebar: SEO & Live Previews */}
             <div className="w-full lg:w-80 shrink-0 space-y-6 max-w-full min-w-0 overflow-hidden">
-              {/* Hyperlink Tool */}
-              <div className={`bg-white rounded-xl border ${selection ? 'border-blue-400 shadow-blue-100/50' : 'border-gray-200'} shadow-sm p-5 transition-all duration-300`}>
-                <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
-                  <LinkIcon className={`w-4 h-4 ${selection ? 'text-blue-500' : 'text-gray-400'}`} /> Quick Link Tool
-                </h3>
-                {selection ? (
-                  <div className="space-y-3 animate-in fade-in zoom-in-95">
-                    <p className="text-sm text-gray-600 bg-blue-50 p-2 rounded border border-blue-100">
-                      Selected: <strong>{selection.text.length > 20 ? selection.text.substring(0, 20) + '...' : selection.text}</strong>
-                    </p>
-                    <input 
-                      type="url" 
-                      placeholder="https://" 
-                      value={sidebarLink}
-                      onChange={e => setSidebarLink(e.target.value)}
-                      onKeyDown={e => { if (e.key === 'Enter') applySidebarLink(); }}
-                      className="w-full text-sm border border-gray-300 rounded p-2 focus:border-blue-500 outline-none"
-                    />
-                    <button 
-                      onClick={applySidebarLink}
-                      className="w-full py-2 bg-[#0A58CA] text-white rounded font-bold hover:bg-blue-700 transition"
-                    >
-                      Apply Link
-                    </button>
-                  </div>
-                ) : (
-                  <p className="text-sm text-gray-500 italic">
-                    Highlight any text in the editor to add a hyperlink here.
-                  </p>
-                )}
-              </div>
-
               {/* Breaking News Toggle */}
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
               <h3 className="font-bold text-[#0B1B3D] mb-3 flex items-center gap-2">
