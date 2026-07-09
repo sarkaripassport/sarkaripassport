@@ -25,6 +25,7 @@ export default function MobileMenu({ lang = 'en' }: { lang?: string }) {
   return (
     <div className="md:hidden flex items-center">
       <button 
+        aria-label="Toggle Menu"
         onClick={() => setIsOpen(!isOpen)}
         className="p-2 text-gray-300 hover:text-white transition-colors"
       >

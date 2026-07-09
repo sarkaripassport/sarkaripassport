@@ -39,6 +39,7 @@ export default function AdvancedSearch({ lang, categories }: AdvancedSearchProps
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
           <input 
             type="text" 
+            aria-label="Search query"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by job title, keyword..." 
@@ -59,19 +60,19 @@ export default function AdvancedSearch({ lang, categories }: AdvancedSearchProps
         </button>
 
         <div className={`grid-cols-2 md:grid-cols-4 gap-3 ${isFilterOpen ? 'grid' : 'hidden md:grid'}`}>
-          <select value={cat} onChange={(e) => setCat(e.target.value)} className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none">
+          <select aria-label="Category" value={cat} onChange={(e) => setCat(e.target.value)} className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none">
             <option value="">All Categories</option>
             {categories.map(c => (
               <option key={c.id} value={c.slug}>{c.name[lang]}</option>
             ))}
           </select>
-          <select value={qual} onChange={(e) => setQual(e.target.value)} className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none">
+          <select aria-label="Qualification" value={qual} onChange={(e) => setQual(e.target.value)} className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none">
             <option value="">Any Qualification</option>
             <option value="10th">10th Pass</option>
             <option value="12th">12th Pass</option>
             <option value="grad">Graduate</option>
           </select>
-          <select value={state} onChange={(e) => setState(e.target.value)} className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none">
+          <select aria-label="Location" value={state} onChange={(e) => setState(e.target.value)} className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-md text-xs text-gray-600 outline-none">
             <option value="">Any Location</option>
             <option value="delhi">Delhi</option>
             <option value="up">Uttar Pradesh</option>

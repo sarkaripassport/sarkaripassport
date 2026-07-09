@@ -48,7 +48,7 @@ export default function Navbar({ lang = 'en' }: { lang?: string }) {
 
           {/* Right Actions */}
           <div className="flex items-center gap-4">
-            <button className="text-gray-300 hover:text-white hidden sm:block">
+            <button aria-label="Search" className="text-gray-300 hover:text-white hidden sm:block">
               <Search className="w-5 h-5" />
             </button>
             <div className="w-px h-6 bg-gray-700 hidden sm:block"></div>
