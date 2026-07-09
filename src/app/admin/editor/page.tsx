@@ -795,8 +795,6 @@ function EditorContent() {
   );
 }
 
-
-import { Suspense } from 'react';
 export default function AdvancedEditorPage() {
   return (
     <Suspense fallback={<div className="p-8 text-center">Loading editor...</div>}>
