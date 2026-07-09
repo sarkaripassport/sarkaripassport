@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import BreakingNews from "@/components/layout/BreakingNews";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 import PwaInstallPrompt from "@/components/ui/PwaInstallPrompt";
+import PwaRegistry from "@/components/PwaRegistry";
 
 import { getSettings } from "@/lib/db";
 import Script from "next/script";
@@ -95,6 +96,7 @@ export default async function RootLayout({
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
         <WhatsAppFloat />
         <PwaInstallPrompt />
+        <PwaRegistry />
         <Footer />
         
         {/* Google Analytics */}
