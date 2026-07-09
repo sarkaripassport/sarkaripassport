@@ -100,7 +100,12 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-          <p>© 2026 GovJobWala. All Rights Reserved.</p>
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <p>© 2026 GovJobWala. All Rights Reserved.</p>
+            <span suppressHydrationWarning className="px-2 py-1 bg-gray-800/50 rounded-md text-gray-400 font-medium tracking-wide">
+              Last Updated: {new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+            </span>
+          </div>
           <div className="flex items-center gap-1">
             Made with <Heart className="w-3 h-3 text-red-500 fill-current" /> for Job Aspirants
           </div>
