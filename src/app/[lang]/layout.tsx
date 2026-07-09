@@ -55,7 +55,7 @@ export default async function RootLayout({
     "@type": "Organization",
     "name": "GovJobWala",
     "url": "https://govjobwala.com",
-    "logo": "https://govjobwala.com/logo.png",
+    "logo": "https://govjobwala.com/logo.svg",
     "sameAs": [
       "https://facebook.com/govjobwala",
       "https://twitter.com/govjobwala",
