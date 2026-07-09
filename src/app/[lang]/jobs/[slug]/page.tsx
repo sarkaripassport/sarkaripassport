@@ -56,10 +56,22 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     notFound();
   }
 
-  // Get 4 most recent live jobs excluding the current one
-  const recentJobs = allJobs
+  const jobCategories = job.categories || [];
+  
+  let recentJobs = allJobs
     .filter(j => j.id !== job.id && j.isLive)
-    .slice(0, 4);
+    .filter(j => j.categories?.some(c => jobCategories.includes(c)));
+
+  // Fallback to latest jobs if we don't have enough similar jobs
+  if (recentJobs.length < 4) {
+    const similarJobIds = new Set(recentJobs.map(j => j.id));
+    const fallbackJobs = allJobs
+      .filter(j => j.id !== job.id && j.isLive && !similarJobIds.has(j.id))
+      .slice(0, 4 - recentJobs.length);
+    recentJobs = [...recentJobs, ...fallbackJobs];
+  } else {
+    recentJobs = recentJobs.slice(0, 4);
+  }
 
   // Extract YouTube Video ID if present
   let youtubeVideoId = null;
@@ -550,11 +562,11 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
         </div>
       </div>
 
-      {/* Recent Jobs Section */}
+      {/* Similar Jobs Section */}
       {recentJobs.length > 0 && (
         <div className="max-w-[1200px] mx-auto px-4 mt-8 lg:mt-12 mb-10">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-black text-[#0B1B3D]">Latest Government Jobs</h2>
+            <h2 className="text-2xl font-black text-[#0B1B3D]">Similar Government Jobs</h2>
             <Link href={`/${lang}/jobs`} className="text-sm font-bold text-blue-600 hover:underline flex items-center gap-1">
               View All <ArrowRight className="w-4 h-4" />
             </Link>

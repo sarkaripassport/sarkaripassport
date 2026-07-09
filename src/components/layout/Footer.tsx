@@ -50,6 +50,19 @@ export default function Footer() {
 
           {/* Links Cols */}
           <div>
+            <h4 className="text-white font-bold mb-4">Top Categories</h4>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li><Link href={getLink("/explore/10th-pass")} className="hover:text-white transition">10th Pass Jobs</Link></li>
+              <li><Link href={getLink("/explore/12th-pass")} className="hover:text-white transition">12th Pass Jobs</Link></li>
+              <li><Link href={getLink("/explore/bank")} className="hover:text-white transition">Bank Jobs</Link></li>
+              <li><Link href={getLink("/explore/police-defense")} className="hover:text-white transition">Police & Defense</Link></li>
+              <li><Link href={getLink("/explore/railway")} className="hover:text-white transition">Railway Jobs</Link></li>
+              <li><Link href={getLink("/explore/up")} className="hover:text-white transition">UP Govt Jobs</Link></li>
+              <li><Link href={getLink("/explore/bihar")} className="hover:text-white transition">Bihar Govt Jobs</Link></li>
+            </ul>
+          </div>
+
+          <div>
             <h4 className="text-white font-bold mb-4">Quick Links</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href={getLink("/jobs")} className="hover:text-white transition">Latest Jobs</Link></li>
@@ -73,18 +86,10 @@ export default function Footer() {
           </div>
 
           <div>
-            <h4 className="text-white font-bold mb-4">Company</h4>
+            <h4 className="text-white font-bold mb-4">Company & Legal</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href={getLink("/about")} className="hover:text-white transition">About Us</Link></li>
-              <li><Link href={getLink("/careers")} className="hover:text-white transition">Careers</Link></li>
-              <li><Link href={getLink("/press")} className="hover:text-white transition">Press & Media</Link></li>
               <li><Link href={getLink("/contact")} className="hover:text-white transition">Contact Us</Link></li>
-            </ul>
-          </div>
-
-          <div>
-            <h4 className="text-white font-bold mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href={getLink("/privacy")} className="hover:text-white transition">Privacy Policy</Link></li>
               <li><Link href={getLink("/terms")} className="hover:text-white transition">Terms & Conditions</Link></li>
               <li><Link href={getLink("/disclaimer")} className="hover:text-white transition">Disclaimer</Link></li>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Save, AlertCircle, Plus, Trash2 } from 'lucide-react';
+import { Save, AlertCircle, Plus, Trash2, Globe } from 'lucide-react';
 import type { HomepageSettings, Category, Announcement } from '@/lib/db';
 
 export default function HomepageManager() {
@@ -22,6 +22,9 @@ export default function HomepageManager() {
   }, []);
 
   const handleSave = async () => {
+    if (!window.confirm("Are you sure you want to save these settings? Warning: Modifying tracking IDs by mistake can impact your analytics and ad revenue.")) {
+      return;
+    }
     setSaving(true);
     try {
       await fetch('/api/settings', {
@@ -144,6 +147,50 @@ export default function HomepageManager() {
             />
             <p className="text-xs text-gray-500 mt-1">Updates the global floating WhatsApp button.</p>
           </div>
+          </div>
+        </div>
+
+        {/* Tracking & Analytics */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4">
+          <h2 className="text-lg font-bold text-[#0B1B3D] border-b pb-2 flex items-center gap-2">
+            <Globe className="w-5 h-5 text-blue-600" /> Tracking & Analytics
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Google Analytics ID</label>
+              <input 
+                type="text" 
+                value={settings.analytics?.ga_id || ""}
+                onChange={(e) => setSettings({...settings, analytics: {...(settings.analytics || {}), ga_id: e.target.value}})}
+                placeholder="e.g. G-XXXXXXXXXX"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Google Tag Manager ID</label>
+              <input 
+                type="text" 
+                value={settings.analytics?.gtm_id || ""}
+                onChange={(e) => setSettings({...settings, analytics: {...(settings.analytics || {}), gtm_id: e.target.value}})}
+                placeholder="e.g. GTM-XXXXXXX"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
+              />
+            </div>
+          </div>
+          
+          <div>
+            <label className="block text-sm font-bold text-gray-700 mb-1">Google AdSense Publisher ID</label>
+            <input 
+              type="text" 
+              value={settings.analytics?.adsense_id || ""}
+              onChange={(e) => setSettings({...settings, analytics: {...(settings.analytics || {}), adsense_id: e.target.value}})}
+              placeholder="e.g. ca-pub-XXXXXXXXXXXXXXXX"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
+            />
+            <p className="text-xs text-gray-500 mt-1">This will automatically load the AdSense script globally.</p>
+          </div>
         </div>
 
         {/* Hero Settings */}
@@ -170,7 +217,6 @@ export default function HomepageManager() {
             />
           </div>
         </div>
-      </div>
 
       {/* Live Announcements Ticker */}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4">

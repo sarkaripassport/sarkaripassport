@@ -217,6 +217,11 @@ export interface HomepageSettings {
   };
   announcements: Announcement[];
   whatsapp_link?: string;
+  analytics?: {
+    ga_id?: string;
+    gtm_id?: string;
+    adsense_id?: string;
+  };
   pages?: {
     'admit-card': PageSettings;
     'results': PageSettings;
@@ -247,6 +252,11 @@ const defaultSettings: HomepageSettings = {
     { id: 'a2', text: { en: "UPSC Civil Services Prelims Admit Card Available", hi: "", mr: "" }, link: "/jobs/upsc-civil-services-2026", isActive: true, priority: "normal" }
   ],
   whatsapp_link: "https://whatsapp.com/channel/0029VaA2KzV7T8bd5WEGk90n",
+  analytics: {
+    ga_id: "",
+    gtm_id: "",
+    adsense_id: ""
+  },
   pages: {
     'admit-card': {
       seo: { title: { en: "Admit Cards - SarkariJob", hi: "", mr: "" }, description: { en: "Download latest admit cards", hi: "", mr: "" }, keywords: { en: "admit card", hi: "", mr: "" } },

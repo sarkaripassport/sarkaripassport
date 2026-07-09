@@ -50,6 +50,8 @@ export default async function RootLayout({
   params: Promise<{ lang: string }>;
 }>) {
   const resolvedParams = await params;
+  const settings = await getSettings();
+  
   // Organization Schema
   const orgSchema = {
     "@context": "https://schema.org",
@@ -82,22 +84,22 @@ export default async function RootLayout({
         <Footer />
         
         {/* Google Analytics */}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        {settings.analytics?.ga_id && (
+          <GoogleAnalytics gaId={settings.analytics.ga_id} />
         )}
         
         {/* Google Tag Manager */}
-        {process.env.NEXT_PUBLIC_GTM_ID && (
-          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        {settings.analytics?.gtm_id && (
+          <GoogleTagManager gtmId={settings.analytics.gtm_id} />
         )}
         
         {/* Google AdSense */}
-        {process.env.NEXT_PUBLIC_ADSENSE_ID && (
+        {settings.analytics?.adsense_id && (
           <Script
             id="adsbygoogle-init"
             strategy="afterInteractive"
             crossOrigin="anonymous"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_ID}`}
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.analytics.adsense_id}`}
           />
         )}
       </body>
