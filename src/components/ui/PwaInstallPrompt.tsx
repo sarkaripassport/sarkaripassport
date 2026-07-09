@@ -21,7 +21,7 @@ export default function PwaInstallPrompt() {
     setIsIOS(isIosDevice);
 
     // If iOS and not in standalone mode, we can show a custom prompt, but we shouldn't show it every time if they dismissed it
-    const hasDismissed = localStorage.getItem("pwa-prompt-dismissed");
+    const hasDismissed = localStorage.getItem("pwa-prompt-dismissed-v2");
     
     if (isIosDevice && !hasDismissed) {
       // Small delay so it doesn't pop up instantly on load
@@ -58,9 +58,9 @@ export default function PwaInstallPrompt() {
   const handleDismiss = () => {
     setShowPrompt(false);
     // Don't show again for 7 days
-    localStorage.setItem("pwa-prompt-dismissed", "true");
+    localStorage.setItem("pwa-prompt-dismissed-v2", "true");
     setTimeout(() => {
-      localStorage.removeItem("pwa-prompt-dismissed");
+      localStorage.removeItem("pwa-prompt-dismissed-v2");
     }, 7 * 24 * 60 * 60 * 1000);
   };
 
@@ -71,7 +71,7 @@ export default function PwaInstallPrompt() {
       <div className="bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-gray-100 p-4 flex items-center gap-4">
         
         <div className="w-12 h-12 shrink-0 bg-blue-50 rounded-xl flex items-center justify-center p-2 relative overflow-hidden">
-          <Image src="/icon-192x192.png" alt="GovJobWala App" fill className="object-contain p-1" />
+          <Image src="/logo.svg" alt="GovJobWala App" fill className="object-contain p-1" />
         </div>
         
         <div className="flex-1 min-w-0">
