@@ -257,9 +257,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
             {job.job_summary && (
               <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
                 <h2 className="text-base font-black text-[#0B1B3D] mb-3">Job Summary</h2>
-                <div className="text-sm leading-relaxed text-gray-600">
-                  <AutoLinkedText text={job.job_summary[lang]} lang={lang} />
-                </div>
+                <div className="text-sm leading-relaxed text-gray-600 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: job.job_summary[lang] || '' }} />
               </section>
             )}
 
@@ -407,7 +405,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black flex items-center justify-center shrink-0 border border-blue-200">{step.step_number}</div>
                       <div>
                         <h4 className="font-bold text-[#0B1B3D] mb-1">{step.title[lang]}</h4>
-                        <p className="text-sm text-gray-600 leading-relaxed">{step.description[lang]}</p>
+                        <div className="text-sm text-gray-600 leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: step.description[lang] || '' }} />
                       </div>
                     </div>
                   ))}
@@ -471,9 +469,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                         {faq.question[lang]}
                         <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
                       </summary>
-                      <div className="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 bg-white leading-relaxed">
-                        {faq.answer[lang]}
-                      </div>
+                      <div className="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 bg-white leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: faq.answer[lang] || '' }} />
                     </details>
                   ))}
                 </div>
