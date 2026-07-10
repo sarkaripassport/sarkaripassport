@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock, Copy } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock, Copy, MessageSquare } from "lucide-react";
 import type { Job, Category } from "@/lib/db";
 import { deleteJobAction } from "./actions";
 
@@ -106,6 +106,7 @@ export default function JobsManagerClient({
               <th className="p-4 font-bold">Job Title & Organization</th>
               <th className="p-4 font-bold">Categories</th>
               <th className="p-4 font-bold">Status</th>
+              <th className="p-4 font-bold">Comments</th>
               <th className="p-4 font-bold">Updated At</th>
               <th className="p-4 font-bold text-right">Actions</th>
             </tr>
@@ -148,6 +149,16 @@ export default function JobsManagerClient({
                     </span>
                   </td>
                   
+                  <td className="p-4">
+                    <Link 
+                      href={`/admin/jobs/${job.slug}/comments`}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors border border-indigo-100"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      {job.comments?.length || 0}
+                    </Link>
+                  </td>
+
                   <td className="p-4">
                     <div className="text-gray-900 font-medium text-xs">
                       {new Date(job.updated_at || job.created_at).toLocaleDateString('en-IN', {

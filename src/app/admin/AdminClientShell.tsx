@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { 
   LayoutDashboard, Briefcase, FileText, Settings, 
   LogOut, Bell, ChevronDown, Monitor, Search, Plus, User, Megaphone, 
-  ShieldCheck, BarChart, PenTool, LayoutTemplate, Link as LinkIcon
+  ShieldCheck, BarChart, PenTool, LayoutTemplate, Link as LinkIcon, Mail
 } from "lucide-react";
 
 export default function AdminClientShell({ children }: { children: React.ReactNode }) {
@@ -133,6 +133,14 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
                 </div>
               )}
             </div>
+
+            <div className="my-2 border-t border-white/10"></div>
+
+            {/* Messages */}
+            <Link href="/admin/messages" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+              <Mail className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
+              <span className="font-medium">Messages</span>
+            </Link>
 
             <div className="my-2 border-t border-white/10"></div>
 

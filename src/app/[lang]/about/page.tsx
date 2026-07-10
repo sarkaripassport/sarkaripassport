@@ -73,6 +73,25 @@ export default function AboutPage() {
           </div>
         </div>
 
+        {/* Contact Us Block */}
+        <div className="mb-16 text-center">
+          <h2 className="text-3xl font-black text-[#0B1B3D] mb-6">Contact Our Team</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
+            Have questions or want to partner with us? Reach out directly to our respective teams.
+          </p>
+          <div className="flex flex-col md:flex-row justify-center gap-6">
+            <a href="mailto:admin@govjobwala.com" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition">
+              admin@govjobwala.com
+            </a>
+            <a href="mailto:contact@govjobwala.com" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition">
+              contact@govjobwala.com
+            </a>
+            <a href="mailto:support@govjobwala.com" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition">
+              support@govjobwala.com
+            </a>
+          </div>
+        </div>
+
         {/* Bottom Call to Action */}
         <div className="bg-gradient-to-br from-[#0B1B3D] to-[#0A58CA] rounded-2xl p-8 md:p-12 text-center text-white relative overflow-hidden shadow-lg">
           <div className="relative z-10">

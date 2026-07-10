@@ -1,5 +1,6 @@
 import { Mail, MapPin, Send, MessageSquare, Phone } from "lucide-react";
 import type { Metadata } from "next";
+import ContactForm from "@/components/ui/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact Us | GovJobWala",
@@ -36,9 +37,17 @@ export default function ContactPage() {
               </div>
               <h3 className="text-xl font-bold text-[#0B1B3D] mb-2">Email Us</h3>
               <p className="text-gray-500 mb-4 text-sm">Our friendly team is here to help.</p>
-              <a href="mailto:support.naukaripassport@gmail.com" className="text-[#0A58CA] font-bold hover:underline">
-                support.naukaripassport@gmail.com
-              </a>
+              <div className="space-y-2">
+                <a href="mailto:admin@govjobwala.com" className="text-[#0A58CA] font-bold hover:underline block text-sm">
+                  admin@govjobwala.com
+                </a>
+                <a href="mailto:contact@govjobwala.com" className="text-[#0A58CA] font-bold hover:underline block text-sm">
+                  contact@govjobwala.com
+                </a>
+                <a href="mailto:support@govjobwala.com" className="text-[#0A58CA] font-bold hover:underline block text-sm">
+                  support@govjobwala.com
+                </a>
+              </div>
             </div>
 
             <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
@@ -71,43 +80,7 @@ export default function ContactPage() {
           <div className="lg:col-span-2">
             <div className="bg-white p-8 md:p-12 rounded-2xl border border-gray-100 shadow-lg">
               <h2 className="text-2xl font-bold text-[#0B1B3D] mb-6">Send us a Message</h2>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">First Name</label>
-                    <input type="text" placeholder="John" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0A58CA] focus:bg-white transition-all" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Last Name</label>
-                    <input type="text" placeholder="Doe" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0A58CA] focus:bg-white transition-all" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
-                  <input type="email" placeholder="john@example.com" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0A58CA] focus:bg-white transition-all" />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Subject</label>
-                  <select className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0A58CA] focus:bg-white transition-all text-gray-700 cursor-pointer">
-                    <option>General Inquiry</option>
-                    <option>Report a Bug or Issue</option>
-                    <option>Advertisement / Partnership</option>
-                    <option>Feedback & Suggestions</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Message</label>
-                  <textarea rows={5} placeholder="How can we help you?" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-[#0A58CA] focus:bg-white transition-all resize-none"></textarea>
-                </div>
-
-                <button type="button" className="w-full bg-[#0A58CA] text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-colors shadow-md flex items-center justify-center gap-2 group">
-                  <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  Send Message
-                </button>
-              </form>
+              <ContactForm />
             </div>
           </div>
 

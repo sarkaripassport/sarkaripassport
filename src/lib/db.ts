@@ -106,6 +106,17 @@ export interface MatrixPage {
   faqs?: { q: LocalizedString; a: LocalizedString }[];
 }
 
+export interface ContactMessage {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  subject: string;
+  message: string;
+  status: 'new' | 'read' | 'replied';
+  created_at: string;
+}
+
 export interface Job {
   id: string;
   slug: string;
@@ -443,4 +454,14 @@ const mockMatrixPages: Record<string, MatrixPage> = {
 export async function getMatrixPage(slug: string): Promise<MatrixPage | null> {
   // In production, this would query Supabase: await supabaseAdmin.from('matrix_pages').select('*').eq('slug', slug).single()
   return mockMatrixPages[slug] || null;
+}
+
+export async function getContactMessages(): Promise<ContactMessage[]> {
+  const { data, error } = await supabaseAdmin.from('settings').select('data').like('id', 'msg_%');
+  if (error || !data) return [];
+  return data.map(row => row.data as ContactMessage).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+}
+
+export async function saveContactMessage(msg: ContactMessage): Promise<void> {
+  await supabaseAdmin.from('settings').upsert({ id: msg.id, data: msg });
 }

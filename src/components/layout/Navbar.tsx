@@ -3,6 +3,7 @@ import { Search, ShieldCheck } from "lucide-react";
 import LanguageSwitcher from "../LanguageSwitcher";
 import MobileMenu from "./MobileMenu";
 import { getJobs } from "@/lib/db";
+import LiveTimestamp from "../ui/LiveTimestamp";
 
 export default async function Navbar({ lang = 'en' }: { lang?: string }) {
   const getLink = (path: string) => {
@@ -21,8 +22,8 @@ export default async function Navbar({ lang = 'en' }: { lang?: string }) {
       {/* Top Utility Bar */}
       <div className="bg-[#061129] py-1 border-b border-gray-800">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <div className="text-[10px] text-gray-300 font-medium">
-            Last Updated: <span className="text-green-400 font-bold">{lastUpdated}</span>
+          <div className="text-[10px] text-gray-300 font-medium flex items-center gap-1">
+            Last Updated: <span className="text-green-400 font-bold"><LiveTimestamp initialTimestamp={lastUpdated} /></span>
           </div>
           <Link href="/sitemap.xml" className="text-[10px] text-gray-300 hover:text-white transition-colors">
             Sitemap

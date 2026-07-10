@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ShieldCheck, Heart } from "lucide-react";
 import { getJobs } from "@/lib/db";
+import LiveTimestamp from "../ui/LiveTimestamp";
 
 export default async function Footer({ lang = 'en' }: { lang?: string }) {
   const getLink = (path: string) => {
@@ -85,12 +86,19 @@ export default async function Footer({ lang = 'en' }: { lang?: string }) {
 
           <div>
             <h2 className="text-white font-bold mb-4">Company & Legal</h2>
-            <ul className="space-y-2 text-sm text-gray-300">
+            <ul className="space-y-2 text-sm text-gray-300 mb-6">
               <li><Link href={getLink("/about")} className="hover:text-white transition">About Us</Link></li>
               <li><Link href={getLink("/contact")} className="hover:text-white transition">Contact Us</Link></li>
               <li><Link href={getLink("/privacy")} className="hover:text-white transition">Privacy Policy</Link></li>
               <li><Link href={getLink("/terms")} className="hover:text-white transition">Terms of Service</Link></li>
               <li><Link href={getLink("/disclaimer")} className="hover:text-white transition">Disclaimer</Link></li>
+            </ul>
+
+            <h2 className="text-white font-bold mb-4">Contact Us</h2>
+            <ul className="space-y-2 text-sm text-gray-300">
+              <li><a href="mailto:admin@govjobwala.com" className="hover:text-white transition flex items-center gap-2">admin@govjobwala.com</a></li>
+              <li><a href="mailto:contact@govjobwala.com" className="hover:text-white transition flex items-center gap-2">contact@govjobwala.com</a></li>
+              <li><a href="mailto:support@govjobwala.com" className="hover:text-white transition flex items-center gap-2">support@govjobwala.com</a></li>
             </ul>
           </div>
 
@@ -101,7 +109,7 @@ export default async function Footer({ lang = 'en' }: { lang?: string }) {
           <div className="flex flex-col md:flex-row items-center gap-4">
             <p>© 2026 GovJobWala. All Rights Reserved.</p>
             <span suppressHydrationWarning className="px-2 py-1 bg-gray-800/50 rounded-md text-gray-300 font-medium tracking-wide">
-              Last Updated: {lastUpdated}
+              Last Updated: <span className="font-bold text-white"><LiveTimestamp initialTimestamp={lastUpdated} /></span>
             </span>
           </div>
           <div className="flex items-center gap-1">
