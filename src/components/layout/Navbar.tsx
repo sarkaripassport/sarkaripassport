@@ -2,17 +2,28 @@ import Link from "next/link";
 import { Search, ShieldCheck } from "lucide-react";
 import LanguageSwitcher from "../LanguageSwitcher";
 import MobileMenu from "./MobileMenu";
-export default function Navbar({ lang = 'en' }: { lang?: string }) {
+import { getJobs } from "@/lib/db";
+
+export default async function Navbar({ lang = 'en' }: { lang?: string }) {
   const getLink = (path: string) => {
     if (path.startsWith('http') || path.startsWith(`/${lang}`)) return path;
     return `/${lang}${path.startsWith('/') ? '' : '/'}${path}`;
   };
 
+  const jobs = await getJobs();
+  const latestJob = jobs.sort((a, b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime())[0];
+  const lastUpdated = latestJob 
+    ? new Date(latestJob.updated_at || latestJob.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })
+    : new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric' });
+
   return (
     <nav className="bg-[#0B1B3D] text-white border-b border-gray-800 sticky top-0 z-50">
       {/* Top Utility Bar */}
       <div className="bg-[#061129] py-1 border-b border-gray-800">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex justify-end">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+          <div className="text-[10px] text-gray-300 font-medium">
+            Last Updated: <span className="text-green-400 font-bold">{lastUpdated}</span>
+          </div>
           <Link href="/sitemap.xml" className="text-[10px] text-gray-300 hover:text-white transition-colors">
             Sitemap
           </Link>
