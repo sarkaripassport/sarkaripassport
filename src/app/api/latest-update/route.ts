@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
-export const revalidate = 0; // Disable static caching for this route
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
