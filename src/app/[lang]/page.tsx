@@ -3,6 +3,7 @@ import Script from "next/script";
 import { getJobs, getSettings, getCategories } from "@/lib/db";
 import JobCard from "@/components/JobCard";
 import AdvancedSearch from "@/components/AdvancedSearch";
+import CategoryGrid from "@/components/ui/CategoryGrid";
 
 
 
@@ -46,6 +47,13 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
 
   const quickLinks = categories.filter(c => c.isQuickLink);
   const trendingCategories = categories.filter(c => c.isTrending);
+  const regularCategories = categories.filter(c => !c.isTrending && !c.isQuickLink);
+  const specialSlugs = ['results', 'admit-card', 'answer-key', 'syllabus', 'admission'];
+
+  const getCategoryUrl = (slug: string) => {
+    if (specialSlugs.includes(slug)) return `/${lang}/${slug}`;
+    return `/${lang}/category/${slug}`;
+  };
 
   // Helper to get top 15 jobs for a category with dual sorting
   const getJobsForCategory = (catName: string) => {
@@ -131,7 +139,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               const Icon = ICON_MAP[cat.icon] || Briefcase;
               const count = jobs.filter(j => j.category === cat.name.en || j.categories?.includes(cat.name.en)).length;
               return (
-                <Link href={`/${lang}/category/${cat.slug}`} key={cat.id} className="bg-white rounded border border-gray-200 p-1.5 sm:p-2 text-center hover:border-[#0A58CA] hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col items-center justify-center">
+                <Link href={getCategoryUrl(cat.slug)} key={cat.id} className="bg-white rounded border border-gray-200 p-1.5 sm:p-2 text-center hover:border-[#0A58CA] hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col items-center justify-center">
                   <Icon className="w-4 h-4 sm:w-5 sm:h-5 mb-1 text-[#0A58CA]" />
                   <div className="font-bold text-gray-900 text-[9px] sm:text-[11px] mb-0.5 leading-none break-words">{cat.name[lang]}</div>
                   <div className="font-extrabold text-[10px] sm:text-xs text-gray-500 leading-none mt-0.5">{count}</div>
@@ -199,7 +207,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                 <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
                   <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2 px-4 flex justify-between items-center shrink-0">
                     <h3 className="font-bold text-white text-[11px] tracking-wider uppercase">{catName}</h3>
-                    <Link href={`/${lang}/category/${catSlug}`} className="text-[9px] font-bold text-blue-100 hover:text-white hover:underline uppercase tracking-wider bg-white/10 px-1.5 py-0.5 rounded">All</Link>
+                    <Link href={getCategoryUrl(catSlug)} className="text-[9px] font-bold text-blue-100 hover:text-white hover:underline uppercase tracking-wider bg-white/10 px-1.5 py-0.5 rounded">All</Link>
                   </div>
                   <div className="p-4 flex-grow">
                     {col.items.length === 0 ? (
@@ -231,7 +239,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               {trendingCategories.map((item) => {
                 const Icon = ICON_MAP[item.icon] || Briefcase;
                 return (
-                  <Link key={item.id} href={`/${lang}/category/${item.slug}`} className="flex flex-col items-center gap-2 cursor-pointer group w-[70px]">
+                  <Link key={item.id} href={getCategoryUrl(item.slug)} className="flex flex-col items-center gap-2 cursor-pointer group w-[70px]">
                     <div className="w-14 h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:border-[#0A58CA] group-hover:bg-blue-50 transition shadow-sm">
                       <Icon className="w-6 h-6 text-gray-500 group-hover:text-[#0A58CA] transition-colors" />
                     </div>
@@ -242,7 +250,13 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
             </div>
           </div>
 
-
+          {/* All Categories Grid */}
+          <CategoryGrid 
+            categories={categories} 
+            lang={lang} 
+            title={dict.home.allCategories || "All Categories"} 
+            specialSlugs={specialSlugs} 
+          />
 
         </main>
       </div>
