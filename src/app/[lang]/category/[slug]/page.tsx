@@ -14,28 +14,8 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const resolvedParams = await params;
   const { lang, slug } = resolvedParams;
-  const [category, settings] = await Promise.all([
-    getCategoryBySlug(slug),
-    getSettings()
-  ]);
+  const category = await getCategoryBySlug(slug);
   
-  const pageData = settings.pages?.[slug];
-  if (pageData) {
-    return {
-      title: pageData.seo.title[lang],
-      description: pageData.seo.description[lang],
-      keywords: pageData.seo.keywords[lang],
-      alternates: {
-        canonical: `/${lang}/category/${slug}`,
-        languages: {
-          'en': `/en/category/${slug}`,
-          'hi': `/hi/category/${slug}`,
-          'mr': `/mr/category/${slug}`
-        }
-      }
-    };
-  }
-
   if (!category) {
     return {
       title: 'Category Not Found',
@@ -63,17 +43,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
   const { lang, slug } = resolvedParams;
   const dict = await getDictionary(lang);
   
-  const [category, jobs, settings] = await Promise.all([
-    getCategoryBySlug(slug),
-    getJobsByCategorySlug(slug),
-    getSettings()
-  ]);
-  
-  const pageData = settings.pages?.[slug];
-  
+  const category = await getCategoryBySlug(slug);
   // If the category is not predefined, we can still attempt to show jobs by tag,
   // but let's provide a fallback name
   const categoryName = category ? category.name[lang] : slug.replace(/-/g, ' ').toUpperCase();
+  
+  const jobs = await getJobsByCategorySlug(slug);
 
   // Generate JSON-LD for CollectionPage
   const jsonLd = {
@@ -100,30 +75,20 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
       </div>
 
       {/* Category Hero */}
-      {pageData ? (
-        <div className="bg-[#0B1B3D] text-white py-6 md:py-10 px-4 shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-green-500 rounded-full blur-[100px] opacity-20 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-          <div className="max-w-[1200px] mx-auto relative z-10">
-            <h1 className="text-3xl md:text-5xl font-black mb-2">{pageData.hero.title[lang]}</h1>
-            <p className="text-green-200 md:text-lg max-w-2xl">{pageData.hero.subtitle[lang]}</p>
-          </div>
-        </div>
-      ) : (
-        <div className="bg-white border-b border-gray-200 py-8 md:py-12 px-4 shadow-sm relative overflow-hidden">
-          <div className="max-w-[1200px] mx-auto relative z-10">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center">
-                <FolderOpen className="w-6 h-6" />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-black text-[#0B1B3D] capitalize">{categoryName}</h1>
-                <p className="text-gray-600 mt-1">Showing all matching records and updates</p>
-              </div>
+      <div className="bg-white border-b border-gray-200 py-8 md:py-12 px-4 shadow-sm relative overflow-hidden">
+        <div className="max-w-[1200px] mx-auto relative z-10">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-12 bg-blue-100 text-blue-700 rounded-xl flex items-center justify-center">
+              <FolderOpen className="w-6 h-6" />
+            </div>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-black text-[#0B1B3D] capitalize">{categoryName}</h1>
+              <p className="text-gray-600 mt-1">Showing all matching records and updates</p>
             </div>
           </div>
-          <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
         </div>
-      )}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+      </div>
 
       {/* Jobs Grid */}
       <div className="max-w-[1200px] mx-auto px-4 mt-8">

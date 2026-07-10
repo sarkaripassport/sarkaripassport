@@ -50,8 +50,8 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       title: 'GovJobWala',
     },
     icons: {
-      icon: '/logo.svg',
-      apple: '/logo.svg',
+      icon: '/icon-192x192.png',
+      apple: '/icon-192x192.png',
     }
   };
 }
