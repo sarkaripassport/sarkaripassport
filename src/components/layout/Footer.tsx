@@ -1,17 +1,18 @@
-"use client";
-
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import { ShieldCheck, Heart } from "lucide-react";
+import { getJobs } from "@/lib/db";
 
-export default function Footer() {
-  const params = useParams();
-  const lang = (params?.lang as 'en' | 'hi' | 'mr') || 'en';
-
+export default async function Footer({ lang = 'en' }: { lang?: string }) {
   const getLink = (path: string) => {
     if (path.startsWith('http') || path.startsWith(`/${lang}`)) return path;
     return `/${lang}${path.startsWith('/') ? '' : '/'}${path}`;
   };
+
+  const jobs = await getJobs();
+  const latestJob = jobs.sort((a, b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime())[0];
+  const lastUpdated = latestJob 
+    ? new Date(latestJob.updated_at || latestJob.created_at).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })
+    : new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: '2-digit', month: 'short', year: 'numeric' });
 
   return (
     <footer className="bg-[#0B1B3D] text-gray-300 pt-16 pb-8 border-t-4 border-[#0A58CA]">
@@ -100,7 +101,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center gap-4">
             <p>© 2026 GovJobWala. All Rights Reserved.</p>
             <span suppressHydrationWarning className="px-2 py-1 bg-gray-800/50 rounded-md text-gray-300 font-medium tracking-wide">
-              Last Updated: {new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              Last Updated: {lastUpdated}
             </span>
           </div>
           <div className="flex items-center gap-1">

@@ -97,7 +97,7 @@ export default async function RootLayout({
         <WhatsAppFloat />
         <PwaInstallPrompt />
         <PwaRegistry />
-        <Footer />
+        <Footer lang={resolvedParams.lang || 'en'} />
         
         {/* Google Analytics */}
         {settings.analytics?.ga_id && (
