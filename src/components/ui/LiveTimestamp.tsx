@@ -6,35 +6,30 @@ export default function LiveTimestamp({ initialTimestamp }: { initialTimestamp: 
   const [timestamp, setTimestamp] = useState(initialTimestamp);
 
   useEffect(() => {
-    // For SEO and fresh appearance, always show the current time or a very recent time
-    // on the client-side so it appears dynamically updated to the minute.
-    const now = new Date();
-    const formatted = now.toLocaleString('en-IN', { 
-      timeZone: 'Asia/Kolkata', 
-      day: '2-digit', 
-      month: 'short', 
-      year: 'numeric', 
-      hour: '2-digit', 
-      minute: '2-digit', 
-      hour12: true 
-    });
-    setTimestamp(formatted);
+    const fetchLatestTime = async () => {
+      try {
+        const res = await fetch('/api/latest-update', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.timestamp) {
+            const formatted = new Date(data.timestamp).toLocaleString('en-IN', { 
+              timeZone: 'Asia/Kolkata', 
+              day: '2-digit', 
+              month: 'short', 
+              year: 'numeric', 
+              hour: '2-digit', 
+              minute: '2-digit', 
+              hour12: true 
+            });
+            setTimestamp(formatted);
+          }
+        }
+      } catch (e) {
+        console.error("Failed to fetch latest update time", e);
+      }
+    };
 
-    // Optional: update every minute so it stays live while user is on the page
-    const interval = setInterval(() => {
-      const live = new Date();
-      setTimestamp(live.toLocaleString('en-IN', { 
-        timeZone: 'Asia/Kolkata', 
-        day: '2-digit', 
-        month: 'short', 
-        year: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        hour12: true 
-      }));
-    }, 60000);
-
-    return () => clearInterval(interval);
+    fetchLatestTime();
   }, []);
 
   return <span suppressHydrationWarning>{timestamp}</span>;
