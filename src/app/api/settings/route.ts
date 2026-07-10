@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSettings, saveSettings } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export async function GET() {
   try {
@@ -14,6 +15,7 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
     await saveSettings(data);
+    revalidatePath('/', 'layout'); // Invalidate all cached pages
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to save settings' }, { status: 500 });
