@@ -1,5 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
+import { getDictionary, Locale } from '@/i18n/getDictionary';
 
 
 import { notFound } from 'next/navigation';
@@ -60,11 +61,10 @@ export async function generateMetadata(
         'en': `/en/jobs/${slug}`,
         'hi': `/hi/jobs/${slug}`,
         'mr': `/mr/jobs/${slug}`
+      }
     }
   };
 }
-
-import { getDictionary, Locale } from '@/i18n/getDictionary';
 
 export default async function JobDetailPage({ params }: { params: Promise<{ lang: Locale, slug: string }> }) {
   const resolvedParams = await params;
