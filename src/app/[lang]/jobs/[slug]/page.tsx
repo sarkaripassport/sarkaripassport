@@ -76,6 +76,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     getJobs()
   ]);
 
+  const getCount = (catName: string) => allJobs.filter(j => j.category === catName || j.categories?.includes(catName)).length;
+  const sortedCategories = [...categories].sort((a, b) => getCount(b.name.en) - getCount(a.name.en));
+
   if (!job) {
     notFound();
   }
@@ -581,11 +584,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
                <h3 className="text-sm font-black text-[#0B1B3D] uppercase tracking-wider mb-4">Categories</h3>
                <div className="flex flex-wrap gap-2">
-                 {categories.map((c, i) => (
-                   <a key={i} href={`/${lang}/jobs?cat=${c.slug}`} className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-colors">
-                     {c.name[lang]}
+                 {sortedCategories.map((c, i) => {
+                   const count = getCount(c.name.en);
+                   return (
+                   <a key={i} href={`/${lang}/jobs?cat=${c.slug}`} className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 transition-colors flex items-center gap-1.5">
+                     {c.name[lang]} <span className="bg-gray-200 text-gray-500 px-1.5 py-0.5 rounded-full text-[10px]">{count}</span>
                    </a>
-                 ))}
+                 )})}
                </div>
              </div>
              
