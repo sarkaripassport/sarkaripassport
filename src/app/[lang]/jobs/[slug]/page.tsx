@@ -279,21 +279,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                 title={job.title[lang]} 
                 text={`Apply for ${job.title[lang]} at ${job.organization[lang]}`} 
                 url={`https://govjobwala.com/${lang}/jobs/${slug}`}
-                className="hidden md:inline-flex px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:text-[#0A58CA] hover:border-blue-200 hover:bg-blue-50"
+                className="inline-flex px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:text-[#0A58CA] hover:border-blue-200 hover:bg-blue-50"
               />
             </div>
             
             <div>
               <h1 className="text-xl md:text-2xl font-black text-[#0B1B3D] leading-tight tracking-tight mb-1">{job.title[lang]}</h1>
               <p className="text-xs font-bold text-gray-500 truncate">{job.organization[lang]}</p>
-            </div>
-            <div className="md:hidden mt-2">
-              <ShareButton 
-                title={job.title[lang]} 
-                text={`Apply for ${job.title[lang]} at ${job.organization[lang]}`} 
-                url={`https://govjobwala.com/${lang}/jobs/${slug}`}
-                className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:text-[#0A58CA] hover:bg-white w-fit"
-              />
             </div>
           </div>
         </section>

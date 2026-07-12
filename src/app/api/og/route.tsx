@@ -56,6 +56,11 @@ export async function GET(req: NextRequest) {
     const vacancies = searchParams.get('vacancies');
     const lastDate = searchParams.get('lastDate');
     const logoUrl = searchParams.get('logoUrl');
+    
+    let absoluteLogoUrl = logoUrl;
+    if (absoluteLogoUrl && absoluteLogoUrl.startsWith('/')) {
+      absoluteLogoUrl = new URL(absoluteLogoUrl, 'https://govjobwala.com').toString();
+    }
 
     return new ImageResponse(
       (
@@ -74,9 +79,9 @@ export async function GET(req: NextRequest) {
           {/* Top header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              {logoUrl ? (
+              {absoluteLogoUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={logoUrl} alt="logo" width="80" height="80" style={{ borderRadius: '12px' }} />
+                <img src={absoluteLogoUrl} alt="logo" width="80" height="80" style={{ borderRadius: '12px', objectFit: 'contain' }} />
               ) : (
                 <div style={{ width: 80, height: 80, backgroundColor: '#EFF6FF', color: '#1D4ED8', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40, fontWeight: 'bold' }}>
                   {org.charAt(0)}
