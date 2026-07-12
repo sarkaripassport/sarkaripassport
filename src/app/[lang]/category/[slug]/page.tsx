@@ -24,9 +24,17 @@ export async function generateMetadata(
 
   const categoryName = category.name[lang as 'en'|'hi'|'mr'] || category.name.en;
 
+  const title = `${categoryName} - Latest Govt Jobs, Results & Updates 2026`;
+  const description = `Find all the latest and upcoming ${categoryName} jobs, admit cards, and results. Check eligibility and apply online.`;
+  const url = `https://govjobwala.com/${lang}/category/${slug}`;
+
+  const ogUrl = new URL('https://govjobwala.com/api/og');
+  ogUrl.searchParams.set('title', `${categoryName} Jobs & Updates`);
+  ogUrl.searchParams.set('type', 'category');
+
   return {
-    title: `${categoryName} - Latest Govt Jobs, Results & Updates 2026`,
-    description: `Find all the latest and upcoming ${categoryName} jobs, admit cards, and results. Check eligibility and apply online.`,
+    title,
+    description,
     alternates: {
       canonical: `/${lang}/category/${slug}`,
       languages: {
@@ -34,6 +42,26 @@ export async function generateMetadata(
         'hi': `/hi/category/${slug}`,
         'mr': `/mr/category/${slug}`
       }
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'website',
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogUrl.toString()],
     }
   }
 }
@@ -56,12 +84,39 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
     '@type': 'CollectionPage',
     'name': `${categoryName} Jobs`,
     'description': `Latest jobs under ${categoryName}`,
-    'url': `https://sarkarijob.com/${lang}/category/${slug}`
+    'url': `https://govjobwala.com/${lang}/category/${slug}`
+  };
+
+  // Generate JSON-LD for BreadcrumbList
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': 'https://govjobwala.com'
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Categories',
+        'item': 'https://govjobwala.com/jobs'
+      },
+      {
+        '@type': 'ListItem',
+        'position': 3,
+        'name': categoryName,
+        'item': `https://govjobwala.com/${lang}/category/${slug}`
+      }
+    ]
   };
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen pb-12 font-sans text-gray-800">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       
       {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200">

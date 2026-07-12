@@ -8,6 +8,7 @@ import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarS
 import JobComments from '@/components/jobs/JobComments';
 import { AutoLinkedText } from '@/lib/autoLinker';
 import SalaryCalculator from '@/components/jobs/SalaryCalculator';
+import ShareButton from '@/components/ShareButton';
 
 
 export const revalidate = 3600; // 1 hour ISR
@@ -27,10 +28,20 @@ export async function generateMetadata(
   }
 
   const typedLang = lang as 'en' | 'hi' | 'mr';
+  const title = job.seo_title?.[typedLang] || `${job.title[typedLang]} Recruitment`;
+  const description = job.seo_description?.[typedLang] || job.job_summary?.[typedLang] || '';
+  const url = `https://govjobwala.com/${lang}/jobs/${slug}`;
+
+  const ogUrl = new URL('https://govjobwala.com/api/og');
+  ogUrl.searchParams.set('title', job.title[typedLang] || '');
+  ogUrl.searchParams.set('org', job.organization[typedLang] || '');
+  if (job.quick_facts?.vacancies) ogUrl.searchParams.set('vacancies', job.quick_facts.vacancies);
+  if (job.quick_facts?.last_date?.[typedLang]) ogUrl.searchParams.set('lastDate', job.quick_facts.last_date[typedLang] || '');
+  if (job.logo_url) ogUrl.searchParams.set('logoUrl', job.logo_url);
 
   return {
-    title: job.seo_title?.[typedLang] || `${job.title[typedLang]} Recruitment`,
-    description: job.seo_description?.[typedLang] || job.job_summary?.[typedLang] || '',
+    title,
+    description,
     alternates: {
       canonical: `/${lang}/jobs/${slug}`,
       languages: {
@@ -38,6 +49,28 @@ export async function generateMetadata(
         'hi': `/hi/jobs/${slug}`,
         'mr': `/mr/jobs/${slug}`
       }
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'article',
+      publishedTime: job.created_at,
+      modifiedTime: job.updated_at || job.created_at,
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogUrl.toString()],
     }
   }
 }
@@ -99,6 +132,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     return isNaN(date.getTime()) ? undefined : date.toISOString();
   };
 
+  const validThrough = parseSafeDate(job.quick_facts?.last_date?.[lang]);
+  let dynamicDaysLeft = job.daysLeft; // fallback
+  if (validThrough) {
+    const diffTime = new Date(validThrough).getTime() - new Date().getTime();
+    dynamicDaysLeft = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+  }
+
   // Generate JSON-LD for JobPosting
   const jobPostingLd = {
     '@context': 'https://schema.org/',
@@ -106,7 +146,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     'title': job.title[lang],
     'description': job.job_summary?.[lang] || `Recruitment for ${job.title[lang]} by ${job.organization[lang]}`,
     'datePosted': parseSafeDate(job.created_at) || new Date().toISOString(),
-    'validThrough': parseSafeDate(job.quick_facts?.last_date?.[lang]),
+    'validThrough': validThrough,
     'employmentType': 'FULL_TIME',
     'hiringOrganization': {
       '@type': 'Organization',
@@ -130,6 +170,32 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
         'unitText': 'MONTH'
       }
     }
+  };
+
+  // Generate JSON-LD for BreadcrumbList
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': 'https://govjobwala.com'
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': 'Latest Jobs',
+        'item': 'https://govjobwala.com/jobs'
+      },
+      {
+        '@type': 'ListItem',
+        'position': 3,
+        'name': job.title[lang],
+        'item': `https://govjobwala.com/${lang}/jobs/${slug}`
+      }
+    ]
   };
 
   // Generate JSON-LD for FAQs
@@ -162,6 +228,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen pb-24 md:pb-6 font-sans text-gray-800">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       {(job.schema_settings?.enable_job_schema ?? true) && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingLd) }} />}
       {(job.schema_settings?.enable_faq_schema ?? true) && faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
       {(job.schema_settings?.enable_syllabus_schema ?? true) && syllabusLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(syllabusLd) }} />}
@@ -188,25 +255,45 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent pointer-events-none"></div>
           
           {job.logo_url ? (
-            <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 bg-white rounded-xl shadow-sm border border-gray-100 flex items-center justify-center p-2 relative z-10 mt-1">
+            <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden relative z-10 mt-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={job.logo_url} alt={job.organization[lang]} className="max-w-full max-h-full object-contain" />
+              <img src={job.logo_url} alt={job.organization[lang]} className="w-full h-full object-contain p-1" />
             </div>
           ) : (
-            <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-center p-2 relative z-10 mt-1">
+            <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center relative z-10 mt-1">
               <span className="text-gray-400 font-bold text-2xl md:text-3xl">{job.organization[lang].charAt(0)}</span>
             </div>
           )}
           
           <div className="relative z-10 flex-1 space-y-2 w-full min-w-0">
-            <div className="flex flex-wrap justify-start gap-2">
-              <span className={`inline-flex items-center px-2.5 py-1 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded ${job.statusColor}`}>{job.status}</span>
-              <span className="inline-flex items-center px-2.5 py-1 bg-red-50 text-red-700 border border-red-100 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded"><Clock className="w-3 h-3 mr-1" /> {job.daysLeft} {dict.home.daysLeft}</span>
+            <div className="flex flex-wrap justify-between items-start gap-2">
+              <div className="flex flex-wrap gap-2">
+                <span className={`inline-flex items-center px-2.5 py-1 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded ${job.statusColor}`}>{job.status}</span>
+                {dynamicDaysLeft !== undefined && (
+                  <span className="inline-flex items-center px-2.5 py-1 bg-red-50 text-red-700 border border-red-100 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded">
+                    <Clock className="w-3 h-3 mr-1" /> {dynamicDaysLeft} {dict.home.daysLeft}
+                  </span>
+                )}
+              </div>
+              <ShareButton 
+                title={job.title[lang]} 
+                text={`Apply for ${job.title[lang]} at ${job.organization[lang]}`} 
+                url={`https://govjobwala.com/${lang}/jobs/${slug}`}
+                className="hidden md:inline-flex px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:text-[#0A58CA] hover:border-blue-200 hover:bg-blue-50"
+              />
             </div>
             
             <div>
               <h1 className="text-xl md:text-2xl font-black text-[#0B1B3D] leading-tight tracking-tight mb-1">{job.title[lang]}</h1>
               <p className="text-xs font-bold text-gray-500 truncate">{job.organization[lang]}</p>
+            </div>
+            <div className="md:hidden mt-2">
+              <ShareButton 
+                title={job.title[lang]} 
+                text={`Apply for ${job.title[lang]} at ${job.organization[lang]}`} 
+                url={`https://govjobwala.com/${lang}/jobs/${slug}`}
+                className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:text-[#0A58CA] hover:bg-white w-fit"
+              />
             </div>
           </div>
         </section>

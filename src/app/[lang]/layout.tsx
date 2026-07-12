@@ -4,17 +4,18 @@ import "../globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import BreakingNews from "@/components/layout/BreakingNews";
-import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
-import PwaInstallPrompt from "@/components/ui/PwaInstallPrompt";
-import PwaRegistry from "@/components/PwaRegistry";
-
 import { getSettings } from "@/lib/db";
 import Script from "next/script";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
+import PwaInstallPrompt from "@/components/ui/PwaInstallPrompt";
+
+import PwaRegistry from "@/components/PwaRegistry";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -22,13 +23,16 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const resolvedParams = await params;
   const lang = resolvedParams.lang || 'en';
   
+  const title = (settings.seo.title as any)[lang] || settings.seo.title.en;
+  const description = (settings.seo.description as any)[lang] || settings.seo.description.en;
+
   return {
     metadataBase: new URL('https://govjobwala.com'),
     title: {
-      default: (settings.seo.title as any)[lang] || settings.seo.title.en,
+      default: title,
       template: '%s | GovJobWala'
     },
-    description: (settings.seo.description as any)[lang] || settings.seo.description.en,
+    description: description,
     keywords: (settings.seo.keywords as any)[lang] || settings.seo.keywords.en,
     verification: {
       google: settings.seo.gscVerification || undefined,
@@ -40,6 +44,28 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         'hi': '/hi',
         'mr': '/mr'
       }
+    },
+    openGraph: {
+      title: title,
+      description: description,
+      url: 'https://govjobwala.com',
+      siteName: 'GovJobWala',
+      images: [
+        {
+          url: '/api/og?type=general',
+          width: 1200,
+          height: 630,
+          alt: 'GovJobWala - India\'s Trusted Government Job Portal',
+        },
+      ],
+      locale: lang === 'en' ? 'en_IN' : (lang === 'hi' ? 'hi_IN' : 'mr_IN'),
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: ['/api/og?type=general'],
     },
     formatDetection: {
       telephone: false,
@@ -85,6 +111,10 @@ export default async function RootLayout({
       lang={resolvedParams.lang || "en"}
       className={`${inter.variable} h-full antialiased bg-brand-light text-brand-navy`}
     >
+      <head>
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+      </head>
       <body className="min-h-full flex flex-col font-sans">
         <Script
           id="schema-org"

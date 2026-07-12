@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Briefcase, Clock, Flame, ChevronRight, FileText, MapPin, GraduationCap, Building2 } from "lucide-react";
 import { Locale } from "@/i18n/getDictionary";
+import ShareButton from "./ShareButton";
 
 interface JobCardProps {
   title: string;
@@ -86,11 +87,11 @@ export default function JobCard({
         {/* Title and Logo */}
         <div className="flex gap-3 items-start mb-3">
           {logoUrl ? (
-            <div className="w-16 h-16 shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex items-center justify-center p-1.5 group-hover:scale-105 transition-transform duration-300 relative">
-              <Image src={logoUrl} alt={`${org} logo`} fill className="object-contain p-1" sizes="(max-width: 64px) 100vw, 64px" />
+            <div className="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300 relative">
+              <Image src={logoUrl} alt={`${org} logo`} fill className="object-contain p-0.5" sizes="(max-width: 768px) 64px, 80px" />
             </div>
           ) : (
-            <div className="w-16 h-16 shrink-0 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl shadow-sm flex items-center justify-center text-blue-600 font-bold text-2xl group-hover:scale-105 transition-transform duration-300">
+            <div className="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl shadow-sm flex items-center justify-center text-blue-600 font-bold text-2xl group-hover:scale-105 transition-transform duration-300">
               {org.charAt(0)}
             </div>
           )}
@@ -137,12 +138,23 @@ export default function JobCard({
           <p className="text-[9px] text-gray-500 font-bold uppercase tracking-wider mb-0.5">{labels.lastDate}</p>
           <p className="text-xs font-black text-red-600 group-hover:text-red-700 transition-colors">{date}</p>
         </div>
-        <Link 
-          href={link}
-          className="relative z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-[11px] font-bold text-gray-500 group-hover:bg-[#0A58CA] group-hover:border-[#0A58CA] group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#0A58CA] focus:ring-offset-2"
-        >
-          {labels.details} <ChevronRight className="w-3.5 h-3.5" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <div className="relative z-20">
+            <ShareButton 
+              title={title} 
+              text={`Check out this job at ${org}`} 
+              url={`https://govjobwala.com${link}`} 
+              label="" 
+              className="p-1.5 rounded-lg text-gray-400 hover:text-[#0A58CA] hover:bg-white border border-transparent hover:border-gray-200"
+            />
+          </div>
+          <Link 
+            href={link}
+            className="relative z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-[11px] font-bold text-gray-500 group-hover:bg-[#0A58CA] group-hover:border-[#0A58CA] group-hover:text-white transition-all duration-300 shadow-sm group-hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#0A58CA] focus:ring-offset-2"
+          >
+            {labels.details} <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
       </div>
       
     </div>
