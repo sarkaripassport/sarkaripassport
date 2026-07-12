@@ -486,7 +486,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                     <div key={step.step_number} className="flex gap-4">
                       <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black flex items-center justify-center shrink-0 border border-blue-200">{step.step_number}</div>
                       <div>
-                        <h4 className="font-bold text-[#0B1B3D] mb-1">{step.title[lang]}</h4>
+                        <h4 className="font-bold text-[#0B1B3D] mb-1 [&>p]:inline" dangerouslySetInnerHTML={{ __html: step.title[lang] || '' }} />
                         <div className="text-sm text-gray-600 leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: step.description[lang] || '' }} />
                       </div>
                     </div>
@@ -503,7 +503,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                   {job.how_to_apply.map((step) => (
                     <div key={step.step_number} className="flex gap-3 text-sm bg-gray-50 p-3 rounded-lg border border-gray-100">
                       <span className="font-black text-blue-400 shrink-0">Step {step.step_number}:</span>
-                      <span className="text-gray-700">{step.instruction[lang]}</span>
+                      <div className="text-gray-700 [&>p]:inline" dangerouslySetInnerHTML={{ __html: step.instruction[lang] || '' }} />
                     </div>
                   ))}
                 </div>
@@ -520,7 +520,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       <summary className="flex items-center justify-between p-4 cursor-pointer font-bold text-gray-800">
                         <span className="flex items-center gap-2">
                           <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 text-xs flex items-center justify-center shrink-0">{idx + 1}</span>
-                          {section.subject[lang]}
+                          <span className="[&>p]:inline" dangerouslySetInnerHTML={{ __html: section.subject[lang] || '' }} />
                         </span>
                         <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
                       </summary>
@@ -529,7 +529,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                           {section.topics.map((topic, tidx) => (
                             <li key={tidx} className="flex items-start gap-2 text-sm text-gray-700">
                               <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                              <span className="leading-tight">{topic.title[lang]}</span>
+                              <span className="leading-tight [&>p]:inline" dangerouslySetInnerHTML={{ __html: topic.title[lang] || '' }} />
                             </li>
                           ))}
                         </ul>
@@ -548,7 +548,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                   {job.faqs.map((faq, idx) => (
                     <details key={idx} className="group bg-gray-50 border border-gray-200 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
                       <summary className="flex items-center justify-between p-4 cursor-pointer font-bold text-gray-800">
-                        {faq.question[lang]}
+                        <span className="[&>p]:inline" dangerouslySetInnerHTML={{ __html: faq.question[lang] || '' }} />
                         <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
                       </summary>
                       <div className="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 bg-white leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: faq.answer[lang] || '' }} />

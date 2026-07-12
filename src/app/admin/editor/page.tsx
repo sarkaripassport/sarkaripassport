@@ -310,6 +310,10 @@ function EditorContent() {
                       <label className="block text-sm font-bold mb-1">Organization</label>
                       <input type="text" className="w-full border rounded p-2" value={jobData.organization?.[editLang] || ''} onChange={e => updateLocalizedField('organization', e.target.value)} />
                     </div>
+                    <div>
+                      <label className="block text-sm font-bold mb-1">YouTube Video URL</label>
+                      <input type="text" className="w-full border rounded p-2" placeholder="https://youtube.com/watch?v=..." value={jobData.youtube_url || ''} onChange={e => updateField('youtube_url', e.target.value)} />
+                    </div>
                   
                     <div className="col-span-2">
                       <label className="block text-sm font-bold mb-1">Tags / Multiple Categories</label>
@@ -421,16 +425,16 @@ function EditorContent() {
                         <button className="absolute top-2 right-2 text-red-500" onClick={() => removeArrayItem('vacancy_cards', index)}><Trash2 className="w-4 h-4"/></button>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                             <div className="col-span-1 md:col-span-2">
-                              <label className="text-xs font-bold text-gray-500 block mb-1">Post Name <span className="font-normal text-[10px] text-blue-500">(HTML supported for links e.g., &lt;a href="url"&gt;text&lt;/a&gt;)</span></label>
-                              <textarea rows={2} className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="Enter post name or HTML..." value={card.post_name?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'post_name', e.target.value)} />
+                              <label className="text-xs font-bold text-gray-500 block mb-1">Post Name <span className="font-normal text-[10px] text-blue-500">(WordPress-style editor enabled)</span></label>
+                              <RichTextInput className="w-full border-gray-300 rounded p-1 text-sm min-h-[40px]" placeholder="Enter post name..." value={card.post_name?.[editLang] || ''} onChange={val => updateArrayItemLocalized('vacancy_cards', index, 'post_name', val)} />
                             </div>
                             <div>
                               <label className="text-xs font-bold text-gray-500 block mb-1">Total Vacancies</label>
                               <input type="text" className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="e.g. 10" value={card.total} onChange={e => updateArrayItem('vacancy_cards', index, 'total', e.target.value)} />
                             </div>
                             <div>
-                              <label className="text-xs font-bold text-gray-500 block mb-1">Education <span className="font-normal text-[10px] text-blue-500">(HTML supported)</span></label>
-                              <textarea rows={2} className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="Enter education qualification..." value={card.education?.[editLang] || ''} onChange={e => updateArrayItemLocalized('vacancy_cards', index, 'education', e.target.value)} />
+                              <label className="text-xs font-bold text-gray-500 block mb-1">Education <span className="font-normal text-[10px] text-blue-500">(WordPress-style editor enabled)</span></label>
+                              <RichTextInput className="w-full border-gray-300 rounded p-1 text-sm min-h-[40px]" placeholder="Enter education qualification..." value={card.education?.[editLang] || ''} onChange={val => updateArrayItemLocalized('vacancy_cards', index, 'education', val)} />
                             </div>
                           </div>
                         
@@ -521,7 +525,7 @@ function EditorContent() {
                         <div key={index} className="flex gap-3 items-start border p-3 rounded bg-gray-50">
                           <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold shrink-0">{index + 1}</div>
                           <div className="flex-1 space-y-2">
-                            <input type="text" placeholder="Step Title" className="w-full border rounded p-2 font-bold" value={step.title?.[editLang] || ''} onChange={e => updateArrayItemLocalized('selection_process', index, 'title', e.target.value)} />
+                            <RichTextInput className="w-full border rounded p-1 font-bold min-h-[40px]" placeholder="Step Title" value={step.title?.[editLang] || ''} onChange={val => updateArrayItemLocalized('selection_process', index, 'title', val)} />
                             <RichTextInput className="w-full border rounded p-2 text-sm" placeholder="Description..." value={step.description?.[editLang] || ''} onChange={val => updateArrayItemLocalized('selection_process', index, 'description', val)} />
                           </div>
                           <button className="text-red-500 p-2" onClick={() => removeArrayItem('selection_process', index)}><Trash2 className="w-5 h-5"/></button>
@@ -541,7 +545,7 @@ function EditorContent() {
                       {jobData.how_to_apply.map((step: any, index: number) => (
                         <div key={index} className="flex gap-3 items-center">
                           <span className="font-bold text-gray-400">{index + 1}.</span>
-                          <input type="text" placeholder="Instruction" className="flex-1 border rounded p-2" value={step.instruction?.[editLang] || ''} onChange={e => updateArrayItemLocalized('how_to_apply', index, 'instruction', e.target.value)} />
+                          <RichTextInput className="flex-1 border rounded p-1 min-h-[40px]" placeholder="Instruction" value={step.instruction?.[editLang] || ''} onChange={val => updateArrayItemLocalized('how_to_apply', index, 'instruction', val)} />
                           <button className="text-red-500 p-2" onClick={() => removeArrayItem('how_to_apply', index)}><Trash2 className="w-5 h-5"/></button>
                         </div>
                       ))}
@@ -555,7 +559,7 @@ function EditorContent() {
                       {jobData.faqs.map((faq: any, index: number) => (
                         <div key={index} className="border rounded p-3 bg-gray-50 relative">
                           <button className="absolute top-2 right-2 text-red-500" onClick={() => removeArrayItem('faqs', index)}><Trash2 className="w-4 h-4"/></button>
-                          <input type="text" placeholder="Question" className="w-full border rounded p-2 mb-2 font-bold" value={faq.question?.[editLang] || ''} onChange={e => updateArrayItemLocalized('faqs', index, 'question', e.target.value)} />
+                          <RichTextInput className="w-full border rounded p-1 mb-2 font-bold min-h-[40px]" placeholder="Question" value={faq.question?.[editLang] || ''} onChange={val => updateArrayItemLocalized('faqs', index, 'question', val)} />
                           <RichTextInput className="w-full border rounded p-2" placeholder="Answer..." value={faq.answer?.[editLang] || ''} onChange={val => updateArrayItemLocalized('faqs', index, 'answer', val)} />
                         </div>
                       ))}
@@ -593,15 +597,14 @@ function EditorContent() {
             {(jobData.syllabus || []).map((section: any, sIndex: number) => (
               <div key={sIndex} className="mb-6 p-4 border border-blue-100 bg-blue-50/50 rounded-lg">
                 <div className="flex justify-between items-center mb-3">
-                  <input
-                    type="text"
+                  <RichTextInput
                     value={section.subject[editLang] || ''}
-                    onChange={(e) => {
+                    onChange={(val) => {
                       const newSyllabus = [...(jobData.syllabus || [])];
-                      newSyllabus[sIndex].subject[editLang] = e.target.value;
+                      newSyllabus[sIndex].subject[editLang] = val;
                       setJobData({ ...jobData, syllabus: newSyllabus });
                     }}
-                    className="w-full px-3 py-2 border rounded font-semibold text-blue-900"
+                    className="w-full border rounded font-semibold text-blue-900 min-h-[40px] px-1"
                     placeholder="Subject Name (e.g., General Knowledge)"
                   />
                   <button onClick={() => {
@@ -615,15 +618,14 @@ function EditorContent() {
                   {section.topics.map((topic: any, tIndex: number) => (
                     <div key={tIndex} className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
-                      <input
-                        type="text"
+                      <RichTextInput
                         value={topic.title[editLang] || ''}
-                        onChange={(e) => {
+                        onChange={(val) => {
                           const newSyllabus = [...(jobData.syllabus || [])];
-                          newSyllabus[sIndex].topics[tIndex].title[editLang] = e.target.value;
+                          newSyllabus[sIndex].topics[tIndex].title[editLang] = val;
                           setJobData({ ...jobData, syllabus: newSyllabus });
                         }}
-                        className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm"
+                        className="flex-1 border border-gray-300 rounded text-sm min-h-[40px] px-1"
                         placeholder="Topic (e.g., Indian History)"
                       />
                       <button onClick={() => {
