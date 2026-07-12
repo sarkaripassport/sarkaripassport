@@ -31,6 +31,12 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
     setOpenMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
   };
 
+  const isLoginPage = pathname === '/admin/login';
+
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
+
   return (
     <div className="flex flex-col h-screen bg-[#f0f0f1] font-sans text-[13px] text-[#3c434a]">
       
@@ -183,7 +189,7 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
               <span className="font-medium">Landing Pages</span>
             </Link>
             
-            <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+            <Link href="/admin/users" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
               <User className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
               <span className="font-medium">Users</span>
             </Link>

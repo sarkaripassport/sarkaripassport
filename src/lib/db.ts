@@ -255,6 +255,9 @@ const defaultSettings: HomepageSettings = {
     keywords: { en: "sarkari job, sarkari result, admit card, latest govt jobs", hi: "", mr: "" },
     gscVerification: ""
   },
+  analytics: {
+    gtm_id: "GTM-WQRKNNJW"
+  },
   hero: {
     title: { en: "Latest Government Jobs, Results, Admit Cards & Eligibility Updates", hi: "", mr: "" },
     subtitle: { en: "Create your GovJobWala profile once and check your eligibility for every job instantly.", hi: "", mr: "" }

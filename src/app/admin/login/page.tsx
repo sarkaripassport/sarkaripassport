@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Shield, Loader2, ArrowRight } from 'lucide-react';
+import { checkEmailIsAuthorized } from './actions';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('');
@@ -16,6 +17,14 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    const isAuthorized = await checkEmailIsAuthorized(email);
+    if (!isAuthorized) {
+      // Show generic error to avoid email enumeration
+      setError("Invalid login credentials.");
+      setIsLoading(false);
+      return;
+    }
+
     const supabase = createClient();
     
     const { error } = await supabase.auth.signInWithPassword({
