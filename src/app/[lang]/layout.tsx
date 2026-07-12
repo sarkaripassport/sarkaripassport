@@ -50,22 +50,13 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       description: description,
       url: 'https://govjobwala.com',
       siteName: 'GovJobWala',
-      images: [
-        {
-          url: '/api/og?type=general',
-          width: 1200,
-          height: 630,
-          alt: 'GovJobWala - India\'s Trusted Government Job Portal',
-        },
-      ],
-      locale: lang === 'en' ? 'en_IN' : (lang === 'hi' ? 'hi_IN' : 'mr_IN'),
+      locale: `${lang}_IN`,
       type: 'website',
     },
     twitter: {
-      card: 'summary_large_image',
+      card: 'summary',
       title: title,
       description: description,
-      images: ['/api/og?type=general'],
     },
     formatDetection: {
       telephone: false,

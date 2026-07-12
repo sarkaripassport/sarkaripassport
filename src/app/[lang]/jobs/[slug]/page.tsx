@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 
 import { notFound } from 'next/navigation';
-import { getJobBySlug, getCategories, getJobs } from '@/lib/db';
+import { getJobBySlug, getJobs } from '@/lib/db';
 import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
 import JobComments from '@/components/jobs/JobComments';
 import { AutoLinkedText } from '@/lib/autoLinker';
@@ -12,6 +12,18 @@ import ShareButton from '@/components/ShareButton';
 
 
 export const revalidate = 3600; // 1 hour ISR
+
+export async function generateStaticParams() {
+  const jobs = await getJobs();
+  const langs = ['en', 'hi', 'mr'];
+  const params: { lang: string; slug: string }[] = [];
+  for (const job of jobs) {
+    for (const lang of langs) {
+      params.push({ lang, slug: job.slug });
+    }
+  }
+  return params;
+}
 
 export async function generateMetadata(
   { params }: { params: Promise<{ lang: string, slug: string }> },
@@ -24,24 +36,25 @@ export async function generateMetadata(
   if (!job) {
     return {
       title: 'Job Not Found - GovJobWala',
-    }
+      title: 'Job Not Found | GovJobWala',
+    };
   }
-
-  const typedLang = lang as 'en' | 'hi' | 'mr';
-  const title = job.seo_title?.[typedLang] || `${job.title[typedLang]} Recruitment`;
-  const description = job.seo_description?.[typedLang] || job.job_summary?.[typedLang] || '';
-  const url = `https://govjobwala.com/${lang}/jobs/${slug}`;
-
-  const ogUrl = new URL('https://govjobwala.com/api/og');
-  ogUrl.searchParams.set('title', job.title[typedLang] || '');
-  ogUrl.searchParams.set('org', job.organization[typedLang] || '');
-  if (job.quick_facts?.vacancies) ogUrl.searchParams.set('vacancies', job.quick_facts.vacancies);
-  if (job.quick_facts?.last_date?.[typedLang]) ogUrl.searchParams.set('lastDate', job.quick_facts.last_date[typedLang] || '');
-  if (job.logo_url) ogUrl.searchParams.set('logoUrl', job.logo_url);
-
+  
   return {
-    title,
-    description,
+    title: `${job.title[lang as 'en' | 'hi' | 'mr']} | GovJobWala`,
+    description: job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+    openGraph: {
+      type: 'website',
+      url: `https://govjobwala.com/${lang}/jobs/${slug}`,
+      title: `${job.title[lang as 'en' | 'hi' | 'mr']}`,
+      description: job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+      siteName: 'GovJobWala',
+    },
+    twitter: {
+      card: 'summary',
+      title: `${job.title[lang as 'en' | 'hi' | 'mr']}`,
+      description: job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+    },
     alternates: {
       canonical: `/${lang}/jobs/${slug}`,
       languages: {
@@ -257,7 +270,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           {job.logo_url ? (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden relative z-10 mt-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={job.logo_url} alt={job.organization[lang]} className="w-full h-full object-contain p-1" />
+              <img src={job.logo_url} alt={job.organization[lang]} fetchPriority="high" decoding="sync" className="w-full h-full object-contain p-1" />
             </div>
           ) : (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center relative z-10 mt-1">

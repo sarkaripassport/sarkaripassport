@@ -4,9 +4,11 @@ import { getJobs, getSettings, getCategories } from "@/lib/db";
 import JobCard from "@/components/JobCard";
 import AdvancedSearch from "@/components/AdvancedSearch";
 import CategoryGrid from "@/components/ui/CategoryGrid";
+import CategoryGrid from "@/components/ui/CategoryGrid";
 
-
-
+export function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
+}
 import { 
   Briefcase, FileText, Award, CheckCircle2, GraduationCap, Building2, MapPin, 
   Landmark, Train, ShieldCheck, Shield 
