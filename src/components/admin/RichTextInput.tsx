@@ -3,6 +3,7 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import Placeholder from '@tiptap/extension-placeholder';
 import { useEffect, useState } from 'react';
 import { Link as LinkIcon, Unlink, Check, X, Bold, Italic } from 'lucide-react';
 
@@ -20,6 +21,10 @@ export default function RichTextInput({ value, onChange, placeholder, className 
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Placeholder.configure({
+        placeholder: placeholder || 'Type here...',
+        emptyEditorClass: 'is-editor-empty',
+      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {

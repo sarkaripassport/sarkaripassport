@@ -46,9 +46,11 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
     getCategories()
   ]);
 
-  const quickLinks = categories.filter(c => c.isQuickLink);
-  const trendingCategories = categories.filter(c => c.isTrending);
-  const regularCategories = categories.filter(c => !c.isTrending && !c.isQuickLink);
+  const getCount = (catName: string) => jobs.filter(j => j.category === catName || j.categories?.includes(catName)).length;
+  
+  const quickLinks = categories.filter(c => c.isQuickLink).sort((a, b) => getCount(b.name.en) - getCount(a.name.en));
+  const trendingCategories = categories.filter(c => c.isTrending).sort((a, b) => getCount(b.name.en) - getCount(a.name.en));
+  const regularCategories = categories.filter(c => !c.isTrending && !c.isQuickLink).sort((a, b) => getCount(b.name.en) - getCount(a.name.en));
   const specialSlugs = ['results', 'admit-card', 'answer-key', 'syllabus', 'admission'];
 
   const getCategoryUrl = (slug: string) => {

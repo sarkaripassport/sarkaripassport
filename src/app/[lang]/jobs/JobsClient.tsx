@@ -104,7 +104,8 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
   const totalPages = Math.ceil(filteredJobs.length / ITEMS_PER_PAGE);
   const currentJobs = filteredJobs.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
-  const quickCategories = categories.filter(c => c.isQuickLink);
+  const getCount = (catName: string) => jobs.filter(j => j.category === catName || j.categories?.includes(catName)).length;
+  const quickCategories = categories.filter(c => c.isQuickLink).sort((a, b) => getCount(b.name.en) - getCount(a.name.en));
   const activeFiltersCount = (selectedQual !== "all" ? 1 : 0) + (selectedState !== "all" ? 1 : 0) + (selectedType !== "all" ? 1 : 0);
 
   return (
