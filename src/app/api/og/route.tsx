@@ -61,6 +61,21 @@ export async function GET(req: NextRequest) {
     if (absoluteLogoUrl && absoluteLogoUrl.startsWith('/')) {
       absoluteLogoUrl = new URL(absoluteLogoUrl, 'https://govjobwala.com').toString();
     }
+    
+    let logoDataUrl = absoluteLogoUrl;
+    if (absoluteLogoUrl) {
+      try {
+        const response = await fetch(absoluteLogoUrl, { cache: 'force-cache' });
+        if (response.ok) {
+          const arrayBuffer = await response.arrayBuffer();
+          const contentType = response.headers.get('content-type') || 'image/png';
+          const base64Str = Buffer.from(arrayBuffer).toString('base64');
+          logoDataUrl = `data:${contentType};base64,${base64Str}`;
+        }
+      } catch (err) {
+        console.error("OG Image Fetch Error:", err);
+      }
+    }
 
     return new ImageResponse(
       (
@@ -79,9 +94,9 @@ export async function GET(req: NextRequest) {
           {/* Top header */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-              {absoluteLogoUrl ? (
+              {logoDataUrl ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={absoluteLogoUrl} alt="logo" width="80" height="80" style={{ borderRadius: '12px', objectFit: 'contain' }} />
+                <img src={logoDataUrl} alt="logo" width="80" height="80" style={{ borderRadius: '12px', objectFit: 'contain' }} />
               ) : (
                 <div style={{ width: 80, height: 80, backgroundColor: '#EFF6FF', color: '#1D4ED8', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 40, fontWeight: 'bold' }}>
                   {org.charAt(0)}
