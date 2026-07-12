@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 
 import { notFound } from 'next/navigation';
-import { getJobBySlug, getJobs } from '@/lib/db';
+import { getJobBySlug, getCategories, getJobs } from '@/lib/db';
 import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
 import JobComments from '@/components/jobs/JobComments';
 import { AutoLinkedText } from '@/lib/autoLinker';
@@ -35,7 +35,6 @@ export async function generateMetadata(
   
   if (!job) {
     return {
-      title: 'Job Not Found - GovJobWala',
       title: 'Job Not Found | GovJobWala',
     };
   }
@@ -63,27 +62,6 @@ export async function generateMetadata(
         'mr': `/mr/jobs/${slug}`
       }
     },
-    openGraph: {
-      title,
-      description,
-      url,
-      type: 'article',
-      publishedTime: job.created_at,
-      modifiedTime: job.updated_at || job.created_at,
-      images: [
-        {
-          url: ogUrl.toString(),
-          width: 1200,
-          height: 630,
-          alt: title,
-        }
-      ]
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: [ogUrl.toString()],
     }
   }
 }
