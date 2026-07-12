@@ -62,20 +62,13 @@ export async function GET(req: NextRequest) {
       absoluteLogoUrl = new URL(absoluteLogoUrl, 'https://govjobwala.com').toString();
     }
     
-    let logoDataUrl = absoluteLogoUrl;
+    let logoDataUrl: any = absoluteLogoUrl;
     if (absoluteLogoUrl) {
       try {
         const response = await fetch(absoluteLogoUrl, { cache: 'force-cache' });
         if (response.ok) {
           const arrayBuffer = await response.arrayBuffer();
-          const contentType = response.headers.get('content-type') || 'image/png';
-          const bytes = new Uint8Array(arrayBuffer);
-          let binary = '';
-          for (let i = 0; i < bytes.byteLength; i++) {
-            binary += String.fromCharCode(bytes[i]);
-          }
-          const base64Str = btoa(binary);
-          logoDataUrl = `data:${contentType};base64,${base64Str}`;
+          logoDataUrl = arrayBuffer;
         }
       } catch (err) {
         console.error("OG Image Fetch Error:", err);
