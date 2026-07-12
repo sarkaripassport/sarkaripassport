@@ -11,7 +11,7 @@ export interface AdminUser {
 }
 
 async function verifySuperAdmin() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user || user.user_metadata?.role !== 'super_admin') {
     throw new Error('Unauthorized: Only Super Admins can perform this action.');
@@ -19,7 +19,7 @@ async function verifySuperAdmin() {
 }
 
 export async function getUsers(): Promise<AdminUser[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user: currentUser } } = await supabase.auth.getUser();
   if (!currentUser) throw new Error('Unauthorized');
 

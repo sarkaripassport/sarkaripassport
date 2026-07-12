@@ -256,7 +256,9 @@ const defaultSettings: HomepageSettings = {
     gscVerification: ""
   },
   analytics: {
-    gtm_id: "GTM-WQRKNNJW"
+    ga_id: "",
+    gtm_id: "GTM-WQRKNNJW",
+    adsense_id: ""
   },
   hero: {
     title: { en: "Latest Government Jobs, Results, Admit Cards & Eligibility Updates", hi: "", mr: "" },
@@ -273,11 +275,7 @@ const defaultSettings: HomepageSettings = {
     { id: 'a2', text: { en: "UPSC Civil Services Prelims Admit Card Available", hi: "", mr: "" }, link: "/jobs/upsc-civil-services-2026", isActive: true, priority: "normal" }
   ],
   whatsapp_link: "https://whatsapp.com/channel/0029VaA2KzV7T8bd5WEGk90n",
-  analytics: {
-    ga_id: "",
-    gtm_id: "",
-    adsense_id: ""
-  },
+
   pages: {
     'admit-card': {
       seo: { title: { en: "Admit Cards - SarkariJob", hi: "", mr: "" }, description: { en: "Download latest admit cards", hi: "", mr: "" }, keywords: { en: "admit card", hi: "", mr: "" } },
