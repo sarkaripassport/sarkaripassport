@@ -426,7 +426,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       <div className="p-3 bg-gray-50/50">
                         <span className="text-[10px] font-black text-gray-400 uppercase tracking-wider block mb-2 px-1">Category Distribution</span>
                         <div className="grid grid-cols-4 gap-2">
-                          {Object.entries(vac.categories || {}).filter(([_, val]) => val).map(([cat, val]) => (
+                          {Object.entries(vac.categories || {}).filter(([_, val]) => val).sort((a, b) => Number(b[1]) - Number(a[1])).map(([cat, val]) => (
                             <div key={cat} className="flex flex-col bg-white border border-gray-200 rounded-md text-center py-1.5 shadow-sm">
                               <span className="text-[9px] font-black text-gray-500 uppercase">{cat}</span>
                               <span className="text-sm font-black text-[#0B1B3D]">{val as string}</span>
@@ -464,7 +464,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                           </td>
                           <td className="px-5 py-4 border-l border-gray-50 align-top bg-gray-50/30">
                             <div className="flex gap-2 flex-wrap">
-                              {Object.entries(vac.categories || {}).filter(([_, val]) => val).map(([cat, val]) => (
+                              {Object.entries(vac.categories || {}).filter(([_, val]) => val).sort((a, b) => Number(b[1]) - Number(a[1])).map(([cat, val]) => (
                                 <div key={cat} className="inline-flex items-center gap-1.5 px-2 py-1 bg-white border border-gray-200 rounded-md shadow-sm card-hover">
                                   <span className="text-[10px] text-gray-500 font-bold uppercase">{cat}</span>
                                   <span className="text-sm font-black text-[#0B1B3D]">{val as string}</span>
