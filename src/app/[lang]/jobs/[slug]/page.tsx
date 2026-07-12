@@ -60,10 +60,8 @@ export async function generateMetadata(
         'en': `/en/jobs/${slug}`,
         'hi': `/hi/jobs/${slug}`,
         'mr': `/mr/jobs/${slug}`
-      }
-    },
     }
-  }
+  };
 }
 
 import { getDictionary, Locale } from '@/i18n/getDictionary';
