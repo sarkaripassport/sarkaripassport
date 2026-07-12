@@ -69,7 +69,12 @@ export async function GET(req: NextRequest) {
         if (response.ok) {
           const arrayBuffer = await response.arrayBuffer();
           const contentType = response.headers.get('content-type') || 'image/png';
-          const base64Str = Buffer.from(arrayBuffer).toString('base64');
+          const bytes = new Uint8Array(arrayBuffer);
+          let binary = '';
+          for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+          }
+          const base64Str = btoa(binary);
           logoDataUrl = `data:${contentType};base64,${base64Str}`;
         }
       } catch (err) {
