@@ -18,8 +18,8 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: s
   }
 
   return {
-    title: dict.seo?.toolsTitle || "Online Tools for Govt Jobs - Resize Photo, Sign, Merge PDF",
-    description: dict.seo?.toolsDesc || "Free online tools to resize passport photos, compress PDFs, merge signature and photos for government job application forms. 100% free and secure.",
+    title: (dict as any).seo?.toolsTitle || "Online Tools for Govt Jobs - Resize Photo, Sign, Merge PDF",
+    description: (dict as any).seo?.toolsDesc || "Free online tools to resize passport photos, compress PDFs, merge signature and photos for government job application forms. 100% free and secure.",
     keywords: ["image resizer", "photo and signature merge", "compress pdf", "online signature generator", "sarkari job tools"],
   };
 }
