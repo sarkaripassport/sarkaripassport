@@ -247,7 +247,7 @@ export interface HomepageSettings {
     'results': PageSettings;
     'answer-key': PageSettings;
     'syllabus': PageSettings;
-    'tools'?: PageSettings;
+    'tools': PageSettings;
   };
 }
 
