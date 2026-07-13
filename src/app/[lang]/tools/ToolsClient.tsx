@@ -8,16 +8,28 @@ import dynamic from "next/dynamic";
 const ImageResizer = dynamic(() => import("@/components/tools/ImageResizer"), { ssr: false });
 const PhotoSignMerger = dynamic(() => import("@/components/tools/PhotoSignMerger"), { ssr: false });
 const SignatureGenerator = dynamic(() => import("@/components/tools/SignatureGenerator"), { ssr: false });
+const ImageToPdf = dynamic(() => import("@/components/tools/ImageToPdf"), { ssr: false });
+const MergePdf = dynamic(() => import("@/components/tools/MergePdf"), { ssr: false });
+
+import { useSearchParams, useRouter } from "next/navigation";
 
 export default function ToolsClient({ lang, dict }: { lang: string, dict: any }) {
-  const [activeTab, setActiveTab] = useState<string>("resizer");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const initialTab = searchParams.get("tab") || "resizer";
+  const [activeTab, setActiveTab] = useState<string>(initialTab);
+
+  const handleTabChange = (id: string) => {
+    setActiveTab(id);
+    router.replace(`/tools?tab=${id}`);
+  };
 
   const tabs = [
     { id: "resizer", label: "Image Resizer", icon: Crop, desc: "Resize passport photos" },
     { id: "merger", label: "Photo + Sign Merger", icon: Layers, desc: "Merge photo & signature" },
     { id: "signature", label: "Draw Signature", icon: Edit3, desc: "Create digital signature" },
-    { id: "img-to-pdf", label: "Image to PDF", icon: FileImage, desc: "Coming Soon" },
-    { id: "merge-pdf", label: "Merge PDF", icon: FileText, desc: "Coming Soon" },
+    { id: "img-to-pdf", label: "Image to PDF", icon: FileImage, desc: "Convert images to PDF" },
+    { id: "merge-pdf", label: "Merge PDF", icon: FileText, desc: "Combine multiple PDFs" },
   ];
 
   return (
@@ -30,7 +42,7 @@ export default function ToolsClient({ lang, dict }: { lang: string, dict: any })
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => handleTabChange(tab.id)}
                 className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all text-left ${
                   activeTab === tab.id 
                   ? "bg-blue-50 text-blue-700 font-bold shadow-sm" 
@@ -55,20 +67,8 @@ export default function ToolsClient({ lang, dict }: { lang: string, dict: any })
         {activeTab === "resizer" && <ImageResizer />}
         {activeTab === "merger" && <PhotoSignMerger />}
         {activeTab === "signature" && <SignatureGenerator />}
-        {activeTab === "img-to-pdf" && (
-          <div className="bg-white p-12 rounded-2xl shadow-sm border border-gray-100 text-center animate-in fade-in duration-500">
-            <FileImage className="w-16 h-16 text-blue-200 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-[#0B1B3D] mb-2">Image to PDF</h2>
-            <p className="text-gray-500 max-w-md mx-auto">This tool is currently under development. It will allow you to select multiple images and convert them into a single PDF document entirely in your browser.</p>
-          </div>
-        )}
-        {activeTab === "merge-pdf" && (
-          <div className="bg-white p-12 rounded-2xl shadow-sm border border-gray-100 text-center animate-in fade-in duration-500">
-            <FileText className="w-16 h-16 text-blue-200 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-[#0B1B3D] mb-2">Merge PDFs</h2>
-            <p className="text-gray-500 max-w-md mx-auto">This tool is currently under development. It will allow you to combine multiple PDF files into one without uploading them to any server.</p>
-          </div>
-        )}
+        {activeTab === "img-to-pdf" && <ImageToPdf />}
+        {activeTab === "merge-pdf" && <MergePdf />}
       </div>
     </div>
   );

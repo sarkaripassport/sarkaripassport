@@ -194,7 +194,7 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
               <span className="font-medium">Users</span>
             </Link>
 
-            <Link href="#" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
+            <Link href="/admin/pages" className="flex items-center gap-2 px-3 py-2 hover:text-white hover:bg-[#0A58CA] transition-colors group">
               <PenTool className="w-5 h-5 opacity-70 group-hover:opacity-100" /> 
               <span className="font-medium">Tools</span>
             </Link>

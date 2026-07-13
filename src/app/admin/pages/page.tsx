@@ -4,14 +4,15 @@ import { useState, useEffect } from "react";
 import { Save, CheckCircle2, FileText, ChevronDown } from "lucide-react";
 import type { HomepageSettings } from "@/lib/db";
 
-const PAGE_KEYS = ['admit-card', 'results', 'answer-key', 'syllabus'] as const;
+const PAGE_KEYS = ['admit-card', 'results', 'answer-key', 'syllabus', 'tools'] as const;
 type PageKey = typeof PAGE_KEYS[number];
 
 const PAGE_NAMES: Record<PageKey, string> = {
   'admit-card': 'Admit Card',
   'results': 'Results',
   'answer-key': 'Answer Key',
-  'syllabus': 'Syllabus'
+  'syllabus': 'Syllabus',
+  'tools': 'Tools'
 };
 
 export default function PagesManager() {
@@ -30,8 +31,12 @@ export default function PagesManager() {
             'admit-card': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
             'results': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
             'answer-key': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
-            'syllabus': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } }
+            'syllabus': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } },
+            'tools': { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } }
           };
+        }
+        if (data.pages && !data.pages['tools']) {
+          data.pages['tools'] = { seo: { title: "", description: "", keywords: "" }, hero: { title: "", subtitle: "" } };
         }
         setSettings(data);
       });

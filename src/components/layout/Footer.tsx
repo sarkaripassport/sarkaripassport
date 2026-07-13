@@ -76,11 +76,11 @@ export default async function Footer({ lang = 'en' }: { lang?: string }) {
           <div>
             <h2 className="text-white font-bold mb-4">Tools</h2>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><Link href={getLink("/eligibility-checker")} className="hover:text-white transition flex items-center gap-2">Eligibility Checker <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
-              <li><Link href={getLink("/document-readiness")} className="hover:text-white transition flex items-center gap-2">Document Readiness <span className="bg-red-500 text-white text-[9px] px-1 py-0.5 rounded-sm">New</span></Link></li>
-              <li><Link href={getLink("/application-tracker")} className="hover:text-white transition flex items-center gap-2">Application Tracker</Link></li>
-              <li><Link href={getLink("/alerts")} className="hover:text-white transition">Notification Alerts</Link></li>
-              <li><Link href={getLink("/saved-jobs")} className="hover:text-white transition">Saved Jobs</Link></li>
+              <li><Link href={getLink("/tools?tab=resizer")} className="hover:text-white transition flex items-center gap-2">Image Resizer</Link></li>
+              <li><Link href={getLink("/tools?tab=merger")} className="hover:text-white transition flex items-center gap-2">Photo+Sign Merge</Link></li>
+              <li><Link href={getLink("/tools?tab=signature")} className="hover:text-white transition flex items-center gap-2">Signature Pad</Link></li>
+              <li><Link href={getLink("/tools?tab=img-to-pdf")} className="hover:text-white transition flex items-center gap-2">Image to PDF</Link></li>
+              <li><Link href={getLink("/tools?tab=merge-pdf")} className="hover:text-white transition flex items-center gap-2">Merge PDF</Link></li>
             </ul>
           </div>
 

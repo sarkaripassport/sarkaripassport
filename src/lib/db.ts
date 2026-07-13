@@ -247,6 +247,7 @@ export interface HomepageSettings {
     'results': PageSettings;
     'answer-key': PageSettings;
     'syllabus': PageSettings;
+    'tools'?: PageSettings;
   };
 }
 
@@ -294,6 +295,10 @@ const defaultSettings: HomepageSettings = {
     'syllabus': {
       seo: { title: { en: "Syllabus - SarkariJob", hi: "", mr: "" }, description: { en: "Download exam syllabus", hi: "", mr: "" }, keywords: { en: "syllabus", hi: "", mr: "" } },
       hero: { title: { en: "Exam Syllabus", hi: "", mr: "" }, subtitle: { en: "Prepare with the official syllabus", hi: "", mr: "" } }
+    },
+    'tools': {
+      seo: { title: { en: "Online Tools for Govt Jobs - SarkariJob", hi: "", mr: "" }, description: { en: "Free online tools to resize passport photos, compress PDFs, merge signature and photos for government job application forms. 100% free and secure.", hi: "", mr: "" }, keywords: { en: "image resizer, photo and signature merge, compress pdf, online signature generator, sarkari job tools", hi: "", mr: "" } },
+      hero: { title: { en: "Candidate Utility Tools", hi: "", mr: "" }, subtitle: { en: "Free online tools to format your photos, signatures, and documents for government job applications. Processed locally, 100% secure.", hi: "", mr: "" } }
     }
   }
 };
