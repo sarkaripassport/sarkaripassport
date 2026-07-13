@@ -42,7 +42,9 @@ export async function POST(req: Request) {
     data.organization = localize(data.organization);
     data.seo_title = localize(data.seo_title);
     data.seo_description = localize(data.seo_description);
-    data.focus_keyword = localize(data.focus_keyword);
+    data.primary_keyword = localize(data.primary_keyword);
+    data.secondary_keywords = localize(data.secondary_keywords);
+    data.logo_alt = localize(data.logo_alt);
     data.job_summary = localize(data.job_summary);
     data.education_qualification = localize(data.education_qualification);
     data.salary_benefits = localize(data.salary_benefits);

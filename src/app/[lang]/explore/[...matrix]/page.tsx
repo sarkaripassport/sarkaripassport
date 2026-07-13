@@ -171,8 +171,9 @@ export default async function ExploreMatrixPage({ params }: Props) {
               isTrending={job.isTrending}
               daysLeft={job.daysLeft}
               link={`/${lang}/jobs/${job.slug}`}
-              lang={lang as any}
               logoUrl={job.logo_url}
+              logoAlt={job.logo_alt?.[lang] || job.organization[lang]}
+              lang={lang as any}
               labels={{
                 trending: dict.home.trending,
                 daysLeft: dict.home.daysLeft,

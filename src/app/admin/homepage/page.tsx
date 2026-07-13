@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react';
 import { Save, AlertCircle, Plus, Trash2, Globe } from 'lucide-react';
 import type { HomepageSettings, Category, Announcement } from '@/lib/db';
+import { createClient } from '@/lib/supabase/client';
 
 export default function HomepageManager() {
   const [settings, setSettings] = useState<HomepageSettings | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [userRole, setUserRole] = useState<string>('co_admin');
 
   useEffect(() => {
     Promise.all([
@@ -18,6 +20,13 @@ export default function HomepageManager() {
       setSettings(settingsData);
       setCategories(categoriesData);
       setLoading(false);
+    });
+
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        setUserRole(user.user_metadata?.role || 'co_admin');
+      }
     });
   }, []);
 
@@ -151,7 +160,14 @@ export default function HomepageManager() {
         </div>
 
         {/* Tracking & Analytics */}
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4 relative">
+          {userRole === 'co_admin' && (
+            <div className="absolute inset-0 bg-white/60 z-10 flex items-center justify-center rounded-xl backdrop-blur-[1px]">
+              <div className="bg-white px-4 py-2 rounded-lg shadow-md border border-gray-200 flex items-center gap-2 font-bold text-gray-700">
+                <AlertCircle className="w-4 h-4 text-orange-500" /> Only Super Admins can edit tracking settings.
+              </div>
+            </div>
+          )}
           <h2 className="text-lg font-bold text-[#0B1B3D] border-b pb-2 flex items-center gap-2">
             <Globe className="w-5 h-5 text-blue-600" /> Tracking & Analytics
           </h2>
@@ -163,8 +179,10 @@ export default function HomepageManager() {
                 type="text" 
                 value={settings.analytics?.ga_id || ""}
                 onChange={(e) => setSettings({...settings, analytics: {...(settings.analytics || {}), ga_id: e.target.value}})}
+                onClick={() => userRole === 'super_admin' && window.alert("WARNING: Editing Google Analytics IDs can severely impact SEO tracking and data collection. Proceed carefully.")}
+                disabled={userRole === 'co_admin'}
                 placeholder="e.g. G-XXXXXXXXXX"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm disabled:opacity-50"
               />
             </div>
             
@@ -174,8 +192,10 @@ export default function HomepageManager() {
                 type="text" 
                 value={settings.analytics?.gtm_id || ""}
                 onChange={(e) => setSettings({...settings, analytics: {...(settings.analytics || {}), gtm_id: e.target.value}})}
+                onClick={() => userRole === 'super_admin' && window.alert("WARNING: Editing Google Tag Manager IDs can severely impact SEO tracking and data collection. Proceed carefully.")}
+                disabled={userRole === 'co_admin'}
                 placeholder="e.g. GTM-XXXXXXX"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm disabled:opacity-50"
               />
             </div>
           </div>
@@ -186,8 +206,10 @@ export default function HomepageManager() {
               type="text" 
               value={settings.analytics?.adsense_id || ""}
               onChange={(e) => setSettings({...settings, analytics: {...(settings.analytics || {}), adsense_id: e.target.value}})}
+              onClick={() => userRole === 'super_admin' && window.alert("WARNING: Editing Google AdSense IDs can impact ad revenue. Proceed carefully.")}
+              disabled={userRole === 'co_admin'}
               placeholder="e.g. ca-pub-XXXXXXXXXXXXXXXX"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none font-mono text-sm disabled:opacity-50"
             />
             <p className="text-xs text-gray-500 mt-1">This will automatically load the AdSense script globally.</p>
           </div>

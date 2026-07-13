@@ -133,7 +133,9 @@ export interface Job {
   // SEO & Meta
   seo_title: LocalizedString;
   seo_description: LocalizedString;
-  focus_keyword: LocalizedString;
+  primary_keyword: LocalizedString;
+  secondary_keywords?: LocalizedString;
+  logo_alt?: LocalizedString;
   seo_score: number;
   
   quick_facts?: QuickFacts;

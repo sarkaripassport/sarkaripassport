@@ -18,6 +18,7 @@ interface JobCardProps {
   link?: string;
   lang?: Locale;
   logoUrl?: string;
+  logoAlt?: string;
   labels?: {
     trending: string;
     daysLeft: string;
@@ -41,6 +42,7 @@ export default function JobCard({
   link = "#",
   lang = "en",
   logoUrl,
+  logoAlt,
   labels = {
     trending: "Trending",
     daysLeft: "Days Left",
@@ -88,7 +90,7 @@ export default function JobCard({
         <div className="flex gap-3 items-start mb-3">
           {logoUrl ? (
             <div className="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300 relative">
-              <Image src={logoUrl} alt={`${org} logo`} fill className="object-contain p-0.5" sizes="(max-width: 768px) 64px, 80px" />
+              <Image src={logoUrl} alt={logoAlt || `${org} logo`} fill className="object-contain p-0.5" sizes="(max-width: 768px) 64px, 80px" />
             </div>
           ) : (
             <div className="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl shadow-sm flex items-center justify-center text-blue-600 font-bold text-2xl group-hover:scale-105 transition-transform duration-300">

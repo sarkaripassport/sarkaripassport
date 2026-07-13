@@ -69,7 +69,9 @@ function EditorContent() {
     daysLeft: 30,
     seo_title: initLocalized(),
     seo_description: initLocalized(),
-    focus_keyword: initLocalized(),
+    primary_keyword: initLocalized(),
+    secondary_keywords: initLocalized(),
+    logo_alt: initLocalized(),
     seo_score: 0,
     quick_facts: {
       vacancies: '', 
@@ -200,15 +202,17 @@ function EditorContent() {
     let score = 0;
     const title = jobData.seo_title?.[editLang] || jobData.title?.[editLang] || '';
     const desc = jobData.seo_description?.[editLang] || jobData.job_summary?.[editLang] || '';
-    const keyword = jobData.focus_keyword?.[editLang] || '';
+    const primaryKw = jobData.primary_keyword?.[editLang] || '';
     
-    if (title.length >= 40 && title.length <= 70) score += 20;
-    if (desc.length >= 100 && desc.length <= 160) score += 20;
+    // Strict 50-60 character limit for title
+    if (title.length >= 50 && title.length <= 60) score += 20;
+    // Strict 50-300 character limit for description
+    if (desc.length >= 50 && desc.length <= 300) score += 20;
     if (jobData.logo_url && jobData.logo_url.length > 5) score += 20;
     
-    if (keyword) {
-      if (title.toLowerCase().includes(keyword.toLowerCase())) score += 20;
-      if (desc.toLowerCase().includes(keyword.toLowerCase())) score += 20;
+    if (primaryKw) {
+      if (title.toLowerCase().includes(primaryKw.toLowerCase())) score += 20;
+      if (desc.toLowerCase().includes(primaryKw.toLowerCase())) score += 20;
     }
     return score;
   };
@@ -425,7 +429,7 @@ function EditorContent() {
                         <button className="absolute top-2 right-2 text-red-500" onClick={() => removeArrayItem('vacancy_cards', index)}><Trash2 className="w-4 h-4"/></button>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                             <div className="col-span-1 md:col-span-2">
-                              <label className="text-xs font-bold text-gray-500 block mb-1">Post Name <span className="font-normal text-[10px] text-blue-500">(WordPress-style editor enabled)</span></label>
+                              <label className="text-xs font-bold text-gray-500 block mb-1">Post Name <span className="font-normal text-[10px] text-blue-500">(SEO: Use H2-H6 for headings, H1 is auto-generated)</span></label>
                               <RichTextInput className="w-full border-gray-300 rounded p-1 text-sm min-h-[40px]" placeholder="Enter post name..." value={card.post_name?.[editLang] || ''} onChange={val => updateArrayItemLocalized('vacancy_cards', index, 'post_name', val)} />
                             </div>
                             <div>
@@ -433,7 +437,7 @@ function EditorContent() {
                               <input type="text" className="w-full border border-gray-300 rounded p-2 text-sm" placeholder="e.g. 10" value={card.total} onChange={e => updateArrayItem('vacancy_cards', index, 'total', e.target.value)} />
                             </div>
                             <div>
-                              <label className="text-xs font-bold text-gray-500 block mb-1">Education <span className="font-normal text-[10px] text-blue-500">(WordPress-style editor enabled)</span></label>
+                              <label className="text-xs font-bold text-gray-500 block mb-1">Education <span className="font-normal text-[10px] text-blue-500">(SEO: Use H2-H6 for headings, H1 is auto-generated)</span></label>
                               <RichTextInput className="w-full border-gray-300 rounded p-1 text-sm min-h-[40px]" placeholder="Enter education qualification..." value={card.education?.[editLang] || ''} onChange={val => updateArrayItemLocalized('vacancy_cards', index, 'education', val)} />
                             </div>
                           </div>
@@ -660,9 +664,13 @@ function EditorContent() {
                 <div className="space-y-6 max-w-4xl">
                   <h2 className="text-xl font-bold text-[#0B1B3D] border-b pb-2">SEO Meta Details</h2>
                   <div className="grid grid-cols-1 gap-4">
-                    <div><label className="block text-sm font-bold mb-1">SEO Title</label><input type="text" className="w-full border rounded p-2" value={jobData.seo_title?.[editLang] || ''} onChange={e => updateLocalizedField('seo_title', e.target.value)} /></div>
-                    <div><label className="block text-sm font-bold mb-1">SEO Description</label><textarea className="w-full border rounded p-2 h-20" value={jobData.seo_description?.[editLang] || ''} onChange={e => updateLocalizedField('seo_description', e.target.value)} /></div>
-                    <div><label className="block text-sm font-bold mb-1">Focus Keyword</label><input type="text" className="w-full border rounded p-2" value={jobData.focus_keyword?.[editLang] || ''} onChange={e => updateLocalizedField('focus_keyword', e.target.value)} /></div>
+                    <div><label className="block text-sm font-bold mb-1">SEO Title (50-60 chars)</label><input type="text" className="w-full border rounded p-2" value={jobData.seo_title?.[editLang] || ''} onChange={e => updateLocalizedField('seo_title', e.target.value)} placeholder="Target length: 50-60 chars" /></div>
+                    <div><label className="block text-sm font-bold mb-1">SEO Description (50-300 chars)</label><textarea className="w-full border rounded p-2 h-20" value={jobData.seo_description?.[editLang] || ''} onChange={e => updateLocalizedField('seo_description', e.target.value)} placeholder="Target length: 50-300 chars" /></div>
+                    <div><label className="block text-sm font-bold mb-1">Primary Keyword</label><input type="text" className="w-full border rounded p-2" value={jobData.primary_keyword?.[editLang] || ''} onChange={e => updateLocalizedField('primary_keyword', e.target.value)} /></div>
+                    <div><label className="block text-sm font-bold mb-1">Secondary Keywords (comma separated)</label><input type="text" className="w-full border rounded p-2" value={jobData.secondary_keywords?.[editLang] || ''} onChange={e => updateLocalizedField('secondary_keywords', e.target.value)} /></div>
+                    <div><label className="block text-sm font-bold mb-1">Logo Image URL</label><input type="text" className="w-full border rounded p-2 mb-2" value={jobData.logo_url || ''} onChange={e => updateField('logo_url', e.target.value)} placeholder="https://..." />
+                         <label className="block text-sm font-bold mb-1">Logo Alt Text</label><input type="text" className="w-full border rounded p-2" value={jobData.logo_alt?.[editLang] || ''} onChange={e => updateLocalizedField('logo_alt', e.target.value)} />
+                    </div>
                   </div>
                   <div className="mt-8">
                     <SeoMatrixWidget job={jobData} updateJob={(updates) => setJobData({ ...jobData, ...updates })} />
@@ -716,10 +724,10 @@ function EditorContent() {
                   <div className={`h-2.5 rounded-full transition-all duration-500 ${seoScore >= 80 ? 'bg-green-500' : seoScore >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`} style={{ width: `${Math.max(10, seoScore)}%` }}></div>
                 </div>
                 <div className="mt-2 text-[11px] text-gray-500 flex flex-col gap-1">
-                  <div className="flex justify-between"><span>Title Length (40-70)</span> {jobData.seo_title?.[editLang]?.length >= 40 && jobData.seo_title?.[editLang]?.length <= 70 ? '✅' : '❌'}</div>
-                  <div className="flex justify-between"><span>Desc Length (100-160)</span> {jobData.seo_description?.[editLang]?.length >= 100 && jobData.seo_description?.[editLang]?.length <= 160 ? '✅' : '❌'}</div>
-                  <div className="flex justify-between"><span>Keyword in Title</span> {jobData.focus_keyword?.[editLang] && (jobData.seo_title?.[editLang]||jobData.title?.[editLang])?.toLowerCase().includes(jobData.focus_keyword?.[editLang]?.toLowerCase()) ? '✅' : '❌'}</div>
-                  <div className="flex justify-between"><span>Keyword in Desc</span> {jobData.focus_keyword?.[editLang] && (jobData.seo_description?.[editLang]||jobData.job_summary?.[editLang])?.toLowerCase().includes(jobData.focus_keyword?.[editLang]?.toLowerCase()) ? '✅' : '❌'}</div>
+                  <div className="flex justify-between"><span>Title Length (50-60)</span> {jobData.seo_title?.[editLang]?.length >= 50 && jobData.seo_title?.[editLang]?.length <= 60 ? '✅' : '❌'}</div>
+                  <div className="flex justify-between"><span>Desc Length (50-300)</span> {jobData.seo_description?.[editLang]?.length >= 50 && jobData.seo_description?.[editLang]?.length <= 300 ? '✅' : '❌'}</div>
+                  <div className="flex justify-between"><span>Primary Keyword in Title</span> {jobData.primary_keyword?.[editLang] && (jobData.seo_title?.[editLang]||jobData.title?.[editLang])?.toLowerCase().includes(jobData.primary_keyword?.[editLang]?.toLowerCase()) ? '✅' : '❌'}</div>
+                  <div className="flex justify-between"><span>Primary Keyword in Desc</span> {jobData.primary_keyword?.[editLang] && (jobData.seo_description?.[editLang]||jobData.job_summary?.[editLang])?.toLowerCase().includes(jobData.primary_keyword?.[editLang]?.toLowerCase()) ? '✅' : '❌'}</div>
                   <div className="flex justify-between"><span>Featured Image/Logo</span> {jobData.logo_url ? '✅' : '❌'}</div>
                 </div>
               </div>

@@ -137,6 +137,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     '@type': 'JobPosting',
     'title': job.title[lang],
     'description': job.job_summary?.[lang] || `Recruitment for ${job.title[lang]} by ${job.organization[lang]}`,
+    'keywords': [job.primary_keyword?.[lang], ...(job.secondary_keywords?.[lang] ? job.secondary_keywords[lang].split(',') : [])].filter(Boolean).join(', '),
     'datePosted': parseSafeDate(job.created_at) || new Date().toISOString(),
     'validThrough': validThrough,
     'employmentType': 'FULL_TIME',
@@ -249,7 +250,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           {job.logo_url ? (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden relative z-10 mt-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={job.logo_url} alt={job.organization[lang]} fetchPriority="high" decoding="sync" className="w-full h-full object-contain p-1" />
+              <img src={job.logo_url} alt={job.logo_alt?.[lang] || job.organization[lang]} fetchPriority="high" decoding="sync" className="w-full h-full object-contain p-1" />
             </div>
           ) : (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center relative z-10 mt-1">
@@ -651,7 +652,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
               <Link key={rJob.id} href={`/${lang}/jobs/${rJob.slug}`} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-blue-300 transition-all group flex flex-col h-full">
                 <div className="flex items-center gap-3 mb-3">
                   {rJob.logo_url ? (
-                    <img src={rJob.logo_url} alt="Logo" className="w-10 h-10 object-contain rounded bg-gray-50 p-1" />
+                    <img src={rJob.logo_url} alt={rJob.logo_alt?.[lang] || rJob.organization?.[lang] || "Logo"} className="w-10 h-10 object-contain rounded bg-gray-50 p-1" />
                   ) : (
                     <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded flex items-center justify-center font-bold text-lg">
                       {rJob.organization[lang]?.charAt(0) || 'G'}

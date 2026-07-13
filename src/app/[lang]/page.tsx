@@ -180,8 +180,9 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                     isTrending={job.isTrending}
                     daysLeft={job.daysLeft}
                     link={`/${lang}/jobs/${job.slug}`}
-                    lang={lang}
                     logoUrl={job.logo_url}
+                    logoAlt={job.logo_alt?.[lang] || job.organization[lang]}
+                    lang={lang}
                     labels={{
                       trending: dict.home.trending,
                       daysLeft: dict.home.daysLeft,
