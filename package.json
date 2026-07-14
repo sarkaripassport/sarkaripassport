@@ -47,5 +47,9 @@
     "not ie 11",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "overrides": {
+    "uuid": "^11.0.0",
+    "glob": "^11.0.0"
+  }
 }
