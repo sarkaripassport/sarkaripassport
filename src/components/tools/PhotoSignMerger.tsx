@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Upload, Download, Settings, Image as ImageIcon } from "lucide-react";
+import { Upload, Download, Settings, Image as ImageIcon, Layers } from "lucide-react";
 
 export default function PhotoSignMerger() {
   const [photoSrc, setPhotoSrc] = useState<string | null>(null);
@@ -119,110 +119,150 @@ export default function PhotoSignMerger() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="w-full max-w-5xl mx-auto space-y-6">
+      {/* Top Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden flex items-center justify-between">
+        <div className="relative z-10">
+          <h2 className="text-2xl font-extrabold mb-1">Photo + Signature Merger</h2>
+          <p className="text-blue-100 font-medium">Merge your passport photo and signature into a single file instantly.</p>
+        </div>
+        <ImageIcon className="w-24 h-24 text-white/10 absolute -right-4 -bottom-4 transform rotate-12" />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
         {/* Photo Upload */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
-            <ImageIcon className="w-5 h-5 text-blue-600" /> 1. Upload Photo
+        <div className="bg-white/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white/80 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+          <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">1</span> 
+            Upload Photo
           </h2>
-          <label className="border-2 border-dashed border-blue-200 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50/50 transition-colors bg-gray-50/50 h-[250px]">
-            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(e, 'photo')} />
-            {photoSrc ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={photoSrc} alt="Photo" className="max-w-full max-h-[200px] object-contain rounded-lg shadow-sm" />
-            ) : (
-              <>
-                <Upload className="w-8 h-8 text-blue-600 mb-3" />
-                <p className="font-semibold text-[#0B1B3D]">Select Passport Photo</p>
-              </>
-            )}
-          </label>
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+            <label className="relative flex flex-col items-center justify-center w-full h-[250px] border-2 border-dashed border-blue-300 rounded-2xl cursor-pointer bg-white/50 hover:bg-blue-50/50 transition-all duration-300 group-hover:border-blue-500 overflow-hidden">
+              <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(e, 'photo')} />
+              {photoSrc ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={photoSrc} alt="Photo" className="max-w-full h-full object-contain p-2" />
+              ) : (
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-3 shadow-sm transform group-hover:scale-110 transition-transform duration-300">
+                    <Upload className="w-6 h-6" />
+                  </div>
+                  <p className="font-bold text-[#0B1B3D] text-sm mb-1">Select Passport Photo</p>
+                  <p className="text-xs text-gray-500">JPG, PNG</p>
+                </div>
+              )}
+            </label>
+          </div>
         </div>
 
         {/* Signature Upload */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
-            <ImageIcon className="w-5 h-5 text-blue-600" /> 2. Upload Signature
+        <div className="bg-white/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white/80 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+          <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
+            <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">2</span> 
+            Upload Signature
           </h2>
-          <label className="border-2 border-dashed border-blue-200 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50/50 transition-colors bg-gray-50/50 h-[250px]">
-            <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(e, 'sign')} />
-            {signSrc ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={signSrc} alt="Signature" className="max-w-full max-h-[200px] object-contain rounded-lg shadow-sm" />
-            ) : (
-              <>
-                <Upload className="w-8 h-8 text-blue-600 mb-3" />
-                <p className="font-semibold text-[#0B1B3D]">Select Signature Image</p>
-              </>
-            )}
-          </label>
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-400 to-purple-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+            <label className="relative flex flex-col items-center justify-center w-full h-[250px] border-2 border-dashed border-indigo-300 rounded-2xl cursor-pointer bg-white/50 hover:bg-indigo-50/50 transition-all duration-300 group-hover:border-indigo-500 overflow-hidden">
+              <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(e, 'sign')} />
+              {signSrc ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={signSrc} alt="Signature" className="max-w-full h-full object-contain p-2" />
+              ) : (
+                <div className="flex flex-col items-center text-center p-4">
+                  <div className="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mb-3 shadow-sm transform group-hover:scale-110 transition-transform duration-300">
+                    <Upload className="w-6 h-6" />
+                  </div>
+                  <p className="font-bold text-[#0B1B3D] text-sm mb-1">Select Signature</p>
+                  <p className="text-xs text-gray-500">JPG, PNG</p>
+                </div>
+              )}
+            </label>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
-            <Settings className="w-5 h-5 text-blue-600" /> Settings & Process
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="bg-white/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white/80 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+          <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 flex items-center gap-2">
+            <Settings className="w-4 h-4 text-blue-600" /> Settings & Process
           </h2>
           
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1">Final Width (px)</label>
-              <input type="number" value={targetWidth} onChange={e => setTargetWidth(Number(e.target.value))} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
-              <p className="text-xs text-gray-500 mt-1">The signature will be scaled to match this width and placed below the photo.</p>
+          <div className="space-y-6">
+            <div className="relative group/input">
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Final Width (px)</label>
+              <input type="number" value={targetWidth} onChange={e => setTargetWidth(Number(e.target.value))} className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm font-semibold text-[#0B1B3D]" />
+              <p className="text-xs text-gray-500 mt-2 font-medium">The signature will be scaled to match this width and placed seamlessly below the photo.</p>
             </div>
 
-            <div>
-              <label className="block text-sm font-bold text-gray-700 mb-1">Max File Size (KB)</label>
-              <input type="number" value={targetSizeKb} onChange={e => setTargetSizeKb(Number(e.target.value))} className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" />
+            <div className="relative group/input">
+              <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Max File Size (KB)</label>
+              <div className="relative">
+                <input type="number" value={targetSizeKb} onChange={e => setTargetSizeKb(Number(e.target.value))} className="w-full px-4 py-3 bg-white/50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all shadow-sm font-semibold text-[#0B1B3D]" />
+                <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                  <span className="text-gray-400 font-bold">KB</span>
+                </div>
+              </div>
             </div>
 
             <button 
               onClick={processImages} 
               disabled={!photoSrc || !signSrc || processing}
-              className="w-full py-3 bg-[#0A58CA] text-white font-bold rounded-xl hover:bg-blue-700 transition disabled:opacity-50 mt-4 shadow-md"
+              className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-extrabold text-lg rounded-xl hover:shadow-[0_8px_25px_rgba(37,99,235,0.4)] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none mt-4 relative overflow-hidden group"
             >
-              {processing ? "Processing..." : "Merge Photo & Signature"}
+              <div className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12"></div>
+              {processing ? (
+                <span className="flex items-center justify-center gap-2"><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Merging...</span>
+              ) : "Merge Photo & Signature"}
             </button>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center min-h-[300px]">
-          <h2 className="text-xl font-bold text-[#0B1B3D] mb-4 flex items-center gap-2 self-start w-full border-b pb-2">
-            <Download className="w-5 h-5 text-green-600" /> Merged Result
+        {/* Result Section */}
+        <div className="bg-gray-900 p-6 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-gray-800 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden group">
+          <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          
+          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2 self-start w-full border-b border-gray-800 pb-3 relative z-10">
+            <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+              <Download className="w-4 h-4 text-green-400" />
+            </div>
+             Merged Result
           </h2>
           
           <canvas ref={canvasRef} className="hidden" />
           
           {resultUrl ? (
-            <div className="flex flex-col items-center w-full">
-              <div className="p-2 border border-gray-200 rounded-lg bg-gray-50 mb-4 shadow-inner max-w-full overflow-hidden flex justify-center">
+            <div className="flex flex-col items-center relative z-10 animate-in zoom-in-95 duration-500 w-full">
+              <div className="p-3 bg-gray-800 rounded-2xl shadow-2xl mb-6 border border-gray-700 transform transition-transform hover:scale-105 duration-300 w-full flex justify-center overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={resultUrl} alt="Result" className="max-w-[250px] object-contain border border-gray-300" />
+                <img src={resultUrl} alt="Result" className="max-w-[250px] object-contain rounded-lg" />
               </div>
               
-              <div className="flex items-center gap-3 mb-4">
-                <span className={`px-3 py-1 rounded-full text-sm font-bold ${resultSize / 1024 <= targetSizeKb ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                  {(resultSize / 1024).toFixed(1)} KB
+              <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+                <span className={`px-4 py-1.5 rounded-full text-sm font-bold border ${resultSize / 1024 <= targetSizeKb ? 'bg-green-500/10 text-green-400 border-green-500/20 shadow-[0_0_15px_rgba(74,222,128,0.1)]' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                  {resultSize / 1024 <= targetSizeKb ? '✅ Size:' : '⚠️ Size:'} {(resultSize / 1024).toFixed(1)} KB
                 </span>
-                <span className="px-3 py-1 rounded-full text-sm font-bold bg-blue-100 text-blue-700">
+                <span className="px-4 py-1.5 rounded-full text-sm font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                   {targetWidth}px wide
                 </span>
               </div>
               
               <a 
                 href={resultUrl} 
-                download="photo_with_signature.jpg"
-                className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition shadow-md"
+                download={`govjobwala_merged_${(resultSize/1024).toFixed(0)}kb.jpg`}
+                className="flex items-center justify-center gap-2 px-8 py-4 bg-green-500 text-gray-900 font-extrabold text-lg rounded-xl hover:bg-green-400 hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] transition-all duration-300 hover:-translate-y-1 w-full sm:w-auto"
               >
-                <Download className="w-5 h-5" /> Download File
+                <Download className="w-6 h-6" /> Download Merged File
               </a>
             </div>
           ) : (
-            <div className="text-center text-gray-400">
-              <ImageIcon className="w-16 h-16 mx-auto mb-2 opacity-30" />
-              <p>Your merged image will appear here</p>
+            <div className="text-center text-gray-500 relative z-10 flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full bg-gray-800 flex items-center justify-center mb-4 border border-gray-700 group-hover:border-gray-600 transition-colors">
+                <Layers className="w-10 h-10 text-gray-600 group-hover:text-gray-400 transition-colors" />
+              </div>
+              <p className="font-medium text-lg text-gray-400">Ready to Merge...</p>
+              <p className="text-sm text-gray-600 mt-2 max-w-[250px]">Upload both images to generate the combined result.</p>
             </div>
           )}
         </div>

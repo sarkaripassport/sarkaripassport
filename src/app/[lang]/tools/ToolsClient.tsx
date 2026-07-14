@@ -33,26 +33,25 @@ export default function ToolsClient({ lang, dict }: { lang: string, dict: any })
   ];
 
   return (
-    <div className="flex flex-col md:flex-row gap-8">
-      {/* Sidebar Tabs */}
-      <div className="w-full md:w-64 flex-shrink-0">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-3 sticky top-24">
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-3">Available Tools</h3>
-          <nav className="space-y-1">
+    <div className="flex flex-col gap-8">
+      {/* Horizontal Scrollable Tabs */}
+      <div className="w-full">
+        <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-sm border border-white/40 p-2 overflow-x-auto custom-scrollbar">
+          <nav className="flex space-x-2 min-w-max">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => handleTabChange(tab.id)}
-                className={`w-full flex items-center gap-3 px-3 py-3 rounded-xl transition-all text-left ${
+                className={`flex items-center gap-3 px-5 py-3 rounded-xl transition-all duration-300 transform outline-none ${
                   activeTab === tab.id 
-                  ? "bg-blue-50 text-blue-700 font-bold shadow-sm" 
-                  : "text-gray-600 hover:bg-gray-50 hover:text-[#0B1B3D] font-medium"
+                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_8px_20px_rgba(37,99,235,0.25)] -translate-y-0.5 scale-[1.02]" 
+                  : "bg-transparent text-gray-600 hover:bg-white/80 hover:text-blue-600 hover:shadow-sm"
                 }`}
               >
-                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? 'text-blue-600' : 'text-gray-400'}`} />
-                <div>
-                  <div className="text-sm">{tab.label}</div>
-                  <div className={`text-xs ${activeTab === tab.id ? 'text-blue-500' : 'text-gray-400 font-normal'}`}>
+                <tab.icon className={`w-5 h-5 transition-colors ${activeTab === tab.id ? 'text-white' : 'text-gray-400 group-hover:text-blue-500'}`} />
+                <div className="text-left">
+                  <div className={`text-sm font-bold ${activeTab === tab.id ? 'text-white' : ''}`}>{tab.label}</div>
+                  <div className={`text-xs ${activeTab === tab.id ? 'text-blue-100' : 'text-gray-400 font-medium'}`}>
                     {tab.desc}
                   </div>
                 </div>
@@ -63,12 +62,14 @@ export default function ToolsClient({ lang, dict }: { lang: string, dict: any })
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 min-w-0">
-        {activeTab === "resizer" && <ImageResizer />}
-        {activeTab === "merger" && <PhotoSignMerger />}
-        {activeTab === "signature" && <SignatureGenerator />}
-        {activeTab === "img-to-pdf" && <ImageToPdf />}
-        {activeTab === "merge-pdf" && <MergePdf />}
+      <div className="flex-1 w-full relative z-0">
+        <div className="transition-all duration-500 ease-out animate-in fade-in slide-in-from-bottom-4">
+          {activeTab === "resizer" && <ImageResizer />}
+          {activeTab === "merger" && <PhotoSignMerger />}
+          {activeTab === "signature" && <SignatureGenerator />}
+          {activeTab === "img-to-pdf" && <ImageToPdf />}
+          {activeTab === "merge-pdf" && <MergePdf />}
+        </div>
       </div>
     </div>
   );

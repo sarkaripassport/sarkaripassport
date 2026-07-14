@@ -1,5 +1,6 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import { getCategoryBySlug, getJobsByCategorySlug, getCategories } from '@/lib/db';
+import { getSeoAlternates } from '@/lib/seo';
 import JobCard from '@/components/JobCard';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -24,8 +25,8 @@ export async function generateMetadata(
 
   const categoryName = category.name[lang as 'en'|'hi'|'mr'] || category.name.en;
 
-  const title = `${categoryName} - Latest Govt Jobs, Results & Updates 2026`;
-  const description = `Find all the latest and upcoming ${categoryName} jobs, admit cards, and results. Check eligibility and apply online.`;
+  const title = category.seo_title?.[lang as 'en'|'hi'|'mr'] || `${categoryName} - Latest Govt Jobs, Results & Updates 2026`;
+  const description = category.seo_description?.[lang as 'en'|'hi'|'mr'] || `Find all the latest and upcoming ${categoryName} jobs, admit cards, and results. Check eligibility and apply online.`;
   const url = `https://govjobwala.com/${lang}/category/${slug}`;
 
   const ogUrl = new URL('https://govjobwala.com/api/og');
@@ -35,14 +36,7 @@ export async function generateMetadata(
   return {
     title,
     description,
-    alternates: {
-      canonical: `/${lang}/category/${slug}`,
-      languages: {
-        'en': `/en/category/${slug}`,
-        'hi': `/hi/category/${slug}`,
-        'mr': `/mr/category/${slug}`
-      }
-    },
+    alternates: getSeoAlternates(lang, `/category/${slug}`),
     openGraph: {
       title,
       description,

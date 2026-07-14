@@ -1,12 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, ChevronDown, Save, Send, Settings, ShieldCheck, PieChart, Info, Image, Type } from "lucide-react";
+import { CheckCircle2, ChevronDown, Save, Send, Settings, ShieldCheck, PieChart, Info, Image, Type, BellRing } from "lucide-react";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 import Link from "next/link";
 
 export default function SmartPublisherPage() {
   const [content, setContent] = useState("<p>Write the job details here...</p>");
+  const [sendPush, setSendPush] = useState(false);
+
+  // Mock publish function for demonstration
+  const handlePublish = async () => {
+    console.log("Publishing job...");
+    if (sendPush) {
+      console.log("Triggering Push Broadcast...");
+      // await fetch('/api/push/broadcast', { method: 'POST', body: JSON.stringify({ title: 'New Job Alert!', body: 'A new job has been published.' }) });
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
@@ -19,7 +29,7 @@ export default function SmartPublisherPage() {
             <button className="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 flex items-center gap-2 shadow-sm">
               <Save className="w-4 h-4" /> Save Draft
             </button>
-            <button className="px-4 py-2 bg-[#0A58CA] text-white font-bold rounded-lg hover:bg-blue-700 flex items-center gap-2 shadow-md">
+            <button onClick={handlePublish} className="px-4 py-2 bg-[#0A58CA] text-white font-bold rounded-lg hover:bg-blue-700 flex items-center gap-2 shadow-md">
               <Send className="w-4 h-4" /> Publish Now
             </button>
           </div>
@@ -65,6 +75,23 @@ export default function SmartPublisherPage() {
       {/* SEO & Settings Sidebar */}
       <div className="w-full lg:w-80 shrink-0 space-y-6">
         
+        {/* Push Notification Toggle */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <BellRing className="w-5 h-5 text-blue-600" />
+            <div>
+              <h3 className="font-bold text-[#0B1B3D] text-sm">Send Push Alert</h3>
+              <p className="text-xs text-gray-500">Notify all subscribers</p>
+            </div>
+          </div>
+          <button 
+            onClick={() => setSendPush(!sendPush)}
+            className={`w-12 h-6 rounded-full transition-colors relative ${sendPush ? 'bg-blue-600' : 'bg-gray-300'}`}
+          >
+            <span className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform ${sendPush ? 'translate-x-6' : 'translate-x-0'}`} />
+          </button>
+        </div>
+
         {/* SEO Score Meter */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="p-4 bg-gradient-to-r from-[#0B1B3D] to-[#0A58CA] text-white flex items-center justify-between">

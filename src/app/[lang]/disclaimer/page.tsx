@@ -1,10 +1,17 @@
 import { AlertTriangle } from "lucide-react";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Disclaimer | GovJobWala",
-  description: "Read the disclaimer for GovJobWala. We are an independent educational portal and not affiliated with any government organization.",
-};
+import { getSeoAlternates } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "Disclaimer | GovJobWala",
+    description: "GovJobWala Disclaimer",
+    alternates: getSeoAlternates(lang, '/disclaimer')
+  };
+}
+
 
 export default function DisclaimerPage() {
   return (

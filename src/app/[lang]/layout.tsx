@@ -11,7 +11,7 @@ import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 import PwaInstallPrompt from "@/components/ui/PwaInstallPrompt";
 
 import PwaRegistry from "@/components/PwaRegistry";
-
+import PushNotificationManager from "@/components/PushNotificationManager";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -36,14 +36,6 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     keywords: (settings.seo.keywords as any)[lang] || settings.seo.keywords.en,
     verification: {
       google: settings.seo.gscVerification || undefined,
-    },
-    alternates: {
-      canonical: `/${lang}`,
-      languages: {
-        'en': '/en',
-        'hi': '/hi',
-        'mr': '/mr'
-      }
     },
     openGraph: {
       title: title,
@@ -117,6 +109,7 @@ export default async function RootLayout({
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
         <WhatsAppFloat />
         <PwaInstallPrompt />
+        <PushNotificationManager />
         <PwaRegistry />
         <Footer lang={resolvedParams.lang || 'en'} />
         

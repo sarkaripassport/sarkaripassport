@@ -1,10 +1,17 @@
 import { Megaphone, Mail, Download, ArrowRight } from "lucide-react";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Press & Media | GovJobWala",
-  description: "Press releases, media kits, and contact information for journalists and media professionals.",
-};
+import { getSeoAlternates } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "Press & Media | GovJobWala",
+    description: "Press and media resources for GovJobWala.",
+    alternates: getSeoAlternates(lang, '/press')
+  };
+}
+
 
 export default function PressPage() {
   return (

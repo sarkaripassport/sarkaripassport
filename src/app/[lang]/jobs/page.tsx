@@ -1,6 +1,16 @@
 import { getJobs, getCategories } from "@/lib/db";
 import JobsClient from "./JobsClient";
 import { getDictionary, Locale } from "@/i18n/getDictionary";
+import { getSeoAlternates } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "Latest Jobs | GovJobWala",
+    alternates: getSeoAlternates(lang, '/jobs')
+  };
+}
 
 export const revalidate = 3600;
 

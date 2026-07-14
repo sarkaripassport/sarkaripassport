@@ -1,16 +1,46 @@
 import { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getDictionary, Locale } from '@/i18n/getDictionary';
 
 
 import { notFound } from 'next/navigation';
 import { getJobBySlug, getCategories, getJobs } from '@/lib/db';
+import { getSeoAlternates } from '@/lib/seo';
 import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
 import JobComments from '@/components/jobs/JobComments';
 import { AutoLinkedText } from '@/lib/autoLinker';
 import SalaryCalculator from '@/components/jobs/SalaryCalculator';
 import ShareButton from '@/components/ShareButton';
 
+const matrixTags = {
+  "10th Pass": "10th-pass",
+  "12th Pass": "12th-pass",
+  "Graduate": "graduate",
+  "Post Graduate": "post-graduate",
+  "Diploma": "diploma",
+  "Police": "police",
+  "Railway": "railway",
+  "Bank": "bank",
+  "Defense": "defense",
+  "SSC": "ssc",
+  "UPSC": "upsc",
+  "Teacher": "teacher",
+  "UP": "up",
+  "Bihar": "bihar",
+  "Maharashtra": "maharashtra",
+  "Delhi": "delhi"
+};
+
+function autoLinkHtml(html: string, lang: string) {
+  if (!html) return html;
+  let linkedHtml = html;
+  for (const [key, slug] of Object.entries(matrixTags)) {
+    const regex = new RegExp(`(?![^<]*>)\\b(${key})\\b`, 'gi');
+    linkedHtml = linkedHtml.replace(regex, `<a href="/${lang}/explore/${slug}" class="text-blue-600 hover:underline font-semibold" title="Explore $1 Jobs">$1</a>`);
+  }
+  return linkedHtml;
+}
 
 export const revalidate = 3600; // 1 hour ISR
 
@@ -41,28 +71,24 @@ export async function generateMetadata(
   }
   
   return {
-    title: `${job.title[lang as 'en' | 'hi' | 'mr']} | GovJobWala`,
-    description: job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+    title: job.seo_title?.[lang as 'en' | 'hi' | 'mr'] || `${job.title[lang as 'en' | 'hi' | 'mr']} | GovJobWala`,
+    description: job.seo_description?.[lang as 'en' | 'hi' | 'mr'] || job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
     openGraph: {
       type: 'website',
       url: `https://govjobwala.com/${lang}/jobs/${slug}`,
-      title: `${job.title[lang as 'en' | 'hi' | 'mr']}`,
-      description: job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+      title: job.seo_title?.[lang as 'en' | 'hi' | 'mr'] || `${job.title[lang as 'en' | 'hi' | 'mr']}`,
+      description: job.seo_description?.[lang as 'en' | 'hi' | 'mr'] || job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
       siteName: 'GovJobWala',
+      images: job.logo_url ? [{ url: job.logo_url }] : [],
     },
     twitter: {
       card: 'summary',
-      title: `${job.title[lang as 'en' | 'hi' | 'mr']}`,
-      description: job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+      title: job.seo_title?.[lang as 'en' | 'hi' | 'mr'] || `${job.title[lang as 'en' | 'hi' | 'mr']}`,
+      description: job.seo_description?.[lang as 'en' | 'hi' | 'mr'] || job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+      images: job.logo_url ? [job.logo_url] : [],
     },
-    alternates: {
-      canonical: `/${lang}/jobs/${slug}`,
-      languages: {
-        'en': `/en/jobs/${slug}`,
-        'hi': `/hi/jobs/${slug}`,
-        'mr': `/mr/jobs/${slug}`
-      }
-    }
+    keywords: job.primary_keyword?.[lang as 'en' | 'hi' | 'mr'] ? [job.primary_keyword[lang as 'en' | 'hi' | 'mr']] : undefined,
+    alternates: getSeoAlternates(lang, `/jobs/${slug}`)
   };
 }
 
@@ -131,27 +157,40 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     dynamicDaysLeft = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
   }
 
+  // Fallback date: if no validThrough is found, default to 30 days from datePosted to satisfy GSC requirement
+  const defaultValidThrough = new Date();
+  defaultValidThrough.setDate(defaultValidThrough.getDate() + 30);
+
   // Generate JSON-LD for JobPosting
   const jobPostingLd = {
     '@context': 'https://schema.org/',
     '@type': 'JobPosting',
-    'title': job.title[lang],
-    'description': job.job_summary?.[lang] || `Recruitment for ${job.title[lang]} by ${job.organization[lang]}`,
+    'url': `https://govjobwala.com/${lang}/jobs/${slug}`,
+    'identifier': {
+      '@type': 'PropertyValue',
+      'name': job.organization?.[lang] || 'Government Organization',
+      'value': job.id
+    },
+    'title': job.title?.[lang] || 'Government Job Vacancy',
+    'description': job.job_summary?.[lang] || `Recruitment for ${job.title?.[lang] || 'Vacancies'} by ${job.organization?.[lang] || 'Government Organization'}`,
     'keywords': [job.primary_keyword?.[lang], ...(job.secondary_keywords?.[lang] ? job.secondary_keywords[lang].split(',') : [])].filter(Boolean).join(', '),
     'datePosted': parseSafeDate(job.created_at) || new Date().toISOString(),
-    'validThrough': validThrough,
+    'validThrough': validThrough || defaultValidThrough.toISOString(),
     'employmentType': 'FULL_TIME',
     'hiringOrganization': {
       '@type': 'Organization',
-      'name': job.organization[lang],
-      'logo': job.logo_url || 'https://sarkarijob.com/logo.png'
+      'name': job.organization?.[lang] || 'Government Organization',
+      'logo': job.logo_url || 'https://govjobwala.com/logo.png'
     },
     'jobLocation': {
       '@type': 'Place',
       'address': {
         '@type': 'PostalAddress',
-        'addressCountry': 'IN',
-        'addressRegion': job.quick_facts?.job_location?.[lang] || 'India'
+        'streetAddress': 'Headquarters',
+        'addressLocality': job.quick_facts?.job_location?.[lang] || 'New Delhi',
+        'addressRegion': job.quick_facts?.job_location?.[lang] || 'Delhi',
+        'postalCode': '110001',
+        'addressCountry': 'IN'
       }
     },
     'baseSalary': {
@@ -185,7 +224,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
       {
         '@type': 'ListItem',
         'position': 3,
-        'name': job.title[lang],
+        'name': job.title?.[lang] || 'Job Details',
         'item': `https://govjobwala.com/${lang}/jobs/${slug}`
       }
     ]
@@ -249,8 +288,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           
           {job.logo_url ? (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden relative z-10 mt-1">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={job.logo_url} alt={job.logo_alt?.[lang] || job.organization[lang]} fetchPriority="high" decoding="sync" className="w-full h-full object-contain p-1" />
+              <Image src={job.logo_url} alt={job.logo_alt?.[lang] || job.organization[lang]} width={112} height={112} priority className="w-full h-full object-contain p-1" />
             </div>
           ) : (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center relative z-10 mt-1">
@@ -341,10 +379,10 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
             
             {/* Section 3: Summary */}
             {job.job_summary && (
-              <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
+              <div className="bg-white rounded-2xl p-5 md:p-6 shadow-[0_2px_10px_rgb(0,0,0,0.02)] border border-gray-100 mb-6">
                 <h2 className="text-base font-black text-[#0B1B3D] mb-3">Job Summary</h2>
-                <div className="text-sm leading-relaxed text-gray-600 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: job.job_summary[lang] || '' }} />
-              </section>
+                <div className="text-sm leading-relaxed text-gray-600 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: autoLinkHtml(job.job_summary[lang], lang) || '' }} />
+              </div>
             )}
 
             

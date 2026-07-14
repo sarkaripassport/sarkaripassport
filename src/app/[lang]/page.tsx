@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import { getJobs, getSettings, getCategories } from "@/lib/db";
+import { getSeoAlternates } from "@/lib/seo";
 import JobCard from "@/components/JobCard";
 import AdvancedSearch from "@/components/AdvancedSearch";
 import CategoryGrid from "@/components/ui/CategoryGrid";
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
     title: settings.seo.title[lang],
     description: settings.seo.description[lang],
     keywords: settings.seo.keywords[lang],
+    alternates: getSeoAlternates(lang, '/'),
   };
 }
 

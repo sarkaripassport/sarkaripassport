@@ -1,10 +1,17 @@
 import { ShieldCheck, Target, Zap, Heart, CheckCircle2 } from "lucide-react";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "About Us | GovJobWala",
-  description: "Learn about GovJobWala - Your trusted companion for government jobs, results, admit cards, and eligibility checking.",
-};
+import { getSeoAlternates } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "About Us | GovJobWala",
+    description: "Learn about GovJobWala - Your trusted companion for government jobs, results, admit cards, and eligibility checking.",
+    alternates: getSeoAlternates(lang, '/about')
+  };
+}
+
 
 export default function AboutPage() {
   return (

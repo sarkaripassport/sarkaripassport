@@ -196,6 +196,8 @@ export interface Category {
   icon: string;
   isTrending: boolean;
   isQuickLink: boolean;
+  seo_title?: LocalizedString;
+  seo_description?: LocalizedString;
 }
 
 export interface Announcement {

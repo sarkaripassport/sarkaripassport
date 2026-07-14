@@ -100,100 +100,125 @@ export default function MergePdf() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <div className="mb-6">
-        <h2 className="text-xl font-black text-[#0B1B3D] mb-2 flex items-center gap-2">
-          <FileText className="w-6 h-6 text-[#0A58CA]" />
-          Merge PDF
-        </h2>
-        <p className="text-sm text-gray-500">
-          Combine multiple PDF files into a single document. Reorder the files as needed. (Max 12 MB per file).
-        </p>
-      </div>
-
-      {error && (
-        <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm font-semibold">
-          {error}
+    <div className="w-full max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+      
+      {/* Top Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-3xl p-6 md:p-8 text-white shadow-lg relative overflow-hidden flex items-center justify-between mb-8">
+        <div className="relative z-10">
+          <h2 className="text-2xl md:text-3xl font-extrabold mb-2">Merge PDF Documents</h2>
+          <p className="text-blue-100 font-medium max-w-lg text-sm md:text-base">Combine multiple PDF files into a single document instantly. Everything is processed locally in your browser.</p>
         </div>
-      )}
-
-      {/* Upload Area */}
-      <div 
-        className="border-2 border-dashed border-gray-300 rounded-xl p-8 mb-8 text-center bg-gray-50 hover:bg-blue-50 hover:border-[#0A58CA] transition-colors cursor-pointer"
-        onClick={() => fileInputRef.current?.click()}
-      >
-        <Upload className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-        <p className="text-gray-700 font-bold mb-1">Click to browse or drag PDFs here</p>
-        <p className="text-xs text-gray-500">Maximum file size: 12 MB</p>
-        <input 
-          type="file" 
-          ref={fileInputRef} 
-          onChange={handleFileUpload} 
-          accept="application/pdf" 
-          multiple 
-          className="hidden" 
-        />
+        <FileText className="w-32 h-32 text-white/10 absolute -right-6 -bottom-6 transform rotate-12" />
       </div>
 
-      {/* PDF List */}
-      {pdfs.length > 0 && (
-        <div className="mb-8">
-          <h3 className="text-sm font-bold text-gray-700 mb-3 border-b pb-2">Selected Files ({pdfs.length})</h3>
-          <div className="flex flex-col gap-3">
-            {pdfs.map((pdf, index) => (
-              <div key={pdf.id} className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                <div className="flex items-center gap-3 overflow-hidden">
-                  <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center shrink-0">
-                    <FileText className="w-4 h-4 text-red-500" />
-                  </div>
-                  <div className="flex flex-col overflow-hidden">
-                    <span className="text-sm font-semibold text-gray-800 truncate">{pdf.file.name}</span>
-                    <span className="text-xs text-gray-500">{(pdf.file.size / 1024 / 1024).toFixed(2)} MB</span>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-2 shrink-0 ml-4">
-                  <div className="flex flex-col">
-                    <button onClick={() => moveUp(index)} disabled={index === 0} className="p-1 text-gray-400 hover:text-blue-600 disabled:opacity-30">
-                      <ArrowUp className="w-4 h-4" />
-                    </button>
-                    <button onClick={() => moveDown(index)} disabled={index === pdfs.length - 1} className="p-1 text-gray-400 hover:text-blue-600 disabled:opacity-30">
-                      <ArrowDown className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="w-px h-8 bg-gray-300 mx-1"></div>
-                  <button onClick={() => removePdf(pdf.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-md">
-                    <Trash2 className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            ))}
+      <div className="bg-white/60 backdrop-blur-xl p-6 md:p-10 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white/80">
+        
+        {error && (
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl text-sm font-semibold flex items-center gap-2">
+            ⚠️ {error}
+          </div>
+        )}
+
+        {/* Upload Area */}
+        <div className="relative group mb-10">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+          <div 
+            className="relative border-2 border-dashed border-blue-300 rounded-3xl p-12 text-center bg-white/50 hover:bg-blue-50/50 transition-all duration-300 cursor-pointer group-hover:border-blue-500 flex flex-col items-center justify-center min-h-[200px]"
+            onClick={() => fileInputRef.current?.click()}
+          >
+            <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 shadow-sm transform group-hover:scale-110 transition-transform duration-300">
+              <Upload className="w-8 h-8" />
+            </div>
+            <p className="text-[#0B1B3D] font-extrabold text-lg mb-2">Click to browse or drag PDFs here</p>
+            <p className="text-sm text-gray-500 font-medium">Max 12MB per file (Select multiple)</p>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleFileUpload} 
+              accept="application/pdf" 
+              multiple 
+              className="hidden" 
+            />
           </div>
         </div>
-      )}
 
-      {/* Actions */}
-      <div className="flex justify-between items-center border-t border-gray-100 pt-6">
-        <button 
-          onClick={() => {
-            setPdfs([]);
-            setError(null);
-          }}
-          disabled={pdfs.length === 0 || isProcessing}
-          className="px-4 py-2 text-gray-600 font-semibold hover:bg-gray-100 rounded-lg transition disabled:opacity-50"
-        >
-          Clear All
-        </button>
-        <button 
-          onClick={generateMergedPdf}
-          disabled={pdfs.length < 2 || isProcessing}
-          className="flex items-center gap-2 bg-[#0A58CA] text-white px-6 py-2.5 rounded-lg font-bold shadow-md hover:bg-blue-700 transition disabled:opacity-50"
-        >
-          {isProcessing ? 'Merging...' : 'Merge PDFs'}
-          {!isProcessing && <ArrowRight className="w-4 h-4" />}
-        </button>
+        {/* PDF List Area */}
+        {pdfs.length > 0 && (
+          <div className="mb-10 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <div className="flex items-center justify-between border-b border-gray-200 pb-4 mb-6">
+              <h3 className="text-lg font-extrabold text-[#0B1B3D] flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs">{pdfs.length}</span>
+                Selected PDFs (Drag or use arrows to reorder)
+              </h3>
+              <button 
+                onClick={() => {
+                  setPdfs([]);
+                  setError(null);
+                }}
+                className="text-sm font-bold text-red-500 hover:text-red-600 hover:bg-red-50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1"
+              >
+                <Trash2 className="w-4 h-4" /> Clear All
+              </button>
+            </div>
+            
+            <div className="space-y-3">
+              {pdfs.map((pdf, index) => (
+                <div key={pdf.id} className="flex items-center justify-between p-4 bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow group">
+                  <div className="flex items-center gap-4 overflow-hidden">
+                    <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 text-red-500" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="font-bold text-gray-800 truncate">{pdf.file.name}</span>
+                      <span className="text-xs font-semibold text-gray-500">{(pdf.file.size / (1024 * 1024)).toFixed(2)} MB</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-1">
+                    <button 
+                      onClick={() => moveUp(index)}
+                      disabled={index === 0}
+                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-gray-400"
+                    >
+                      <ArrowUp className="w-5 h-5" />
+                    </button>
+                    <button 
+                      onClick={() => moveDown(index)}
+                      disabled={index === pdfs.length - 1}
+                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-gray-400"
+                    >
+                      <ArrowDown className="w-5 h-5" />
+                    </button>
+                    <div className="w-px h-6 bg-gray-200 mx-1"></div>
+                    <button 
+                      onClick={() => removePdf(pdf.id)}
+                      className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Actions */}
+        {pdfs.length > 0 && (
+          <button 
+            onClick={generateMergedPdf}
+            disabled={pdfs.length < 2 || isProcessing}
+            className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-extrabold text-lg rounded-xl hover:shadow-[0_8px_25px_rgba(37,99,235,0.4)] hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-none relative overflow-hidden group flex items-center justify-center gap-2"
+          >
+            <div className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out skew-x-12"></div>
+            {isProcessing ? (
+              <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Merging PDFs...</>
+            ) : (
+              <>Merge {pdfs.length} PDFs <ArrowRight className="w-5 h-5" /></>
+            )}
+          </button>
+        )}
       </div>
-
     </div>
   );
 }

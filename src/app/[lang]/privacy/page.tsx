@@ -1,10 +1,17 @@
 import { ShieldCheck } from "lucide-react";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | GovJobWala",
-  description: "Read our Privacy Policy to understand how GovJobWala collects, uses, and protects your personal information.",
-};
+import { getSeoAlternates } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "Privacy Policy | GovJobWala",
+    description: "GovJobWala Privacy Policy",
+    alternates: getSeoAlternates(lang, '/privacy')
+  };
+}
+
 
 export default function PrivacyPolicyPage() {
   return (

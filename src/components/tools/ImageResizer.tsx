@@ -109,49 +109,56 @@ export default function ImageResizer() {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <h2 className="text-xl font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
-          <ImageIcon className="w-5 h-5 text-blue-600" /> Upload Original Image
-        </h2>
-        
-        <label className="border-2 border-dashed border-blue-200 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50/50 transition-colors bg-gray-50/50">
-          <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
-          {imageSrc ? (
-            <div className="relative w-40 h-40">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={imageSrc} alt="Preview" className="w-full h-full object-contain rounded-lg shadow-sm" />
-            </div>
-          ) : (
-            <>
-              <div className="w-12 h-12 bg-white rounded-full shadow-sm flex items-center justify-center mb-3">
-                <Upload className="w-6 h-6 text-blue-600" />
-              </div>
-              <p className="font-semibold text-[#0B1B3D]">Click to upload photo</p>
-              <p className="text-sm text-gray-500 mt-1">JPG, PNG, WEBP allowed</p>
-            </>
-          )}
-        </label>
+    <div className="w-full max-w-5xl mx-auto space-y-6">
+      {/* Top Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden flex items-center justify-between">
+        <div className="relative z-10">
+          <h2 className="text-2xl font-extrabold mb-1">Image Resizer & Compressor</h2>
+          <p className="text-blue-100 font-medium">Resize your photo to exact pixel/cm dimensions and compress file size instantly.</p>
+        </div>
+        <ImageIcon className="w-24 h-24 text-white/10 absolute -right-4 -bottom-4 transform rotate-12" />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <h2 className="text-xl font-bold text-[#0B1B3D] mb-4 flex items-center gap-2">
-            <Settings className="w-5 h-5 text-blue-600" /> Job Requirements
-          </h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        
+        {/* Controls Section */}
+        <div className="bg-white/60 backdrop-blur-xl p-6 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-white/80 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+          
+          {/* Upload Area */}
+          <div className="mb-8">
+            <label className="block text-sm font-bold text-[#0B1B3D] mb-3">Upload Photo</label>
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+              <label className="relative flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-blue-300 rounded-2xl cursor-pointer bg-white/50 hover:bg-blue-50/50 transition-all duration-300 group-hover:border-blue-500 overflow-hidden">
+                {imageSrc ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={imageSrc} alt="Preview" className="w-full h-full object-contain p-2" />
+                ) : (
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+                    <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-3 shadow-sm transform group-hover:scale-110 transition-transform duration-300">
+                      <Upload className="w-6 h-6" />
+                    </div>
+                    <p className="mb-1 text-sm font-bold text-gray-700"><span className="text-blue-600">Click to upload</span> or drag and drop</p>
+                    <p className="text-xs text-gray-500">JPG, PNG (Max 5MB)</p>
+                  </div>
+                )}
+                <input type="file" className="hidden" accept="image/*" onChange={handleImageUpload} />
+              </label>
+            </div>
+          </div>
           
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-bold text-gray-700 mb-1">Measurement Unit</label>
-              <div className="flex bg-gray-100 p-1 rounded-lg">
+              <div className="flex bg-gray-200/50 p-1 rounded-xl">
                 <button 
-                  className={`flex-1 py-1.5 text-sm font-semibold rounded-md transition-all ${unit === 'px' ? 'bg-white shadow text-[#0B1B3D]' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${unit === 'px' ? 'bg-white shadow-sm text-[#0B1B3D]' : 'text-gray-500 hover:text-gray-700'}`}
                   onClick={() => { setUnit('px'); setWidth(350); setHeight(450); }}
                 >
                   Pixels (px)
                 </button>
                 <button 
-                  className={`flex-1 py-1.5 text-sm font-semibold rounded-md transition-all ${unit === 'cm' ? 'bg-white shadow text-[#0B1B3D]' : 'text-gray-500 hover:text-gray-700'}`}
+                  className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${unit === 'cm' ? 'bg-white shadow-sm text-[#0B1B3D]' : 'text-gray-500 hover:text-gray-700'}`}
                   onClick={() => { setUnit('cm'); setWidth(3.5); setHeight(4.5); }}
                 >
                   Centimeters (cm)
@@ -198,41 +205,51 @@ export default function ImageResizer() {
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center min-h-[300px]">
-          <h2 className="text-xl font-bold text-[#0B1B3D] mb-4 flex items-center gap-2 self-start w-full border-b pb-2">
-            <Download className="w-5 h-5 text-green-600" /> Result
+        {/* Result Section */}
+        <div className="bg-gray-900 p-6 md:p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-gray-800 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden group">
+          {/* Subtle grid background for the dark pane */}
+          <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          
+          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2 self-start w-full border-b border-gray-800 pb-3 relative z-10">
+            <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+              <Download className="w-4 h-4 text-green-400" />
+            </div>
+             Generated Result
           </h2>
           
           <canvas ref={canvasRef} className="hidden" />
           
           {resultUrl ? (
-            <div className="flex flex-col items-center">
-              <div className="p-2 border border-gray-200 rounded-lg bg-gray-50 mb-4 inline-block shadow-inner">
+            <div className="flex flex-col items-center relative z-10 animate-in zoom-in-95 duration-500">
+              <div className="p-3 bg-gray-800 rounded-2xl shadow-2xl mb-6 border border-gray-700 transform transition-transform hover:scale-105 duration-300">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={resultUrl} alt="Result" className="max-w-full max-h-[250px] object-contain" />
+                <img src={resultUrl} alt="Result" className="max-w-full max-h-[250px] object-contain rounded-lg" />
               </div>
               
-              <div className="flex items-center gap-3 mb-4">
-                <span className={`px-3 py-1 rounded-full text-sm font-bold ${resultSize / 1024 <= targetSizeKb ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
-                  Final Size: {(resultSize / 1024).toFixed(1)} KB
+              <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
+                <span className={`px-4 py-1.5 rounded-full text-sm font-bold border ${resultSize / 1024 <= targetSizeKb ? 'bg-green-500/10 text-green-400 border-green-500/20 shadow-[0_0_15px_rgba(74,222,128,0.1)]' : 'bg-red-500/10 text-red-400 border-red-500/20'}`}>
+                  {resultSize / 1024 <= targetSizeKb ? '✅ Size:' : '⚠️ Size:'} {(resultSize / 1024).toFixed(1)} KB
                 </span>
-                <span className="px-3 py-1 rounded-full text-sm font-bold bg-blue-100 text-blue-700">
+                <span className="px-4 py-1.5 rounded-full text-sm font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
                   {calculateDimensions().finalWidth} x {calculateDimensions().finalHeight} px
                 </span>
               </div>
               
               <a 
                 href={resultUrl} 
-                download="resized_photo.jpg"
-                className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white font-bold rounded-xl hover:bg-green-700 transition shadow-md"
+                download={`govjobwala_photo_${(resultSize/1024).toFixed(0)}kb.jpg`}
+                className="flex items-center gap-2 px-8 py-4 bg-green-500 text-gray-900 font-extrabold text-lg rounded-xl hover:bg-green-400 hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] transition-all duration-300 hover:-translate-y-1"
               >
-                <Download className="w-5 h-5" /> Download Ready File
+                <Download className="w-6 h-6" /> Download Ready File
               </a>
             </div>
           ) : (
-            <div className="text-center text-gray-400">
-              <ImageIcon className="w-16 h-16 mx-auto mb-2 opacity-30" />
-              <p>Your resized image will appear here</p>
+            <div className="text-center text-gray-500 relative z-10 flex flex-col items-center">
+              <div className="w-24 h-24 rounded-full bg-gray-800 flex items-center justify-center mb-4 border border-gray-700 group-hover:border-gray-600 transition-colors">
+                <ImageIcon className="w-10 h-10 text-gray-600 group-hover:text-gray-400 transition-colors" />
+              </div>
+              <p className="font-medium text-lg text-gray-400">Awaiting Image...</p>
+              <p className="text-sm text-gray-600 mt-2 max-w-[250px]">Upload and resize an image to see the processed preview here.</p>
             </div>
           )}
         </div>

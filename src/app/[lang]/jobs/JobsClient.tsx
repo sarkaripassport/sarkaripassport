@@ -24,19 +24,13 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
 
   // Pagination
   const ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_JOBS_PER_PAGE) || 12;
-  const [currentPage, setCurrentPage] = useState(1);
+  const currentPage = Number(searchParams.get("page")) || 1;
 
   // Update state if URL changes externally
   useEffect(() => {
     setSearchQuery(searchParams.get("q") || "");
     setSelectedCategory(searchParams.get("cat") || "all");
-    setCurrentPage(1); // Reset page on external filter change
   }, [searchParams]);
-
-  // Reset page to 1 when filters change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, selectedCategory, selectedQual, selectedState, selectedType, sortBy]);
 
   const handleCategorySelect = (slug: string) => {
     setSelectedCategory(slug);
@@ -364,23 +358,37 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
             {/* Pagination Controls */}
             {totalPages > 1 && (
               <div className="flex items-center justify-between bg-white px-4 py-3 border border-gray-200 rounded-xl mt-6 shadow-sm">
-                <button
-                  onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md disabled:opacity-50 text-[#0B1B3D] hover:bg-gray-50 transition-colors"
-                >
-                  Previous
-                </button>
+                {currentPage > 1 ? (
+                  <Link
+                    href={`/${lang}/jobs?${new URLSearchParams({ ...Object.fromEntries(searchParams.entries()), page: String(Math.max(1, currentPage - 1)) }).toString()}`}
+                    scroll={false}
+                    className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md text-[#0B1B3D] hover:bg-gray-50 transition-colors"
+                  >
+                    Previous
+                  </Link>
+                ) : (
+                  <button disabled className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md disabled:opacity-50 text-[#0B1B3D]">
+                    Previous
+                  </button>
+                )}
+                
                 <span className="text-sm font-bold text-gray-500">
                   Page <span className="text-[#0A58CA]">{currentPage}</span> of {totalPages}
                 </span>
-                <button
-                  onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                  disabled={currentPage === totalPages}
-                  className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md disabled:opacity-50 text-[#0B1B3D] hover:bg-gray-50 transition-colors"
-                >
-                  Next
-                </button>
+
+                {currentPage < totalPages ? (
+                  <Link
+                    href={`/${lang}/jobs?${new URLSearchParams({ ...Object.fromEntries(searchParams.entries()), page: String(Math.min(totalPages, currentPage + 1)) }).toString()}`}
+                    scroll={false}
+                    className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md text-[#0B1B3D] hover:bg-gray-50 transition-colors"
+                  >
+                    Next
+                  </Link>
+                ) : (
+                  <button disabled className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md disabled:opacity-50 text-[#0B1B3D]">
+                    Next
+                  </button>
+                )}
               </div>
             )}
             

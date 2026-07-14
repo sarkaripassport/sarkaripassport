@@ -1,4 +1,5 @@
 import { getJobs, getSettings, getCategories } from "@/lib/db";
+import { getSeoAlternates } from "@/lib/seo";
 import JobsClient from "@/app/[lang]/jobs/JobsClient";
 import type { Metadata } from "next";
 import { getDictionary, Locale } from "@/i18n/getDictionary";
@@ -16,14 +17,7 @@ export async function generateMetadata({ params }: { params: { lang: Locale } })
     title: pageData.seo.title[lang],
     description: pageData.seo.description[lang],
     keywords: pageData.seo.keywords[lang],
-    alternates: {
-      canonical: `/${lang}/admit-card`,
-      languages: {
-        'en': '/en/admit-card',
-        'hi': '/hi/admit-card',
-        'mr': '/mr/admit-card'
-      }
-    }
+    alternates: getSeoAlternates(lang, '/admit-card')
   };
 }
 

@@ -1,10 +1,17 @@
 import { Briefcase, MapPin, Users, Rocket, Coffee, GraduationCap } from "lucide-react";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Careers | GovJobWala",
-  description: "Join the GovJobWala team and help millions of Indians achieve their government job dreams.",
-};
+import { getSeoAlternates } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "Careers | GovJobWala",
+    description: "Join the GovJobWala team.",
+    alternates: getSeoAlternates(lang, '/careers')
+  };
+}
+
 
 export default function CareersPage() {
   return (

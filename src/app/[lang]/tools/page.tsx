@@ -1,6 +1,7 @@
 import { getDictionary } from "@/i18n/getDictionary";
 import { Metadata } from "next";
 import ToolsClient from "./ToolsClient";
+import { getSeoAlternates } from "@/lib/seo";
 
 import { getSettings } from "@/lib/db";
 
@@ -21,6 +22,7 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: s
     title: (dict as any).seo?.toolsTitle || "Online Tools for Govt Jobs - Resize Photo, Sign, Merge PDF",
     description: (dict as any).seo?.toolsDesc || "Free online tools to resize passport photos, compress PDFs, merge signature and photos for government job application forms. 100% free and secure.",
     keywords: ["image resizer", "photo and signature merge", "compress pdf", "online signature generator", "sarkari job tools"],
+    alternates: getSeoAlternates(lang, '/tools')
   };
 }
 
@@ -33,21 +35,27 @@ export default async function ToolsPage({ params: { lang } }: { params: { lang: 
   const subtitle = (toolsData?.hero?.subtitle as any)?.[lang] || toolsData?.hero?.subtitle?.en || "100% Free, Secure, and Instant. Process your photos and documents directly in your browser. No files are uploaded to our servers!";
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-50 via-white to-blue-50 py-12 relative overflow-hidden">
+      {/* Decorative background shapes */}
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-100/40 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/3 mix-blend-multiply pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-indigo-100/40 rounded-full blur-3xl opacity-50 translate-y-1/3 -translate-x-1/4 mix-blend-multiply pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
-        <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-[#0B1B3D] mb-4">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-indigo-700 mb-5 tracking-tight">
             {h1}
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto font-medium leading-relaxed">
             {subtitle}
           </p>
         </div>
 
         {/* Tools Client (Tabs & Dynamic Loading) */}
-        <ToolsClient lang={lang} dict={dict} />
+        <div className="bg-white/40 backdrop-blur-2xl rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white/60 p-4 md:p-8">
+          <ToolsClient lang={lang} dict={dict} />
+        </div>
         
       </div>
     </div>

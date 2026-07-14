@@ -1,12 +1,18 @@
 import ComingSoon from '@/components/ui/ComingSoon';
 import type { Metadata } from 'next';
+import { getDictionary, Locale } from "@/i18n/getDictionary";
+import { getSeoAlternates } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: 'Admissions | Coming Soon',
-  description: 'University and college admissions updates across India.',
-};
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "Admission | GovJobWala",
+    alternates: getSeoAlternates(lang, '/admission')
+  };
+}
 
-export default function AdmissionPage() {
+export default async function AdmissionPage({ params }: { params: Promise<{ lang: Locale }> }) {
   return (
     <ComingSoon 
       title="University Admissions" 

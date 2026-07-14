@@ -1,11 +1,18 @@
 import { Mail, MapPin, Send, MessageSquare, Phone } from "lucide-react";
-import type { Metadata } from "next";
 import ContactForm from "@/components/ui/ContactForm";
 
-export const metadata: Metadata = {
-  title: "Contact Us | GovJobWala",
-  description: "Get in touch with the GovJobWala team. We are here to help you with government job queries, feedback, and support.",
-};
+import { getSeoAlternates } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "Contact Us | GovJobWala",
+    description: "Get in touch with GovJobWala team.",
+    alternates: getSeoAlternates(lang, '/contact')
+  };
+}
+
 
 export default function ContactPage() {
   return (

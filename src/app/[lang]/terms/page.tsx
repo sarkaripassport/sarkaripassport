@@ -1,10 +1,17 @@
 import { FileText } from "lucide-react";
-import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Terms & Conditions | GovJobWala",
-  description: "Read the terms and conditions for using GovJobWala.",
-};
+import { getSeoAlternates } from "@/lib/seo";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
+  return {
+    title: "Terms of Service | GovJobWala",
+    description: "GovJobWala Terms of Service",
+    alternates: getSeoAlternates(lang, '/terms')
+  };
+}
+
 
 export default function TermsPage() {
   return (
