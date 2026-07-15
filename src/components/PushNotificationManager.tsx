@@ -28,6 +28,11 @@ export default function PushNotificationManager() {
   const handleSubscribe = async () => {
     try {
       const token = await requestFirebaseNotificationPermission();
+      
+      // Hide our custom prompt once the browser native permission is resolved
+      setShowPrompt(false);
+      localStorage.setItem('push_prompt_dismissed', 'true');
+
       if (token) {
         // Send token to our backend to subscribe to 'all_jobs' topic
         const res = await fetch('/api/push/subscribe', {
@@ -39,13 +44,13 @@ export default function PushNotificationManager() {
         });
         
         if (res.ok) {
-          setShowPrompt(false);
           // Store that they are subscribed so we don't bother them again
           localStorage.setItem('push_subscribed', 'true');
         }
       }
     } catch (error) {
       console.error('Subscription failed', error);
+      setShowPrompt(false);
     }
   };
 
