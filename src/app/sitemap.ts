@@ -8,12 +8,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getCategories()
   ]);
 
-  // Helper to generate alternates for a specific path
   const getAlternates = (path: string) => ({
     languages: {
       'en': `${BASE_URL}/en${path}`,
       'hi': `${BASE_URL}/hi${path}`,
       'mr': `${BASE_URL}/mr${path}`,
+      'x-default': `${BASE_URL}/en${path}`,
     }
   });
 

@@ -10,6 +10,7 @@ export function getSeoAlternates(lang: string, path: string) {
       'en': `${BASE_URL}/en${cleanPath}`,
       'hi': `${BASE_URL}/hi${cleanPath}`,
       'mr': `${BASE_URL}/mr${cleanPath}`,
+      'x-default': `${BASE_URL}/en${cleanPath}`,
     }
   };
 }

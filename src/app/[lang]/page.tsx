@@ -174,6 +174,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                     key={job.id} 
                     title={job.title[lang]}
                     org={job.organization[lang]}
+                    qual={job.quick_facts?.qualification?.[lang] || '-'}
                     vac={job.quick_facts?.vacancies || '-'}
                     date={job.quick_facts?.last_date[lang] || '-'}
                     status={job.status}
