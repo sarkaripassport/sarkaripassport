@@ -8,10 +8,10 @@ import { getSettings } from "@/lib/db";
 import Script from "next/script";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
-import PwaInstallPrompt from "@/components/ui/PwaInstallPrompt";
-
-import PwaRegistry from "@/components/PwaRegistry";
-import PushNotificationManager from "@/components/PushNotificationManager";
+import dynamic from "next/dynamic";
+const PwaInstallPrompt = dynamic(() => import("@/components/ui/PwaInstallPrompt"), { ssr: false });
+const PwaRegistry = dynamic(() => import("@/components/PwaRegistry"), { ssr: false });
+const PushNotificationManager = dynamic(() => import("@/components/PushNotificationManager"), { ssr: false });
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
