@@ -1,9 +1,30 @@
 import { NextResponse } from 'next/server';
 import { adminMessaging } from '@/lib/firebaseAdmin';
 
+import { createServerClient } from '@supabase/ssr'
+import { cookies } from 'next/headers'
+
 export async function POST(req: Request) {
   try {
-    // In a real production app, verify an admin API key or Supabase Admin JWT here
+    const cookieStore = await cookies()
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value
+          },
+        },
+      }
+    )
+
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized. Admin access required.' }, { status: 401 });
+    }
+
     const { title, body, url } = await req.json();
 
     if (!title) {
