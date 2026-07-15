@@ -147,17 +147,24 @@ function EditorContent() {
       if (res.ok) {
         if (sendPush && dataToSave.status !== 'Draft') {
           try {
-            await fetch('/api/push/broadcast', {
+            const pushRes = await fetch('/api/push/broadcast', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
                 title: 'New Update: ' + (dataToSave.title?.['en'] || 'Sarkari Job'),
                 body: (dataToSave.job_summary?.['en'] || '').replace(/<[^>]+>/g, '').substring(0, 100) + '...',
-                url: `https://sarkaripassport.com/en/jobs/${dataToSave.slug}`
+                url: `https://govjobwala.com/en/jobs/${dataToSave.slug}`
               })
             });
-          } catch (err) {
+            
+            if (!pushRes.ok) {
+              const errData = await pushRes.json();
+              console.error('Push broadcast failed:', errData);
+              alert(`Job published, but Push Notification failed: ${errData.error || 'Unknown error'}`);
+            }
+          } catch (err: any) {
             console.error('Push error:', err);
+            alert(`Job published, but Push Notification failed: ${err.message}`);
           }
         }
         alert(`Job ${overrideStatus === 'Draft' ? 'Saved to Drafts' : editId ? 'Updated' : 'Published'} Successfully!`);
