@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense, useState, useEffect } from 'react';
-import { Eye, Save, LayoutTemplate, Plus, Trash2, ArrowUp, ArrowDown, HelpCircle, FileText, CheckCircle, Smartphone, Monitor, Globe, Search, Link as LinkIcon } from 'lucide-react';
+import { Eye, Save, LayoutTemplate, Plus, Trash2, ArrowUp, ArrowDown, HelpCircle, FileText, CheckCircle, Smartphone, Monitor, Globe, Search, Link as LinkIcon, BellRing } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import SeoMatrixWidget from '@/components/admin/SeoMatrixWidget';
 import SalaryCalcWidget from '@/components/admin/SalaryCalcWidget';
@@ -109,6 +109,7 @@ function EditorContent() {
   const [activeTab, setActiveTab] = useState('general');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [sendPush, setSendPush] = useState(false);
 
   useEffect(() => {
     const fetchId = editId || cloneId;
@@ -129,24 +130,44 @@ function EditorContent() {
     }
   }, [editId, cloneId]);
 
-  const handleSave = async () => {
+  const handleSave = async (overrideStatus?: string) => {
     setSaving(true);
     try {
+      const dataToSave = overrideStatus ? { ...jobData, status: overrideStatus } : jobData;
+      if (overrideStatus) {
+        setJobData(dataToSave);
+      }
       const url = editId ? `/api/jobs?id=${editId}` : '/api/jobs';
       const method = editId ? 'PUT' : 'POST';
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(jobData)
+        body: JSON.stringify(dataToSave)
       });
       if (res.ok) {
-        alert(`Job ${editId ? 'Updated' : 'Published'} Successfully!`);
+        if (sendPush && dataToSave.status !== 'Draft') {
+          try {
+            await fetch('/api/push/broadcast', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                title: 'New Update: ' + (dataToSave.title?.['en'] || 'Sarkari Job'),
+                body: (dataToSave.job_summary?.['en'] || '').replace(/<[^>]+>/g, '').substring(0, 100) + '...',
+                url: `https://sarkaripassport.com/en/jobs/${dataToSave.slug}`
+              })
+            });
+          } catch (err) {
+            console.error('Push error:', err);
+          }
+        }
+        alert(`Job ${overrideStatus === 'Draft' ? 'Saved to Drafts' : editId ? 'Updated' : 'Published'} Successfully!`);
         router.push('/admin/jobs');
       }
       else alert('Failed to publish');
     } catch (e) {
       alert('Error publishing job');
     }
+    setSaving(false);
   };
 
   const updateLocalizedField = (field: string, value: string) => {
@@ -254,7 +275,30 @@ function EditorContent() {
           </div>
           
           <div className="flex items-center gap-3">
-            <button className="px-5 py-2 bg-[#0A58CA] text-white text-sm font-bold rounded-lg flex items-center gap-2 hover:bg-blue-700 shadow-md transition-colors" onClick={handleSave}>
+            {/* Push Notification Toggle (Header) */}
+            <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 mr-2">
+              <BellRing className="w-4 h-4 text-blue-600" />
+              <span className="text-xs font-bold text-[#0B1B3D]">Send Push</span>
+              <button 
+                type="button"
+                onClick={() => setSendPush(!sendPush)}
+                className={`w-10 h-5 rounded-full transition-colors relative ml-1 ${sendPush ? 'bg-blue-600' : 'bg-gray-300'}`}
+              >
+                <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white transition-transform ${sendPush ? 'translate-x-5' : 'translate-x-0'}`} />
+              </button>
+            </div>
+
+            <button 
+              className="px-4 py-2 bg-white text-gray-700 border border-gray-300 text-sm font-bold rounded-lg flex items-center gap-2 hover:bg-gray-50 shadow-sm transition-colors" 
+              onClick={() => handleSave('Draft')}
+            >
+              <Save className="w-4 h-4 text-gray-500" /> Save as Draft
+            </button>
+
+            <button 
+              className="px-5 py-2 bg-[#0A58CA] text-white text-sm font-bold rounded-lg flex items-center gap-2 hover:bg-blue-700 shadow-md transition-colors" 
+              onClick={() => handleSave('Active')}
+            >
               <Save className="w-4 h-4" /> {editId ? 'Update Job' : 'Publish Job'}
             </button>
           </div>
