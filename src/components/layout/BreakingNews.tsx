@@ -50,8 +50,7 @@ export default async function BreakingNews({ lang }: { lang: 'en' | 'hi' | 'mr' 
     <div className="bg-[#0B1B3D] text-white flex items-center h-10 border-b border-[#1E3A8A] overflow-hidden text-sm relative z-40">
       <div className="bg-red-600 text-white font-black px-3 md:px-6 h-full flex items-center justify-center shrink-0 shadow-[4px_0_10px_rgba(0,0,0,0.5)] z-10 text-xs md:text-sm tracking-wider">
         <span className="relative flex h-2 w-2 mr-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-white shadow-[0_0_8px_rgba(255,255,255,0.8)]"></span>
         </span>
         BREAKING NEWS
       </div>
