@@ -32,7 +32,9 @@ export const requestFirebaseNotificationPermission = async () => {
       const messaging = await initMessaging();
       if (!messaging) return null;
       
-      const currentToken = await getToken(messaging);
+      const currentToken = await getToken(messaging, {
+        vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY
+      });
       
       if (currentToken) {
         return currentToken;
