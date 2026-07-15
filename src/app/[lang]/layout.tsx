@@ -7,10 +7,7 @@ import BreakingNews from "@/components/layout/BreakingNews";
 import { getSettings } from "@/lib/db";
 import Script from "next/script";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
-import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
-import PwaInstallPrompt from "@/components/ui/PwaInstallPrompt";
-import PwaRegistry from "@/components/PwaRegistry";
-import PushNotificationManager from "@/components/PushNotificationManager";
+import ClientSetup from "@/components/ClientSetup";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -104,10 +101,7 @@ export default async function RootLayout({
         <Navbar lang={resolvedParams.lang || 'en'} />
         <BreakingNews lang={resolvedParams.lang as 'en' | 'hi' | 'mr'} />
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
-        <WhatsAppFloat />
-        <PwaInstallPrompt />
-        <PushNotificationManager />
-        <PwaRegistry />
+        <ClientSetup />
         <Footer lang={resolvedParams.lang || 'en'} />
         
         {/* Google Analytics */}
