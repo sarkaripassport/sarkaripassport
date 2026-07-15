@@ -8,6 +8,7 @@ import { getSettings } from "@/lib/db";
 import Script from "next/script";
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import ClientSetup from "@/components/ClientSetup";
+import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -101,6 +102,7 @@ export default async function RootLayout({
         <Navbar lang={resolvedParams.lang || 'en'} />
         <BreakingNews lang={resolvedParams.lang as 'en' | 'hi' | 'mr'} />
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
+        <WhatsAppFloat />
         <ClientSetup />
         <Footer lang={resolvedParams.lang || 'en'} />
         

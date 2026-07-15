@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 
 // Dynamically import all heavy non-critical floating UI components
 // This pulls them entirely out of the initial SSR payload and Main Thread hydration
-const WhatsAppFloat = dynamic(() => import("@/components/ui/WhatsAppFloat"), { ssr: false });
 const PwaInstallPrompt = dynamic(() => import("@/components/ui/PwaInstallPrompt"), { ssr: false });
 const PwaRegistry = dynamic(() => import("@/components/PwaRegistry"), { ssr: false });
 const PushNotificationManager = dynamic(() => import("@/components/PushNotificationManager"), { ssr: false });
@@ -26,7 +25,6 @@ export default function ClientSetup() {
 
   return (
     <>
-      <WhatsAppFloat />
       <PwaInstallPrompt />
       <PwaRegistry />
       <PushNotificationManager />
