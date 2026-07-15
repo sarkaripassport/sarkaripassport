@@ -94,8 +94,6 @@ export default async function RootLayout({
       className={`${inter.variable} h-full antialiased bg-brand-light text-brand-navy`}
     >
       <head>
-        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <Script
