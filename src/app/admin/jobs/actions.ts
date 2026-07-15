@@ -7,10 +7,8 @@ export async function deleteJobAction(id: string) {
   try {
     const success = await dbDeleteJob(id);
     if (success) {
-      // Revalidate paths so changes show up everywhere
-      revalidatePath("/admin/jobs");
-      revalidatePath("/jobs");
-      revalidatePath("/");
+      // Revalidate paths so changes show up everywhere, especially localized routes
+      revalidatePath('/', 'layout');
       return { success: true, message: "Job deleted successfully" };
     } else {
       return { success: false, message: "Job not found" };
