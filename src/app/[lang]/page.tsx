@@ -169,7 +169,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                   .filter(j => j.category === 'Latest Jobs' || j.categories?.includes('Latest Jobs') || (!j.category && (!j.categories || j.categories.length === 0))) // fallback
                   .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
                   .slice(0, 12)
-                  .map((job) => (
+                  .map((job, index) => (
                   <JobCard 
                     key={job.id} 
                     title={job.title[lang]}
@@ -186,6 +186,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                     logoUrl={job.logo_url}
                     logoAlt={job.logo_alt?.[lang] || job.organization[lang]}
                     lang={lang}
+                    priority={index < 4}
                     labels={{
                       trending: dict.home.trending,
                       daysLeft: dict.home.daysLeft,
