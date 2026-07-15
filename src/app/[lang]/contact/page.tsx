@@ -1,4 +1,6 @@
 import { Mail, MapPin, Send, MessageSquare, Phone } from "lucide-react";
+import { Metadata } from "next";
+import ProtectedEmail from "@/components/ui/ProtectedEmail";
 import ContactForm from "@/components/ui/ContactForm";
 
 import { getSeoAlternates } from "@/lib/seo";
@@ -44,16 +46,10 @@ export default function ContactPage() {
               </div>
               <h3 className="text-xl font-bold text-[#0B1B3D] mb-2">Email Us</h3>
               <p className="text-gray-500 mb-4 text-sm">Our friendly team is here to help.</p>
-              <div className="space-y-2">
-                <a href="mailto:admin@govjobwala.com" className="text-[#0A58CA] font-bold hover:underline block text-sm">
-                  admin@govjobwala.com
-                </a>
-                <a href="mailto:contact@govjobwala.com" className="text-[#0A58CA] font-bold hover:underline block text-sm">
-                  contact@govjobwala.com
-                </a>
-                <a href="mailto:support@govjobwala.com" className="text-[#0A58CA] font-bold hover:underline block text-sm">
-                  support@govjobwala.com
-                </a>
+              <div className="space-y-4">
+                <ProtectedEmail user="admin" className="text-[#0A58CA] font-bold hover:underline block text-sm" />
+                <ProtectedEmail user="contact" className="text-[#0A58CA] font-bold hover:underline block text-sm" />
+                <ProtectedEmail user="support" className="text-[#0A58CA] font-bold hover:underline block text-sm" />
               </div>
             </div>
 

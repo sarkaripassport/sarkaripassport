@@ -1,5 +1,7 @@
 import { ShieldCheck, Target, Zap, Heart, CheckCircle2 } from "lucide-react";
 
+import { Metadata } from "next";
+import ProtectedEmail from "@/components/ui/ProtectedEmail";
 import { getSeoAlternates } from "@/lib/seo";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
@@ -86,16 +88,10 @@ export default function AboutPage() {
           <p className="text-gray-600 max-w-2xl mx-auto mb-8">
             Have questions or want to partner with us? Reach out directly to our respective teams.
           </p>
-          <div className="flex flex-col md:flex-row justify-center gap-6">
-            <a href="mailto:admin@govjobwala.com" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition">
-              admin@govjobwala.com
-            </a>
-            <a href="mailto:contact@govjobwala.com" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition">
-              contact@govjobwala.com
-            </a>
-            <a href="mailto:support@govjobwala.com" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition">
-              support@govjobwala.com
-            </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
+            <ProtectedEmail user="admin" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition" />
+            <ProtectedEmail user="contact" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition" />
+            <ProtectedEmail user="support" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition" />
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ShieldCheck, Heart } from "lucide-react";
 import { getJobs } from "@/lib/db";
+import ProtectedEmail from "@/components/ui/ProtectedEmail";
 import LiveTimestamp from "../ui/LiveTimestamp";
 
 export default async function Footer({ lang = 'en' }: { lang?: string }) {
@@ -96,9 +97,9 @@ export default async function Footer({ lang = 'en' }: { lang?: string }) {
 
             <h2 className="text-white font-bold mb-4">Contact Us</h2>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><a href="mailto:admin@govjobwala.com" className="hover:text-white transition flex items-center gap-2">admin@govjobwala.com</a></li>
-              <li><a href="mailto:contact@govjobwala.com" className="hover:text-white transition flex items-center gap-2">contact@govjobwala.com</a></li>
-              <li><a href="mailto:support@govjobwala.com" className="hover:text-white transition flex items-center gap-2">support@govjobwala.com</a></li>
+              <li><ProtectedEmail user="admin" className="hover:text-white transition flex items-center gap-2" /></li>
+              <li><ProtectedEmail user="contact" className="hover:text-white transition flex items-center gap-2" /></li>
+              <li><ProtectedEmail user="support" className="hover:text-white transition flex items-center gap-2" /></li>
             </ul>
           </div>
 
