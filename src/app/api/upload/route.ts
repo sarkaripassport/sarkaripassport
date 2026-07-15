@@ -21,6 +21,7 @@ export async function POST(req: Request) {
       .from('uploads')
       .upload(filename, buffer, {
         contentType: file.type,
+        cacheControl: '31536000',
         upsert: false
       });
 
@@ -35,6 +36,7 @@ export async function POST(req: Request) {
           .from('uploads')
           .upload(filename, buffer, {
             contentType: file.type,
+            cacheControl: '31536000',
             upsert: false
           });
         if (retry.error) {
