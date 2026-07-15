@@ -10,18 +10,32 @@ export default function PushNotificationManager() {
   useEffect(() => {
     // Only prompt if notifications are supported and not already granted or denied
     if (typeof window !== 'undefined' && 'Notification' in window) {
-      // Small delay so we don't bombard them instantly
-      const timer = setTimeout(() => {
-        if (Notification.permission === 'default') {
+      if (Notification.permission === 'granted' && !localStorage.getItem('push_subscribed')) {
+        // Silently attempt to resubscribe if they granted permission but don't have the sync flag
+        // (This fixes users who accepted before the VAPID key was properly configured)
+        requestFirebaseNotificationPermission().then(async (token) => {
+          if (token) {
+            const res = await fetch('/api/push/subscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token }),
+            });
+            if (res.ok) {
+              localStorage.setItem('push_subscribed', 'true');
+            }
+          }
+        }).catch(console.error);
+      } else if (Notification.permission === 'default') {
+        // Small delay so we don't bombard them instantly
+        const timer = setTimeout(() => {
           // Check local storage to see if they previously dismissed it
           const dismissed = localStorage.getItem('push_prompt_dismissed');
           if (!dismissed) {
             setShowPrompt(true);
           }
-        }
-      }, 5000); // 5 seconds delay
-
-      return () => clearTimeout(timer);
+        }, 5000); // 5 seconds delay
+        return () => clearTimeout(timer);
+      }
     }
   }, []);
 
