@@ -11,7 +11,7 @@ import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {

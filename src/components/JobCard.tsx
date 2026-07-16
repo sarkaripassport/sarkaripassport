@@ -82,7 +82,7 @@ export default function JobCard({
           </div>
           
           {daysLeft !== undefined && daysLeft <= 5 && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest border border-red-100 shadow-sm whitespace-nowrap animate-pulse">
+            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest border border-red-100 shadow-sm whitespace-nowrap">
               <Clock className="w-3 h-3" /> {daysLeft} {labels.daysLeft}
             </span>
           )}
