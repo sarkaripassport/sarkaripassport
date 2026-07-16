@@ -159,6 +159,63 @@ export default function HomepageManager() {
           </div>
         </div>
 
+        {/* Social Media Links */}
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4">
+          <h2 className="text-lg font-bold text-[#0B1B3D] border-b pb-2">Social Media Links</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Facebook</label>
+              <input 
+                type="text" 
+                value={settings.social_links?.facebook || ""}
+                onChange={(e) => setSettings({...settings, social_links: {...(settings.social_links || {}), facebook: e.target.value}})}
+                placeholder="e.g. https://facebook.com/..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1877F2] outline-none text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Twitter / X</label>
+              <input 
+                type="text" 
+                value={settings.social_links?.twitter || ""}
+                onChange={(e) => setSettings({...settings, social_links: {...(settings.social_links || {}), twitter: e.target.value}})}
+                placeholder="e.g. https://twitter.com/..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black outline-none text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">YouTube</label>
+              <input 
+                type="text" 
+                value={settings.social_links?.youtube || ""}
+                onChange={(e) => setSettings({...settings, social_links: {...(settings.social_links || {}), youtube: e.target.value}})}
+                placeholder="e.g. https://youtube.com/@..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FF0000] outline-none text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Telegram</label>
+              <input 
+                type="text" 
+                value={settings.social_links?.telegram || ""}
+                onChange={(e) => setSettings({...settings, social_links: {...(settings.social_links || {}), telegram: e.target.value}})}
+                placeholder="e.g. https://t.me/..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#26A5E4] outline-none text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-1">Instagram</label>
+              <input 
+                type="text" 
+                value={settings.social_links?.instagram || ""}
+                onChange={(e) => setSettings({...settings, social_links: {...(settings.social_links || {}), instagram: e.target.value}})}
+                placeholder="e.g. https://instagram.com/..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#E4405F] outline-none text-sm"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Tracking & Analytics */}
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 space-y-4 relative">
           {userRole === 'co_admin' && (

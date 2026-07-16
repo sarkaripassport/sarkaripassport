@@ -251,6 +251,13 @@ export interface HomepageSettings {
     'syllabus': PageSettings;
     'tools': PageSettings;
   };
+  social_links?: {
+    facebook?: string;
+    twitter?: string;
+    youtube?: string;
+    telegram?: string;
+    instagram?: string;
+  };
 }
 
 const defaultSettings: HomepageSettings = {
@@ -280,6 +287,13 @@ const defaultSettings: HomepageSettings = {
     { id: 'a2', text: { en: "UPSC Civil Services Prelims Admit Card Available", hi: "", mr: "" }, link: "/jobs/upsc-civil-services-2026", isActive: true, priority: "normal" }
   ],
   whatsapp_link: "https://whatsapp.com/channel/0029VaA2KzV7T8bd5WEGk90n",
+  social_links: {
+    facebook: "https://facebook.com/govjobwala",
+    twitter: "https://twitter.com/govjobwala",
+    youtube: "https://youtube.com/@govjobwala",
+    telegram: "https://t.me/govjobwala",
+    instagram: "https://instagram.com/govjobwala"
+  },
 
   pages: {
     'admit-card': {
