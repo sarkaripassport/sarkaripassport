@@ -90,9 +90,17 @@ export default function JobCard({
 
         {/* Title and Logo */}
         <div className="flex gap-3 items-start mb-3">
-          {logoUrl ? (
+          {logoUrl && logoUrl.trim().startsWith("http") ? (
             <div className="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform duration-300 relative">
-              <Image src={logoUrl} alt={logoAlt || `${org} logo`} fill priority={priority} className="object-contain p-0.5" sizes="(max-width: 768px) 64px, 80px" />
+              <Image 
+                src={logoUrl.trim()} 
+                alt={logoAlt || `${org} logo`} 
+                fill 
+                priority={priority} 
+                className="object-contain p-0.5" 
+                sizes="(max-width: 768px) 64px, 80px" 
+                unoptimized={logoUrl.includes('wikimedia.org') || logoUrl.endsWith('.svg')}
+              />
             </div>
           ) : (
             <div className="w-16 h-16 md:w-20 md:h-20 shrink-0 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl shadow-sm flex items-center justify-center text-blue-600 font-bold text-2xl group-hover:scale-105 transition-transform duration-300">
