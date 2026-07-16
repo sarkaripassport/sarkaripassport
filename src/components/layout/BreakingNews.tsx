@@ -62,7 +62,7 @@ export default async function BreakingNews({ lang }: { lang: 'en' | 'hi' | 'mr' 
         }}
       >
         {/* We duplicate the content to make the marquee seamless */}
-        <div className="flex whitespace-nowrap animate-[marquee_30s_linear_infinite] hover:[animation-play-state:paused] w-max items-center">
+        <div className="flex whitespace-nowrap animate-[marquee_30s_linear_infinite] hover:[animation-play-state:paused] [animation-delay:3s] w-max items-center">
           {[...combinedItems, ...combinedItems, ...combinedItems].map((item, idx) => (
             <div key={`${item.id}-${idx}`} className="flex items-center ml-8 md:ml-12">
               {item.isJob ? (
