@@ -37,6 +37,7 @@ export const requestFirebaseNotificationPermission = async () => {
       });
       
       if (currentToken) {
+        console.log('FCM Token received:', currentToken);
         return currentToken;
       } else {
         console.log('No registration token available. Request permission to generate one.');
