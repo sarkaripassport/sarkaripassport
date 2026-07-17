@@ -1,16 +1,16 @@
 import { Metadata } from 'next';
-import { getDictionary } from '@/dictionaries';
+import { getDictionary } from '@/i18n/getDictionary';
 import { getCategories, getJobs } from '@/lib/db';
 import Link from 'next/link';
 import { ChevronRight, ExternalLink } from 'lucide-react';
-import { getAlternates } from '@/lib/seo';
+import { getSeoAlternates } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const dict = await getDictionary(params.lang as any);
   return {
     title: `Sitemap | ${dict.home.title}`,
     description: `HTML Sitemap for ${dict.home.title}. Navigate all categories, jobs, and important pages.`,
-    alternates: getAlternates(params.lang, '/sitemap'),
+    alternates: getSeoAlternates(params.lang, '/sitemap'),
   };
 }
 
