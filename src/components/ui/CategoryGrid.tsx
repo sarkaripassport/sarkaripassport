@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Briefcase } from "lucide-react";
+import CategoryIcon from "./CategoryIcon";
 
 interface Category {
   id: string;
@@ -40,9 +40,9 @@ export default function CategoryGrid({ categories, lang, title, specialSlugs }: 
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
         {displayedCategories.map((item) => (
-          <Link key={item.id} href={getCategoryUrl(item.slug)} className="flex items-center gap-2 p-2 border border-gray-100 rounded-lg hover:border-[#0A58CA] hover:shadow-sm transition-all group">
-            <div className="w-8 h-8 rounded-md bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-[#0A58CA] group-hover:text-white transition-colors">
-              <Briefcase className="w-4 h-4" />
+          <Link key={item.id} href={getCategoryUrl(item.slug)} className="flex items-center gap-2 p-2 border border-gray-100 rounded-lg hover:border-[#0A58CA] hover:shadow-sm transition-all group bg-white">
+            <div className="w-9 h-9 rounded-md bg-gray-50 flex items-center justify-center shrink-0 group-hover:bg-blue-50 transition-colors">
+              <CategoryIcon name={item.icon || 'Briefcase'} className="w-6 h-6 transition-transform group-hover:scale-110" />
             </div>
             <span className="text-xs font-bold text-gray-700 group-hover:text-[#0A58CA] truncate">{item.name[lang] || item.name.en}</span>
           </Link>

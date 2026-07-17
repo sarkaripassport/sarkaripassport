@@ -5,6 +5,7 @@ import { getSeoAlternates } from "@/lib/seo";
 import JobCard from "@/components/JobCard";
 import AdvancedSearch from "@/components/AdvancedSearch";
 import CategoryGrid from "@/components/ui/CategoryGrid";
+import CategoryIcon from "@/components/ui/CategoryIcon";
 
 export function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
@@ -140,12 +141,13 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
           {/* Quick Category Cards */}
           <div className="grid grid-cols-4 lg:grid-cols-8 gap-2">
             {quickLinks.map((cat) => {
-              const Icon = ICON_MAP[cat.icon] || Briefcase;
               const count = jobs.filter(j => j.category === cat.name.en || j.categories?.includes(cat.name.en)).length;
               return (
-                <Link href={getCategoryUrl(cat.slug)} key={cat.id} className="bg-white rounded border border-gray-200 p-1.5 sm:p-2 text-center hover:border-[#0A58CA] hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col items-center justify-center">
-                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 mb-1 text-[#0A58CA]" />
-                  <div className="font-bold text-gray-900 text-[9px] sm:text-[11px] mb-0.5 leading-none break-words">{cat.name[lang]}</div>
+                <Link href={getCategoryUrl(cat.slug)} key={cat.id} className="bg-white rounded border border-gray-200 p-1.5 sm:p-2 text-center hover:border-[#0A58CA] hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col items-center justify-center group">
+                  <div className="mb-1 transition-transform group-hover:scale-110">
+                    <CategoryIcon name={cat.icon || 'Briefcase'} className="w-6 h-6 sm:w-7 sm:h-7 mx-auto" />
+                  </div>
+                  <div className="font-bold text-gray-900 text-[9px] sm:text-[11px] mb-0.5 leading-none break-words group-hover:text-[#0A58CA] transition-colors">{cat.name[lang]}</div>
                   <div className="font-extrabold text-[10px] sm:text-xs text-gray-500 leading-none mt-0.5">{count}</div>
                 </Link>
               );
@@ -244,13 +246,12 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
             <h2 className="font-bold text-[#0B1B3D] mb-4 text-lg">{dict.home.trending} {dict.home.allCategories}</h2>
             <div className="flex flex-wrap gap-4 justify-start items-center">
               {trendingCategories.map((item) => {
-                const Icon = ICON_MAP[item.icon] || Briefcase;
                 return (
-                  <Link key={item.id} href={getCategoryUrl(item.slug)} className="flex flex-col items-center gap-2 cursor-pointer group w-[70px]">
-                    <div className="w-14 h-14 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:border-[#0A58CA] group-hover:bg-blue-50 transition shadow-sm">
-                      <Icon className="w-6 h-6 text-gray-500 group-hover:text-[#0A58CA] transition-colors" />
+                  <Link key={item.id} href={getCategoryUrl(item.slug)} className="flex flex-col items-center gap-2 cursor-pointer group w-[75px] transition-transform hover:-translate-y-1">
+                    <div className="w-16 h-16 rounded-2xl bg-white border border-gray-100 flex items-center justify-center group-hover:border-[#0A58CA] group-hover:shadow-[0_8px_20px_rgba(10,88,202,0.15)] transition-all shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+                      <CategoryIcon name={item.icon || 'Briefcase'} className="w-10 h-10 transform group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    <span className="text-[10px] sm:text-xs font-bold text-gray-600 group-hover:text-[#0A58CA] text-center">{item.name[lang]}</span>
+                    <span className="text-[11px] sm:text-xs font-bold text-gray-700 group-hover:text-[#0A58CA] text-center leading-tight">{item.name[lang]}</span>
                   </Link>
                 );
               })}
