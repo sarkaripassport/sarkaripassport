@@ -8,8 +8,8 @@ import { getSeoAlternates } from '@/lib/seo';
 export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const dict = await getDictionary(params.lang as any);
   return {
-    title: `Sitemap | ${dict.home.title}`,
-    description: `HTML Sitemap for ${dict.home.title}. Navigate all categories, jobs, and important pages.`,
+    title: `Sitemap | GovJobWala`,
+    description: `HTML Sitemap for GovJobWala. Navigate all categories, jobs, and important pages.`,
     alternates: getSeoAlternates(params.lang, '/sitemap'),
   };
 }
