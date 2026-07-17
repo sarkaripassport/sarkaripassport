@@ -8,6 +8,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getCategories()
   ]);
 
+  const locales = ['en', 'hi', 'mr'];
+
   const getAlternates = (path: string) => ({
     languages: {
       'en': `${BASE_URL}/en${path}`,
@@ -35,34 +37,41 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     '/press',
   ];
 
-  const staticUrls: MetadataRoute.Sitemap = staticRoutes.map(route => ({
-    url: `${BASE_URL}/en${route}`,
-    lastModified: new Date(),
-    changeFrequency: route === '' ? 'hourly' : 'daily',
-    priority: route === '' ? 1 : 0.8,
-    alternates: getAlternates(route)
-  }));
+  // Generate for all locales so Google indexes every language properly
+  const staticUrls: MetadataRoute.Sitemap = locales.flatMap(locale => 
+    staticRoutes.map(route => ({
+      url: `${BASE_URL}/${locale}${route}`,
+      lastModified: new Date(),
+      changeFrequency: route === '' ? 'hourly' : 'daily',
+      priority: route === '' ? 1 : 0.8,
+      alternates: getAlternates(route)
+    }))
+  );
 
-  const jobUrls: MetadataRoute.Sitemap = jobs.filter(j => j.isLive).map(job => ({
-    url: `${BASE_URL}/en/jobs/${job.slug}`,
-    lastModified: new Date(job.updated_at || job.created_at || new Date()),
-    changeFrequency: 'daily',
-    priority: 0.8,
-    alternates: getAlternates(`/jobs/${job.slug}`)
-  }));
+  const jobUrls: MetadataRoute.Sitemap = locales.flatMap(locale => 
+    jobs.filter(j => j.isLive).map(job => ({
+      url: `${BASE_URL}/${locale}/jobs/${job.slug}`,
+      lastModified: new Date(job.updated_at || job.created_at || new Date()),
+      changeFrequency: 'daily',
+      priority: 0.8,
+      alternates: getAlternates(`/jobs/${job.slug}`)
+    }))
+  );
 
   const specialSlugs = ['results', 'admit-card', 'answer-key', 'syllabus', 'admission'];
 
-  const categoryUrls: MetadataRoute.Sitemap = categories.map(cat => {
-    const route = specialSlugs.includes(cat.slug) ? `/${cat.slug}` : `/category/${cat.slug}`;
-    return {
-      url: `${BASE_URL}/en${route}`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.6,
-      alternates: getAlternates(route)
-    };
-  });
+  const categoryUrls: MetadataRoute.Sitemap = locales.flatMap(locale => 
+    categories.map(cat => {
+      const route = specialSlugs.includes(cat.slug) ? `/${cat.slug}` : `/category/${cat.slug}`;
+      return {
+        url: `${BASE_URL}/${locale}${route}`,
+        lastModified: new Date(),
+        changeFrequency: 'weekly',
+        priority: 0.6,
+        alternates: getAlternates(route)
+      };
+    })
+  );
 
   return [
     ...staticUrls,
