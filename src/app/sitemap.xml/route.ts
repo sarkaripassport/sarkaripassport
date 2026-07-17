@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { getJobs, getCategories } from '@/lib/db';
 import { BASE_URL } from '@/lib/seo';
 
+// Force dynamic so the sitemap automatically updates every time a new job is added!
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   const [jobs, categories] = await Promise.all([
     getJobs(),
@@ -34,24 +38,23 @@ export async function GET() {
   const generateUrlBlock = (locale: string, route: string, lastMod: string, changeFreq: string, priority: string) => {
     // Generate alternate links for all locales
     const alternates = locales.map(altLocale => {
-      return `<xhtml:link rel="alternate" hreflang="${altLocale}" href="${BASE_URL}/${altLocale}${route}" />`;
-    }).join('\n    ');
+      return `    <xhtml:link rel="alternate" hreflang="${altLocale}" href="${BASE_URL}/${altLocale}${route}" />`;
+    }).join('\n');
     
     // Add x-default pointing to English
-    const xDefault = `<xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/en${route}" />`;
+    const xDefault = `    <xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/en${route}" />`;
 
-    return `
-  <url>
+    return `  <url>
     <loc>${BASE_URL}/${locale}${route}</loc>
     <lastmod>${lastMod}</lastmod>
     <changefreq>${changeFreq}</changefreq>
     <priority>${priority}</priority>
-    ${alternates}
-    ${xDefault}
+${alternates}
+${xDefault}
   </url>`;
   };
 
-  let xmlUrls = '';
+  let xmlUrls = [];
 
   // 1. Static Routes
   for (const locale of locales) {
@@ -59,7 +62,7 @@ export async function GET() {
       const lastMod = new Date().toISOString();
       const changeFreq = route === '' ? 'hourly' : 'daily';
       const priority = route === '' ? '1.0' : '0.8';
-      xmlUrls += generateUrlBlock(locale, route, lastMod, changeFreq, priority);
+      xmlUrls.push(generateUrlBlock(locale, route, lastMod, changeFreq, priority));
     }
   }
 
@@ -69,7 +72,7 @@ export async function GET() {
     for (const job of liveJobs) {
       const route = `/jobs/${job.slug}`;
       const lastMod = new Date(job.updated_at || job.created_at || new Date()).toISOString();
-      xmlUrls += generateUrlBlock(locale, route, lastMod, 'daily', '0.8');
+      xmlUrls.push(generateUrlBlock(locale, route, lastMod, 'daily', '0.8'));
     }
   }
 
@@ -78,24 +81,23 @@ export async function GET() {
     for (const cat of categories) {
       const route = specialSlugs.includes(cat.slug) ? `/${cat.slug}` : `/category/${cat.slug}`;
       const lastMod = new Date().toISOString();
-      xmlUrls += generateUrlBlock(locale, route, lastMod, 'weekly', '0.6');
+      xmlUrls.push(generateUrlBlock(locale, route, lastMod, 'weekly', '0.6'));
     }
   }
 
-  // Wrap in valid sitemap XML tags with proper namespaces
+  // Pure, perfectly structured XML for Google Search Console
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <urlset 
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-${xmlUrls}
+${xmlUrls.join('\n')}
 </urlset>`;
 
   return new NextResponse(sitemap, {
     status: 200,
     headers: {
-      'Content-Type': 'application/xml',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400',
+      'Content-Type': 'application/xml; charset=utf-8',
+      'Cache-Control': 'no-store, max-age=0',
     },
   });
 }
