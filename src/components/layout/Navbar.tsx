@@ -25,9 +25,9 @@ export default async function Navbar({ lang = 'en' }: { lang?: string }) {
           <div className="text-[10px] text-gray-300 font-medium flex items-center gap-1">
             Last Updated: <span className="text-green-400 font-bold"><LiveTimestamp initialTimestamp={lastUpdated} /></span>
           </div>
-          <Link href="/sitemap.html" className="text-[10px] text-gray-300 hover:text-white transition-colors">
+          <a href="/sitemap.xml" className="text-[10px] text-gray-300 hover:text-white transition-colors">
             Sitemap
-          </Link>
+          </a>
         </div>
       </div>
 
