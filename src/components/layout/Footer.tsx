@@ -107,6 +107,7 @@ export default async function Footer({ lang = 'en' }: { lang?: string }) {
               <li><Link href={getLink("/privacy")} className="hover:text-white transition">Privacy Policy</Link></li>
               <li><Link href={getLink("/terms")} className="hover:text-white transition">Terms of Service</Link></li>
               <li><Link href={getLink("/disclaimer")} className="hover:text-white transition">Disclaimer</Link></li>
+              <li><Link href={getLink("/sitemap")} className="hover:text-white transition">HTML Sitemap</Link></li>
             </ul>
 
             <h2 className="text-white font-bold mb-4">Contact Us</h2>
