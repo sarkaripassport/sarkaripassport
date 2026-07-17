@@ -51,14 +51,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: getAlternates(`/jobs/${job.slug}`)
   }));
 
-  const categoryUrls: MetadataRoute.Sitemap = categories.map(cat => ({
-    url: `${BASE_URL}/en/jobs?cat=${cat.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.6,
-    // Note: Query parameters aren't explicitly mapped in hreflang usually, but we do it here safely.
-    alternates: getAlternates(`/jobs?cat=${cat.slug}`)
-  }));
+  const specialSlugs = ['results', 'admit-card', 'answer-key', 'syllabus', 'admission'];
+
+  const categoryUrls: MetadataRoute.Sitemap = categories.map(cat => {
+    const route = specialSlugs.includes(cat.slug) ? `/${cat.slug}` : `/category/${cat.slug}`;
+    return {
+      url: `${BASE_URL}/en${route}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.6,
+      alternates: getAlternates(route)
+    };
+  });
 
   return [
     ...staticUrls,
