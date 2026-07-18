@@ -5,7 +5,7 @@ import { AdminUser, addCoAdmin, removeAdmin } from './actions';
 import { Shield, ShieldAlert, Trash2, Plus, UserPlus, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-export default function UsersClient({ users, currentRole, currentUserId }: { users: AdminUser[], currentRole: string, currentUserId: string }) {
+export default function UsersClient({ users, currentRole, currentUserId, analytics = [] }: { users: AdminUser[], currentRole: string, currentUserId: string, analytics?: any[] }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAdding, setIsAdding] = useState(false);
@@ -154,6 +154,38 @@ export default function UsersClient({ users, currentRole, currentUserId }: { use
           </div>
         )}
       </div>
+
+      {isSuperAdmin && analytics.length > 0 && (
+        <div className="mt-8 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-6 border-b border-gray-100">
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+              <ShieldAlert className="w-5 h-5 text-blue-600" />
+              Team Activity & Analytics
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">Track job creation and publication by each team member.</p>
+          </div>
+          <table className="w-full text-left border-collapse">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-100">
+                <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Admin Email</th>
+                <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Total Created</th>
+                <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Published</th>
+                <th className="p-4 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Drafts</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {analytics.map(a => (
+                <tr key={a.email} className="hover:bg-gray-50 transition-colors">
+                  <td className="p-4 font-medium text-gray-900">{a.email}</td>
+                  <td className="p-4 text-center font-bold text-blue-600">{a.totalJobs}</td>
+                  <td className="p-4 text-center text-green-600 font-medium">{a.publishedJobs}</td>
+                  <td className="p-4 text-center text-yellow-600 font-medium">{a.draftJobs}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

@@ -2,12 +2,20 @@
 
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
+import { getJobs } from '@/lib/db';
 
 export interface AdminUser {
   id: string;
   email: string;
   role: 'super_admin' | 'co_admin';
   created_at: string;
+}
+
+export interface AdminAnalytics {
+  email: string;
+  totalJobs: number;
+  publishedJobs: number;
+  draftJobs: number;
 }
 
 async function verifySuperAdmin() {
@@ -64,4 +72,26 @@ export async function removeAdmin(userId: string) {
   }
 
   return { success: true };
+}
+
+export async function getAdminAnalytics(): Promise<AdminAnalytics[]> {
+  await verifySuperAdmin();
+  
+  const users = await getUsers();
+  const jobs = await getJobs();
+  
+  const analytics: AdminAnalytics[] = users.map(user => {
+    const userJobs = jobs.filter(job => job.created_by === user.email);
+    const publishedJobs = userJobs.filter(job => job.isLive).length;
+    const draftJobs = userJobs.filter(job => !job.isLive).length;
+    
+    return {
+      email: user.email,
+      totalJobs: userJobs.length,
+      publishedJobs,
+      draftJobs,
+    };
+  });
+  
+  return analytics;
 }

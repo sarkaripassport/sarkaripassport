@@ -1,5 +1,6 @@
 import { broadcastToTelegram, broadcastToWhatsApp } from '@/lib/distribution';
 import { NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
 import { createJob, updateJob, getJobs } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { autoLinker } from '@/lib/autoLinkerHtml';
@@ -26,7 +27,14 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
     const data = await req.json();
+    
+    if (user?.email) {
+      data.created_by = user.email;
+      data.last_edited_by = user.email;
+    }
     
     // Sanitize or auto-generate slug
     if (data.slug) {
@@ -110,7 +118,13 @@ export async function PUT(req: Request) {
     const id = searchParams.get('id');
     if (!id) return NextResponse.json({ error: "Missing job ID" }, { status: 400 });
 
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
     const data = await req.json();
+
+    if (user?.email) {
+      data.last_edited_by = user.email;
+    }
 
     const localize = (val: any) => typeof val === 'string' ? { en: val, hi: '', mr: '' } : val;
     if (data.title) data.title = localize(data.title);

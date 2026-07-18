@@ -133,6 +133,7 @@ export default function JobsManagerClient({
             <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200">
               <th className="p-4 font-bold">Job Title & Organization</th>
               <th className="p-4 font-bold">Categories</th>
+              <th className="p-4 font-bold">Author</th>
               <th className="p-4 font-bold">Status</th>
               <th className="p-4 font-bold">Comments</th>
               <th className="p-4 font-bold">Updated At</th>
@@ -168,6 +169,17 @@ export default function JobsManagerClient({
                         </span>
                       )}
                     </div>
+                  </td>
+
+                  <td className="p-4">
+                    <div className="text-xs text-gray-700 font-medium">
+                      {job.created_by ? job.created_by : <span className="text-gray-400 italic">Unknown</span>}
+                    </div>
+                    {job.last_edited_by && job.last_edited_by !== job.created_by && (
+                      <div className="text-[10px] text-gray-500 mt-0.5">
+                        Edited: {job.last_edited_by}
+                      </div>
+                    )}
                   </td>
                   
                   <td className="p-4">

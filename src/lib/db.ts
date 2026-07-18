@@ -187,6 +187,8 @@ export interface Job {
 
   created_at: string;
   updated_at?: string;
+  created_by?: string;
+  last_edited_by?: string;
 }
 
 export interface Category {

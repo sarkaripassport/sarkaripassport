@@ -13,6 +13,12 @@ export default async function AdminUsersPage() {
 
   const role = user.user_metadata?.role || 'co_admin';
   const users = await getUsers();
+  
+  let analytics: any[] = [];
+  if (role === 'super_admin') {
+    const { getAdminAnalytics } = await import('./actions');
+    analytics = await getAdminAnalytics();
+  }
 
-  return <UsersClient users={users} currentRole={role} currentUserId={user.id} />;
+  return <UsersClient users={users} currentRole={role} currentUserId={user.id} analytics={analytics} />;
 }
