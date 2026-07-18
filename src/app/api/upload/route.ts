@@ -62,8 +62,8 @@ export async function POST(req: Request) {
       .from('uploads')
       .getPublicUrl(filename);
       
-    // Return the public URL
-    return NextResponse.json({ url: publicUrl });
+    // Return the public URL with a cache buster so previews always show immediately
+    return NextResponse.json({ url: `${publicUrl}?t=${Date.now()}` });
   } catch (error) {
     console.error("Error uploading file:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
