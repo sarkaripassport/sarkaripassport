@@ -1,4 +1,4 @@
-import { getJobs, getCategories } from "@/lib/db";
+import { getJobs, getCategories, getPublishedJobs } from "@/lib/db";
 import JobsClient from "./JobsClient";
 import { getDictionary, Locale } from "@/i18n/getDictionary";
 import { getSeoAlternates } from "@/lib/seo";
@@ -19,7 +19,7 @@ export default async function JobsListingPage({ params }: { params: Promise<{ la
   const lang = resolvedParams.lang || 'en';
   const dict = await getDictionary(lang);
   const [jobs, categories] = await Promise.all([
-    getJobs(),
+    getPublishedJobs(),
     getCategories()
   ]);
   

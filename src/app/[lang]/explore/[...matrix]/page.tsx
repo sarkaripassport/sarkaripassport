@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getJobs, Job, getMatrixPage } from '@/lib/db';
+import { getJobs, Job, getMatrixPage, getPublishedJobs } from "@/lib/db";
 
 export const revalidate = 3600; // 1 hour ISR
 import JobCard from '@/components/JobCard';
@@ -72,7 +72,7 @@ export default async function ExploreMatrixPage({ params }: Props) {
   const resolvedParams = await params;
   const { lang, matrix } = resolvedParams;
   const dict = await getDictionary(lang);
-  const allJobs = await getJobs();
+  const allJobs = await getPublishedJobs();
   const matrixSlug = matrix.join('/');
   const customPage = await getMatrixPage(matrixSlug);
   

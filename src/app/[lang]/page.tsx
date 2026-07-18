@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Script from "next/script";
-import { getJobs, getSettings, getCategories } from "@/lib/db";
+import { getJobs, getSettings, getCategories, getPublishedJobs } from "@/lib/db";
 import { getSeoAlternates } from "@/lib/seo";
 import JobCard from "@/components/JobCard";
 import AdvancedSearch from "@/components/AdvancedSearch";
@@ -44,7 +44,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
   const dict = await getDictionary(lang);
   
   const [jobs, settings, categories] = await Promise.all([
-    getJobs(),
+    getPublishedJobs(),
     getSettings(),
     getCategories()
   ]);

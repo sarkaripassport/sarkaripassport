@@ -1,4 +1,4 @@
-import { getJobs, getSettings, getCategories } from "@/lib/db";
+import { getJobs, getSettings, getCategories, getPublishedJobs } from "@/lib/db";
 import { getSeoAlternates } from "@/lib/seo";
 import JobsClient from "@/app/[lang]/jobs/JobsClient";
 import type { Metadata } from "next";
@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { lang: Locale } }) {
   const lang = params.lang || 'en';
   const dict = await getDictionary(lang);
   const [jobs, settings, categories] = await Promise.all([
-    getJobs(),
+    getPublishedJobs(),
     getSettings(),
     getCategories()
   ]);

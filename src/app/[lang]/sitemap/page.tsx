@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getDictionary } from '@/i18n/getDictionary';
-import { getCategories, getJobs } from '@/lib/db';
+import { getCategories, getJobs, getPublishedJobs } from "@/lib/db";
 import Link from 'next/link';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import { getSeoAlternates } from '@/lib/seo';
@@ -19,7 +19,7 @@ export default async function SitemapPage({ params }: { params: { lang: string }
   
   const [categories, jobs] = await Promise.all([
     getCategories(),
-    getJobs()
+    getPublishedJobs()
   ]);
 
   const liveJobs = jobs.filter(j => j.isLive);

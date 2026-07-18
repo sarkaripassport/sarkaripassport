@@ -60,13 +60,13 @@ export default function CreateJobPage() {
     setIsExtracting(false);
   };
 
-  const handleSave = async () => {
+  const handleSave = async (isLive = true) => {
     setIsSaving(true);
     try {
       const payload = {
         ...formData,
         vacancies,
-        isLive: true,
+        isLive,
         isTrending: false,
         daysLeft: 10
       };
@@ -79,8 +79,8 @@ export default function CreateJobPage() {
       
       if (res.ok) {
         const data = await res.json();
-        alert("Job Published Successfully!");
-        window.location.href = `/jobs/${data.job.slug}`;
+        alert(isLive ? "Job Published Successfully!" : "Job Saved as Draft!");
+        window.location.href = isLive ? `/jobs/${data.job.slug}` : `/admin/jobs`;
       } else {
         alert("Failed to save job");
       }
@@ -97,14 +97,24 @@ export default function CreateJobPage() {
       <main className="flex-grow max-w-[1000px] w-full mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-black text-[#0B1B3D]">Admin: Add New Job</h1>
-          <button 
-            onClick={handleSave}
-            disabled={isSaving || !formData.title}
-            className="bg-[#0A58CA] text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-blue-700 disabled:opacity-50 transition-colors"
-          >
-            {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
-            Publish Job
-          </button>
+          <div className="flex gap-3">
+            <button 
+              onClick={() => handleSave(false)}
+              disabled={isSaving || !formData.title}
+              className="bg-white text-gray-700 border border-gray-300 px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-gray-50 disabled:opacity-50 transition-colors"
+            >
+              <Save className="w-5 h-5 text-gray-500" />
+              Save as Draft
+            </button>
+            <button 
+              onClick={() => handleSave(true)}
+              disabled={isSaving || !formData.title}
+              className="bg-[#0A58CA] text-white px-5 py-2.5 rounded-lg font-bold flex items-center gap-2 hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            >
+              {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+              Publish Job
+            </button>
+          </div>
         </div>
 
         {/* Extraction Engine */}

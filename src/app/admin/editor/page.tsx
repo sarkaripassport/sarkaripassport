@@ -130,13 +130,22 @@ function EditorContent() {
     }
   }, [editId, cloneId]);
 
-  const handleSave = async (overrideStatus?: string) => {
+  const handleSave = async (actionType?: 'Draft' | 'Publish' | 'Update') => {
     setSaving(true);
     try {
-      const dataToSave = overrideStatus ? { ...jobData, status: overrideStatus } : jobData;
-      if (overrideStatus) {
-        setJobData(dataToSave);
+      let dataToSave = { ...jobData };
+      if (actionType === 'Draft') {
+        dataToSave.status = 'Draft';
+        dataToSave.isLive = false;
+        dataToSave.statusColor = 'text-yellow-800 bg-yellow-100 border-yellow-200';
+      } else if (actionType === 'Publish') {
+        dataToSave.status = 'Active';
+        dataToSave.isLive = true;
+        dataToSave.statusColor = 'text-green-800 bg-green-100 border-green-200';
       }
+      
+      setJobData(dataToSave);
+
       const url = editId ? `/api/jobs?id=${editId}` : '/api/jobs';
       const method = editId ? 'PUT' : 'POST';
       const res = await fetch(url, {
@@ -167,7 +176,7 @@ function EditorContent() {
             alert(`Job published, but Push Notification failed: ${err.message}`);
           }
         }
-        alert(`Job ${overrideStatus === 'Draft' ? 'Saved to Drafts' : editId ? 'Updated' : 'Published'} Successfully!`);
+        alert(`Job ${actionType === 'Draft' ? 'Saved as Draft' : actionType === 'Publish' ? 'Published' : editId ? 'Updated' : 'Published'} Successfully!`);
         router.push('/admin/jobs');
       }
       else alert('Failed to publish');
@@ -304,7 +313,7 @@ function EditorContent() {
 
             <button 
               className="px-5 py-2 bg-[#0A58CA] text-white text-sm font-bold rounded-lg flex items-center gap-2 hover:bg-blue-700 shadow-md transition-colors" 
-              onClick={() => handleSave('Active')}
+              onClick={() => handleSave('Publish')}
             >
               <Save className="w-4 h-4" /> {editId ? 'Update Job' : 'Publish Job'}
             </button>

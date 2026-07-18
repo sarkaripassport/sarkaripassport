@@ -5,7 +5,7 @@ import { getDictionary, Locale } from '@/i18n/getDictionary';
 
 
 import { notFound } from 'next/navigation';
-import { getJobBySlug, getCategories, getJobs } from '@/lib/db';
+import { getJobBySlug, getCategories, getJobs, getPublishedJobs } from "@/lib/db";
 import { getSeoAlternates } from '@/lib/seo';
 import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
 import JobComments from '@/components/jobs/JobComments';
@@ -45,7 +45,7 @@ function autoLinkHtml(html: string, lang: string) {
 export const revalidate = 3600; // 1 hour ISR
 
 export async function generateStaticParams() {
-  const jobs = await getJobs();
+  const jobs = await getPublishedJobs();
   const langs = ['en', 'hi', 'mr'];
   const params: { lang: string; slug: string }[] = [];
   for (const job of jobs) {
@@ -64,7 +64,7 @@ export async function generateMetadata(
   const { lang, slug } = resolvedParams;
   const job = await getJobBySlug(slug);
   
-  if (!job) {
+  if (!job || !job.isLive) {
     return {
       title: 'Job Not Found | GovJobWala',
     };
@@ -99,13 +99,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   const [job, categories, allJobs] = await Promise.all([
     getJobBySlug(slug),
     getCategories(),
-    getJobs()
+    getPublishedJobs()
   ]);
 
   const getCount = (catName: string) => allJobs.filter(j => j.category === catName || j.categories?.includes(catName)).length;
   const sortedCategories = [...categories].sort((a, b) => getCount(b.name.en) - getCount(a.name.en));
 
-  if (!job) {
+  if (!job || !job.isLive) {
     notFound();
   }
 

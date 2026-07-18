@@ -353,13 +353,18 @@ export const getJobs = cache(async (): Promise<Job[]> => {
   return data.map(row => row.data as Job);
 });
 
+export const getPublishedJobs = cache(async (): Promise<Job[]> => {
+  const jobs = await getJobs();
+  return jobs.filter(job => job.isLive === true);
+});
+
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   const categories = await getCategories();
   return categories.find(c => c.slug === slug) || null;
 }
 
 export async function getJobsByCategorySlug(slug: string): Promise<Job[]> {
-  const jobs = await getJobs();
+  const jobs = await getPublishedJobs();
   const category = await getCategoryBySlug(slug);
   
   const searchString = category ? category.name.en.toLowerCase() : slug.toLowerCase().replace(/-/g, ' ');

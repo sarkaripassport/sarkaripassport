@@ -18,6 +18,7 @@ export default function JobsManagerClient({
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const handleDelete = async (id: string, title: string) => {
@@ -49,7 +50,12 @@ export default function JobsManagerClient({
       ? job.title.en.toLowerCase().includes(searchQuery.toLowerCase()) || job.organization.en.toLowerCase().includes(searchQuery.toLowerCase())
       : true;
 
-    return matchesCategory && matchesSearch;
+    // Status Filter
+    const matchesStatus = statusFilter === "all" ? true : (
+      statusFilter === "published" ? job.isLive === true : job.isLive === false
+    );
+
+    return matchesCategory && matchesSearch && matchesStatus;
   });
 
   return (
@@ -86,6 +92,28 @@ export default function JobsManagerClient({
               ))}
             </select>
             <ChevronDown className="w-4 h-4 absolute right-3 top-2.5 text-gray-400 pointer-events-none" />
+          </div>
+
+          {/* Status Filter */}
+          <div className="flex bg-white rounded-lg border border-gray-300 overflow-hidden">
+            <button 
+              onClick={() => setStatusFilter("all")}
+              className={`px-3 py-2 text-sm font-medium transition ${statusFilter === 'all' ? 'bg-[#0A58CA] text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+            >
+              All
+            </button>
+            <button 
+              onClick={() => setStatusFilter("published")}
+              className={`px-3 py-2 text-sm font-medium transition border-l border-gray-300 ${statusFilter === 'published' ? 'bg-[#0A58CA] text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+            >
+              Published
+            </button>
+            <button 
+              onClick={() => setStatusFilter("draft")}
+              className={`px-3 py-2 text-sm font-medium transition border-l border-gray-300 ${statusFilter === 'draft' ? 'bg-[#0A58CA] text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+            >
+              Drafts
+            </button>
           </div>
         </div>
 
@@ -143,9 +171,9 @@ export default function JobsManagerClient({
                   </td>
                   
                   <td className="p-4">
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold border ${job.statusColor}`}>
+                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold border ${job.isLive ? job.statusColor : 'text-yellow-800 bg-yellow-100 border-yellow-200'}`}>
                       {job.isLive ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
-                      {job.status}
+                      {job.isLive ? job.status : 'Draft'}
                     </span>
                   </td>
                   
