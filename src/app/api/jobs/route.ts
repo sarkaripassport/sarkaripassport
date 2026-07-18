@@ -90,6 +90,14 @@ export async function POST(req: Request) {
     // Bust the Next.js cache so new jobs are visible instantly
     revalidatePath('/', 'layout');
 
+    // If running locally, ping the production Vercel server to bust its cache too
+    if (process.env.NODE_ENV === 'development' && process.env.REVALIDATE_SECRET) {
+      try {
+        fetch(`https://govjobwala.com/api/revalidate?secret=${process.env.REVALIDATE_SECRET}`)
+          .catch(e => console.error("Failed to ping production webhook:", e));
+      } catch (e) {}
+    }
+
     return NextResponse.json({ success: true, job }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to save job" }, { status: 500 });
@@ -117,6 +125,14 @@ export async function PUT(req: Request) {
     
     // Bust the Next.js cache so changes are visible instantly
     revalidatePath('/', 'layout');
+
+    // If running locally, ping the production Vercel server to bust its cache too
+    if (process.env.NODE_ENV === 'development' && process.env.REVALIDATE_SECRET) {
+      try {
+        fetch(`https://govjobwala.com/api/revalidate?secret=${process.env.REVALIDATE_SECRET}`)
+          .catch(e => console.error("Failed to ping production webhook:", e));
+      } catch (e) {}
+    }
 
     return NextResponse.json({ success: true, job }, { status: 200 });
   } catch (error) {
