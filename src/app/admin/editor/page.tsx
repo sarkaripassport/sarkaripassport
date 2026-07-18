@@ -728,8 +728,7 @@ function EditorContent() {
                     <div><label className="block text-sm font-bold mb-1">SEO Description (50-300 chars)</label><textarea className="w-full border rounded p-2 h-20" value={jobData.seo_description?.[editLang] || ''} onChange={e => updateLocalizedField('seo_description', e.target.value)} placeholder="Target length: 50-300 chars" /></div>
                     <div><label className="block text-sm font-bold mb-1">Primary Keyword</label><input type="text" className="w-full border rounded p-2" value={jobData.primary_keyword?.[editLang] || ''} onChange={e => updateLocalizedField('primary_keyword', e.target.value)} /></div>
                     <div><label className="block text-sm font-bold mb-1">Secondary Keywords (comma separated)</label><input type="text" className="w-full border rounded p-2" value={jobData.secondary_keywords?.[editLang] || ''} onChange={e => updateLocalizedField('secondary_keywords', e.target.value)} /></div>
-                    <div><label className="block text-sm font-bold mb-1">Logo Image URL</label><input type="text" className="w-full border rounded p-2 mb-2" value={jobData.logo_url || ''} onChange={e => updateField('logo_url', e.target.value)} placeholder="https://..." />
-                         <label className="block text-sm font-bold mb-1">Logo Alt Text</label><input type="text" className="w-full border rounded p-2" value={jobData.logo_alt?.[editLang] || ''} onChange={e => updateLocalizedField('logo_alt', e.target.value)} />
+                    <div><label className="block text-sm font-bold mb-1">Logo Alt Text</label><input type="text" className="w-full border rounded p-2" value={jobData.logo_alt?.[editLang] || ''} onChange={e => updateLocalizedField('logo_alt', e.target.value)} />
                     </div>
                   </div>
                   <div className="mt-8">
