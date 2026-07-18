@@ -2,6 +2,7 @@ import { broadcastToTelegram, broadcastToWhatsApp } from '@/lib/distribution';
 import { NextResponse } from 'next/server';
 import { createJob, updateJob, getJobs } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { autoLinker } from '@/lib/autoLinkerHtml';
 
 export async function GET(req: Request) {
   try {
@@ -71,6 +72,10 @@ export async function POST(req: Request) {
       };
     }
 
+    if (data.description_html) {
+      data.description_html = autoLinker(data.description_html);
+    }
+
     const job = await createJob(data);
 
     // Trigger Distribution Broadcasts
@@ -103,6 +108,10 @@ export async function PUT(req: Request) {
     if (data.title) data.title = localize(data.title);
     if (data.seo_title) data.seo_title = localize(data.seo_title);
     if (data.seo_description) data.seo_description = localize(data.seo_description);
+
+    if (data.description_html) {
+      data.description_html = autoLinker(data.description_html);
+    }
 
     const job = await updateJob(id, data);
     

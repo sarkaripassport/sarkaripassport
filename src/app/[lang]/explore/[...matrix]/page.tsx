@@ -10,15 +10,32 @@ import { getDictionary } from '@/i18n/getDictionary';
 import React from 'react';
 
 interface Props {
-  params: {
+  params: Promise<{
     lang: 'en' | 'hi' | 'mr';
     matrix: string[];
+  }>
+}
+
+export async function generateStaticParams() {
+  const commonCategories = [
+    '10th-pass', '12th-pass', 'graduate', 'police', 
+    'banking', 'up', 'bihar', 'railway', 'ssc', 'upsc'
+  ];
+  const locales = ['en', 'hi', 'mr'];
+  
+  const params: any[] = [];
+  for (const lang of locales) {
+    for (const cat of commonCategories) {
+      params.push({ lang, matrix: [cat] });
+    }
   }
+  return params;
 }
 
 // Generate Dynamic SEO Metadata
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { lang, matrix } = params;
+  const resolvedParams = await params;
+  const { lang, matrix } = resolvedParams;
   
   // Clean slugs to display words (e.g., '10th-pass' -> '10th Pass')
   const tags = matrix.map(slug => 
@@ -52,7 +69,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ExploreMatrixPage({ params }: Props) {
-  const { lang, matrix } = params;
+  const resolvedParams = await params;
+  const { lang, matrix } = resolvedParams;
   const dict = await getDictionary(lang);
   const allJobs = await getJobs();
   const matrixSlug = matrix.join('/');
@@ -161,8 +179,8 @@ export default async function ExploreMatrixPage({ params }: Props) {
           {matchedJobs.map(job => (
             <JobCard 
               key={job.id} 
-              title={job.title[lang]}
-              org={job.organization[lang]}
+              title={job.title[lang] || job.title.en || 'Untitled'}
+              org={job.organization[lang] || job.organization.en || 'Unknown'}
               vac={job.quick_facts?.vacancies || '-'}
               date={job.quick_facts?.last_date[lang] || '-'}
               status={job.status}

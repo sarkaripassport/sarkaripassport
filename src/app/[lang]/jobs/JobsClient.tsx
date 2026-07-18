@@ -328,9 +328,9 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                   {currentJobs.map((job) => (
                     <JobCard 
                       key={job.id} 
-                      title={job.title[lang]}
-                      org={job.organization[lang]}
-                      qual={job.quick_facts?.qualification[lang]}
+                      title={job.title[lang] || job.title.en || 'Untitled Job'}
+                      org={job.organization[lang] || job.organization.en || 'Unknown Organization'}
+                      qual={job.quick_facts?.qualification?.[lang] || job.quick_facts?.qualification?.en}
                       vac={job.quick_facts?.vacancies || '-'}
                       date={job.quick_facts?.last_date[lang] || '-'}
                       status={job.status}
@@ -340,7 +340,7 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                       daysLeft={job.daysLeft}
                       link={`/${lang}/jobs/${job.slug}`}
                       logoUrl={job.logo_url}
-                      logoAlt={job.logo_alt?.[lang] || job.organization[lang]}
+                      logoAlt={job.logo_alt?.[lang] || job.logo_alt?.en || job.organization[lang] || job.organization.en || 'Logo'}
                       lang={lang as any}
                       labels={{
                         trending: dict.home.trending,

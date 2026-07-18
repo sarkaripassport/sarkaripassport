@@ -152,8 +152,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
             {jobs.map((job) => (
               <JobCard 
                 key={job.id} 
-                title={job.title[lang]}
-                org={job.organization[lang]}
+                title={job.title[lang] || job.title.en || 'Untitled'}
+                org={job.organization[lang] || job.organization.en || 'Unknown'}
                 vac={job.quick_facts?.vacancies || '-'}
                 date={job.quick_facts?.last_date[lang] || '-'}
                 status={job.status}

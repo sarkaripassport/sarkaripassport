@@ -173,9 +173,9 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                   .map((job, index) => (
                   <JobCard 
                     key={job.id} 
-                    title={job.title[lang]}
-                    org={job.organization[lang]}
-                    qual={job.quick_facts?.qualification?.[lang] || '-'}
+                    title={job.title[lang] || job.title.en || 'Untitled'}
+                    org={job.organization[lang] || job.organization.en || 'Unknown'}
+                    qual={job.quick_facts?.qualification?.[lang] || job.quick_facts?.qualification?.en || '-'}
                     vac={job.quick_facts?.vacancies || '-'}
                     date={job.quick_facts?.last_date[lang] || '-'}
                     status={job.status}
