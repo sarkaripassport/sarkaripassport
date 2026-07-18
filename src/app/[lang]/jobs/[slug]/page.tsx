@@ -690,7 +690,14 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
               <Link key={rJob.id} href={`/${lang}/jobs/${rJob.slug}`} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-blue-300 transition-all group flex flex-col h-full">
                 <div className="flex items-center gap-3 mb-3">
                   {rJob.logo_url ? (
-                    <img src={rJob.logo_url} alt={rJob.logo_alt?.[lang] || rJob.organization?.[lang] || "Logo"} className="w-10 h-10 object-contain rounded bg-gray-50 p-1" />
+                    <Image 
+                      src={rJob.logo_url} 
+                      alt={rJob.logo_alt?.[lang] || rJob.organization?.[lang] || "Logo"} 
+                      width={40}
+                      height={40}
+                      className="w-10 h-10 object-contain rounded bg-gray-50 p-1" 
+                      unoptimized={rJob.logo_url.includes('wikimedia.org') || rJob.logo_url.endsWith('.svg')}
+                    />
                   ) : (
                     <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded flex items-center justify-center font-bold text-lg">
                       {rJob.organization[lang]?.charAt(0) || 'G'}

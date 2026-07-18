@@ -8,6 +8,7 @@ import { getSettings } from "@/lib/db";
 import Script from "next/script";
 import ClientSetup from "@/components/ClientSetup";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -105,37 +106,9 @@ export default async function RootLayout({
         <ClientSetup />
         <Footer lang={resolvedParams.lang || 'en'} />
         
-        {/* Google Analytics */}
-        {settings.analytics?.ga_id && (
-          <Script 
-            id="google-analytics" 
-            strategy="lazyOnload" 
-            src={`https://www.googletagmanager.com/gtag/js?id=${settings.analytics.ga_id}`} 
-          />
-        )}
-        {settings.analytics?.ga_id && (
-          <Script id="ga-setup" strategy="lazyOnload">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${settings.analytics.ga_id}');
-            `}
-          </Script>
-        )}
-        
-        {/* Google Tag Manager */}
-        {settings.analytics?.gtm_id && (
-          <Script id="google-tag-manager" strategy="lazyOnload">
-            {`
-              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','${settings.analytics.gtm_id}');
-            `}
-          </Script>
-        )}
+        {/* Google Analytics & Tag Manager (Optimized via @next/third-parties) */}
+        {settings.analytics?.ga_id && <GoogleAnalytics gaId={settings.analytics.ga_id} />}
+        {settings.analytics?.gtm_id && <GoogleTagManager gtmId={settings.analytics.gtm_id} />}
         
         {/* Google AdSense */}
         {settings.analytics?.adsense_id && (
