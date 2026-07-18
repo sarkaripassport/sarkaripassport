@@ -288,7 +288,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           
           {job.logo_url ? (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden relative z-10 mt-1">
-              <Image src={job.logo_url} alt={job.logo_alt?.[lang] || job.organization[lang]} width={112} height={112} priority className="w-full h-full object-contain p-1" />
+              <Image src={job.logo_url} alt={job.logo_alt?.[lang] || job.organization[lang]} width={112} height={112} priority className="w-full h-full object-contain p-1" unoptimized={true} />
             </div>
           ) : (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center relative z-10 mt-1">

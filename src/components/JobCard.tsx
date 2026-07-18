@@ -99,7 +99,7 @@ export default function JobCard({
                 priority={priority} 
                 className="object-contain p-0.5" 
                 sizes="(max-width: 768px) 64px, 80px" 
-                unoptimized={logoUrl.includes('wikimedia.org') || logoUrl.endsWith('.svg')}
+                unoptimized={true}
               />
             </div>
           ) : (
