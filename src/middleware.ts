@@ -66,7 +66,7 @@ export async function middleware(request: NextRequest) {
   if (!pathnameHasLocale) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = `/${defaultLocale}${pathname}`;
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.rewrite(redirectUrl);
   }
 
   return supabaseResponse;

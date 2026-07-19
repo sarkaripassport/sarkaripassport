@@ -92,6 +92,12 @@ export default async function RootLayout({
       className={`${inter.variable} h-full antialiased bg-brand-light text-brand-navy`}
     >
       <head>
+        <link rel="preconnect" href="https://iqebmesknqvzzfoxosmh.supabase.co" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://iqebmesknqvzzfoxosmh.supabase.co" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <Script
