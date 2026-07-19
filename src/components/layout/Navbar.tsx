@@ -37,11 +37,11 @@ export default async function Navbar({ lang = 'en' }: { lang?: string }) {
           
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center gap-2">
-            <div className="w-10 h-10 bg-transparent rounded-lg flex items-center justify-center">
-              <LogoIcon className="w-9 h-9 text-white" />
-            </div>
+            <LogoIcon className="w-12 h-12 text-white" />
             <div>
-              <Link href={getLink("/")} className="text-xl font-bold tracking-tight block leading-none">GovJobWala</Link>
+              <Link href={getLink("/")} className="text-xl font-bold tracking-tight block leading-none">
+                GovJob<span className="text-[#FF9933]">Wala</span>
+              </Link>
               <span className="text-[10px] text-gray-300 font-medium tracking-wide">Sarkari Jobs + Eligibility Assistant</span>
             </div>
           </div>
