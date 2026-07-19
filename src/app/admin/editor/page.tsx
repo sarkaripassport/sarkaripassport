@@ -437,7 +437,7 @@ function EditorContent() {
                         {jobData.logo_url && (
                           <div className="shrink-0 w-16 h-16 border rounded bg-gray-50 flex items-center justify-center overflow-hidden">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={jobData.logo_url} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
+                            <img key={jobData.logo_url} src={jobData.logo_url} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
                           </div>
                         )}
                         <div className="flex-1 flex gap-2">
