@@ -286,9 +286,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           {/* Subtle Glass Background */}
           <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent pointer-events-none"></div>
           
-          {job.logo_url ? (
+          {job.logo_url && job.logo_url.replace(/['"]/g, '').trim().startsWith("http") ? (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden relative z-10 mt-1">
-              <Image src={job.logo_url} alt={job.logo_alt?.[lang] || job.organization[lang]} width={112} height={112} priority className="w-full h-full object-contain p-1" unoptimized={true} />
+              <Image src={job.logo_url.replace(/['"]/g, '').trim()} alt={job.logo_alt?.[lang] || job.organization[lang]} width={112} height={112} priority className="w-full h-full object-contain p-1" />
             </div>
           ) : (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center relative z-10 mt-1">
@@ -689,17 +689,17 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
             {recentJobs.map((rJob) => (
               <Link key={rJob.id} href={`/${lang}/jobs/${rJob.slug}`} className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md hover:border-blue-300 transition-all group flex flex-col h-full">
                 <div className="flex items-center gap-3 mb-3">
-                  {rJob.logo_url ? (
-                    <Image 
-                      src={rJob.logo_url} 
-                      alt={rJob.logo_alt?.[lang] || rJob.organization?.[lang] || "Logo"} 
-                      width={40}
-                      height={40}
-                      className="w-10 h-10 object-contain rounded bg-gray-50 p-1" 
-                      unoptimized={rJob.logo_url.includes('wikimedia.org') || rJob.logo_url.endsWith('.svg')}
-                    />
+                  {rJob.logo_url && rJob.logo_url.replace(/['"]/g, '').trim().startsWith("http") ? (
+                    <div className="relative w-10 h-10 shrink-0">
+                      <Image 
+                        src={rJob.logo_url.replace(/['"]/g, '').trim()} 
+                        alt={`${rJob.organization[lang]} logo`} 
+                        fill 
+                        className="object-contain p-1"
+                      />
+                    </div>
                   ) : (
-                    <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded flex items-center justify-center font-bold text-lg">
+                    <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded flex items-center justify-center font-bold text-lg shrink-0">
                       {rJob.organization[lang]?.charAt(0) || 'G'}
                     </div>
                   )}
