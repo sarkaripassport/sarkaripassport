@@ -37,8 +37,8 @@ export default async function Navbar({ lang = 'en' }: { lang?: string }) {
           
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center gap-2">
-            <div className="w-10 h-10 bg-[#0A58CA] rounded-lg flex items-center justify-center p-1.5 shadow-sm">
-              <LogoIcon className="w-full h-full text-white" />
+            <div className="w-10 h-10 bg-transparent rounded-lg flex items-center justify-center">
+              <LogoIcon className="w-6 h-6 text-white" />
             </div>
             <div>
               <Link href={getLink("/")} className="text-xl font-bold tracking-tight block leading-none">GovJobWala</Link>
