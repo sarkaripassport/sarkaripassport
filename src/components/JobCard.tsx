@@ -97,6 +97,7 @@ export default function JobCard({
                 alt={logoAlt || `${org} logo`} 
                 fill 
                 priority={priority} 
+                quality={60}
                 className="object-contain p-0.5" 
                 sizes="(max-width: 768px) 64px, 80px" 
               />

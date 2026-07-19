@@ -19,20 +19,70 @@ function EditorContent() {
   
 
   
+  const compressImage = (file: File): Promise<File> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (event) => {
+        const img = new Image();
+        img.src = event.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 600;
+          const MAX_HEIGHT = 600;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".webp", {
+                type: 'image/webp',
+                lastModified: Date.now(),
+              });
+              resolve(newFile);
+            } else {
+              reject(new Error("Canvas to Blob failed"));
+            }
+          }, 'image/webp', 0.8);
+        };
+        img.onerror = (error) => reject(error);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
     
-    // Prevent Vercel 4.5MB payload limit by enforcing 2MB limit on frontend
-    if (file.size > 2 * 1024 * 1024) {
-      alert("File is too large! Please upload a logo smaller than 2MB.");
+    // Prevent Vercel 4.5MB payload limit by enforcing 5MB limit on frontend (before compression)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("File is too large! Please upload a logo smaller than 5MB.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
     setLoading(true);
     try {
+      // Compress the image on the client side
+      const compressedFile = await compressImage(file);
+      
+      const formData = new FormData();
+      formData.append('file', compressedFile);
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
       
       if (!res.ok) {
