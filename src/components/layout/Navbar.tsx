@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Search, ShieldCheck } from "lucide-react";
+import Image from "next/image";
+import { Search } from "lucide-react";
 import LanguageSwitcher from "../LanguageSwitcher";
 import MobileMenu from "./MobileMenu";
 import { getJobs } from "@/lib/db";
@@ -36,9 +37,14 @@ export default async function Navbar({ lang = 'en' }: { lang?: string }) {
           
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center gap-2">
-            <div className="w-10 h-10 bg-[#0A58CA] rounded-lg flex items-center justify-center">
-              <ShieldCheck className="w-6 h-6 text-white" />
-            </div>
+            <Image 
+              src="/logo.svg" 
+              alt="GovJobWala Logo" 
+              width={40} 
+              height={40} 
+              className="rounded-lg shadow-sm"
+              priority
+            />
             <div>
               <Link href={getLink("/")} className="text-xl font-bold tracking-tight block leading-none">GovJobWala</Link>
               <span className="text-[10px] text-gray-300 font-medium tracking-wide">Sarkari Jobs + Eligibility Assistant</span>
