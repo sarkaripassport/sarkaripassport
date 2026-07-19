@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
-import sharp from 'sharp';
 
 export async function POST(req: Request) {
   try {
@@ -11,18 +10,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file received." }, { status: 400 });
     }
 
-    const originalBuffer = Buffer.from(await file.arrayBuffer());
+    const buffer = Buffer.from(await file.arrayBuffer());
     
-    // Process image with sharp: resize (max 1200px width) and convert to webp
-    const optimizedBuffer = await sharp(originalBuffer)
-      .resize(1200, null, { withoutEnlargement: true })
-      .webp({ quality: 80 })
-      .toBuffer();
-
-    // Force filename to have .webp extension for proper headers and SEO
+    // Use original file type for content type
     const originalNameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
     const cleanName = originalNameWithoutExt.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const filename = `${Date.now()}_${cleanName}.webp`;
+    const extension = file.name.substring(file.name.lastIndexOf('.'));
+    const filename = `${Date.now()}_${cleanName}${extension !== file.name ? extension : ''}`;
     
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
       return NextResponse.json({ error: "Server missing SUPABASE_SERVICE_ROLE_KEY environment variable." }, { status: 500 });
@@ -30,8 +24,8 @@ export async function POST(req: Request) {
 
     const { data, error } = await supabaseAdmin.storage
       .from('uploads')
-      .upload(filename, optimizedBuffer, {
-        contentType: 'image/webp',
+      .upload(filename, buffer, {
+        contentType: file.type,
         cacheControl: '31536000',
         upsert: false
       });
@@ -45,8 +39,8 @@ export async function POST(req: Request) {
         // Try upload again
         const retry = await supabaseAdmin.storage
           .from('uploads')
-          .upload(filename, optimizedBuffer, {
-            contentType: 'image/webp',
+          .upload(filename, buffer, {
+            contentType: file.type,
             cacheControl: '31536000',
             upsert: false
           });
@@ -62,8 +56,8 @@ export async function POST(req: Request) {
       .from('uploads')
       .getPublicUrl(filename);
       
-    // Return the public URL with a cache buster so previews always show immediately
-    return NextResponse.json({ url: `${publicUrl}?t=${Date.now()}` });
+    // Return the clean public URL (the client will add cache buster for preview)
+    return NextResponse.json({ url: publicUrl });
   } catch (error) {
     console.error("Error uploading file:", error);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
