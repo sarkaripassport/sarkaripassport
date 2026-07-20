@@ -2,13 +2,10 @@ import Link from "next/link";
 import Script from "next/script";
 import { getJobs, getSettings, getCategories, getPublishedJobs } from "@/lib/db";
 import { getSeoAlternates } from "@/lib/seo";
-import dynamic from 'next/dynamic';
 import JobCard from "@/components/JobCard";
 import CategoryGrid from "@/components/ui/CategoryGrid";
 import CategoryIcon from "@/components/ui/CategoryIcon";
-
-const AspirantDashboard = dynamic(() => import("@/components/AspirantDashboard"), { ssr: false });
-const AdvancedSearch = dynamic(() => import("@/components/AdvancedSearch"), { ssr: false });
+import DynamicWidgets from "@/components/DynamicWidgets";
 
 export function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
@@ -76,7 +73,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
         // Others bump to top based on updated_at
         return new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime();
       })
-      .slice(0, 15);
+      .slice(0, 5);
   };
 
   // Structured Data (JSON-LD)
@@ -139,9 +136,10 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
         {/* Main Content Area */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 relative z-20 space-y-4 pb-16">
           
-          <AspirantDashboard lang={lang} />
-
-          <AdvancedSearch lang={lang} categories={categories} />
+          {/* Above-the-fold Interactive Widgets (Deferred Client-Side) */}
+          <div className="w-full max-w-5xl mx-auto z-10 mt-6 lg:mt-8 flex flex-col md:flex-row gap-4 items-stretch px-4">
+            <DynamicWidgets lang={lang} categories={categories} />
+          </div>
 
           {/* Quick Category Cards */}
           <div className="grid grid-cols-4 lg:grid-cols-8 gap-2">

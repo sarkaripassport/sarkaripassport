@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import sharp from 'sharp';
 
 export async function POST(req: Request) {
   try {
@@ -10,13 +11,24 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file received." }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    let buffer = Buffer.from(await file.arrayBuffer());
+    let finalContentType = file.type;
+    let extension = file.name.substring(file.name.lastIndexOf('.'));
+    
+    // Optimize images
+    if (file.type.startsWith('image/')) {
+      buffer = await sharp(buffer)
+        .resize({ width: 1200, withoutEnlargement: true })
+        .webp({ quality: 80 })
+        .toBuffer();
+      finalContentType = 'image/webp';
+      extension = '.webp';
+    }
     
     // Use original file type for content type
     const originalNameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
     const cleanName = originalNameWithoutExt.replace(/[^a-zA-Z0-9.-]/g, '_');
-    const extension = file.name.substring(file.name.lastIndexOf('.'));
-    const filename = `${Date.now()}_${cleanName}${extension !== file.name ? extension : ''}`;
+    const filename = `${Date.now()}_${cleanName}${extension}`;
     
     if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
       return NextResponse.json({ error: "Server missing SUPABASE_SERVICE_ROLE_KEY environment variable." }, { status: 500 });
@@ -25,7 +37,7 @@ export async function POST(req: Request) {
     const { data, error } = await supabaseAdmin.storage
       .from('uploads')
       .upload(filename, buffer, {
-        contentType: file.type,
+        contentType: finalContentType,
         cacheControl: '31536000',
         upsert: false
       });
@@ -40,7 +52,7 @@ export async function POST(req: Request) {
         const retry = await supabaseAdmin.storage
           .from('uploads')
           .upload(filename, buffer, {
-            contentType: file.type,
+            contentType: finalContentType,
             cacheControl: '31536000',
             upsert: false
           });
