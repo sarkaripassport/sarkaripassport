@@ -115,11 +115,11 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               <div className="flex items-center gap-1.5 text-[#0A58CA] font-bold text-[10px] sm:text-xs uppercase tracking-widest mb-1 md:mb-2">
                 <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> India's Trusted Government Job Portal
               </div>
-              <h1 className="flex items-center flex-wrap gap-2 md:gap-3 text-base md:text-xl lg:text-2xl font-extrabold text-[#0B1B3D] tracking-tight">
-                <span className="relative flex h-3 w-3 shrink-0">
+              <h1 className="flex items-start sm:items-center gap-2 md:gap-3 text-base md:text-xl lg:text-2xl font-extrabold text-[#0B1B3D] tracking-tight">
+                <span className="relative flex h-3 w-3 shrink-0 mt-1.5 sm:mt-0">
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                 </span>
-                {settings.hero.title[lang]}
+                <span>{settings.hero.title[lang]}</span>
               </h1>
               <p className="text-gray-600 font-medium">
                 {settings.hero.subtitle[lang]}
