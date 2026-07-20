@@ -117,7 +117,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               </div>
               <h1 className="flex items-center flex-wrap gap-2 md:gap-3 text-base md:text-xl lg:text-2xl font-extrabold text-[#0B1B3D] tracking-tight">
                 <span className="relative flex h-3 w-3 shrink-0">
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                 </span>
                 {settings.hero.title[lang]}
               </h1>
