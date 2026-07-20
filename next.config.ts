@@ -87,10 +87,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  experimental: {
-    optimizeCss: true,
-    nextScriptWorkers: true,
-  },
 };
 
 export default nextConfig;

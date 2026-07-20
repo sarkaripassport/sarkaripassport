@@ -116,11 +116,11 @@ export default async function RootLayout({
         {settings.analytics?.ga_id && (
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${settings.analytics.ga_id}`}
-            strategy="worker"
+            strategy="lazyOnload"
           />
         )}
         {settings.analytics?.ga_id && (
-          <Script id="google-analytics" strategy="worker">
+          <Script id="google-analytics" strategy="lazyOnload">
             {`
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
@@ -131,7 +131,7 @@ export default async function RootLayout({
         )}
         
         {settings.analytics?.gtm_id && (
-          <Script id="google-tag-manager" strategy="worker">
+          <Script id="google-tag-manager" strategy="lazyOnload">
             {`
               (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
