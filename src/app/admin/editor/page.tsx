@@ -226,6 +226,19 @@ function EditorContent() {
             alert(`Job published, but Push Notification failed: ${err.message}`);
           }
         }
+        
+        // Ping Google Indexing API if it's a live job
+        if (dataToSave.status !== 'Draft') {
+          const locales = ['en', 'hi', 'mr'];
+          locales.forEach(l => {
+            fetch('/api/index-url', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ADMIN_REQUEST' },
+              body: JSON.stringify({ url: `https://govjobwala.com/${l}/jobs/${dataToSave.slug}`, type: 'URL_UPDATED' })
+            }).catch(e => console.error('Indexing ping failed', e));
+          });
+        }
+        
         alert(`Job ${actionType === 'Draft' ? 'Saved as Draft' : actionType === 'Publish' ? 'Published' : editId ? 'Updated' : 'Published'} Successfully!`);
         router.push('/admin/jobs');
       }
