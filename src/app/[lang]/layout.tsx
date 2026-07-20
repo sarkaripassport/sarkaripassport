@@ -8,6 +8,7 @@ import { getSettings } from "@/lib/db";
 import Script from "next/script";
 import ClientSetup from "@/components/ClientSetup";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -111,6 +112,7 @@ export default async function RootLayout({
         <WhatsAppFloat />
         <ClientSetup />
         <Footer lang={resolvedParams.lang || 'en'} />
+        <SpeedInsights />
         
         {/* Google Analytics & Tag Manager (Optimized via Partytown Web Worker) */}
         {settings.analytics?.ga_id && (
