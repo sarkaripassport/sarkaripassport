@@ -258,12 +258,24 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     }))
   } : null;
 
+  // Generate JSON-LD for VideoObject
+  const videoLd = youtubeVideoId ? {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    'name': `${job.title[lang]} - Official Details`,
+    'description': `Watch official details for ${job.title[lang]}`,
+    'thumbnailUrl': `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`,
+    'uploadDate': parseSafeDate(job.created_at) || new Date().toISOString(),
+    'embedUrl': `https://www.youtube.com/embed/${youtubeVideoId}`
+  } : null;
+
   return (
     <div className="bg-[#F8FAFC] min-h-screen pb-24 md:pb-6 font-sans text-gray-800">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       {(job.schema_settings?.enable_job_schema ?? true) && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingLd) }} />}
       {(job.schema_settings?.enable_faq_schema ?? true) && faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
       {(job.schema_settings?.enable_syllabus_schema ?? true) && syllabusLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(syllabusLd) }} />}
+      {videoLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoLd) }} />}
       
       {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm hidden md:block">
