@@ -27,13 +27,11 @@ export async function POST(req: Request) {
     // Handle escaped newlines in environment variables
     privateKey = privateKey.replace(/\\n/g, '\n');
 
-    const jwtClient = new google.auth.JWT(
-      clientEmail,
-      undefined,
-      privateKey,
-      ['https://www.googleapis.com/auth/indexing'],
-      undefined
-    );
+    const jwtClient = new google.auth.JWT({
+      email: clientEmail,
+      key: privateKey,
+      scopes: ['https://www.googleapis.com/auth/indexing'],
+    });
 
     await jwtClient.authorize();
 

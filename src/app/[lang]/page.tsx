@@ -2,11 +2,13 @@ import Link from "next/link";
 import Script from "next/script";
 import { getJobs, getSettings, getCategories, getPublishedJobs } from "@/lib/db";
 import { getSeoAlternates } from "@/lib/seo";
+import dynamic from 'next/dynamic';
 import JobCard from "@/components/JobCard";
-import AdvancedSearch from "@/components/AdvancedSearch";
-import AspirantDashboard from "@/components/AspirantDashboard";
 import CategoryGrid from "@/components/ui/CategoryGrid";
 import CategoryIcon from "@/components/ui/CategoryIcon";
+
+const AspirantDashboard = dynamic(() => import("@/components/AspirantDashboard"), { ssr: false });
+const AdvancedSearch = dynamic(() => import("@/components/AdvancedSearch"), { ssr: false });
 
 export function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
