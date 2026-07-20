@@ -129,7 +129,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   // Extract YouTube Video ID if present
   let youtubeVideoId = null;
   if (job.youtube_url) {
-    const match = job.youtube_url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/);
+    const match = job.youtube_url.match(/(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?|shorts|live)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/i);
     youtubeVideoId = match ? match[1] : null;
   }
 
