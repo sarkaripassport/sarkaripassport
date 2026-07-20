@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock, Copy, MessageSquare } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock, Copy, MessageSquare, Share2 } from "lucide-react";
 import type { Job, Category } from "@/lib/db";
 import { deleteJobAction } from "./actions";
 
@@ -36,6 +36,22 @@ export default function JobsManagerClient({
       }
       setIsDeleting(null);
     }
+  };
+
+  const generateWhatsAppMessage = (job: Job) => {
+    const title = job.title.en;
+    const org = job.organization.en;
+    const salary = job.quick_facts?.salary?.en || 'As per norms';
+    const lastDate = job.quick_facts?.last_date?.en || 'Check Website';
+    const link = `https://govjobwala.com/en/jobs/${job.slug}`;
+
+    const msg = `🚨 *NEW GOVERNMENT JOB ALERT* 🚨\n\n📌 *${title}*\n🏢 *Organization:* ${org}\n💰 *Salary:* ${salary}\n⏳ *Last Date:* ${lastDate}\n\n👉 *Apply Now & Full Details:* ${link}\n\n_Share with your friends and groups!_`;
+    
+    navigator.clipboard.writeText(msg).then(() => {
+      alert("WhatsApp message copied to clipboard! Paste it in your groups.");
+    }).catch(() => {
+      alert("Failed to copy. Please try again.");
+    });
   };
 
   // Filtering Logic
@@ -214,6 +230,13 @@ export default function JobsManagerClient({
                   
                   <td className="p-4 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => generateWhatsAppMessage(job)}
+                        className="p-1.5 text-emerald-600 hover:bg-emerald-100 rounded transition"
+                        title="Copy WhatsApp Forward Message"
+                      >
+                        <Share2 className="w-4 h-4" />
+                      </button>
                       <Link 
                         href={`/admin/editor?cloneId=${job.id}`}
                         className="p-1.5 text-green-600 hover:bg-green-100 rounded transition"

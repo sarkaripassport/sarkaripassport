@@ -6,6 +6,7 @@ import { getDictionary, Locale } from '@/i18n/getDictionary';
 
 import { notFound } from 'next/navigation';
 import { getJobBySlug, getCategories, getJobs, getPublishedJobs } from "@/lib/db";
+import AdSenseUnit from "@/components/AdSenseUnit";
 import { getSeoAlternates } from '@/lib/seo';
 import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
 import JobComments from '@/components/jobs/JobComments';
@@ -396,6 +397,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                 <div className="text-sm leading-relaxed text-gray-600 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: autoLinkHtml(job.job_summary[lang], lang) || '' }} />
               </div>
             )}
+            
+            <AdSenseUnit />
 
             
             {/* Section: YouTube Video Explainer */}
@@ -671,6 +674,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
              )}
 
              {/* Important Links Card */}
+             <AdSenseUnit className="mb-4" />
              {job.important_links && job.important_links.length > 0 && (
                <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
                  <h3 className="text-sm font-black text-[#0B1B3D] uppercase tracking-wider mb-4">Important Links</h3>

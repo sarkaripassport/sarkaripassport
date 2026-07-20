@@ -4,6 +4,7 @@ import { getJobs, getSettings, getCategories, getPublishedJobs } from "@/lib/db"
 import { getSeoAlternates } from "@/lib/seo";
 import JobCard from "@/components/JobCard";
 import AdvancedSearch from "@/components/AdvancedSearch";
+import AspirantDashboard from "@/components/AspirantDashboard";
 import CategoryGrid from "@/components/ui/CategoryGrid";
 import CategoryIcon from "@/components/ui/CategoryIcon";
 
@@ -136,6 +137,8 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
         {/* Main Content Area */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 relative z-20 space-y-4 pb-16">
           
+          <AspirantDashboard lang={lang} />
+
           <AdvancedSearch lang={lang} categories={categories} />
 
           {/* Quick Category Cards */}
