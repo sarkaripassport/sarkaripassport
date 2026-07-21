@@ -110,7 +110,7 @@ export default async function RootLayout({
         <BreakingNews lang={resolvedParams.lang as 'en' | 'hi' | 'mr'} />
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
         <WhatsAppFloat />
-        <ClientSetup />
+        <ClientSetup adsenseId={settings.analytics?.adsense_id} />
         <Footer lang={resolvedParams.lang || 'en'} />
         
         {/* Google Analytics & Tag Manager */}
@@ -122,15 +122,7 @@ export default async function RootLayout({
           <GoogleTagManager gtmId={settings.analytics.gtm_id} />
         )}
         
-        {/* Google AdSense */}
-        {settings.analytics?.adsense_id && (
-          <Script
-            id="adsbygoogle-init"
-            strategy="lazyOnload"
-            crossOrigin="anonymous"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.analytics.adsense_id}`}
-          />
-        )}
+        {/* Removed AdSense from here, moved to ClientSetup to reduce JS blocking */}
       </body>
     </html>
   );

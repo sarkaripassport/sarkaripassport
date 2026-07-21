@@ -5,7 +5,7 @@ import { getSeoAlternates } from "@/lib/seo";
 import JobCard from "@/components/JobCard";
 import CategoryGrid from "@/components/ui/CategoryGrid";
 import CategoryIcon from "@/components/ui/CategoryIcon";
-import DynamicWidgets from "@/components/DynamicWidgets";
+import AdvancedSearch from "@/components/AdvancedSearch";
 
 export function generateStaticParams() {
   return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
@@ -138,7 +138,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
           
           {/* Above-the-fold Interactive Widgets (Deferred Client-Side) */}
           <div className="w-full max-w-5xl mx-auto z-10 mt-6 lg:mt-8 flex flex-col md:flex-row gap-4 items-stretch px-4">
-            <DynamicWidgets lang={lang} categories={categories} />
+            <AdvancedSearch lang={lang} categories={categories} />
           </div>
 
           {/* Quick Category Cards */}

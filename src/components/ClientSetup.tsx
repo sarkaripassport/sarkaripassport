@@ -3,13 +3,15 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
+import Script from "next/script";
+
 // Dynamically import all heavy non-critical floating UI components
 // This pulls them entirely out of the initial SSR payload and Main Thread hydration
 const PwaInstallPrompt = dynamic(() => import("@/components/ui/PwaInstallPrompt"), { ssr: false });
 const PwaRegistry = dynamic(() => import("@/components/PwaRegistry"), { ssr: false });
 const PushNotificationManager = dynamic(() => import("@/components/PushNotificationManager"), { ssr: false });
 
-export default function ClientSetup() {
+export default function ClientSetup({ adsenseId }: { adsenseId?: string }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -28,6 +30,14 @@ export default function ClientSetup() {
       <PwaInstallPrompt />
       <PwaRegistry />
       <PushNotificationManager />
+      {adsenseId && (
+        <Script
+          id="adsbygoogle-init"
+          strategy="lazyOnload"
+          crossOrigin="anonymous"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
+        />
+      )}
     </>
   );
 }
