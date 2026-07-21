@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     // Optimize images
     if (file.type.startsWith('image/')) {
       buffer = await sharp(buffer)
-        .resize({ width: 1200, withoutEnlargement: true })
+        .resize({ width: 800, withoutEnlargement: true })
         .webp({ quality: 80 })
         .toBuffer();
       finalContentType = 'image/webp';

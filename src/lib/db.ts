@@ -1,4 +1,5 @@
 import { cache } from 'react';
+import { unstable_cache, revalidateTag } from 'next/cache';
 import { supabaseAdmin } from './supabase/admin';
 
 // Advanced Schema Types
@@ -321,28 +322,30 @@ const defaultSettings: HomepageSettings = {
   }
 };
 
-export const getCategories = cache(async (): Promise<Category[]> => {
+export const getCategories = unstable_cache(async (): Promise<Category[]> => {
   const { data, error } = await supabaseAdmin.from('categories').select('data');
   if (error || !data) return [];
   return data.map(row => row.data as Category);
-});
+}, ['categories-cache'], { tags: ['categories'], revalidate: 3600 });
 
 export async function saveCategories(categories: Category[]): Promise<void> {
   const rows = categories.map(c => ({ id: c.id, slug: c.slug, data: c }));
   await supabaseAdmin.from('categories').upsert(rows);
+  revalidateTag('categories');
 }
 
-export const getSettings = cache(async (): Promise<HomepageSettings> => {
+export const getSettings = unstable_cache(async (): Promise<HomepageSettings> => {
   const { data, error } = await supabaseAdmin.from('settings').select('data').eq('id', 'global').single();
   if (error || !data) return defaultSettings;
   return data.data as HomepageSettings;
-});
+}, ['settings-cache'], { tags: ['settings'], revalidate: 3600 });
 
 export async function saveSettings(settings: HomepageSettings): Promise<void> {
   await supabaseAdmin.from('settings').upsert({ id: 'global', data: settings });
+  revalidateTag('settings');
 }
 
-export const getJobs = cache(async (): Promise<Job[]> => {
+export const getJobs = unstable_cache(async (): Promise<Job[]> => {
   const { data, error } = await supabaseAdmin
     .from('jobs')
     .select('data')
@@ -353,12 +356,12 @@ export const getJobs = cache(async (): Promise<Job[]> => {
     return [];
   }
   return data.map(row => row.data as Job);
-});
+}, ['jobs-cache'], { tags: ['jobs'], revalidate: 3600 });
 
-export const getPublishedJobs = cache(async (): Promise<Job[]> => {
+export const getPublishedJobs = unstable_cache(async (): Promise<Job[]> => {
   const jobs = await getJobs();
   return jobs.filter(job => job.isLive === true);
-});
+}, ['published-jobs-cache'], { tags: ['jobs'], revalidate: 3600 });
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   const categories = await getCategories();
@@ -398,6 +401,7 @@ export async function createJob(job: Omit<Job, 'id' | 'created_at'>): Promise<Jo
     data: newJob
   });
   
+  revalidateTag('jobs');
   return newJob;
 }
 
@@ -417,11 +421,13 @@ export async function updateJob(id: string, jobData: Partial<Job>): Promise<Job 
     data: updatedJob
   }).eq('id', id);
   
+  revalidateTag('jobs');
   return updatedJob;
 }
 
 export async function deleteJob(id: string): Promise<boolean> {
   const { error } = await supabaseAdmin.from('jobs').delete().eq('id', id);
+  if (!error) revalidateTag('jobs');
   return !error;
 }
 
