@@ -33,14 +33,34 @@ const matrixTags = {
   "Delhi": "delhi"
 };
 
-function autoLinkHtml(html: string, lang: string) {
+function optimizeRichText(html: string | undefined, lang: string) {
   if (!html) return html;
-  let linkedHtml = html;
+  
+  let processedHtml = html.replace(
+    /<img\b([^>]*?)>/gi,
+    (match, attributes) => {
+      const hasLoading = /loading\s*=/i.test(attributes);
+      const hasDecoding = /decoding\s*=/i.test(attributes);
+      const hasClass = /class\s*=/i.test(attributes);
+      
+      let newAttributes = attributes;
+      if (!hasLoading) newAttributes += ' loading="lazy"';
+      if (!hasDecoding) newAttributes += ' decoding="async"';
+      if (hasClass) {
+        newAttributes = newAttributes.replace(/class\s*=\s*(["'])(.*?)\1/i, 'class="$2 w-full h-auto rounded-lg shadow-sm"');
+      } else {
+        newAttributes += ' class="w-full h-auto rounded-lg shadow-sm"';
+      }
+      
+      return `<img ${newAttributes}>`;
+    }
+  );
+
   for (const [key, slug] of Object.entries(matrixTags)) {
     const regex = new RegExp(`(?![^<]*>)\\b(${key})\\b`, 'gi');
-    linkedHtml = linkedHtml.replace(regex, `<a href="/${lang}/explore/${slug}" class="text-blue-600 hover:underline font-semibold" title="Explore $1 Jobs">$1</a>`);
+    processedHtml = processedHtml.replace(regex, `<a href="/${lang}/explore/${slug}" class="text-blue-600 hover:underline font-semibold" title="Explore $1 Jobs">$1</a>`);
   }
-  return linkedHtml;
+  return processedHtml;
 }
 
 export const revalidate = 3600; // 1 hour ISR
@@ -394,7 +414,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
             {job.job_summary && (
               <div className="bg-white rounded-2xl p-5 md:p-6 shadow-[0_2px_10px_rgb(0,0,0,0.02)] border border-gray-100 mb-6">
                 <h2 className="text-base font-black text-[#0B1B3D] mb-3">Job Summary</h2>
-                <div className="text-sm leading-relaxed text-gray-600 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: autoLinkHtml(job.job_summary[lang], lang) || '' }} />
+                <div className="text-sm leading-relaxed text-gray-600 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(job.job_summary[lang], lang) || '' }} />
               </div>
             )}
             
@@ -544,7 +564,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black flex items-center justify-center shrink-0 border border-blue-200">{step.step_number}</div>
                       <div>
                         <h4 className="font-bold text-[#0B1B3D] mb-1 [&>p]:inline" dangerouslySetInnerHTML={{ __html: step.title[lang] || '' }} />
-                        <div className="text-sm text-gray-600 leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: step.description[lang] || '' }} />
+                        <div className="text-sm text-gray-600 leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(step.description[lang], lang) || '' }} />
                       </div>
                     </div>
                   ))}
@@ -560,7 +580,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                   {job.how_to_apply.map((step) => (
                     <div key={step.step_number} className="flex gap-3 text-sm bg-gray-50 p-3 rounded-lg border border-gray-100">
                       <span className="font-black text-blue-400 shrink-0">Step {step.step_number}:</span>
-                      <div className="text-gray-700 [&>p]:inline" dangerouslySetInnerHTML={{ __html: step.instruction[lang] || '' }} />
+                      <div className="text-gray-700 [&>p]:inline" dangerouslySetInnerHTML={{ __html: optimizeRichText(step.instruction[lang], lang) || '' }} />
                     </div>
                   ))}
                 </div>
@@ -608,7 +628,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                         <span className="[&>p]:inline" dangerouslySetInnerHTML={{ __html: faq.question[lang] || '' }} />
                         <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
                       </summary>
-                      <div className="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 bg-white leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: faq.answer[lang] || '' }} />
+                      <div className="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 bg-white leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(faq.answer[lang], lang) || '' }} />
                     </details>
                   ))}
                 </div>
