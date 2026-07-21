@@ -9,14 +9,22 @@ const PwaInstallPrompt = dynamic(() => import("@/components/ui/PwaInstallPrompt"
 const PwaRegistry = dynamic(() => import("@/components/PwaRegistry"), { ssr: false });
 const PushNotificationManager = dynamic(() => import("@/components/PushNotificationManager"), { ssr: false });
 
-export default function ClientSetup({ adsenseId }: { adsenseId?: string }) {
-  const [loadAds, setLoadAds] = useState(false);
+export default function ClientSetup({ 
+  adsenseId, 
+  gaId, 
+  gtmId 
+}: { 
+  adsenseId?: string;
+  gaId?: string;
+  gtmId?: string;
+}) {
+  const [loadScripts, setLoadScripts] = useState(false);
 
   useEffect(() => {
-    if (!adsenseId || loadAds) return;
+    if ((!adsenseId && !gaId && !gtmId) || loadScripts) return;
 
     const handleInteraction = () => {
-      setLoadAds(true);
+      setLoadScripts(true);
       // Clean up event listeners after first interaction
       window.removeEventListener('scroll', handleInteraction);
       window.removeEventListener('mousemove', handleInteraction);
@@ -36,13 +44,12 @@ export default function ClientSetup({ adsenseId }: { adsenseId?: string }) {
       window.removeEventListener('touchstart', handleInteraction);
       window.removeEventListener('keydown', handleInteraction);
     };
-  }, [adsenseId, loadAds]);
+  }, [adsenseId, gaId, gtmId, loadScripts]);
 
   useEffect(() => {
-    if (loadAds && adsenseId) {
-      // Inject AdSense script exactly once after user interaction
-      const existingScript = document.getElementById('adsbygoogle-init');
-      if (!existingScript) {
+    if (loadScripts) {
+      // 1. Inject AdSense
+      if (adsenseId && !document.getElementById('adsbygoogle-init')) {
         const script = document.createElement('script');
         script.id = 'adsbygoogle-init';
         script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`;
@@ -50,8 +57,41 @@ export default function ClientSetup({ adsenseId }: { adsenseId?: string }) {
         script.async = true;
         document.head.appendChild(script);
       }
+
+      // 2. Inject Google Analytics
+      if (gaId && !document.getElementById('ga-init')) {
+        const script = document.createElement('script');
+        script.id = 'ga-init';
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+        script.async = true;
+        document.head.appendChild(script);
+
+        const inlineScript = document.createElement('script');
+        inlineScript.id = 'ga-inline';
+        inlineScript.innerHTML = `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${gaId}');
+        `;
+        document.head.appendChild(inlineScript);
+      }
+
+      // 3. Inject Google Tag Manager
+      if (gtmId && !document.getElementById('gtm-init')) {
+        const inlineScript = document.createElement('script');
+        inlineScript.id = 'gtm-init';
+        inlineScript.innerHTML = `
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','${gtmId}');
+        `;
+        document.head.appendChild(inlineScript);
+      }
     }
-  }, [loadAds, adsenseId]);
+  }, [loadScripts, adsenseId, gaId, gtmId]);
 
   return (
     <>
@@ -61,3 +101,4 @@ export default function ClientSetup({ adsenseId }: { adsenseId?: string }) {
     </>
   );
 }
+

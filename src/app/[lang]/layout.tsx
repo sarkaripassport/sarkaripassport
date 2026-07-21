@@ -8,7 +8,6 @@ import { getSettings } from "@/lib/db";
 import Script from "next/script";
 import ClientSetup from "@/components/ClientSetup";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -93,12 +92,6 @@ export default async function RootLayout({
       className={`${inter.variable} h-full antialiased bg-brand-light text-brand-navy`}
     >
       <head>
-        <link rel="preconnect" href="https://iqebmesknqvzzfoxosmh.supabase.co" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        <link rel="dns-prefetch" href="https://iqebmesknqvzzfoxosmh.supabase.co" />
-        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <Script
@@ -110,19 +103,8 @@ export default async function RootLayout({
         <BreakingNews lang={resolvedParams.lang as 'en' | 'hi' | 'mr'} />
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
         <WhatsAppFloat />
-        <ClientSetup adsenseId={settings.analytics?.adsense_id} />
+        <ClientSetup adsenseId={settings.analytics?.adsense_id} gaId={settings.analytics?.ga_id} gtmId={settings.analytics?.gtm_id} />
         <Footer lang={resolvedParams.lang || 'en'} />
-        
-        {/* Google Analytics & Tag Manager */}
-        {settings.analytics?.ga_id && (
-          <GoogleAnalytics gaId={settings.analytics.ga_id} />
-        )}
-        
-        {settings.analytics?.gtm_id && (
-          <GoogleTagManager gtmId={settings.analytics.gtm_id} />
-        )}
-        
-        {/* Removed AdSense from here, moved to ClientSetup to reduce JS blocking */}
       </body>
     </html>
   );
