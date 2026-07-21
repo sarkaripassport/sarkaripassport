@@ -265,7 +265,7 @@ export interface HomepageSettings {
 
 const defaultSettings: HomepageSettings = {
   seo: {
-    title: { en: "SarkariJob - Latest Government Jobs, Results & Admit Cards", hi: "", mr: "" },
+    title: { en: "GovJobWala - Latest Government Jobs, Results & Admit Cards", hi: "", mr: "" },
     description: { en: "Find the latest Sarkari jobs, admit cards, results, and syllabus updates. Check your eligibility and apply online instantly.", hi: "", mr: "" },
     keywords: { en: "sarkari job, sarkari result, admit card, latest govt jobs", hi: "", mr: "" },
     gscVerification: ""
@@ -300,23 +300,23 @@ const defaultSettings: HomepageSettings = {
 
   pages: {
     'admit-card': {
-      seo: { title: { en: "Admit Cards - SarkariJob", hi: "", mr: "" }, description: { en: "Download latest admit cards", hi: "", mr: "" }, keywords: { en: "admit card", hi: "", mr: "" } },
+      seo: { title: { en: "Admit Cards - GovJobWala", hi: "", mr: "" }, description: { en: "Download latest admit cards", hi: "", mr: "" }, keywords: { en: "admit card", hi: "", mr: "" } },
       hero: { title: { en: "Download Admit Cards", hi: "", mr: "" }, subtitle: { en: "Get your hall tickets for upcoming exams", hi: "", mr: "" } }
     },
     'results': {
-      seo: { title: { en: "Results - SarkariJob", hi: "", mr: "" }, description: { en: "Check latest exam results", hi: "", mr: "" }, keywords: { en: "results, exam results", hi: "", mr: "" } },
+      seo: { title: { en: "Results - GovJobWala", hi: "", mr: "" }, description: { en: "Check latest exam results", hi: "", mr: "" }, keywords: { en: "results, exam results", hi: "", mr: "" } },
       hero: { title: { en: "Exam Results", hi: "", mr: "" }, subtitle: { en: "Check your selection status instantly", hi: "", mr: "" } }
     },
     'answer-key': {
-      seo: { title: { en: "Answer Keys - SarkariJob", hi: "", mr: "" }, description: { en: "Download exam answer keys", hi: "", mr: "" }, keywords: { en: "answer key", hi: "", mr: "" } },
+      seo: { title: { en: "Answer Keys - GovJobWala", hi: "", mr: "" }, description: { en: "Download exam answer keys", hi: "", mr: "" }, keywords: { en: "answer key", hi: "", mr: "" } },
       hero: { title: { en: "Exam Answer Keys", hi: "", mr: "" }, subtitle: { en: "Verify your answers and calculate scores", hi: "", mr: "" } }
     },
     'syllabus': {
-      seo: { title: { en: "Syllabus - SarkariJob", hi: "", mr: "" }, description: { en: "Download exam syllabus", hi: "", mr: "" }, keywords: { en: "syllabus", hi: "", mr: "" } },
+      seo: { title: { en: "Syllabus - GovJobWala", hi: "", mr: "" }, description: { en: "Download exam syllabus", hi: "", mr: "" }, keywords: { en: "syllabus", hi: "", mr: "" } },
       hero: { title: { en: "Exam Syllabus", hi: "", mr: "" }, subtitle: { en: "Prepare with the official syllabus", hi: "", mr: "" } }
     },
     'tools': {
-      seo: { title: { en: "Online Tools for Govt Jobs - SarkariJob", hi: "", mr: "" }, description: { en: "Free online tools to resize passport photos, compress PDFs, merge signature and photos for government job application forms. 100% free and secure.", hi: "", mr: "" }, keywords: { en: "image resizer, photo and signature merge, compress pdf, online signature generator, sarkari job tools", hi: "", mr: "" } },
+      seo: { title: { en: "Online Tools for Govt Jobs - GovJobWala", hi: "", mr: "" }, description: { en: "Free online tools to resize passport photos, compress PDFs, merge signature and photos for government job application forms. 100% free and secure.", hi: "", mr: "" }, keywords: { en: "image resizer, photo and signature merge, compress pdf, online signature generator, govjobwala tools", hi: "", mr: "" } },
       hero: { title: { en: "Candidate Utility Tools", hi: "", mr: "" }, subtitle: { en: "Free online tools to format your photos, signatures, and documents for government job applications. Processed locally, 100% secure.", hi: "", mr: "" } }
     }
   }
@@ -331,7 +331,7 @@ export const getCategories = unstable_cache(async (): Promise<Category[]> => {
 export async function saveCategories(categories: Category[]): Promise<void> {
   const rows = categories.map(c => ({ id: c.id, slug: c.slug, data: c }));
   await supabaseAdmin.from('categories').upsert(rows);
-  revalidateTag('categories');
+  revalidateTag('categories', 'default');
 }
 
 export const getSettings = unstable_cache(async (): Promise<HomepageSettings> => {
@@ -342,7 +342,7 @@ export const getSettings = unstable_cache(async (): Promise<HomepageSettings> =>
 
 export async function saveSettings(settings: HomepageSettings): Promise<void> {
   await supabaseAdmin.from('settings').upsert({ id: 'global', data: settings });
-  revalidateTag('settings');
+  revalidateTag('settings', 'default');
 }
 
 export const getJobs = unstable_cache(async (): Promise<Job[]> => {
@@ -401,7 +401,7 @@ export async function createJob(job: Omit<Job, 'id' | 'created_at'>): Promise<Jo
     data: newJob
   });
   
-  revalidateTag('jobs');
+  revalidateTag('jobs', 'default');
   return newJob;
 }
 
@@ -421,13 +421,13 @@ export async function updateJob(id: string, jobData: Partial<Job>): Promise<Job 
     data: updatedJob
   }).eq('id', id);
   
-  revalidateTag('jobs');
+  revalidateTag('jobs', 'default');
   return updatedJob;
 }
 
 export async function deleteJob(id: string): Promise<boolean> {
   const { error } = await supabaseAdmin.from('jobs').delete().eq('id', id);
-  if (!error) revalidateTag('jobs');
+  if (!error) revalidateTag('jobs', 'default');
   return !error;
 }
 

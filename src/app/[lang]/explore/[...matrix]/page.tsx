@@ -49,15 +49,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const translations = {
     en: {
-      title: `Latest ${tagString} Jobs 2026 | SarkariJob`,
+      title: `Latest ${tagString} Jobs 2026 | GovJobWala`,
       description: `Find all the latest and upcoming ${tagString} government jobs and recruitments for 2026. Get full details, syllabus, and apply online.`
     },
     hi: {
-      title: `नवीनतम ${tagString} नौकरियां 2026 | SarkariJob`,
+      title: `नवीनतम ${tagString} नौकरियां 2026 | GovJobWala`,
       description: `2026 के लिए सभी नवीनतम और आगामी ${tagString} सरकारी नौकरियां खोजें। पूरी जानकारी प्राप्त करें और ऑनलाइन आवेदन करें।`
     },
     mr: {
-      title: `नवीनतम ${tagString} नोकऱ्या 2026 | SarkariJob`,
+      title: `नवीनतम ${tagString} नोकऱ्या 2026 | GovJobWala`,
       description: `2026 साठी सर्व नवीनतम आणि आगामी ${tagString} सरकारी नोकऱ्या शोधा. पूर्ण तपशील मिळवा आणि ऑनलाइन अर्ज करा.`
     }
   };

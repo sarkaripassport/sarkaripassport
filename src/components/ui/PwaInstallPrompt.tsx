@@ -18,6 +18,7 @@ export default function PwaInstallPrompt() {
     // Check if it's iOS
     const userAgent = window.navigator.userAgent.toLowerCase();
     const isIosDevice = /iphone|ipad|ipod/.test(userAgent);
+    // eslint-disable-next-line
     setIsIOS(isIosDevice);
 
     // If iOS and not in standalone mode, we can show a custom prompt, but we shouldn't show it every time if they dismissed it

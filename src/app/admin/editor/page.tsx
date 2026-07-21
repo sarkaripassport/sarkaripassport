@@ -499,7 +499,7 @@ function EditorContent() {
                       <div className="flex gap-4 items-start">
                         {jobData.logo_url && jobData.logo_url.replace(/['"]/g, '').trim().startsWith('http') && (
                           <div className="shrink-0 w-16 h-16 border rounded bg-gray-50 flex items-center justify-center overflow-hidden">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            { }
                             <img key={jobData.logo_url} src={jobData.logo_url.replace(/['"]/g, '').trim()} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
                           </div>
                         )}

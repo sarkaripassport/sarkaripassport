@@ -131,7 +131,7 @@ export default function ImageResizer() {
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
               <label className="relative flex flex-col items-center justify-center w-full h-40 border-2 border-dashed border-blue-300 rounded-2xl cursor-pointer bg-white/50 hover:bg-blue-50/50 transition-all duration-300 group-hover:border-blue-500 overflow-hidden">
                 {imageSrc ? (
-                  // eslint-disable-next-line @next/next/no-img-element
+                   
                   <img src={imageSrc} alt="Preview" className="w-full h-full object-contain p-2" />
                 ) : (
                   <div className="flex flex-col items-center justify-center pt-5 pb-6 text-center">
@@ -222,7 +222,7 @@ export default function ImageResizer() {
           {resultUrl ? (
             <div className="flex flex-col items-center relative z-10 animate-in zoom-in-95 duration-500">
               <div className="p-3 bg-gray-800 rounded-2xl shadow-2xl mb-6 border border-gray-700 transform transition-transform hover:scale-105 duration-300">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                { }
                 <img src={resultUrl} alt="Result" className="max-w-full max-h-[250px] object-contain rounded-lg" />
               </div>
               

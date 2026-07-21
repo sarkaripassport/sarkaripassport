@@ -30,7 +30,7 @@ export default function AdSenseUnit({
   // If no specific slot is provided, we render a highly-optimized reserved space
   // to prevent CLS (Cumulative Layout Shift) when Auto Ads injects an ad here.
   return (
-    <div className={`w-full overflow-hidden flex items-center justify-center bg-gray-50/50 rounded-lg relative ${className}`}>
+    <div className={`w-full min-h-[250px] md:min-h-[280px] overflow-hidden flex items-center justify-center bg-gray-50/50 rounded-lg relative ${className}`}>
       {/* Fallback Placeholder (Hidden when Ad loads over it) */}
       <span className="absolute text-gray-300 text-[10px] font-bold uppercase tracking-widest pointer-events-none">
         Advertisement

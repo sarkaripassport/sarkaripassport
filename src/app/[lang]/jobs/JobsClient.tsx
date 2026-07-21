@@ -28,8 +28,11 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
 
   // Update state if URL changes externally
   useEffect(() => {
-    setSearchQuery(searchParams.get("q") || "");
-    setSelectedCategory(searchParams.get("cat") || "all");
+    const timer = setTimeout(() => {
+      setSearchQuery(searchParams.get("q") || "");
+      setSelectedCategory(searchParams.get("cat") || "all");
+    }, 0);
+    return () => clearTimeout(timer);
   }, [searchParams]);
 
   const handleCategorySelect = (slug: string) => {

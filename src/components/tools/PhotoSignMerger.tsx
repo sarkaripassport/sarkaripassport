@@ -141,7 +141,7 @@ export default function PhotoSignMerger() {
             <label className="relative flex flex-col items-center justify-center w-full h-[250px] border-2 border-dashed border-blue-300 rounded-2xl cursor-pointer bg-white/50 hover:bg-blue-50/50 transition-all duration-300 group-hover:border-blue-500 overflow-hidden">
               <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(e, 'photo')} />
               {photoSrc ? (
-                // eslint-disable-next-line @next/next/no-img-element
+                 
                 <img src={photoSrc} alt="Photo" className="max-w-full h-full object-contain p-2" />
               ) : (
                 <div className="flex flex-col items-center text-center p-4">
@@ -167,7 +167,7 @@ export default function PhotoSignMerger() {
             <label className="relative flex flex-col items-center justify-center w-full h-[250px] border-2 border-dashed border-indigo-300 rounded-2xl cursor-pointer bg-white/50 hover:bg-indigo-50/50 transition-all duration-300 group-hover:border-indigo-500 overflow-hidden">
               <input type="file" className="hidden" accept="image/*" onChange={(e) => handleUpload(e, 'sign')} />
               {signSrc ? (
-                // eslint-disable-next-line @next/next/no-img-element
+                 
                 <img src={signSrc} alt="Signature" className="max-w-full h-full object-contain p-2" />
               ) : (
                 <div className="flex flex-col items-center text-center p-4">
@@ -235,7 +235,7 @@ export default function PhotoSignMerger() {
           {resultUrl ? (
             <div className="flex flex-col items-center relative z-10 animate-in zoom-in-95 duration-500 w-full">
               <div className="p-3 bg-gray-800 rounded-2xl shadow-2xl mb-6 border border-gray-700 transform transition-transform hover:scale-105 duration-300 w-full flex justify-center overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                { }
                 <img src={resultUrl} alt="Result" className="max-w-[250px] object-contain rounded-lg" />
               </div>
               

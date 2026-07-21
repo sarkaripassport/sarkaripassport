@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
                 type="email" 
                 required
                 className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-[#0A58CA] focus:ring-2 focus:ring-blue-100 transition-all outline-none"
-                placeholder="admin@sarkarijob.com"
+                placeholder="admin@govjobwala.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />

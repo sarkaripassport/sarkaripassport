@@ -1,8 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-
 import Script from "next/script";
 
 // Dynamically import all heavy non-critical floating UI components
@@ -12,19 +10,7 @@ const PwaRegistry = dynamic(() => import("@/components/PwaRegistry"), { ssr: fal
 const PushNotificationManager = dynamic(() => import("@/components/PushNotificationManager"), { ssr: false });
 
 export default function ClientSetup({ adsenseId }: { adsenseId?: string }) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    // Delay rendering of heavy scripts until after initial paint/hydration
-    const timer = setTimeout(() => {
-      setMounted(true);
-    }, 5000); // Wait 5 seconds to completely bypass PageSpeed Insights LCP scan window
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!mounted) return null;
-
+  // Removed artificial 5s setTimeout to comply with PageSpeed Insights and AdSense RUM policies
   return (
     <>
       <PwaInstallPrompt />

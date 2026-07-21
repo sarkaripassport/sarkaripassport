@@ -2,9 +2,8 @@ import { MetadataRoute } from 'next'
 import { getJobs, getCategories } from '@/lib/db'
 import { BASE_URL } from '@/lib/seo'
 
-// Force dynamic rendering so the sitemap automatically updates every time a new job is added!
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+// Cache the sitemap using ISR (revalidates every hour) for blazing fast TTFB
+export const revalidate = 3600
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [jobs, categories] = await Promise.all([

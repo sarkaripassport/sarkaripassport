@@ -23,7 +23,7 @@ export default function SalaryCalcWidget({ job, onChange }: Props) {
   };
 
   // Ensure arrays exist for backwards compatibility during migration
-  if (!calc.custom_allowances) calc.custom_allowances = [];
+  const customAllowances = calc.custom_allowances || [];
 
   const updateField = (field: keyof typeof calc, value: any) => {
     onChange({
@@ -37,19 +37,19 @@ export default function SalaryCalcWidget({ job, onChange }: Props) {
 
   const addCustomAllowance = () => {
     updateField('custom_allowances', [
-      ...calc.custom_allowances,
+      ...customAllowances,
       { name: "New Allowance", amount: 1000 }
     ]);
   };
 
   const updateCustomAllowance = (index: number, field: 'name' | 'amount', value: any) => {
-    const updated = [...calc.custom_allowances];
+    const updated = [...customAllowances];
     updated[index] = { ...updated[index], [field]: value };
     updateField('custom_allowances', updated);
   };
 
   const removeCustomAllowance = (index: number) => {
-    const updated = calc.custom_allowances.filter((_, i) => i !== index);
+    const updated = customAllowances.filter((_, i) => i !== index);
     updateField('custom_allowances', updated);
   };
 
@@ -175,11 +175,11 @@ export default function SalaryCalcWidget({ job, onChange }: Props) {
                   </button>
                 </div>
                 
-                {calc.custom_allowances.length === 0 ? (
+                {customAllowances.length === 0 ? (
                   <p className="text-sm text-gray-500 italic">No custom allowances added. Candidates will see standard DA, HRA, TA.</p>
                 ) : (
                   <div className="space-y-3">
-                    {calc.custom_allowances.map((allowance: any, index: number) => (
+                    {customAllowances.map((allowance: any, index: number) => (
                       <div key={index} className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
                         <div className="flex-1">
                           <input

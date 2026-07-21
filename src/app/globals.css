@@ -38,6 +38,10 @@
     color: #1F2937;
     font-family: var(--font-sans);
   }
+  
+  a, button, input, select, textarea {
+    touch-action: manipulation;
+  }
 }
 
 @utility container-custom {

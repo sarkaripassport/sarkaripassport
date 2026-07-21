@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CheckCircle2, ChevronDown, Save, Send, Settings, ShieldCheck, PieChart, Info, Image, Type, BellRing } from "lucide-react";
+import { CheckCircle2, ChevronDown, Save, Send, Settings, ShieldCheck, PieChart, Info, Image as ImageIcon, Type, BellRing } from "lucide-react";
 import RichTextEditor from "@/components/admin/RichTextEditor";
 import Link from "next/link";
 
@@ -143,7 +143,7 @@ export default function SmartPublisherPage() {
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-4">
           <h3 className="font-bold text-[#0B1B3D] border-b border-gray-100 pb-2">Featured Image / Logo</h3>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:bg-gray-50 transition cursor-pointer">
-            <Image className="w-8 h-8 text-gray-400 mb-2" />
+            <ImageIcon className="w-8 h-8 text-gray-400 mb-2" />
             <span className="text-sm font-bold text-[#0A58CA]">Click to upload</span>
             <span className="text-xs text-gray-500 mt-1">PNG, JPG up to 2MB</span>
           </div>

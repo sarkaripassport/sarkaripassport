@@ -14,7 +14,8 @@ export default function ProtectedEmail({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // During SSR (what bots see), we render a bot-proof text representation

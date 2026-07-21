@@ -154,7 +154,7 @@ export default function ImageToPdf() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {images.map((img, index) => (
                 <div key={img.id} className="relative group bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow aspect-[3/4] animate-in zoom-in-95 duration-300">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  { }
                   <img src={img.url} alt={`Upload ${index + 1}`} className="w-full h-full object-contain p-2 bg-gray-50/50" />
                   <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button 

@@ -82,7 +82,7 @@ export default function SalaryCalculator({ data }: { data: SalaryData }) {
     };
     
     window.requestAnimationFrame(step);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [inHandSalary]);
 
   return (

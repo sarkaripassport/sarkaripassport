@@ -22,7 +22,7 @@ export async function broadcastToTelegram(job: Job, lang: 'en' | 'hi' | 'mr') {
 ${url}
 
 📢 Share this with your friends and family!
-#SarkariJob #GovtJobs #${job.seo_matrix?.states?.[0] || 'India'}
+#GovJobWala #GovtJobs #${job.seo_matrix?.states?.[0] || 'India'}
 `;
 
   console.log('=============================================');

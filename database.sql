@@ -53,6 +53,17 @@ ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE vacancies ENABLE ROW LEVEL SECURITY;
 
 -- Basic Public Policies
-CREATE POLICY "Public profiles are viewable by everyone." ON profiles FOR SELECT USING (true);
+CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
+CREATE POLICY "Super admins can view all profiles" ON profiles FOR SELECT USING (
+  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'super_admin')
+);
+
 CREATE POLICY "Public categories are viewable by everyone." ON categories FOR SELECT USING (true);
+CREATE POLICY "Editors can manage categories" ON categories USING (
+  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('super_admin', 'content_editor'))
+);
+
 CREATE POLICY "Public vacancies are viewable by everyone." ON vacancies FOR SELECT USING (status = 'published');
+CREATE POLICY "Editors can manage vacancies" ON vacancies USING (
+  EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role IN ('super_admin', 'content_editor'))
+);

@@ -194,7 +194,7 @@ export default function SignatureGenerator() {
         {resultUrl ? (
           <div className="flex flex-col items-center relative z-10 animate-in zoom-in-95 duration-500 w-full">
             <div className="p-3 bg-white rounded-2xl shadow-2xl mb-6 border border-gray-200 transform transition-transform hover:scale-105 duration-300 w-full flex justify-center overflow-hidden max-w-[400px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+              { }
               <img src={resultUrl} alt="Result" className="max-w-full object-contain rounded-lg" />
             </div>
             

@@ -1,8 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import { Bot, Link as LinkIcon, Loader2, Save, FileText } from 'lucide-react';
 import RichTextEditor from '@/components/admin/RichTextEditor';
 
@@ -92,7 +90,6 @@ export default function CreateJobPage() {
 
   return (
     <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800 flex flex-col">
-      <Navbar />
       
       <main className="flex-grow max-w-[1000px] w-full mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-6">
@@ -252,7 +249,6 @@ export default function CreateJobPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 }

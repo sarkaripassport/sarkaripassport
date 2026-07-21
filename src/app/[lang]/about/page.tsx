@@ -1,4 +1,5 @@
 import { ShieldCheck, Target, Zap, Heart, CheckCircle2 } from "lucide-react";
+import Link from "next/link";
 
 import { Metadata } from "next";
 import ProtectedEmail from "@/components/ui/ProtectedEmail";
@@ -103,9 +104,9 @@ export default function AboutPage() {
             <p className="text-blue-100 max-w-2xl mx-auto mb-8 text-lg">
               Thousands of aspirants trust GovJobWala daily. Let us help you secure your dream government job.
             </p>
-            <a href="/jobs" className="inline-block bg-white text-[#0A58CA] font-bold px-8 py-3.5 rounded-lg hover:bg-gray-50 transition-colors shadow-md">
+            <Link href="/jobs" className="inline-block bg-white text-[#0A58CA] font-bold px-8 py-3.5 rounded-lg hover:bg-gray-50 transition-colors shadow-md">
               Explore Latest Jobs
-            </a>
+            </Link>
           </div>
         </div>
       </div>
