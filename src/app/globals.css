@@ -56,6 +56,11 @@
   transition: all 0.2s ease-in-out;
 }
 
+@utility lazy-render-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 100% 170px;
+}
+
 .card-hover:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);

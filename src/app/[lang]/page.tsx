@@ -171,31 +171,32 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                   .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
                   .slice(0, 9)
                   .map((job, index) => (
-                  <JobCard 
-                    key={job.id} 
-                    title={job.title[lang] || job.title.en || 'Untitled'}
-                    org={job.organization[lang] || job.organization.en || 'Unknown'}
-                    qual={job.quick_facts?.qualification?.[lang] || job.quick_facts?.qualification?.en || '-'}
-                    vac={job.quick_facts?.vacancies || '-'}
-                    date={job.quick_facts?.last_date[lang] || '-'}
-                    status={job.status}
-                    statusColor={job.statusColor}
-                    isLive={job.isLive}
-                    isTrending={job.isTrending}
-                    daysLeft={job.daysLeft}
-                    link={`/${lang}/jobs/${job.slug}`}
-                    logoUrl={job.logo_url}
-                    logoAlt={job.logo_alt?.[lang] || job.organization[lang]}
-                    lang={lang}
-                    priority={index === 0}
-                    labels={{
-                      trending: dict.home.trending,
-                      daysLeft: dict.home.daysLeft,
-                      lastDate: dict.job.lastDate,
-                      details: dict.job.vacancyDetails.split(' ')[1] || 'Details',
-                      applyNow: dict.job.applyNow
-                    }}
-                  />
+                  <div key={job.id} className="lazy-render-card">
+                    <JobCard 
+                      title={job.title[lang] || job.title.en || 'Untitled'}
+                      org={job.organization[lang] || job.organization.en || 'Unknown'}
+                      qual={job.quick_facts?.qualification?.[lang] || job.quick_facts?.qualification?.en || '-'}
+                      vac={job.quick_facts?.vacancies || '-'}
+                      date={job.quick_facts?.last_date[lang] || '-'}
+                      status={job.status}
+                      statusColor={job.statusColor}
+                      isLive={job.isLive}
+                      isTrending={job.isTrending}
+                      daysLeft={job.daysLeft}
+                      link={`/${lang}/jobs/${job.slug}`}
+                      logoUrl={job.logo_url}
+                      logoAlt={job.logo_alt?.[lang] || job.organization[lang]}
+                      lang={lang}
+                      priority={index === 0}
+                      labels={{
+                        trending: dict.home.trending,
+                        daysLeft: dict.home.daysLeft,
+                        lastDate: dict.job.lastDate,
+                        details: dict.job.vacancyDetails.split(' ')[1] || 'Details',
+                        applyNow: dict.job.applyNow
+                      }}
+                    />
+                  </div>
                 ))}
             </div>
           </div>
