@@ -103,7 +103,7 @@ export default async function RootLayout({
         <BreakingNews lang={resolvedParams.lang as 'en' | 'hi' | 'mr'} />
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
         <WhatsAppFloat />
-        <ClientSetup adsenseId={settings.analytics?.adsense_id} gaId={settings.analytics?.ga_id} gtmId={settings.analytics?.gtm_id} />
+        <ClientSetup adsenseId={settings.analytics?.adsense_id} gaId={settings.analytics?.ga_id} />
         <Footer lang={resolvedParams.lang || 'en'} />
       </body>
     </html>
