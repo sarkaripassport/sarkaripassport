@@ -27,7 +27,7 @@ export default function CategoryGrid({ categories, lang, title, specialSlugs }: 
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
         {categories.slice(0, 20).map((item) => (
-          <Link key={item.id} href={getCategoryUrl(item.slug)} className="flex items-center gap-2 p-2 border border-gray-100 rounded-lg hover:border-[#0A58CA] hover:shadow-sm transition-all group bg-white">
+          <Link key={item.id} href={getCategoryUrl(item.slug)} prefetch={false} className="flex items-center gap-2 p-2 border border-gray-100 rounded-lg hover:border-[#0A58CA] hover:shadow-sm transition-all group bg-white">
             <div className="w-9 h-9 rounded-md bg-gray-50 flex items-center justify-center shrink-0 group-hover:bg-blue-50 transition-colors">
               <CategoryIcon name={item.icon || 'Briefcase'} className="w-6 h-6 transition-transform group-hover:scale-110" />
             </div>
@@ -43,7 +43,7 @@ export default function CategoryGrid({ categories, lang, title, specialSlugs }: 
           </summary>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 mt-3">
             {categories.slice(20).map((item) => (
-              <Link key={item.id} href={getCategoryUrl(item.slug)} className="flex items-center gap-2 p-2 border border-gray-100 rounded-lg hover:border-[#0A58CA] hover:shadow-sm transition-all group bg-white">
+              <Link key={item.id} href={getCategoryUrl(item.slug)} prefetch={false} className="flex items-center gap-2 p-2 border border-gray-100 rounded-lg hover:border-[#0A58CA] hover:shadow-sm transition-all group bg-white">
                 <div className="w-9 h-9 rounded-md bg-gray-50 flex items-center justify-center shrink-0 group-hover:bg-blue-50 transition-colors">
                   <CategoryIcon name={item.icon || 'Briefcase'} className="w-6 h-6 transition-transform group-hover:scale-110" />
                 </div>

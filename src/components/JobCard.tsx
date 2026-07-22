@@ -54,7 +54,7 @@ export default function JobCard({
   }
 }: JobCardProps) {
   return (
-    <div className="group relative bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(10,88,202,0.15)] transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full overflow-hidden">
+    <div className="group relative bg-white rounded-2xl border border-gray-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(10,88,202,0.15)] transition-all duration-300 hover:-translate-y-1.5 flex flex-col h-full overflow-hidden gpu-accelerated">
       
       {/* Top Gradient Accent */}
       <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#0A58CA] via-blue-400 to-cyan-400 opacity-80 group-hover:opacity-100 transition-opacity"></div>

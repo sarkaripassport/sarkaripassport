@@ -56,9 +56,10 @@
   transition: all 0.2s ease-in-out;
 }
 
-@utility lazy-render-card {
-  content-visibility: auto;
-  contain-intrinsic-size: 100% 170px;
+@utility gpu-accelerated {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
 }
 
 .card-hover:hover {

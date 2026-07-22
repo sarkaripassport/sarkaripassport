@@ -171,8 +171,8 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                   .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
                   .slice(0, 9)
                   .map((job, index) => (
-                  <div key={job.id} className="lazy-render-card">
                     <JobCard 
+                      key={job.id} 
                       title={job.title[lang] || job.title.en || 'Untitled'}
                       org={job.organization[lang] || job.organization.en || 'Unknown'}
                       qual={job.quick_facts?.qualification?.[lang] || job.quick_facts?.qualification?.en || '-'}
@@ -196,7 +196,6 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                         applyNow: dict.job.applyNow
                       }}
                     />
-                  </div>
                 ))}
             </div>
           </div>

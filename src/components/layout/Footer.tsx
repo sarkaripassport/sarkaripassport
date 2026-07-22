@@ -66,48 +66,48 @@ export default async function Footer({ lang = 'en' }: { lang?: string }) {
           <div>
             <h2 className="text-white font-bold mb-4">Top Categories</h2>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><Link href={getLink("/explore/10th-pass")} className="hover:text-white transition">10th Pass Jobs</Link></li>
-              <li><Link href={getLink("/explore/12th-pass")} className="hover:text-white transition">12th Pass Jobs</Link></li>
-              <li><Link href={getLink("/explore/graduate")} className="hover:text-white transition">Graduate Jobs</Link></li>
-              <li><Link href={getLink("/explore/police")} className="hover:text-white transition">Police Jobs</Link></li>
-              <li><Link href={getLink("/explore/banking")} className="hover:text-white transition">Banking Jobs</Link></li>
-              <li><Link href={getLink("/explore/up")} className="hover:text-white transition">UP Govt Jobs</Link></li>
-              <li><Link href={getLink("/explore/bihar")} className="hover:text-white transition">Bihar Govt Jobs</Link></li>
+              <li><Link href={getLink("/explore/10th-pass")} prefetch={false} className="hover:text-white transition">10th Pass Jobs</Link></li>
+              <li><Link href={getLink("/explore/12th-pass")} prefetch={false} className="hover:text-white transition">12th Pass Jobs</Link></li>
+              <li><Link href={getLink("/explore/graduate")} prefetch={false} className="hover:text-white transition">Graduate Jobs</Link></li>
+              <li><Link href={getLink("/explore/police")} prefetch={false} className="hover:text-white transition">Police Jobs</Link></li>
+              <li><Link href={getLink("/explore/banking")} prefetch={false} className="hover:text-white transition">Banking Jobs</Link></li>
+              <li><Link href={getLink("/explore/up")} prefetch={false} className="hover:text-white transition">UP Govt Jobs</Link></li>
+              <li><Link href={getLink("/explore/bihar")} prefetch={false} className="hover:text-white transition">Bihar Govt Jobs</Link></li>
             </ul>
           </div>
 
           <div>
             <h2 className="text-white font-bold mb-4">Quick Links</h2>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><Link href={getLink("/jobs")} className="hover:text-white transition">Latest Jobs</Link></li>
-              <li><Link href={getLink("/admit-card")} className="hover:text-white transition">Admit Card</Link></li>
-              <li><Link href={getLink("/results")} className="hover:text-white transition">Results</Link></li>
-              <li><Link href={getLink("/answer-key")} className="hover:text-white transition">Answer Key</Link></li>
-              <li><Link href={getLink("/syllabus")} className="hover:text-white transition">Syllabus</Link></li>
-              <li><Link href={getLink("/admission")} className="hover:text-white transition">Admission</Link></li>
+              <li><Link href={getLink("/jobs")} prefetch={false} className="hover:text-white transition">Latest Jobs</Link></li>
+              <li><Link href={getLink("/admit-card")} prefetch={false} className="hover:text-white transition">Admit Card</Link></li>
+              <li><Link href={getLink("/results")} prefetch={false} className="hover:text-white transition">Results</Link></li>
+              <li><Link href={getLink("/answer-key")} prefetch={false} className="hover:text-white transition">Answer Key</Link></li>
+              <li><Link href={getLink("/syllabus")} prefetch={false} className="hover:text-white transition">Syllabus</Link></li>
+              <li><Link href={getLink("/admission")} prefetch={false} className="hover:text-white transition">Admission</Link></li>
             </ul>
           </div>
 
           <div>
             <h2 className="text-white font-bold mb-4">Tools</h2>
             <ul className="space-y-2 text-sm text-gray-300">
-              <li><Link href={getLink("/tools?tab=resizer")} className="hover:text-white transition flex items-center gap-2">Image Resizer</Link></li>
-              <li><Link href={getLink("/tools?tab=merger")} className="hover:text-white transition flex items-center gap-2">Photo+Sign Merge</Link></li>
-              <li><Link href={getLink("/tools?tab=signature")} className="hover:text-white transition flex items-center gap-2">Signature Pad</Link></li>
-              <li><Link href={getLink("/tools?tab=img-to-pdf")} className="hover:text-white transition flex items-center gap-2">Image to PDF</Link></li>
-              <li><Link href={getLink("/tools?tab=merge-pdf")} className="hover:text-white transition flex items-center gap-2">Merge PDF</Link></li>
+              <li><Link href={getLink("/tools?tab=resizer")} prefetch={false} className="hover:text-white transition flex items-center gap-2">Image Resizer</Link></li>
+              <li><Link href={getLink("/tools?tab=merger")} prefetch={false} className="hover:text-white transition flex items-center gap-2">Photo+Sign Merge</Link></li>
+              <li><Link href={getLink("/tools?tab=signature")} prefetch={false} className="hover:text-white transition flex items-center gap-2">Signature Pad</Link></li>
+              <li><Link href={getLink("/tools?tab=img-to-pdf")} prefetch={false} className="hover:text-white transition flex items-center gap-2">Image to PDF</Link></li>
+              <li><Link href={getLink("/tools?tab=merge-pdf")} prefetch={false} className="hover:text-white transition flex items-center gap-2">Merge PDF</Link></li>
             </ul>
           </div>
 
           <div>
             <h2 className="text-white font-bold mb-4">Company & Legal</h2>
             <ul className="space-y-2 text-sm text-gray-300 mb-6">
-              <li><Link href={getLink("/about")} className="hover:text-white transition">About Us</Link></li>
-              <li><Link href={getLink("/contact")} className="hover:text-white transition">Contact Us</Link></li>
-              <li><Link href={getLink("/privacy")} className="hover:text-white transition">Privacy Policy</Link></li>
-              <li><Link href={getLink("/terms")} className="hover:text-white transition">Terms of Service</Link></li>
-              <li><Link href={getLink("/disclaimer")} className="hover:text-white transition">Disclaimer</Link></li>
-              <li><Link href={getLink("/sitemap")} className="hover:text-white transition">HTML Sitemap</Link></li>
+              <li><Link href={getLink("/about")} prefetch={false} className="hover:text-white transition">About Us</Link></li>
+              <li><Link href={getLink("/contact")} prefetch={false} className="hover:text-white transition">Contact Us</Link></li>
+              <li><Link href={getLink("/privacy")} prefetch={false} className="hover:text-white transition">Privacy Policy</Link></li>
+              <li><Link href={getLink("/terms")} prefetch={false} className="hover:text-white transition">Terms of Service</Link></li>
+              <li><Link href={getLink("/disclaimer")} prefetch={false} className="hover:text-white transition">Disclaimer</Link></li>
+              <li><Link href={getLink("/sitemap")} prefetch={false} className="hover:text-white transition">HTML Sitemap</Link></li>
             </ul>
 
             <h2 className="text-white font-bold mb-4">Contact Us</h2>
