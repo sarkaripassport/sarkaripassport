@@ -14,7 +14,7 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "700", "800"],
   display: "swap",
-  adjustFontFallback: false,
+  adjustFontFallback: true,
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
