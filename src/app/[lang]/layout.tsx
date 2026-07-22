@@ -94,6 +94,8 @@ export default async function RootLayout({
       className={`${inter.variable} h-full antialiased bg-brand-light text-brand-navy`}
     >
       <head>
+        <link rel="preconnect" href="https://iqebmesknqvzzfoxosmh.supabase.co" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://iqebmesknqvzzfoxosmh.supabase.co" />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <Script
