@@ -1,4 +1,3 @@
-import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 const locales = ['en', 'hi', 'mr'];
@@ -21,7 +20,7 @@ export async function proxy(request: NextRequest) {
     if (!pathnameHasLocale) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = `/${defaultLocale}${pathname}`;
-      return NextResponse.redirect(redirectUrl, 308);
+      return NextResponse.rewrite(redirectUrl);
     }
     
     return NextResponse.next();
@@ -32,6 +31,9 @@ export async function proxy(request: NextRequest) {
     let supabaseResponse = NextResponse.next({
       request,
     })
+
+    // Dynamically import Supabase to keep Edge execution payload extremely light for public routes
+    const { createServerClient } = await import('@supabase/ssr')
 
     // Only initialize Supabase on admin routes to save Edge execution time
     const supabase = createServerClient(
