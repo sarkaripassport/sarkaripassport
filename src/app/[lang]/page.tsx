@@ -137,7 +137,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-1 relative z-20 space-y-2 md:space-y-4 pb-16">
           
           {/* Above-the-fold Interactive Widgets (Deferred Client-Side) */}
-          <div className="w-full max-w-5xl mx-auto z-10 mt-2 lg:mt-3 flex flex-col md:flex-row gap-2 items-stretch px-4">
+          <div className="w-full z-10 mt-2 lg:mt-3 flex flex-col md:flex-row gap-2 items-stretch">
             <AdvancedSearch lang={lang} categories={categories} />
           </div>
 
