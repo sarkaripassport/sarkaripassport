@@ -72,9 +72,7 @@ export default function JobCard({
             )}
             <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm border ${statusColor}`}>
               {isLive && (
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500 mr-1.5 shrink-0">
-                  <span className="absolute inset-0 animate-ping rounded-full bg-green-400 opacity-75"></span>
-                </span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500 mr-1.5 shrink-0 shadow-[0_0_6px_rgba(34,197,94,0.6)]"></span>
               )}
               {status}
             </span>

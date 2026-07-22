@@ -169,7 +169,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               {jobs
                   .filter(j => j.category === 'Latest Jobs' || j.categories?.includes('Latest Jobs') || (!j.category && (!j.categories || j.categories.length === 0))) // fallback
                   .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
-                  .slice(0, 12)
+                  .slice(0, 9)
                   .map((job, index) => (
                   <JobCard 
                     key={job.id} 
