@@ -108,7 +108,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
       <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
         
         {/* Hero Section */}
-        <section className="relative bg-white border-b border-gray-200 overflow-hidden py-3 md:py-6 px-4 sm:px-6 lg:px-8">
+        <section className="relative bg-white border-b border-gray-200 overflow-hidden py-2 md:py-3 px-4 sm:px-6 lg:px-8">
           
           <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-center">
             <div className="w-full md:w-4/5 space-y-2 md:space-y-4">
@@ -134,10 +134,10 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
         </section>
 
         {/* Main Content Area */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2 relative z-20 space-y-4 pb-16">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-1 relative z-20 space-y-2 md:space-y-4 pb-16">
           
           {/* Above-the-fold Interactive Widgets (Deferred Client-Side) */}
-          <div className="w-full max-w-5xl mx-auto z-10 mt-6 lg:mt-8 flex flex-col md:flex-row gap-4 items-stretch px-4">
+          <div className="w-full max-w-5xl mx-auto z-10 mt-2 lg:mt-3 flex flex-col md:flex-row gap-2 items-stretch px-4">
             <AdvancedSearch lang={lang} categories={categories} />
           </div>
 
