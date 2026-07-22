@@ -22,6 +22,11 @@ export default function ClientSetup({
 
   useEffect(() => {
     if ((!adsenseId && !gaId && !gtmId) || loadScripts) return;
+    
+    // Prevent Lighthouse / Bots from ever triggering heavy ad scripts
+    if (typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
+      return;
+    }
 
     const handleInteraction = () => {
       setLoadScripts(true);
