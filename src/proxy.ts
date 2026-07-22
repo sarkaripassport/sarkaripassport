@@ -21,7 +21,7 @@ export async function proxy(request: NextRequest) {
     if (!pathnameHasLocale) {
       const redirectUrl = request.nextUrl.clone();
       redirectUrl.pathname = `/${defaultLocale}${pathname}`;
-      return NextResponse.rewrite(redirectUrl);
+      return NextResponse.redirect(redirectUrl, 308);
     }
     
     return NextResponse.next();
