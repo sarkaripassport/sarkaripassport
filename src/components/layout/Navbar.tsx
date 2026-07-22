@@ -1,6 +1,5 @@
 import Link from "next/link";
-import LogoIcon from "@/components/ui/LogoIcon";
-import { Search } from "lucide-react";
+import { Search, ShieldCheck } from "lucide-react";
 import LanguageSwitcher from "../LanguageSwitcher";
 import MobileMenu from "./MobileMenu";
 import { getJobs } from "@/lib/db";
@@ -37,10 +36,10 @@ export default async function Navbar({ lang = 'en' }: { lang?: string }) {
           
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center gap-2">
-            <LogoIcon className="w-12 h-12 text-white" />
+            <ShieldCheck className="w-10 h-10 text-[#FF9933] shrink-0" />
             <div>
               <Link href={getLink("/")} className="text-xl font-bold tracking-tight block leading-none">
-                GovJob<span className="text-[#FF9933]">Wala</span>
+                GovJob<span className="text-white">Wala</span>
               </Link>
               <span className="text-[10px] text-gray-300 font-medium tracking-wide">Sarkari Jobs + Eligibility Assistant</span>
             </div>
