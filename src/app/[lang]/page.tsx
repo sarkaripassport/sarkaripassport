@@ -105,8 +105,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
       
 
 
-      <div className="min-h-screen bg-[#F4F7FA] font-sans text-gray-800">
-        
+      <div className="w-full space-y-2 md:space-y-4">
         {/* Hero Section */}
         <section className="relative bg-white border-b border-gray-200 overflow-hidden py-2 md:py-3 px-4 sm:px-6 lg:px-8">
           
@@ -134,7 +133,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
         </section>
 
         {/* Main Content Area */}
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-1 relative z-20 space-y-2 md:space-y-4 pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-1 relative z-20 space-y-2 md:space-y-4 pb-16">
           
           {/* Above-the-fold Interactive Widgets (Deferred Client-Side) */}
           <div className="w-full z-10 mt-2 lg:mt-3 flex flex-col md:flex-row gap-2 items-stretch">
@@ -166,10 +165,8 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               </div>
               <Link href={`/${lang}/jobs`} className="text-xs font-bold text-blue-100 hover:text-white hover:underline transition-colors uppercase tracking-wider bg-white/10 px-2 py-1 rounded">{dict.home.viewAllJobs}</Link>
             </div>
-            
-            <div className="p-4 sm:p-5 bg-gray-50/50">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                {jobs
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 p-4 sm:p-5 bg-gray-50/50 border-t border-gray-100">
+              {jobs
                   .filter(j => j.category === 'Latest Jobs' || j.categories?.includes('Latest Jobs') || (!j.category && (!j.categories || j.categories.length === 0))) // fallback
                   .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
                   .slice(0, 12)
@@ -200,7 +197,6 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                     }}
                   />
                 ))}
-              </div>
             </div>
           </div>
 
@@ -269,7 +265,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
             specialSlugs={specialSlugs} 
           />
 
-        </main>
+        </div>
       </div>
     </>
   );
