@@ -6,13 +6,10 @@
   --color-brand-navy: #0B1B3D;
   --color-brand-blue: #0A58CA;
   --color-brand-light: #F4F7FA;
-  
   --color-status-green-bg: #E6F4EA;
   --color-status-green-text: #1E8E3E;
   --color-status-orange-bg: #FEF7E0;
   --color-status-orange-text: #E37400;
-
-  --font-sans: var(--font-inter), system-ui, sans-serif;
 
   --animate-swipe: swipe 1.5s ease-in-out infinite;
   --animate-marquee: marquee 25s linear infinite;

@@ -89,7 +89,7 @@ export default async function RootLayout({
   return (
     <html
       lang={resolvedParams.lang || "en"}
-      className={`${inter.variable} h-full antialiased bg-brand-light text-brand-navy`}
+      className={`${inter.className} h-full antialiased bg-brand-light text-brand-navy`}
     >
       <head>
       </head>
