@@ -13,6 +13,7 @@ const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: "swap",
+  adjustFontFallback: false,
 });
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -89,7 +90,7 @@ export default async function RootLayout({
   return (
     <html
       lang={resolvedParams.lang || "en"}
-      className={`${inter.className} h-full antialiased bg-brand-light text-brand-navy`}
+      className={`${inter.variable} h-full antialiased bg-brand-light text-brand-navy`}
     >
       <head>
       </head>

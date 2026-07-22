@@ -87,9 +87,13 @@ export default function ClientSetup({
 
   return (
     <>
-      <PwaInstallPrompt />
-      <PwaRegistry />
-      <PushNotificationManager />
+      {loadScripts && (
+        <>
+          <PwaInstallPrompt />
+          <PwaRegistry />
+          <PushNotificationManager />
+        </>
+      )}
     </>
   );
 }
