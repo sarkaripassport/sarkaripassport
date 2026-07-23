@@ -426,6 +426,40 @@ export async function updateJob(id: string, jobData: Partial<Job>): Promise<Job 
 }
 
 export async function deleteJob(id: string): Promise<boolean> {
+  try {
+    // 1. Fetch the job details to extract logo URL
+    const { data: jobRow } = await supabaseAdmin
+      .from('jobs')
+      .select('data')
+      .eq('id', id)
+      .single();
+
+    if (jobRow && jobRow.data) {
+      const logoUrl = jobRow.data.logo_url;
+      if (logoUrl && typeof logoUrl === 'string' && logoUrl.includes('/storage/v1/object/public/uploads/')) {
+        // Extract filename after '/uploads/'
+        const match = logoUrl.match(/\/uploads\/(.+)$/);
+        const filename = match ? match[1] : null;
+        
+        if (filename) {
+          console.log(`🧹 Cleaning up storage: deleting logo file '${filename}'`);
+          const { error: storageError } = await supabaseAdmin.storage
+            .from('uploads')
+            .remove([filename]);
+            
+          if (storageError) {
+            console.error(`❌ Failed to delete storage file '${filename}':`, storageError.message);
+          } else {
+            console.log(`✅ Successfully deleted storage file '${filename}'`);
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('⚠️ Error performing storage cleanup for job deletion:', err);
+  }
+
+  // 2. Delete the row from the database
   const { error } = await supabaseAdmin.from('jobs').delete().eq('id', id);
   if (!error) revalidateTag('jobs', 'default');
   return !error;

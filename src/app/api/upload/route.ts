@@ -15,14 +15,27 @@ export async function POST(req: Request) {
     let finalContentType = file.type;
     let extension = file.name.substring(file.name.lastIndexOf('.'));
     
+    const fileSize = buffer.length;
+
     // Optimize images
     if (file.type.startsWith('image/')) {
-      buffer = await sharp(buffer)
-        .resize({ width: 800, withoutEnlargement: true })
-        .webp({ quality: 80 })
-        .toBuffer();
-      finalContentType = 'image/webp';
-      extension = '.webp';
+      if (fileSize > 300 * 1024) {
+        // Enforce compression to keep size in the 60KB - 300KB range
+        buffer = await sharp(buffer)
+          .resize({ width: 800, withoutEnlargement: true })
+          .webp({ quality: 75 })
+          .toBuffer();
+        finalContentType = 'image/webp';
+        extension = '.webp';
+      } else if (fileSize >= 60 * 1024) {
+        // Between 60KB and 300KB: Convert to webp with high quality, no resizing
+        buffer = await sharp(buffer)
+          .webp({ quality: 85 })
+          .toBuffer();
+        finalContentType = 'image/webp';
+        extension = '.webp';
+      }
+      // Under 60KB: Bypasses compression completely to prevent logo corruption (as-is original)
     }
     
     // Use original file type for content type

@@ -78,11 +78,8 @@ function EditorContent() {
 
     setLoading(true);
     try {
-      // Compress the image on the client side
-      const compressedFile = await compressImage(file);
-      
       const formData = new FormData();
-      formData.append('file', compressedFile);
+      formData.append('file', file);
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
       
       if (!res.ok) {

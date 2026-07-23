@@ -5,10 +5,10 @@ const { createClient } = require('@supabase/supabase-js');
 // ==========================================
 // Replace these with your project credentials
 const SOURCE_URL = 'https://iqebmesknqvzzfoxosmh.supabase.co';
-const SOURCE_SERVICE_KEY = 'YOUR_OLD_KOREA_SERVICE_ROLE_KEY';
+const SOURCE_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxZWJtZXNrbnF2enpmb3hvc21oIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4MjAyNjcwMywiZXhwIjoyMDk3NjAyNzAzfQ.oWuRrRpNjhU9yiwK6NhOY3rSPhmea9SPgGhTZPwAmW0';
 
-const TARGET_URL = 'https://YOUR_NEW_MUMBAI_PROJECT_REF.supabase.co';
-const TARGET_SERVICE_KEY = 'YOUR_NEW_MUMBAI_SERVICE_ROLE_KEY';
+const TARGET_URL = 'https://moxkepugwmwleryhhhsv.supabase.co';
+const TARGET_SERVICE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1veGtlcHVnd213bGVyeWhoaHN2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDc0OTg5OCwiZXhwIjoyMTAwMzI1ODk4fQ.tRiyktbvQp800qpTIOtglTVn15ITZv_EmYOTGIMbHRE';
 
 // ==========================================
 // MIGRATION SCRIPT
