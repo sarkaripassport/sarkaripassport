@@ -88,14 +88,16 @@ export default async function RootLayout({
     ]
   };
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://moxkepugwmwleryhhhsv.supabase.co';
+
   return (
     <html
       lang={resolvedParams.lang || "en"}
       className={`${inter.variable} h-full antialiased bg-brand-light text-brand-navy`}
     >
       <head>
-        <link rel="preconnect" href="https://iqebmesknqvzzfoxosmh.supabase.co" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://iqebmesknqvzzfoxosmh.supabase.co" />
+        <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href={supabaseUrl} />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <Script
