@@ -363,6 +363,22 @@ export const getPublishedJobs = unstable_cache(async (): Promise<Job[]> => {
   return jobs.filter(job => job.isLive === true);
 }, ['published-jobs-cache'], { tags: ['jobs'], revalidate: 3600 });
 
+export const getCategoriesWithCounts = unstable_cache(async (): Promise<(Category & { count: number })[]> => {
+  const [categories, allJobs] = await Promise.all([
+    getCategories(),
+    getPublishedJobs()
+  ]);
+  
+  const getCount = (catName: string) => allJobs.filter(j => j.category === catName || j.categories?.includes(catName)).length;
+  
+  return categories
+    .map(c => ({
+      ...c,
+      count: getCount(c.name.en)
+    }))
+    .sort((a, b) => b.count - a.count);
+}, ['categories-with-counts'], { tags: ['jobs', 'categories'], revalidate: 3600 });
+
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
   const categories = await getCategories();
   return categories.find(c => c.slug === slug) || null;

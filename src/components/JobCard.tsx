@@ -92,12 +92,11 @@ export default function JobCard({
               <Image 
                 src={logoUrl.replace(/['"]/g, '').trim()} 
                 alt={logoAlt || `${org} logo`} 
-                fill 
+                width={80}
+                height={80}
                 priority={priority} 
                 fetchPriority={priority ? "high" : "auto"}
-                unoptimized={true}
-                className="object-contain p-0.5" 
-                sizes="(max-width: 768px) 64px, 80px" 
+                className="object-contain p-0.5 max-w-full max-h-full" 
               />
             </div>
           ) : (

@@ -328,7 +328,7 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-                  {currentJobs.map((job) => (
+                  {currentJobs.map((job, index) => (
                     <JobCard 
                       key={job.id} 
                       title={job.title[lang] || job.title.en || 'Untitled Job'}
@@ -345,6 +345,7 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                       logoUrl={job.logo_url}
                       logoAlt={job.logo_alt?.[lang] || job.logo_alt?.en || job.organization[lang] || job.organization.en || 'Logo'}
                       lang={lang as any}
+                      priority={index < 6}
                       labels={{
                         trending: dict.home.trending,
                         daysLeft: dict.home.daysLeft,

@@ -5,7 +5,7 @@ import { getDictionary, Locale } from '@/i18n/getDictionary';
 
 
 import { notFound } from 'next/navigation';
-import { getJobBySlug, getCategories, getJobs, getPublishedJobs } from "@/lib/db";
+import { getJobBySlug, getCategories, getJobs, getPublishedJobs, getCategoriesWithCounts } from "@/lib/db";
 import AdSenseUnit from "@/components/AdSenseUnit";
 import { getSeoAlternates } from '@/lib/seo';
 import { ChevronDown, CheckCircle2, Clock, MapPin, GraduationCap, Users, DollarSign, Calendar, Info, ArrowRight, CheckSquare, ListOrdered, HelpCircle, BookOpen, Search, IndianRupee } from 'lucide-react';
@@ -117,14 +117,11 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   const resolvedParams = await params;
   const { lang, slug } = resolvedParams;
   const dict = await getDictionary(lang);
-  const [job, categories, allJobs] = await Promise.all([
+  const [job, sortedCategories, allJobs] = await Promise.all([
     getJobBySlug(slug),
-    getCategories(),
+    getCategoriesWithCounts(),
     getPublishedJobs()
   ]);
-
-  const getCount = (catName: string) => allJobs.filter(j => j.category === catName || j.categories?.includes(catName)).length;
-  const sortedCategories = [...categories].sort((a, b) => getCount(b.name.en) - getCount(a.name.en));
 
   if (!job || !job.isLive) {
     notFound();
@@ -321,7 +318,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           
           {job.logo_url && job.logo_url.replace(/['"]/g, '').trim().startsWith("http") ? (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden relative z-10 mt-1">
-              <Image src={job.logo_url.replace(/['"]/g, '').trim()} alt={job.logo_alt?.[lang] || job.organization[lang]} width={112} height={112} unoptimized={true} priority className="w-full h-full object-contain p-1" />
+              <Image src={job.logo_url.replace(/['"]/g, '').trim()} alt={job.logo_alt?.[lang] || job.organization[lang]} width={112} height={112} priority className="w-full h-full object-contain p-1" />
             </div>
           ) : (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center relative z-10 mt-1">
@@ -554,6 +551,21 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
               </section>
             )}
 
+            {/* Mobile Important Links (Visible only on mobile/tablet) */}
+            {job.important_links && job.important_links.length > 0 && (
+              <div className="block md:hidden bg-white border border-gray-200 rounded-xl p-5 shadow-sm mb-6">
+                <h3 className="text-sm font-black text-[#0B1B3D] uppercase tracking-wider mb-4">Important Links</h3>
+                <div className="space-y-2">
+                  {job.important_links.map((link, idx) => (
+                    <a key={idx} href={link.url} target="_blank" className={`flex items-center justify-between p-3 rounded-lg border text-sm font-bold transition-colors ${link.is_primary ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100' : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'}`}>
+                      {link.label[lang]}
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Section 10: Selection Process */}
             {job.selection_process && job.selection_process.length > 0 && (
               <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 p-5 md:p-6 shadow-sm">
@@ -643,6 +655,21 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           {/* Right Sidebar (Sticky on Desktop) */}
           <div className="w-full md:w-[350px] shrink-0 space-y-4 md:space-y-6 md:sticky md:top-20 h-fit">
              
+             {/* Desktop Important Links (Visible only on desktop) */}
+             {job.important_links && job.important_links.length > 0 && (
+               <div className="hidden md:block bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+                 <h3 className="text-sm font-black text-[#0B1B3D] uppercase tracking-wider mb-4">Important Links</h3>
+                 <div className="space-y-2">
+                   {job.important_links.map((link, idx) => (
+                     <a key={idx} href={link.url} target="_blank" className={`flex items-center justify-between p-3 rounded-lg border text-sm font-bold transition-colors ${link.is_primary ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100' : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'}`}>
+                       {link.label[lang]}
+                       <ArrowRight className="w-4 h-4" />
+                     </a>
+                   ))}
+                 </div>
+               </div>
+             )}
+
              {/* Search Widget */}
              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
                <h3 className="text-sm font-black text-[#0B1B3D] uppercase tracking-wider mb-4">Search Jobs</h3>
@@ -693,21 +720,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                </div>
              )}
 
-             {/* Important Links Card */}
-             <AdSenseUnit className="mb-4" />
-             {job.important_links && job.important_links.length > 0 && (
-               <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
-                 <h3 className="text-sm font-black text-[#0B1B3D] uppercase tracking-wider mb-4">Important Links</h3>
-                 <div className="space-y-2">
-                   {job.important_links.map((link, idx) => (
-                     <a key={idx} href={link.url} target="_blank" className={`flex items-center justify-between p-3 rounded-lg border text-sm font-bold transition-colors ${link.is_primary ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100' : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'}`}>
-                       {link.label[lang]}
-                       <ArrowRight className="w-4 h-4" />
-                     </a>
-                   ))}
-                 </div>
-               </div>
-             )}
+             {/* Important Links Card deleted (moved to top of sidebar) */}
           </div>
         </div>
       </div>
@@ -730,9 +743,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       <Image 
                         src={rJob.logo_url.replace(/['"]/g, '').trim()} 
                         alt={`${rJob.organization[lang]} logo`} 
-                        fill 
-                        unoptimized={true}
-                        className="object-contain p-1"
+                        width={40}
+                        height={40}
+                        className="object-contain p-1 max-w-full max-h-full"
                       />
                     </div>
                   ) : (
