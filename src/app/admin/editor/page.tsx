@@ -20,7 +20,12 @@ function EditorContent() {
 
   
   const compressImage = (file: File): Promise<File> => {
-    return new Promise((resolve, reject) => {
+    // Under 60KB: Bypasses compression entirely to preserve logo vector/quality
+    if (file.size < 60 * 1024) {
+      return Promise.resolve(file);
+    }
+
+    return new Promise((resolve) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
@@ -28,8 +33,10 @@ function EditorContent() {
         img.src = event.target?.result as string;
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const MAX_WIDTH = 600;
-          const MAX_HEIGHT = 600;
+          
+          // Max size bounds (resizing to max 800px width/height)
+          const MAX_WIDTH = 800;
+          const MAX_HEIGHT = 800;
           let width = img.width;
           let height = img.height;
 
@@ -48,21 +55,27 @@ function EditorContent() {
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx?.drawImage(img, 0, 0, width, height);
+
+          // Detect transparent PNGs: keep format as image/png to preserve alpha channel
+          const isPng = file.type === 'image/png' || file.name.toLowerCase().endsWith('.png');
+          const exportFormat = isPng ? 'image/png' : 'image/webp';
+          const exportExtension = isPng ? '.png' : '.webp';
+
           canvas.toBlob((blob) => {
             if (blob) {
-              const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".webp", {
-                type: 'image/webp',
+              const newFile = new File([blob], file.name.replace(/\.[^/.]+$/, "") + exportExtension, {
+                type: exportFormat,
                 lastModified: Date.now(),
               });
               resolve(newFile);
             } else {
-              reject(new Error("Canvas to Blob failed"));
+              resolve(file); // Fallback to original
             }
-          }, 'image/webp', 0.8);
+          }, exportFormat, isPng ? undefined : 0.85);
         };
-        img.onerror = (error) => reject(error);
+        img.onerror = () => resolve(file); // Fallback on load error
       };
-      reader.onerror = (error) => reject(error);
+      reader.onerror = () => resolve(file); // Fallback on read error
     });
   };
 
@@ -78,8 +91,9 @@ function EditorContent() {
 
     setLoading(true);
     try {
+      const optimizedFile = await compressImage(file);
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('file', optimizedFile);
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
       
       if (!res.ok) {

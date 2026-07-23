@@ -95,7 +95,7 @@ export default function JobCard({
                 fill 
                 priority={priority} 
                 fetchPriority={priority ? "high" : "auto"}
-                quality={60}
+                unoptimized={true}
                 className="object-contain p-0.5" 
                 sizes="(max-width: 768px) 64px, 80px" 
               />
