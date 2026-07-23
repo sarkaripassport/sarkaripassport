@@ -26,7 +26,7 @@ interface JobCardProps {
     details: string;
     applyNow: string;
   };
-  priority?: boolean;
+  imgPriority?: boolean;
 }
 
 export default function JobCard({
@@ -44,7 +44,7 @@ export default function JobCard({
   lang = "en",
   logoUrl,
   logoAlt,
-  priority = false,
+  imgPriority = false,
   labels = {
     trending: "Trending",
     daysLeft: "Days Left",
@@ -94,8 +94,8 @@ export default function JobCard({
                 alt={logoAlt || `${org} logo`} 
                 width={80}
                 height={80}
-                priority={priority} 
-                fetchPriority={priority ? "high" : "auto"}
+                priority={imgPriority} 
+                fetchPriority={imgPriority ? "high" : "auto"}
                 className="object-contain p-0.5 max-w-full max-h-full" 
               />
             </div>

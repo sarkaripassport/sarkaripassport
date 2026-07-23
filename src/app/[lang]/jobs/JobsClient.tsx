@@ -345,7 +345,7 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                       logoUrl={job.logo_url}
                       logoAlt={job.logo_alt?.[lang] || job.logo_alt?.en || job.organization[lang] || job.organization.en || 'Logo'}
                       lang={lang as any}
-                      priority={index < 6}
+                      imgPriority={index < 6}
                       labels={{
                         trending: dict.home.trending,
                         daysLeft: dict.home.daysLeft,

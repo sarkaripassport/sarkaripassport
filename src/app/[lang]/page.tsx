@@ -199,7 +199,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                       logoUrl={job.logo_url}
                       logoAlt={job.logo_alt?.[lang] || job.organization[lang]}
                       lang={lang}
-                      priority={index < 6}
+                      imgPriority={index < 6}
                       labels={{
                         trending: dict.home.trending,
                         daysLeft: dict.home.daysLeft,
