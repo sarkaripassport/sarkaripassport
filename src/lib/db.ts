@@ -348,14 +348,30 @@ export async function saveSettings(settings: HomepageSettings): Promise<void> {
 export const getJobs = unstable_cache(async (): Promise<Job[]> => {
   const { data, error } = await supabaseAdmin
     .from('jobs')
-    .select('data')
+    .select(`
+      id,
+      slug,
+      created_at,
+      updated_at,
+      title:data->title,
+      organization:data->organization,
+      category:data->category,
+      categories:data->categories,
+      status:data->status,
+      statusColor:data->statusColor,
+      isLive:data->isLive,
+      isTrending:data->isTrending,
+      logo_url:data->logo_url,
+      logo_alt:data->logo_alt,
+      quick_facts:data->quick_facts
+    `)
     .order('created_at', { ascending: false });
     
   if (error || !data) {
     console.error('Error fetching jobs from Supabase:', error);
     return [];
   }
-  return data.map(row => row.data as Job);
+  return data as unknown as Job[];
 }, ['jobs-cache'], { tags: ['jobs'], revalidate: 3600 });
 
 export const getPublishedJobs = unstable_cache(async (): Promise<Job[]> => {
@@ -398,8 +414,14 @@ export async function getJobsByCategorySlug(slug: string): Promise<Job[]> {
 }
 
 export async function getJobBySlug(slug: string): Promise<Job | null> {
-  const jobs = await getJobs();
-  return jobs.find(j => j.slug === slug) || null;
+  const { data, error } = await supabaseAdmin
+    .from('jobs')
+    .select('data')
+    .eq('slug', slug)
+    .single();
+    
+  if (error || !data) return null;
+  return data.data as Job;
 }
 
 export async function createJob(job: Omit<Job, 'id' | 'created_at'>): Promise<Job> {

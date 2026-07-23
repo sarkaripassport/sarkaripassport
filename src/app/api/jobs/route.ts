@@ -5,16 +5,21 @@ import { createJob, updateJob, getJobs } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { autoLinker } from '@/lib/autoLinkerHtml';
 
+import { supabaseAdmin } from '@/lib/supabase/admin';
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     
     if (id) {
-      const jobs = await getJobs();
-      const job = jobs.find(j => j.id === id);
-      if (!job) return NextResponse.json({ error: "Job not found" }, { status: 404 });
-      return NextResponse.json(job);
+      const { data, error } = await supabaseAdmin
+        .from('jobs')
+        .select('data')
+        .eq('id', id)
+        .single();
+      if (error || !data) return NextResponse.json({ error: "Job not found" }, { status: 404 });
+      return NextResponse.json(data.data);
     }
     
     // Return all if no ID
