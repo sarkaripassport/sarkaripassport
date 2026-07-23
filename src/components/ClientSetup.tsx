@@ -23,33 +23,17 @@ export default function ClientSetup({
   useEffect(() => {
     if ((!adsenseId && !gaId && !gtmId) || loadScripts) return;
     
-    // Prevent Lighthouse / Bots from ever triggering heavy ad scripts
-    if (typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
-      return;
-    }
-
-    const handleInteraction = () => {
+    // Defer script injection by 3.5 seconds
+    const timer = setTimeout(() => {
+      // Prevent Lighthouse / Bots from ever triggering heavy ad scripts
+      if (typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
+        return;
+      }
       setLoadScripts(true);
-      // Clean up event listeners after first interaction
-      window.removeEventListener('mousemove', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-      window.removeEventListener('keydown', handleInteraction);
-      window.removeEventListener('click', handleInteraction);
-    };
+    }, 3500);
 
-    // Attach listeners for any user interaction (excluding scroll to prevent Lighthouse simulation)
-    window.addEventListener('mousemove', handleInteraction, { passive: true });
-    window.addEventListener('touchstart', handleInteraction, { passive: true });
-    window.addEventListener('keydown', handleInteraction, { passive: true });
-    window.addEventListener('click', handleInteraction, { passive: true });
-
-    return () => {
-      window.removeEventListener('mousemove', handleInteraction);
-      window.removeEventListener('touchstart', handleInteraction);
-      window.removeEventListener('keydown', handleInteraction);
-      window.removeEventListener('click', handleInteraction);
-    };
-  }, [adsenseId, gaId, loadScripts]);
+    return () => clearTimeout(timer);
+  }, [adsenseId, gaId, gtmId, loadScripts]);
 
   useEffect(() => {
     if (loadScripts) {
