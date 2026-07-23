@@ -57,14 +57,24 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
   const specialSlugs = ['results', 'admit-card', 'answer-key', 'syllabus', 'admission'];
 
   const getCategoryUrl = (slug: string) => {
-    if (specialSlugs.includes(slug)) return `/${lang}/${slug}`;
+    const cleanSlug = slug.toLowerCase().replace(/s$/, ''); // singularize
+    if (cleanSlug === 'result') return `/${lang}/results`;
+    if (cleanSlug === 'admit-card') return `/${lang}/admit-card`;
+    if (cleanSlug === 'answer-key') return `/${lang}/answer-key`;
+    if (cleanSlug === 'syllabus') return `/${lang}/syllabus`;
+    if (cleanSlug === 'admission') return `/${lang}/admission`;
     return `/${lang}/category/${slug}`;
   };
 
   // Helper to get top 15 jobs for a category with dual sorting
   const getJobsForCategory = (catName: string) => {
+    const cleanCatName = catName?.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/s$/, '');
     return jobs
-      .filter(j => j.category === catName || j.categories?.includes(catName))
+      .filter(j => {
+        const jobCat = j.category?.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/s$/, '');
+        const inJobCats = j.categories?.some(c => c.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/s$/, '') === cleanCatName);
+        return jobCat === cleanCatName || inJobCats;
+      })
       .sort((a, b) => {
         if (catName === 'Latest Jobs') {
           // Latest Jobs strict chronological sort
@@ -208,9 +218,14 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               { title: settings.four_columns.col3_category, items: getJobsForCategory(settings.four_columns.col3_category) },
               { title: settings.four_columns.col4_category, items: getJobsForCategory(settings.four_columns.col4_category) }
             ].map((col, i) => {
-              const catObj = categories.find(c => c.name.en === col.title);
+              // Robust matching: exact, case-insensitive, slug-based, or singularized slug
+              const catObj = categories.find(c => 
+                c.name.en.toLowerCase() === col.title?.toLowerCase() ||
+                c.slug === col.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') ||
+                c.slug === col.title?.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/s$/, '')
+              );
               const catName = catObj ? catObj.name[lang] : col.title;
-              const catSlug = catObj?.slug || '';
+              const catSlug = catObj?.slug || col.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-') || '';
               return (
                 <div key={i} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
                   <div className="bg-gradient-to-r from-[#002D62] to-[#0A58CA] py-2 px-4 flex justify-between items-center shrink-0">
