@@ -1,12 +1,10 @@
 import Link from "next/link";
 import LogoIcon from "@/components/ui/LogoIcon";
 import { Search } from "lucide-react";
-import dynamic from "next/dynamic";
+import LanguageSwitcher from "../LanguageSwitcher";
+import MobileMenu from "./MobileMenu";
 import { getJobs } from "@/lib/db";
 import LiveTimestamp from "../ui/LiveTimestamp";
-
-const LanguageSwitcher = dynamic<any>(() => import("../LanguageSwitcher"), { ssr: false });
-const MobileMenu = dynamic<any>(() => import("./MobileMenu"), { ssr: false });
 
 export default async function Navbar({ lang = 'en' }: { lang?: string }) {
   const getLink = (path: string) => {
