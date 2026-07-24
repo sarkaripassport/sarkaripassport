@@ -5,8 +5,8 @@ import dynamic from "next/dynamic";
 import { getJobs } from "@/lib/db";
 import LiveTimestamp from "../ui/LiveTimestamp";
 
-const LanguageSwitcher = dynamic(() => import("../LanguageSwitcher"), { ssr: false });
-const MobileMenu = dynamic(() => import("./MobileMenu"), { ssr: false });
+const LanguageSwitcher = dynamic<any>(() => import("../LanguageSwitcher"), { ssr: false });
+const MobileMenu = dynamic<any>(() => import("./MobileMenu"), { ssr: false });
 
 export default async function Navbar({ lang = 'en' }: { lang?: string }) {
   const getLink = (path: string) => {
