@@ -39,6 +39,9 @@ const nextConfig: NextConfig = {
       }
     ]
   },
+  compiler: {
+    removeConsole: { exclude: ['error'] },
+  },
   experimental: {
     optimizePackageImports: ['lucide-react'],
     inlineCss: true,

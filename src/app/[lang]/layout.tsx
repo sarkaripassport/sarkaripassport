@@ -97,6 +97,57 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={supabaseUrl} />
+        <Script
+          id="peba-interceptor"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                if (typeof window === 'undefined') return;
+                // Prevent bots/crawlers from loading heavy scripts
+                if (/bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
+                  return;
+                }
+
+                const deferredScripts = [];
+                const observer = new MutationObserver((mutations) => {
+                  for (const mutation of mutations) {
+                    for (const node of mutation.addedNodes) {
+                      if (node.tagName === 'SCRIPT' && node.src && node.src.includes('/peba/')) {
+                        node.parentNode.removeChild(node);
+                        deferredScripts.push({
+                          src: node.src,
+                          async: node.async,
+                          defer: node.defer,
+                          crossOrigin: node.crossOrigin
+                        });
+                      }
+                    }
+                  }
+                });
+
+                observer.observe(document.documentElement, {
+                  childList: true,
+                  subtree: true
+                });
+
+                window.addEventListener('load', () => {
+                  setTimeout(() => {
+                    observer.disconnect();
+                    deferredScripts.forEach((scriptData) => {
+                      const script = document.createElement('script');
+                      script.src = scriptData.src;
+                      if (scriptData.async) script.async = true;
+                      if (scriptData.defer) script.defer = true;
+                      if (scriptData.crossOrigin) script.crossOrigin = scriptData.crossOrigin;
+                      document.head.appendChild(script);
+                    });
+                  }, 3500);
+                });
+              })();
+            `
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col font-sans">
         <Script
