@@ -104,41 +104,87 @@ export default async function RootLayout({
             __html: `
               (function() {
                 if (typeof window === 'undefined') return;
-                // Prevent bots/crawlers from loading heavy scripts
-                if (/bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
+
+                const userAgent = navigator.userAgent || '';
+                const isBot = /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(userAgent);
+
+                // If it's Googlebot or another crawler, bypass optimization to ensure 100% standard rendering and GSC indexing
+                if (isBot) {
                   return;
                 }
 
                 const deferredScripts = [];
+                let pageLoaded = false;
+
+                // 1. Monkey-patch createElement to intercept dynamically generated elements
+                const originalCreateElement = document.createElement;
+                document.createElement = function(tagName, options) {
+                  const element = originalCreateElement.call(document, tagName, options);
+                  if (tagName && tagName.toLowerCase() === 'script') {
+                    Object.defineProperty(element, 'src', {
+                      set: function(url) {
+                        if (url && url.includes('/peba/')) {
+                          deferredScripts.push({
+                            src: url,
+                            async: element.async !== false,
+                            defer: element.defer || false,
+                            crossOrigin: element.crossOrigin || null
+                          });
+                        } else {
+                          this.setAttribute('src', url);
+                        }
+                      },
+                      get: function() {
+                        return this.getAttribute('src');
+                      },
+                      configurable: true
+                    });
+                  }
+                  return element;
+                };
+
+                // 2. Ultra-lightweight MutationObserver to catch parser-inserted root tags (no subtree: true)
                 const observer = new MutationObserver((mutations) => {
                   for (const mutation of mutations) {
                     for (const node of mutation.addedNodes) {
-                      if (node.tagName === 'SCRIPT' && node.src && node.src.includes('/peba/')) {
-                        node.parentNode.removeChild(node);
-                        deferredScripts.push({
-                          src: node.src,
-                          async: node.async,
-                          defer: node.defer,
-                          crossOrigin: node.crossOrigin
-                        });
+                      if (node.nodeType === 1 && node.tagName === 'SCRIPT') {
+                        const src = node.getAttribute('src');
+                        if (src && src.includes('/peba/')) {
+                          node.parentNode.removeChild(node);
+                          deferredScripts.push({
+                            src: src,
+                            async: node.async !== false,
+                            defer: node.defer || false,
+                            crossOrigin: node.crossOrigin || null
+                          });
+                        }
                       }
                     }
                   }
                 });
 
-                observer.observe(document.documentElement, {
-                  childList: true,
-                  subtree: true
+                // Observe only the head childList (extremely fast, no subtree overhead)
+                if (document.head) {
+                  observer.observe(document.head, { childList: true });
+                }
+
+                // Observe the body childList once DOMContentLoaded is triggered
+                document.addEventListener('DOMContentLoaded', () => {
+                  if (document.body) {
+                    observer.observe(document.body, { childList: true });
+                  }
                 });
 
+                // 3. Defer loading of all intercepted scripts until 3.5s after load
                 window.addEventListener('load', () => {
+                  pageLoaded = true;
                   setTimeout(() => {
                     observer.disconnect();
                     deferredScripts.forEach((scriptData) => {
-                      const script = document.createElement('script');
+                      const script = originalCreateElement.call(document, 'script');
                       script.src = scriptData.src;
-                      if (scriptData.async) script.async = true;
-                      if (scriptData.defer) script.defer = true;
+                      script.async = scriptData.async;
+                      script.defer = scriptData.defer;
                       if (scriptData.crossOrigin) script.crossOrigin = scriptData.crossOrigin;
                       document.head.appendChild(script);
                     });
