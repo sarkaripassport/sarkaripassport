@@ -12,7 +12,6 @@ import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "700", "800"],
   display: "swap",
   adjustFontFallback: true,
 });
