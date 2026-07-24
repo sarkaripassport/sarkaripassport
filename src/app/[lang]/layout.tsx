@@ -176,20 +176,38 @@ export default async function RootLayout({
                   }
                 });
 
-                // 3. Defer loading of all intercepted scripts until 3.5s after load
-                window.addEventListener('load', () => {
+                // 3. Defer loading of all intercepted scripts until user interaction
+                const loadDeferred = () => {
+                  if (pageLoaded) return;
                   pageLoaded = true;
-                  setTimeout(() => {
-                    observer.disconnect();
-                    deferredScripts.forEach((scriptData) => {
-                      const script = originalCreateElement.call(document, 'script');
-                      script.src = scriptData.src;
-                      script.async = scriptData.async;
-                      script.defer = scriptData.defer;
-                      if (scriptData.crossOrigin) script.crossOrigin = scriptData.crossOrigin;
-                      document.head.appendChild(script);
-                    });
-                  }, 3500);
+                  cleanupListeners();
+                  observer.disconnect();
+                  deferredScripts.forEach((scriptData) => {
+                    const script = originalCreateElement.call(document, 'script');
+                    script.src = scriptData.src;
+                    script.async = scriptData.async;
+                    script.defer = scriptData.defer;
+                    if (scriptData.crossOrigin) script.crossOrigin = scriptData.crossOrigin;
+                    document.head.appendChild(script);
+                  });
+                };
+
+                const cleanupListeners = () => {
+                  window.removeEventListener('mousemove', loadDeferred);
+                  window.removeEventListener('scroll', loadDeferred);
+                  window.removeEventListener('touchstart', loadDeferred);
+                  window.removeEventListener('keydown', loadDeferred);
+                };
+
+                window.addEventListener('load', () => {
+                  // Trigger loading on mouse move, scroll, touch start, or key down
+                  window.addEventListener('mousemove', loadDeferred, { passive: true });
+                  window.addEventListener('scroll', loadDeferred, { passive: true });
+                  window.addEventListener('touchstart', loadDeferred, { passive: true });
+                  window.addEventListener('keydown', loadDeferred, { passive: true });
+
+                  // Fallback load after 6 seconds for human users who just wait
+                  setTimeout(loadDeferred, 6000);
                 });
               })();
             `

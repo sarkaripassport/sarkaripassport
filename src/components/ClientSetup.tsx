@@ -23,16 +23,35 @@ export default function ClientSetup({
   useEffect(() => {
     if ((!adsenseId && !gaId && !gtmId) || loadScripts) return;
     
-    // Defer script injection by 3.5 seconds
-    const timer = setTimeout(() => {
-      // Prevent Lighthouse / Bots from ever triggering heavy ad scripts
-      if (typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
-        return;
-      }
-      setLoadScripts(true);
-    }, 3500);
+    // Prevent bots/crawlers from ever triggering heavy scripts
+    if (typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
+      return;
+    }
 
-    return () => clearTimeout(timer);
+    const triggerLoading = () => {
+      setLoadScripts(true);
+      cleanupListeners();
+    };
+
+    const cleanupListeners = () => {
+      window.removeEventListener('mousemove', triggerLoading);
+      window.removeEventListener('scroll', triggerLoading);
+      window.removeEventListener('touchstart', triggerLoading);
+      window.removeEventListener('keydown', triggerLoading);
+    };
+
+    window.addEventListener('mousemove', triggerLoading, { passive: true });
+    window.addEventListener('scroll', triggerLoading, { passive: true });
+    window.addEventListener('touchstart', triggerLoading, { passive: true });
+    window.addEventListener('keydown', triggerLoading, { passive: true });
+
+    // Fallback load after 6 seconds for human users who just wait
+    const fallbackTimer = setTimeout(triggerLoading, 6000);
+
+    return () => {
+      cleanupListeners();
+      clearTimeout(fallbackTimer);
+    };
   }, [adsenseId, gaId, gtmId, loadScripts]);
 
   useEffect(() => {
