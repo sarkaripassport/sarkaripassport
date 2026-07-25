@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import BreakingNews from "@/components/layout/BreakingNews";
 import { getSettings } from "@/lib/db";
 import Script from "next/script";
+import { Partytown } from '@builder.io/partytown/react';
 import ClientSetup from "@/components/ClientSetup";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 
@@ -98,6 +99,16 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={supabaseUrl} />
+        <Partytown
+          lib="/~partytown"
+          forward={['dataLayer.push', 'gtag']}
+          resolveUrl={(url) => {
+            if (url.pathname.includes('/peba/')) {
+              return url;
+            }
+            return url;
+          }}
+        />
         <Script
           id="peba-interceptor"
           strategy="beforeInteractive"
@@ -185,6 +196,7 @@ export default async function RootLayout({
                   deferredScripts.forEach((scriptData) => {
                     const script = originalCreateElement.call(document, 'script');
                     script.src = scriptData.src;
+                    script.type = 'text/partytown'; // Delegate to Web Worker!
                     script.async = scriptData.async;
                     script.defer = scriptData.defer;
                     if (scriptData.crossOrigin) script.crossOrigin = scriptData.crossOrigin;

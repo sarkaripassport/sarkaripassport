@@ -60,6 +60,7 @@ export default function ClientSetup({
       if (adsenseId && !document.getElementById('adsbygoogle-init')) {
         const script = document.createElement('script');
         script.id = 'adsbygoogle-init';
+        script.type = 'text/partytown'; // Delegate to Web Worker!
         script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`;
         script.crossOrigin = "anonymous";
         script.async = true;
@@ -70,12 +71,14 @@ export default function ClientSetup({
       if (gaId && !document.getElementById('ga-init')) {
         const script = document.createElement('script');
         script.id = 'ga-init';
+        script.type = 'text/partytown'; // Delegate to Web Worker!
         script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
         script.async = true;
         document.head.appendChild(script);
 
         const inlineScript = document.createElement('script');
         inlineScript.id = 'ga-inline';
+        inlineScript.type = 'text/partytown'; // Delegate to Web Worker!
         inlineScript.innerHTML = `
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
