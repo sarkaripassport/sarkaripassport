@@ -1,15 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MessageSquare, Send, User, Clock, AlertCircle } from 'lucide-react';
 import { JobComment } from '@/lib/db';
 
 export default function JobComments({ slug, initialComments = [] }: { slug: string, initialComments?: JobComment[] }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [comments, setComments] = useState<JobComment[]>(initialComments);
   const [name, setName] = useState('');
   const [text, setText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  if (!mounted) {
+    return (
+      <section className="bg-white md:rounded-2xl border-y md:border border-gray-200 shadow-sm p-6 flex items-center justify-center min-h-[150px]">
+        <div className="animate-pulse flex flex-col space-y-4 w-full">
+          <div className="h-4 bg-gray-200 rounded w-1/4"></div>
+          <div className="h-10 bg-gray-200 rounded"></div>
+          <div className="h-20 bg-gray-200 rounded"></div>
+        </div>
+      </section>
+    );
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

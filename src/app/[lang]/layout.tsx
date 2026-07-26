@@ -6,7 +6,7 @@ import Footer from "@/components/layout/Footer";
 import BreakingNews from "@/components/layout/BreakingNews";
 import { getSettings } from "@/lib/db";
 import Script from "next/script";
-import { Partytown } from '@builder.io/partytown/react';
+import PartytownLoader from "@/components/PartytownLoader";
 import ClientSetup from "@/components/ClientSetup";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 
@@ -99,16 +99,7 @@ export default async function RootLayout({
       <head>
         <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={supabaseUrl} />
-        <Partytown
-          lib="/~partytown"
-          forward={['dataLayer.push', 'gtag']}
-          resolveUrl={(url) => {
-            if (url.pathname.includes('/peba/')) {
-              return url;
-            }
-            return url;
-          }}
-        />
+        <PartytownLoader />
         <Script
           id="peba-interceptor"
           strategy="beforeInteractive"

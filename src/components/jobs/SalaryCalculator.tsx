@@ -28,6 +28,11 @@ export default function SalaryCalculator({ data }: { data: SalaryData }) {
     custom_allowances = []
   } = data;
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [hraCity, setHraCity] = useState<'tier1' | 'tier2' | 'tier3' | 'none'>('tier1');
   const [includeDa, setIncludeDa] = useState(true);
   const [includeTa, setIncludeTa] = useState(true);
@@ -84,6 +89,17 @@ export default function SalaryCalculator({ data }: { data: SalaryData }) {
     window.requestAnimationFrame(step);
    
   }, [inHandSalary]);
+
+  if (!mounted) {
+    return (
+      <div className="bg-white rounded-xl border border-gray-200 p-6 flex flex-col space-y-4 animate-pulse min-h-[250px] my-8">
+        <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+        <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+        <div className="h-8 bg-gray-200 rounded"></div>
+        <div className="h-20 bg-gray-200 rounded"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-xl border border-[#0A58CA]/20 shadow-md overflow-hidden my-8">
