@@ -7,7 +7,8 @@ import { JobComment } from '@/lib/db';
 export default function JobComments({ slug, initialComments = [] }: { slug: string, initialComments?: JobComment[] }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    setMounted(true);
+    const timer = setTimeout(() => setMounted(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   const [comments, setComments] = useState<JobComment[]>(initialComments);
