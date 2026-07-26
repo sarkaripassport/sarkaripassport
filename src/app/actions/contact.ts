@@ -48,7 +48,7 @@ export async function deleteContactMessage(id: string) {
   }
 }
 
-export async function toggleMessageStatus(id: string, currentStatus: 'new' | 'read') {
+export async function toggleMessageStatus(id: string, currentStatus: 'new' | 'read' | 'replied') {
   try {
     const { supabaseAdmin } = await import("@/lib/supabase/admin");
     const { data, error } = await supabaseAdmin.from('settings').select('data').eq('id', id).single();

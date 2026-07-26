@@ -9,7 +9,7 @@ export default function MessagesClient({ initialMessages }: { initialMessages: C
   const [messages, setMessages] = useState<ContactMessage[]>(initialMessages);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-  const handleToggleStatus = async (id: string, currentStatus: 'new' | 'read') => {
+  const handleToggleStatus = async (id: string, currentStatus: 'new' | 'read' | 'replied') => {
     setUpdatingId(id);
     const result = await toggleMessageStatus(id, currentStatus);
     if (result.success) {
