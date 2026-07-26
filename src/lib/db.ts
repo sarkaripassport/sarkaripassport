@@ -261,6 +261,10 @@ export interface HomepageSettings {
     telegram?: string;
     instagram?: string;
   };
+  indexing?: {
+    google_json?: string;
+    indexnow_key?: string;
+  };
 }
 
 const defaultSettings: HomepageSettings = {

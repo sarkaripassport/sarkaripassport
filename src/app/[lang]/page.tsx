@@ -66,6 +66,15 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
     return `/${lang}/category/${slug}`;
   };
 
+  const isCategoryNew = (catName: string) => {
+    const cutoff = new Date();
+    cutoff.setHours(cutoff.getHours() - 48);
+    return jobs.some(j => 
+      (j.category === catName || j.categories?.includes(catName)) && 
+      new Date(j.created_at).getTime() >= cutoff.getTime()
+    );
+  };
+
   // Helper to get top 15 jobs for a category with dual sorting
   const getJobsForCategory = (catName: string) => {
     const cleanCatName = catName?.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/s$/, '');
@@ -152,20 +161,127 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
             <AdvancedSearch lang={lang} categories={categories} />
           </div>
 
-          {/* Quick Category Cards */}
-          <div className="grid grid-cols-4 lg:grid-cols-8 gap-2">
-            {quickLinks.map((cat) => {
-              const count = jobs.filter(j => j.category === cat.name.en || j.categories?.includes(cat.name.en)).length;
-              return (
-                <Link href={getCategoryUrl(cat.slug)} key={cat.id} className="bg-white rounded border border-gray-200 p-1.5 sm:p-2 text-center hover:border-[#0A58CA] hover:shadow-sm hover:-translate-y-0.5 transition-all cursor-pointer flex flex-col items-center justify-center group">
-                  <div className="mb-1 transition-transform group-hover:scale-110">
-                    <CategoryIcon name={cat.icon || 'Briefcase'} className="w-6 h-6 sm:w-7 sm:h-7 mx-auto" />
-                  </div>
-                  <div className="font-bold text-gray-900 text-[9px] sm:text-[11px] mb-0.5 leading-none break-words group-hover:text-[#0A58CA] transition-colors">{cat.name[lang]}</div>
-                  <div className="font-extrabold text-[10px] sm:text-xs text-gray-500 leading-none mt-0.5">{count}</div>
-                </Link>
-              );
-            })}
+          {/* Elite Premium Categories Dashboard */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 mt-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 pb-4 mb-6">
+              <div>
+                <h2 className="text-lg sm:text-xl font-extrabold text-[#0B1B3D] flex items-center gap-2">
+                  <span className="w-2.5 h-6 bg-[#0A58CA] rounded-full inline-block"></span>
+                  Sarkari Job Portals & Categories
+                </h2>
+                <p className="text-xs sm:text-sm text-gray-500 mt-0.5">Explore active recruitment portals, qualifications, and department sectors.</p>
+              </div>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-full border border-green-100">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                Live Updates Active
+              </span>
+            </div>
+
+            <div className="space-y-8">
+              {/* 1. Main Career Gateways */}
+              <div>
+                <h3 className="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <span>Primary Gateways</span>
+                  <span className="flex-grow h-px bg-gray-100"></span>
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                  {quickLinks.map((cat) => {
+                    const count = jobs.filter(j => j.category === cat.name.en || j.categories?.includes(cat.name.en)).length;
+                    const hasNew = isCategoryNew(cat.name.en);
+                    return (
+                      <Link 
+                        href={getCategoryUrl(cat.slug)} 
+                        key={cat.id} 
+                        className="relative bg-gradient-to-b from-white to-gray-50/50 rounded-xl border border-gray-200 p-3 text-center hover:border-[#0A58CA] hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center group h-[100px]"
+                      >
+                        {hasNew && (
+                          <span className="absolute top-2 right-2 flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                          </span>
+                        )}
+                        <div className="mb-2 p-1.5 bg-blue-50 text-[#0A58CA] rounded-lg transition-transform group-hover:scale-110 group-hover:bg-blue-100">
+                          <CategoryIcon name={cat.icon || 'Briefcase'} className="w-6 h-6" />
+                        </div>
+                        <div className="font-extrabold text-gray-900 text-xs sm:text-[13px] leading-tight break-words group-hover:text-[#0A58CA] transition-colors">{cat.name[lang]}</div>
+                        <div className="font-extrabold text-[10px] text-gray-500 mt-1 bg-gray-100 px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-700 transition-all">{count} active</div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 2. Sector Pathways */}
+              <div>
+                <h3 className="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <span>Trending Job Sectors</span>
+                  <span className="flex-grow h-px bg-gray-100"></span>
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+                  {trendingCategories.map((cat) => {
+                    const count = jobs.filter(j => j.category === cat.name.en || j.categories?.includes(cat.name.en)).length;
+                    const hasNew = isCategoryNew(cat.name.en);
+                    return (
+                      <Link 
+                        href={getCategoryUrl(cat.slug)} 
+                        key={cat.id} 
+                        className="relative bg-gradient-to-b from-white to-gray-50/50 rounded-xl border border-gray-200 p-3 text-center hover:border-emerald-500 hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center group h-[100px]"
+                      >
+                        {hasNew && (
+                          <span className="absolute top-2 right-2 flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                          </span>
+                        )}
+                        <div className="mb-2 p-1.5 bg-emerald-50 text-emerald-600 rounded-lg transition-transform group-hover:scale-110 group-hover:bg-emerald-100">
+                          <CategoryIcon name={cat.icon || 'Shield'} className="w-6 h-6" />
+                        </div>
+                        <div className="font-extrabold text-gray-900 text-xs sm:text-[13px] leading-tight break-words group-hover:text-emerald-600 transition-colors">{cat.name[lang]}</div>
+                        <div className="font-extrabold text-[10px] text-gray-500 mt-1 bg-gray-100 px-2 py-0.5 rounded-full group-hover:bg-emerald-50 group-hover:text-emerald-700 transition-all">{count} active</div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 3. Browse By Qualifications */}
+              <div>
+                <h3 className="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <span>Browse by Qualifications</span>
+                  <span className="flex-grow h-px bg-gray-100"></span>
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { label: { en: '10th Pass', hi: '10वीं पास', mr: '10 वी पास' }, slug: '10th-pass' },
+                    { label: { en: '12th Pass', hi: '12वीं पास', mr: '12 वी पास' }, slug: '12th-pass' },
+                    { label: { en: 'ITI Jobs', hi: 'आईटीआई पास', mr: 'ITI नोकऱ्या' }, slug: 'iti-pass' },
+                    { label: { en: 'Diploma Jobs', hi: 'डिप्लोमा पास', mr: 'डिप्लोमा नोकऱ्या' }, slug: 'diploma' },
+                    { label: { en: 'Graduate Jobs', hi: 'स्नातक पास', mr: 'पदवीधर नोकऱ्या' }, slug: 'graduate' },
+                    { label: { en: 'B.Tech / Engineering', hi: 'इंजीनियरिंग', mr: 'अभियांत्रिकी' }, slug: 'engineering' },
+                    { label: { en: 'Post Graduate', hi: 'पोस्ट ग्रेजुएट', mr: 'पदव्युत्तर नोकऱ्या' }, slug: 'post-graduate' }
+                  ].map((qual) => {
+                    const count = jobs.filter(j => {
+                      if (!j.seo_matrix?.qualifications) return false;
+                      return j.seo_matrix.qualifications.includes(qual.slug);
+                    }).length;
+                    return (
+                      <Link 
+                        key={qual.slug}
+                        href={`/${lang}/explore/${qual.slug}`}
+                        className="bg-white hover:bg-[#0A58CA] border border-gray-200 hover:border-[#0A58CA] text-gray-700 hover:text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow-sm transition-all duration-200 flex items-center gap-2 cursor-pointer hover:scale-105"
+                      >
+                        <span>{qual.label[lang as 'en'|'hi'|'mr'] || qual.label.en}</span>
+                        <span className="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded-md font-black group-hover:bg-white/20 group-hover:text-white">{count}</span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+
+            </div>
           </div>
 
           {/* Latest Jobs Table Exact Copy */}

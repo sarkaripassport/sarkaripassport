@@ -2,14 +2,26 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
+import type { Category } from "@/lib/db";
 
-export default function MobileMenu({ lang = 'en' }: { lang?: string }) {
+export default function MobileMenu({ lang = 'en', categories = [] }: { lang?: string; categories?: Category[] }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
 
   const getLink = (path: string) => {
     if (path.startsWith('http') || path.startsWith(`/${lang}`)) return path;
     return `/${lang}${path.startsWith('/') ? '' : '/'}${path}`;
+  };
+
+  const getCategoryUrl = (slug: string) => {
+    const cleanSlug = slug.toLowerCase().replace(/s$/, ''); // singularize
+    if (cleanSlug === 'result') return `/${lang}/results`;
+    if (cleanSlug === 'admit-card') return `/${lang}/admit-card`;
+    if (cleanSlug === 'answer-key') return `/${lang}/answer-key`;
+    if (cleanSlug === 'syllabus') return `/${lang}/syllabus`;
+    if (cleanSlug === 'admission') return `/${lang}/admission`;
+    return `/${lang}/category/${slug}`;
   };
 
   const navLinks = [
@@ -68,6 +80,34 @@ export default function MobileMenu({ lang = 'en' }: { lang?: string }) {
               )}
             </Link>
           ))}
+          
+          {/* Collapsible Categories Section */}
+          <div className="flex flex-col w-full border-b border-gray-800 last:border-b-0 py-1">
+            <button 
+              onClick={() => setIsCategoriesOpen(!isCategoriesOpen)} 
+              className="text-gray-300 hover:text-white font-semibold flex items-center justify-between py-3 w-full text-left"
+            >
+              <span>Sarkari Sectors</span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isCategoriesOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isCategoriesOpen && (
+              <div className="mt-2 pl-4 flex flex-col gap-2 border-l border-gray-700 pb-3 max-h-[200px] overflow-y-auto">
+                {categories.map((cat) => (
+                  <Link 
+                    key={cat.id} 
+                    href={getCategoryUrl(cat.slug)} 
+                    onClick={() => setIsOpen(false)} 
+                    className="text-gray-400 hover:text-white text-sm py-1 block"
+                  >
+                    {cat.name[lang as 'en'|'hi'|'mr'] || cat.name.en}
+                  </Link>
+                ))}
+                {categories.length === 0 && (
+                  <span className="text-xs text-gray-500 italic">No sectors configured</span>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>

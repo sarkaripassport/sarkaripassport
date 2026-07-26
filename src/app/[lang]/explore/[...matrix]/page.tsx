@@ -17,16 +17,37 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  const commonCategories = [
+  const jobs = await getPublishedJobs();
+  const tags = new Set<string>();
+
+  jobs.forEach(job => {
+    if (job.seo_matrix) {
+      const matrix = job.seo_matrix;
+      [
+        ...(matrix.states || []),
+        ...(matrix.cities || []),
+        ...(matrix.qualifications || []),
+        ...(matrix.departments || [])
+      ].forEach(tag => {
+        if (tag && typeof tag === 'string') {
+          tags.add(tag.trim().toLowerCase());
+        }
+      });
+    }
+  });
+
+  // Fallback defaults
+  const defaultTags = [
     '10th-pass', '12th-pass', 'graduate', 'police', 
     'banking', 'up', 'bihar', 'railway', 'ssc', 'upsc'
   ];
+  defaultTags.forEach(t => tags.add(t));
+
   const locales = ['en', 'hi', 'mr'];
-  
   const params: any[] = [];
   for (const lang of locales) {
-    for (const cat of commonCategories) {
-      params.push({ lang, matrix: [cat] });
+    for (const tag of Array.from(tags)) {
+      params.push({ lang, matrix: [tag] });
     }
   }
   return params;

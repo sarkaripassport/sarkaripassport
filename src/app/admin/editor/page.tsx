@@ -7,6 +7,7 @@ import SeoMatrixWidget from '@/components/admin/SeoMatrixWidget';
 import SalaryCalcWidget from '@/components/admin/SalaryCalcWidget';
 import ApplicationFeeWidget from '@/components/admin/ApplicationFeeWidget';
 import RichTextInput from '@/components/admin/RichTextInput';
+import { requestInstantIndexing } from '@/app/actions/indexing';
 
 function EditorContent() {
   const router = useRouter();
@@ -808,6 +809,34 @@ function EditorContent() {
                   <div className="mt-8">
                     <SeoMatrixWidget job={jobData} updateJob={(updates) => setJobData({ ...jobData, ...updates })} />
                   </div>
+                  {jobData.slug && (
+                    <div className="bg-purple-50 border border-purple-200 rounded-xl p-5 mt-6">
+                      <h3 className="font-bold text-[#0B1B3D] mb-1 flex items-center gap-2">
+                        <Globe className="w-4 h-4 text-purple-600" /> Instant Indexing Action
+                      </h3>
+                      <p className="text-xs text-gray-500 mb-4">
+                        Manually submit this job page URL to Google and Bing index queues immediately.
+                      </p>
+                      <div className="flex gap-3">
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            if (!window.confirm("Submit this URL to search engines?")) return;
+                            const jobUrl = `${window.location.origin}/${editLang}/jobs/${jobData.slug}`;
+                            const res = await requestInstantIndexing(jobUrl);
+                            if (res.success) {
+                              alert(`Indexing submission completed!\n\nGoogle: ${res.results?.google?.msg || 'N/A'}\nBing: ${res.results?.bing?.msg || 'N/A'}`);
+                            } else {
+                              alert(`Failed to submit indexing: ${res.error}`);
+                            }
+                          }}
+                          className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition"
+                        >
+                          Ping Search Engines Now
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
 
