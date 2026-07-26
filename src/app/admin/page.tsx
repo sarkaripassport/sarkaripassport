@@ -2,19 +2,54 @@
 
 import Link from "next/link";
 import { Briefcase, FileText, CheckCircle2, TrendingUp, AlertTriangle, PenTool, Globe, Link as LinkIcon, HeartPulse } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function AdminDashboard() {
   const [draftTitle, setDraftTitle] = useState("");
   const [draftContent, setDraftContent] = useState("");
   const [analytics, setAnalytics] = useState<any>(null);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [loadingStats, setLoadingStats] = useState(true);
 
-  require('react').useEffect(() => {
+  useEffect(() => {
     fetch('/api/analytics')
       .then(r => r.json())
       .then(data => setAnalytics(data))
       .catch(e => console.error(e));
+
+    Promise.all([
+      fetch('/api/jobs').then(r => r.json()),
+      fetch('/api/categories').then(r => r.json())
+    ]).then(([jobsData, categoriesData]) => {
+      setJobs(Array.isArray(jobsData) ? jobsData : []);
+      setCategories(Array.isArray(categoriesData) ? categoriesData : []);
+      setLoadingStats(false);
+    }).catch(e => {
+      console.error(e);
+      setLoadingStats(false);
+    });
   }, []);
+
+  const getISOWeek = (date: Date) => {
+    const tdt = new Date(date.valueOf());
+    const dayn = (date.getDay() + 6) % 7;
+    tdt.setDate(tdt.getDate() - dayn + 3);
+    const firstThursday = tdt.valueOf();
+    tdt.setMonth(0, 1);
+    if (tdt.getDay() !== 4) {
+      tdt.setMonth(0, 1 + ((4 - tdt.getDay()) + 7) % 7);
+    }
+    return 1 + Math.ceil((firstThursday - tdt.valueOf()) / 604800000);
+  };
+
+  const now = new Date();
+  const dayKey = now.toISOString().split('T')[0];
+  const weekKey = `${now.getFullYear()}-W${getISOWeek(now)}`;
+  const monthKey = dayKey.substring(0, 7);
+
+  const admitCardsCount = jobs.filter(j => j.category === 'Admit Card' || j.categories?.includes('Admit Card')).length;
+  const resultsCount = jobs.filter(j => j.category === 'Results' || j.categories?.includes('Results')).length;
 
   return (
     <div className="p-4 sm:p-6 max-w-[1400px]">
@@ -36,16 +71,16 @@ export default function AdminDashboard() {
           <div className="p-4 flex-grow">
             <div className="grid grid-cols-2 gap-4">
               <Link href="/admin/jobs" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
-                <Briefcase className="w-4 h-4" /> 1,281 Jobs
+                <Briefcase className="w-4 h-4" /> {loadingStats ? '...' : jobs.length} Jobs
               </Link>
-              <Link href="#" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
-                <FileText className="w-4 h-4" /> 45 Pages
+              <Link href="/admin/categories" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
+                <FileText className="w-4 h-4" /> {loadingStats ? '...' : categories.length} Categories
               </Link>
-              <Link href="#" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
-                <Globe className="w-4 h-4" /> 15 Admit Cards
+              <Link href="/admin/jobs?category=Admit Card" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
+                <Globe className="w-4 h-4" /> {loadingStats ? '...' : admitCardsCount} Admit Cards
               </Link>
-              <Link href="#" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
-                <TrendingUp className="w-4 h-4" /> 38 Results
+              <Link href="/admin/jobs?category=Results" className="flex items-center gap-2 text-[#2271b1] hover:underline hover:text-[#135e96]">
+                <TrendingUp className="w-4 h-4" /> {loadingStats ? '...' : resultsCount} Results
               </Link>
             </div>
             <div className="mt-4 pt-4 border-t border-[#dcdcde] text-sm text-[#50575e]">
@@ -67,20 +102,20 @@ export default function AdminDashboard() {
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div className="bg-blue-50 rounded-lg p-4 text-center border border-blue-100">
                   <div className="text-sm text-blue-600 font-semibold mb-1">Today's Views</div>
-                  <div className="text-4xl font-bold text-blue-900">{analytics.global.daily['2026-07-07'] || 0}</div>
+                  <div className="text-4xl font-bold text-blue-900">{analytics.global.daily[dayKey] || 0}</div>
                 </div>
                 <div className="bg-green-50 rounded-lg p-4 text-center border border-green-100">
                   <div className="text-sm text-green-600 font-semibold mb-1">This Week</div>
-                  <div className="text-4xl font-bold text-green-900">{analytics.global.weekly['2026-W28'] || 0}</div>
+                  <div className="text-4xl font-bold text-green-900">{analytics.global.weekly[weekKey] || 0}</div>
                 </div>
                 <div className="bg-purple-50 rounded-lg p-4 text-center border border-purple-100">
                   <div className="text-sm text-purple-600 font-semibold mb-1">This Month</div>
-                  <div className="text-4xl font-bold text-purple-900">{analytics.global.monthly['2026-07'] || 0}</div>
+                  <div className="text-4xl font-bold text-purple-900">{analytics.global.monthly[monthKey] || 0}</div>
                 </div>
                 <div className="bg-orange-50 rounded-lg p-4 text-center border border-orange-100">
                   <div className="text-sm text-orange-600 font-semibold mb-1">Top Performing Job (Today)</div>
                   <div className="text-lg font-bold text-orange-900 truncate mt-2">
-                    {Object.entries(analytics.jobs).sort((a:any, b:any) => (b[1].daily['2026-07-07']||0) - (a[1].daily['2026-07-07']||0))[0]?.[0] || 'N/A'}
+                    {Object.entries(analytics.jobs).sort((a:any, b:any) => (b[1].daily[dayKey]||0) - (a[1].daily[dayKey]||0))[0]?.[0] || 'N/A'}
                   </div>
                 </div>
               </div>

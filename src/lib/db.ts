@@ -363,7 +363,8 @@ export const getJobs = unstable_cache(async (): Promise<Job[]> => {
       isTrending:data->isTrending,
       logo_url:data->logo_url,
       logo_alt:data->logo_alt,
-      quick_facts:data->quick_facts
+      quick_facts:data->quick_facts,
+      seo_matrix:data->seo_matrix
     `)
     .order('created_at', { ascending: false });
     
