@@ -15,11 +15,17 @@ export async function GET(req: Request) {
     if (id) {
       const { data, error } = await supabaseAdmin
         .from('jobs')
-        .select('data')
+        .select('id, slug, data')
         .eq('id', id)
         .single();
       if (error || !data) return NextResponse.json({ error: "Job not found" }, { status: 404 });
-      return NextResponse.json(data.data);
+      
+      const jobObject = {
+        ...(data.data as any),
+        id: data.id,
+        slug: data.slug
+      };
+      return NextResponse.json(jobObject);
     }
     
     // Return all if no ID

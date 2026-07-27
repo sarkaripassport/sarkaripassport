@@ -75,6 +75,117 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
     );
   };
 
+  const portalCategories = [
+    { 
+      id: 'latest-jobs', 
+      slug: 'latest-jobs', 
+      name: { en: 'Latest Jobs', hi: 'नवीनतम नौकरियां', mr: 'नवीनतम नोकऱ्या' }, 
+      icon: 'Briefcase',
+      gradient: 'from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800',
+      glow: 'shadow-blue-500/10 hover:shadow-blue-500/30 border-blue-100 hover:border-blue-300'
+    },
+    { 
+      id: 'admit-card', 
+      slug: 'admit-card', 
+      name: { en: 'Admit Card', hi: 'प्रवेश पत्र', mr: 'प्रवेश पत्र' }, 
+      icon: 'FileText',
+      gradient: 'from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700',
+      glow: 'shadow-amber-500/10 hover:shadow-amber-500/30 border-amber-100 hover:border-amber-300'
+    },
+    { 
+      id: 'results', 
+      slug: 'results', 
+      name: { en: 'Results', hi: 'परीक्षा परिणाम', mr: 'निकाल' }, 
+      icon: 'Award',
+      gradient: 'from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700',
+      glow: 'shadow-emerald-500/10 hover:shadow-emerald-500/30 border-emerald-100 hover:border-emerald-300'
+    },
+    { 
+      id: 'answer-key', 
+      slug: 'answer-key', 
+      name: { en: 'Answer Key', hi: 'उत्तर कुंजी', mr: 'उत्तर तालिका' }, 
+      icon: 'CheckSquare',
+      gradient: 'from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700',
+      glow: 'shadow-indigo-500/10 hover:shadow-indigo-500/30 border-indigo-100 hover:border-indigo-300'
+    },
+    { 
+      id: 'syllabus', 
+      slug: 'syllabus', 
+      name: { en: 'Syllabus', hi: 'पाठ्यक्रम', mr: 'अभ्यासक्रम' }, 
+      icon: 'BookOpen',
+      gradient: 'from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700',
+      glow: 'shadow-purple-500/10 hover:shadow-purple-500/30 border-purple-100 hover:border-purple-300'
+    },
+    { 
+      id: 'admission', 
+      slug: 'admission', 
+      name: { en: 'Admission', hi: 'प्रवेश', mr: 'प्रवेश प्रक्रिया' }, 
+      icon: 'UserPlus',
+      gradient: 'from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700',
+      glow: 'shadow-rose-500/10 hover:shadow-rose-500/30 border-rose-100 hover:border-rose-300'
+    }
+  ];
+
+  const getCategoryCount = (slug: string) => {
+    if (slug === 'latest-jobs') {
+      return jobs.filter(j => 
+        j.category === 'Latest Jobs' || 
+        j.categories?.includes('Latest Jobs') || 
+        (!j.category && (!j.categories || j.categories.length === 0))
+      ).length;
+    }
+
+    let catDbName = '';
+    if (slug === 'admit-card') catDbName = 'Admit Card';
+    else if (slug === 'results') catDbName = 'Results';
+    else if (slug === 'answer-key') catDbName = 'Answer Key';
+    else if (slug === 'syllabus') catDbName = 'Syllabus';
+    else if (slug === 'admission') catDbName = 'Admission';
+
+    return jobs.filter(j => j.category === catDbName || j.categories?.includes(catDbName)).length;
+  };
+
+  const hasCategoryNew = (slug: string) => {
+    const cutoff = new Date();
+    cutoff.setHours(cutoff.getHours() - 48);
+
+    if (slug === 'latest-jobs') {
+      return jobs.some(j => 
+        (j.category === 'Latest Jobs' || j.categories?.includes('Latest Jobs') || (!j.category && (!j.categories || j.categories.length === 0))) && 
+        new Date(j.created_at).getTime() >= cutoff.getTime()
+      );
+    }
+
+    let catDbName = '';
+    if (slug === 'admit-card') catDbName = 'Admit Card';
+    else if (slug === 'results') catDbName = 'Results';
+    else if (slug === 'answer-key') catDbName = 'Answer Key';
+    else if (slug === 'syllabus') catDbName = 'Syllabus';
+    else if (slug === 'admission') catDbName = 'Admission';
+
+    return jobs.some(j => 
+      (j.category === catDbName || j.categories?.includes(catDbName)) && 
+      new Date(j.created_at).getTime() >= cutoff.getTime()
+    );
+  };
+
+  const getCategoryColors = (slug: string) => {
+    const s = slug.toLowerCase();
+    if (s.includes('rail') || s.includes('train')) {
+      return { border: 'border-blue-100 hover:border-blue-300', text: 'group-hover:text-blue-700', shadow: 'hover:shadow-blue-500/10' };
+    }
+    if (s.includes('bank') || s.includes('finance')) {
+      return { border: 'border-emerald-100 hover:border-emerald-300', text: 'group-hover:text-emerald-700', shadow: 'hover:shadow-emerald-500/10' };
+    }
+    if (s.includes('police') || s.includes('def') || s.includes('shield')) {
+      return { border: 'border-rose-100 hover:border-rose-300', text: 'group-hover:text-rose-700', shadow: 'hover:shadow-rose-500/10' };
+    }
+    if (s.includes('ssc') || s.includes('upsc') || s.includes('civil')) {
+      return { border: 'border-indigo-100 hover:border-indigo-300', text: 'group-hover:text-indigo-700', shadow: 'hover:shadow-indigo-500/10' };
+    }
+    return { border: 'border-purple-100 hover:border-purple-300', text: 'group-hover:text-purple-700', shadow: 'hover:shadow-purple-500/10' };
+  };
+
   // Helper to get top 15 jobs for a category with dual sorting
   const getJobsForCategory = (catName: string) => {
     const cleanCatName = catName?.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/s$/, '');
@@ -161,126 +272,49 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
             <AdvancedSearch lang={lang} categories={categories} />
           </div>
 
-          {/* Elite Premium Categories Dashboard */}
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 mt-4">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 pb-4 mb-6">
+          {/* Main Sarkari Portals Dashboard */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-5 mt-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 border-b border-gray-100 pb-3.5 mb-5">
               <div>
-                <h2 className="text-lg sm:text-xl font-extrabold text-[#0B1B3D] flex items-center gap-2">
-                  <span className="w-2.5 h-6 bg-[#0A58CA] rounded-full inline-block"></span>
-                  Sarkari Job Portals & Categories
+                <h2 className="text-base sm:text-lg font-black text-[#0B1B3D] flex items-center gap-2">
+                  <span className="w-2.5 h-5 bg-[#0A58CA] rounded-full inline-block"></span>
+                  Sarkari Job Portals
                 </h2>
-                <p className="text-xs sm:text-sm text-gray-500 mt-0.5">Explore active recruitment portals, qualifications, and department sectors.</p>
+                <p className="text-xs text-gray-500 mt-0.5">Quick access to official gateways, vacancies, and examination updates.</p>
               </div>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-full border border-green-100">
-                <span className="relative flex h-2 w-2">
+              <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-green-50 text-green-700 text-xs font-extrabold rounded-full border border-green-100">
+                <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-500"></span>
                 </span>
                 Live Updates Active
               </span>
             </div>
 
-            <div className="space-y-8">
-              {/* 1. Main Career Gateways */}
-              <div>
-                <h3 className="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <span>Primary Gateways</span>
-                  <span className="flex-grow h-px bg-gray-100"></span>
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-                  {quickLinks.map((cat) => {
-                    const count = jobs.filter(j => j.category === cat.name.en || j.categories?.includes(cat.name.en)).length;
-                    const hasNew = isCategoryNew(cat.name.en);
-                    return (
-                      <Link 
-                        href={getCategoryUrl(cat.slug)} 
-                        key={cat.id} 
-                        className="relative bg-gradient-to-b from-white to-gray-50/50 rounded-xl border border-gray-200 p-3 text-center hover:border-[#0A58CA] hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center group h-[100px]"
-                      >
-                        {hasNew && (
-                          <span className="absolute top-2 right-2 flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                          </span>
-                        )}
-                        <div className="mb-2 p-1.5 bg-blue-50 text-[#0A58CA] rounded-lg transition-transform group-hover:scale-110 group-hover:bg-blue-100">
-                          <CategoryIcon name={cat.icon || 'Briefcase'} className="w-6 h-6" />
-                        </div>
-                        <div className="font-extrabold text-gray-900 text-xs sm:text-[13px] leading-tight break-words group-hover:text-[#0A58CA] transition-colors">{cat.name[lang]}</div>
-                        <div className="font-extrabold text-[10px] text-gray-500 mt-1 bg-gray-100 px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-700 transition-all">{count} active</div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 2. Sector Pathways */}
-              <div>
-                <h3 className="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <span>Trending Job Sectors</span>
-                  <span className="flex-grow h-px bg-gray-100"></span>
-                </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
-                  {trendingCategories.map((cat) => {
-                    const count = jobs.filter(j => j.category === cat.name.en || j.categories?.includes(cat.name.en)).length;
-                    const hasNew = isCategoryNew(cat.name.en);
-                    return (
-                      <Link 
-                        href={getCategoryUrl(cat.slug)} 
-                        key={cat.id} 
-                        className="relative bg-gradient-to-b from-white to-gray-50/50 rounded-xl border border-gray-200 p-3 text-center hover:border-emerald-500 hover:shadow-md hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center group h-[100px]"
-                      >
-                        {hasNew && (
-                          <span className="absolute top-2 right-2 flex h-2 w-2">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
-                          </span>
-                        )}
-                        <div className="mb-2 p-1.5 bg-emerald-50 text-emerald-600 rounded-lg transition-transform group-hover:scale-110 group-hover:bg-emerald-100">
-                          <CategoryIcon name={cat.icon || 'Shield'} className="w-6 h-6" />
-                        </div>
-                        <div className="font-extrabold text-gray-900 text-xs sm:text-[13px] leading-tight break-words group-hover:text-emerald-600 transition-colors">{cat.name[lang]}</div>
-                        <div className="font-extrabold text-[10px] text-gray-500 mt-1 bg-gray-100 px-2 py-0.5 rounded-full group-hover:bg-emerald-50 group-hover:text-emerald-700 transition-all">{count} active</div>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 3. Browse By Qualifications */}
-              <div>
-                <h3 className="text-xs font-extrabold text-gray-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                  <span>Browse by Qualifications</span>
-                  <span className="flex-grow h-px bg-gray-100"></span>
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { label: { en: '10th Pass', hi: '10वीं पास', mr: '10 वी पास' }, slug: '10th-pass' },
-                    { label: { en: '12th Pass', hi: '12वीं पास', mr: '12 वी पास' }, slug: '12th-pass' },
-                    { label: { en: 'ITI Jobs', hi: 'आईटीआई पास', mr: 'ITI नोकऱ्या' }, slug: 'iti-pass' },
-                    { label: { en: 'Diploma Jobs', hi: 'डिप्लोमा पास', mr: 'डिप्लोमा नोकऱ्या' }, slug: 'diploma' },
-                    { label: { en: 'Graduate Jobs', hi: 'स्नातक पास', mr: 'पदवीधर नोकऱ्या' }, slug: 'graduate' },
-                    { label: { en: 'B.Tech / Engineering', hi: 'इंजीनियरिंग', mr: 'अभियांत्रिकी' }, slug: 'engineering' },
-                    { label: { en: 'Post Graduate', hi: 'पोस्ट ग्रेजुएट', mr: 'पदव्युत्तर नोकऱ्या' }, slug: 'post-graduate' }
-                  ].map((qual) => {
-                    const count = jobs.filter(j => {
-                      if (!j.seo_matrix?.qualifications) return false;
-                      return j.seo_matrix.qualifications.includes(qual.slug);
-                    }).length;
-                    return (
-                      <Link 
-                        key={qual.slug}
-                        href={`/${lang}/explore/${qual.slug}`}
-                        className="bg-white hover:bg-[#0A58CA] border border-gray-200 hover:border-[#0A58CA] text-gray-700 hover:text-white px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold shadow-sm transition-all duration-200 flex items-center gap-2 cursor-pointer hover:scale-105"
-                      >
-                        <span>{qual.label[lang as 'en'|'hi'|'mr'] || qual.label.en}</span>
-                        <span className="bg-gray-100 text-gray-600 text-[10px] px-1.5 py-0.5 rounded-md font-black group-hover:bg-white/20 group-hover:text-white">{count}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+              {portalCategories.map((portal) => {
+                const count = getCategoryCount(portal.slug);
+                const hasNew = hasCategoryNew(portal.slug);
+                return (
+                  <Link 
+                    href={getCategoryUrl(portal.slug)} 
+                    key={portal.id} 
+                    className={`relative bg-white rounded-xl border p-4 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center group h-[120px] ${portal.glow}`}
+                  >
+                    {hasNew && (
+                      <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                      </span>
+                    )}
+                    <div className={`mb-2.5 p-2 bg-gradient-to-br ${portal.gradient} text-white rounded-xl transition-transform group-hover:scale-110 shadow-md`}>
+                      <CategoryIcon name={portal.icon} className="w-5 h-5" />
+                    </div>
+                    <div className="font-extrabold text-[#0B1B3D] text-xs sm:text-[13px] leading-tight break-words group-hover:text-[#0A58CA] transition-colors">{portal.name[lang as 'en'|'hi'|'mr'] || portal.name.en}</div>
+                    <div className="font-extrabold text-[10px] text-gray-500 mt-1.5 bg-gray-100 px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-700 transition-all">{count} Active</div>
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
@@ -378,12 +412,17 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
             <h2 className="font-bold text-[#0B1B3D] mb-4 text-lg">{dict.home.trending} {dict.home.allCategories}</h2>
             <div className="flex flex-wrap gap-4 justify-start items-center">
               {trendingCategories.map((item) => {
+                const colors = getCategoryColors(item.slug);
                 return (
-                  <Link key={item.id} href={getCategoryUrl(item.slug)} className="flex flex-col items-center gap-2 cursor-pointer group w-[75px] transition-transform hover:-translate-y-1">
-                    <div className="w-16 h-16 rounded-2xl bg-white border border-gray-100 flex items-center justify-center group-hover:border-[#0A58CA] group-hover:shadow-[0_8px_20px_rgba(10,88,202,0.15)] transition-all shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
-                      <CategoryIcon name={item.icon || 'Briefcase'} className="w-10 h-10 transform group-hover:scale-110 transition-transform duration-300" />
+                  <Link 
+                    key={item.id} 
+                    href={getCategoryUrl(item.slug)} 
+                    className="flex flex-col items-center gap-2 cursor-pointer group w-[80px] transition-all hover:-translate-y-1"
+                  >
+                    <div className={`w-16 h-16 rounded-2xl bg-white border flex items-center justify-center transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.02)] group-hover:scale-105 ${colors.border} ${colors.shadow}`}>
+                      <CategoryIcon name={item.icon || item.name.en} className="w-10 h-10 transform group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    <span className="text-[11px] sm:text-xs font-bold text-gray-700 group-hover:text-[#0A58CA] text-center leading-tight">{item.name[lang]}</span>
+                    <span className={`text-[11px] sm:text-xs font-bold text-gray-700 text-center leading-tight transition-colors duration-200 ${colors.text}`}>{item.name[lang]}</span>
                   </Link>
                 );
               })}

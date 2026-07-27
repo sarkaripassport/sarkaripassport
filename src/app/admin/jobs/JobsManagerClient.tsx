@@ -229,7 +229,7 @@ export default function JobsManagerClient({
                   </td>
                   
                   <td className="p-4 text-right">
-                    <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => generateWhatsAppMessage(job)}
                         className="p-1.5 text-emerald-600 hover:bg-emerald-100 rounded transition"

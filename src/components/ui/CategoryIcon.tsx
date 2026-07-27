@@ -6,9 +6,11 @@ interface CategoryIconProps {
 }
 
 export default function CategoryIcon({ name, className = "w-10 h-10" }: CategoryIconProps) {
-  // A mapping of our lucide icon names to beautiful, colorful, multi-layered SVG illustrations.
-  
-  if (name === 'Train') {
+  // Normalize the category or icon name to perform robust matching
+  const norm = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '');
+
+  // 1. Train / Railway (Vibrant blue & silver locomotive)
+  if (norm === 'train' || norm === 'railway' || norm === 'railways') {
     return (
       <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="12" y="8" width="40" height="48" rx="8" fill="#1E3A8A" />
@@ -23,7 +25,8 @@ export default function CategoryIcon({ name, className = "w-10 h-10" }: Category
     );
   }
 
-  if (name === 'Landmark') {
+  // 2. Bank / Banking / Landmark (Emerald green & gold pillars)
+  if (norm === 'landmark' || norm === 'bank' || norm === 'banking' || norm === 'building2') {
     return (
       <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M32 4L4 24H60L32 4Z" fill="#059669" />
@@ -38,7 +41,8 @@ export default function CategoryIcon({ name, className = "w-10 h-10" }: Category
     );
   }
 
-  if (name === 'Shield' || name === 'ShieldCheck') {
+  // 3. Shield / Police / Defence (Crimson red protective badge)
+  if (norm === 'shield' || norm === 'shieldcheck' || norm === 'police' || norm === 'defence' || norm === 'defense') {
     return (
       <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M32 4L8 12V28C8 42 18 54 32 60C46 54 56 42 56 28V12L32 4Z" fill="#DC2626" />
@@ -48,7 +52,8 @@ export default function CategoryIcon({ name, className = "w-10 h-10" }: Category
     );
   }
 
-  if (name === 'GraduationCap') {
+  // 4. GraduationCap / Admission (Purple graduate cap with gold tassels)
+  if (norm === 'graduationcap' || norm === 'admission' || norm === 'university' || norm === 'school' || norm === 'userplus') {
     return (
       <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M32 12L4 24L32 36L60 24L32 12Z" fill="#4C1D95" />
@@ -60,7 +65,8 @@ export default function CategoryIcon({ name, className = "w-10 h-10" }: Category
     );
   }
 
-  if (name === 'FileText') {
+  // 5. Admit Card / FileText / Document (Sky blue sheets)
+  if (norm === 'filetext' || norm === 'document' || norm === 'admitcard') {
     return (
       <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="12" y="4" width="40" height="56" rx="4" fill="#38BDF8" />
@@ -73,30 +79,57 @@ export default function CategoryIcon({ name, className = "w-10 h-10" }: Category
       </svg>
     );
   }
-  
-  if (name === 'Building2') {
+
+  // 6. Answer Key / CheckSquare (Vibrant emerald green checkbox)
+  if (norm === 'checksquare' || norm === 'checkcircle' || norm === 'answerkey') {
     return (
       <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="16" y="12" width="32" height="52" fill="#4F46E5" />
-        <rect x="20" y="8" width="24" height="4" fill="#312E81" />
-        <rect x="24" y="20" width="6" height="8" fill="#A5B4FC" />
-        <rect x="34" y="20" width="6" height="8" fill="#A5B4FC" />
-        <rect x="24" y="32" width="6" height="8" fill="#A5B4FC" />
-        <rect x="34" y="32" width="6" height="8" fill="#A5B4FC" />
-        <rect x="24" y="44" width="6" height="8" fill="#A5B4FC" />
-        <rect x="34" y="44" width="6" height="8" fill="#A5B4FC" />
-        <rect x="12" y="60" width="40" height="4" fill="#1E1B4B" />
+        <rect x="6" y="6" width="52" height="52" rx="10" fill="#10B981" />
+        <rect x="11" y="11" width="42" height="42" rx="6" fill="#D1FAE5" />
+        <path d="M46 20L26 40L18 32" stroke="#059669" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
   }
 
-  // Fallback beautiful Briefcase for "Briefcase" or unknown
+  // 7. Syllabus / BookOpen / Study / SSC / UPSC (Indigo open book)
+  if (norm === 'bookopen' || norm === 'book' || norm === 'study' || norm === 'ssc' || norm === 'upsc' || norm === 'syllabus') {
+    return (
+      <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="12" width="56" height="44" rx="4" fill="#4F46E5" />
+        <path d="M32 12V56" stroke="#312E81" strokeWidth="4" />
+        <path d="M8 16H28" stroke="#EEF2FF" strokeWidth="4" strokeLinecap="round" />
+        <path d="M8 26H28" stroke="#EEF2FF" strokeWidth="4" strokeLinecap="round" />
+        <path d="M8 36H24" stroke="#EEF2FF" strokeWidth="4" strokeLinecap="round" />
+        <path d="M8 46H20" stroke="#EEF2FF" strokeWidth="4" strokeLinecap="round" />
+        <path d="M36 16H56" stroke="#EEF2FF" strokeWidth="4" strokeLinecap="round" />
+        <path d="M36 26H56" stroke="#EEF2FF" strokeWidth="4" strokeLinecap="round" />
+        <path d="M36 36H52" stroke="#EEF2FF" strokeWidth="4" strokeLinecap="round" />
+        <path d="M36 46H48" stroke="#EEF2FF" strokeWidth="4" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  // 8. Award / AwardStar / Results (Golden ribbon medal)
+  if (norm === 'award' || norm === 'awardstar' || norm === 'results' || norm === 'result') {
+    return (
+      <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M24 36L16 60L32 50L48 60L40 36" fill="#F59E0B" />
+        <path d="M28 36L22 54L32 46L42 54L36 36" fill="#D97706" />
+        <circle cx="32" cy="24" r="18" fill="#F59E0B" />
+        <circle cx="32" cy="24" r="14" fill="#FEF3C7" />
+        <polygon points="32,15 35,21 42,22 37,27 38,34 32,30 26,34 27,27 22,22 29,21" fill="#F59E0B" />
+      </svg>
+    );
+  }
+
+  // 9. Briefcase / Jobs / LatestJobs (Vibrant blue corporate case)
   return (
     <svg className={className} viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="8" y="20" width="48" height="36" rx="4" fill="#D97706" />
-      <rect x="8" y="20" width="48" height="12" fill="#B45309" />
-      <path d="M24 20V12C24 9.79086 25.7909 8 28 8H36C38.2091 8 40 9.79086 40 12V20" stroke="#78350F" strokeWidth="4" />
-      <rect x="28" y="28" width="8" height="6" rx="2" fill="#FCD34D" />
+      <rect x="8" y="20" width="48" height="36" rx="6" fill="#2563EB" />
+      <rect x="8" y="20" width="48" height="12" fill="#1D4ED8" />
+      <path d="M22 20V12C22 9.79086 23.7909 8 26 8H38C40.2091 8 42 9.79086 42 12V20" stroke="#1E3A8A" strokeWidth="4" />
+      <rect x="27" y="28" width="10" height="8" rx="2" fill="#E0F2FE" />
+      <circle cx="32" cy="32" r="2" fill="#0284C7" />
     </svg>
   );
 }
