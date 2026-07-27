@@ -9,6 +9,7 @@ export async function deleteJobAction(id: string) {
     if (success) {
       // Revalidate paths so changes show up everywhere, especially localized routes
       revalidatePath('/', 'layout');
+      revalidatePath('/admin/jobs');
       return { success: true, message: "Job deleted successfully" };
     } else {
       return { success: false, message: "Job not found" };

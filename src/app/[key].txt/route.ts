@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getSettings } from '@/lib/db';
 
-export async function GET(request: Request, { params }: { params: Promise<{ key: string }> }) {
+export async function GET(request: Request) {
   try {
-    const resolvedParams = await params;
-    const keyParam = resolvedParams.key;
-    const cleanKey = keyParam.replace('.txt', '');
+    const url = new URL(request.url);
+    const pathname = url.pathname;
+    const filename = pathname.split('/').pop() || '';
+    const cleanKey = filename.replace('.txt', '');
 
     const settings = await getSettings();
     const configuredKey = settings.indexing?.indexnow_key;
