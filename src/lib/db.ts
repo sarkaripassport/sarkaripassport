@@ -335,7 +335,7 @@ export const getCategories = unstable_cache(async (): Promise<Category[]> => {
 export async function saveCategories(categories: Category[]): Promise<void> {
   const rows = categories.map(c => ({ id: c.id, slug: c.slug, data: c }));
   await supabaseAdmin.from('categories').upsert(rows);
-  revalidateTag('categories');
+  revalidateTag('categories', 'default');
 }
 
 export const getSettings = unstable_cache(async (): Promise<HomepageSettings> => {
@@ -346,7 +346,7 @@ export const getSettings = unstable_cache(async (): Promise<HomepageSettings> =>
 
 export async function saveSettings(settings: HomepageSettings): Promise<void> {
   await supabaseAdmin.from('settings').upsert({ id: 'global', data: settings });
-  revalidateTag('settings');
+  revalidateTag('settings', 'default');
 }
 
 export const getJobs = unstable_cache(async (): Promise<Job[]> => {
@@ -444,7 +444,7 @@ export async function createJob(job: Omit<Job, 'id' | 'created_at'>): Promise<Jo
     data: newJob
   });
   
-  revalidateTag('jobs');
+  revalidateTag('jobs', 'default');
   return newJob;
 }
 
@@ -464,7 +464,7 @@ export async function updateJob(id: string, jobData: Partial<Job>): Promise<Job 
     data: updatedJob
   }).eq('id', id);
   
-  revalidateTag('jobs');
+  revalidateTag('jobs', 'default');
   return updatedJob;
 }
 
@@ -504,7 +504,7 @@ export async function deleteJob(id: string): Promise<boolean> {
 
   // 2. Delete the row from the database
   const { error } = await supabaseAdmin.from('jobs').delete().eq('id', id);
-  if (!error) revalidateTag('jobs');
+  if (!error) revalidateTag('jobs', 'default');
   return !error;
 }
 
