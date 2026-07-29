@@ -5,6 +5,12 @@ import { getSeoAlternates } from "@/lib/seo";
 
 import { getSettings } from "@/lib/db";
 
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
   const lang = resolvedParams.lang;

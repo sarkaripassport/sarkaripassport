@@ -420,16 +420,22 @@ export async function getJobsByCategorySlug(slug: string): Promise<Job[]> {
   });
 }
 
-export async function getJobBySlug(slug: string): Promise<Job | null> {
-  const { data, error } = await supabaseAdmin
-    .from('jobs')
-    .select('data')
-    .eq('slug', slug)
-    .single();
-    
-  if (error || !data) return null;
-  return data.data as Job;
-}
+export const getJobBySlug = cache(async (slug: string): Promise<Job | null> => {
+  return unstable_cache(
+    async () => {
+      const { data, error } = await supabaseAdmin
+        .from('jobs')
+        .select('data')
+        .eq('slug', slug)
+        .single();
+        
+      if (error || !data) return null;
+      return data.data as Job;
+    },
+    ['job-by-slug', slug],
+    { tags: ['jobs', `job-${slug}`], revalidate: 3600 }
+  )();
+});
 
 export async function createJob(job: Omit<Job, 'id' | 'created_at'>): Promise<Job> {
   const newJob: Job = {

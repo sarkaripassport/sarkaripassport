@@ -7,7 +7,19 @@ import Link from 'next/link';
 import { ChevronDown, FolderOpen, AlertCircle } from 'lucide-react';
 import { getDictionary, Locale } from '@/i18n/getDictionary';
 
-export const revalidate = 60;
+export const revalidate = 3600; // 1 hour ISR for millisecond Edge TTFB
+
+export async function generateStaticParams() {
+  const categories = await getCategories();
+  const langs = ['en', 'hi', 'mr'];
+  const params: { lang: string; slug: string }[] = [];
+  for (const cat of categories) {
+    for (const lang of langs) {
+      params.push({ lang, slug: cat.slug });
+    }
+  }
+  return params;
+}
 
 export async function generateMetadata(
   { params }: { params: Promise<{ lang: string, slug: string }> },

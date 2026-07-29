@@ -14,6 +14,10 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
 
 export const revalidate = 3600;
 
+export function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
+}
+
 export default async function JobsListingPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const resolvedParams = await params;
   const lang = resolvedParams.lang || 'en';

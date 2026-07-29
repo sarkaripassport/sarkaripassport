@@ -5,6 +5,12 @@ import { Metadata } from "next";
 import ProtectedEmail from "@/components/ui/ProtectedEmail";
 import { getSeoAlternates } from "@/lib/seo";
 
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const resolvedParams = await params;
   const lang = resolvedParams.lang || 'en';

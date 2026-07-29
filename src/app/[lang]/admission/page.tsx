@@ -3,6 +3,12 @@ import type { Metadata } from 'next';
 import { getDictionary, Locale } from "@/i18n/getDictionary";
 import { getSeoAlternates } from "@/lib/seo";
 
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }) {
   const resolvedParams = await params;
   const lang = resolvedParams.lang || 'en';

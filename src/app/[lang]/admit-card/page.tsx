@@ -4,7 +4,11 @@ import JobsClient from "@/app/[lang]/jobs/JobsClient";
 import type { Metadata } from "next";
 import { getDictionary, Locale } from "@/i18n/getDictionary";
 
-export const revalidate = 60;
+export const revalidate = 3600;
+
+export function generateStaticParams() {
+  return [{ lang: 'en' }, { lang: 'hi' }, { lang: 'mr' }];
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
   const resolvedParams = await params;
