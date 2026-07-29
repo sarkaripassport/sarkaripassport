@@ -9,15 +9,16 @@ import { Locale } from '@/i18n/getDictionary';
 interface AdvancedSearchProps {
   lang: Locale;
   categories: Category[];
+  qualifications?: string[];
+  locations?: string[];
 }
 
-export default function AdvancedSearch({ lang, categories }: AdvancedSearchProps) {
+export default function AdvancedSearch({ lang, categories, qualifications = [], locations = [] }: AdvancedSearchProps) {
   const router = useRouter();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [cat, setCat] = useState('');
   
-  // Hardcoded for now until we expand DB schema
   const [qual, setQual] = useState('');
   const [state, setState] = useState('');
 
@@ -68,16 +69,32 @@ export default function AdvancedSearch({ lang, categories }: AdvancedSearchProps
           </select>
           <select aria-label="Qualification" value={qual} onChange={(e) => setQual(e.target.value)} className="w-full px-1.5 py-1 bg-gray-50 border border-gray-200 rounded text-[10px] sm:text-[11px] text-gray-600 outline-none">
             <option value="">Any Qual.</option>
-            <option value="10th">10th Pass</option>
-            <option value="12th">12th Pass</option>
-            <option value="grad">Graduate</option>
+            {qualifications && qualifications.length > 0 ? (
+              qualifications.map(q => (
+                <option key={q} value={q}>{q}</option>
+              ))
+            ) : (
+              <>
+                <option value="10th">10th Pass</option>
+                <option value="12th">12th Pass</option>
+                <option value="grad">Graduate</option>
+              </>
+            )}
           </select>
           <select aria-label="Location" value={state} onChange={(e) => setState(e.target.value)} className="w-full px-1.5 py-1 bg-gray-50 border border-gray-200 rounded text-[10px] sm:text-[11px] text-gray-600 outline-none">
             <option value="">Any Location</option>
-            <option value="delhi">Delhi</option>
-            <option value="up">Uttar Pradesh</option>
-            <option value="maharashtra">Maharashtra</option>
-            <option value="all-india">All India</option>
+            {locations && locations.length > 0 ? (
+              locations.map(l => (
+                <option key={l} value={l}>{l}</option>
+              ))
+            ) : (
+              <>
+                <option value="delhi">Delhi</option>
+                <option value="up">Uttar Pradesh</option>
+                <option value="maharashtra">Maharashtra</option>
+                <option value="all-india">All India</option>
+              </>
+            )}
           </select>
           <button type="submit" className="md:hidden w-full px-2 py-1 text-[10px] bg-[#0A58CA] text-white font-bold rounded hover:bg-blue-700 transition-colors">
             Search

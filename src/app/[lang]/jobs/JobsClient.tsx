@@ -5,10 +5,11 @@ import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, ChevronDown, Building2, MapPin, Briefcase, GraduationCap, Filter, Bookmark, X } from "lucide-react";
 import JobCard from "@/components/JobCard";
+import SeoContentBlock from "@/components/SeoContentBlock";
 import type { Job, Category } from "@/lib/db";
 import { Locale } from "@/i18n/getDictionary";
 
-export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pagePath }: { jobs: Job[], categories: Category[], lang: Locale, dict: any, pageTitle?: string, pagePath?: string }) {
+export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pagePath, contentHtml }: { jobs: Job[], categories: Category[], lang: Locale, dict: any, pageTitle?: string, pagePath?: string, contentHtml?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -21,6 +22,26 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
   const [selectedState, setSelectedState] = useState<string>("all");
   const [selectedType, setSelectedType] = useState<string>("all"); // e.g. "Live" or "all"
   const [sortBy, setSortBy] = useState<string>("Latest");
+
+  const uniqueQualifications = Array.from(new Set(
+    jobs
+      .map(j => {
+        const q = j.quick_facts?.qualification?.[lang] || j.quick_facts?.qualification?.en || j.education_qualification?.[lang] || j.education_qualification?.en || '';
+        return typeof q === 'string' ? q : '';
+      })
+      .map(q => q.trim())
+      .filter((q): q is string => Boolean(q))
+  )).sort();
+
+  const uniqueStates = Array.from(new Set(
+    jobs
+      .map(j => {
+        const l = j.quick_facts?.job_location?.[lang] || j.quick_facts?.job_location?.en || '';
+        return typeof l === 'string' ? l : '';
+      })
+      .map(l => l.trim())
+      .filter((l): l is string => Boolean(l))
+  )).sort();
 
   // Pagination
   const ITEMS_PER_PAGE = Number(process.env.NEXT_PUBLIC_JOBS_PER_PAGE) || 12;
@@ -75,10 +96,18 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
     const matchesSearch = searchQuery ? (j.title[lang].toLowerCase().includes(searchQuery.toLowerCase()) || j.organization[lang].toLowerCase().includes(searchQuery.toLowerCase())) : true;
     
     // Qualification match (checks quick_facts if available)
-    const matchesQual = selectedQual === "all" ? true : (j.quick_facts?.qualification[lang]?.toLowerCase().includes(selectedQual.toLowerCase()) || false);
+    const matchesQual = selectedQual === "all" ? true : (
+      (j.quick_facts?.qualification?.[lang] || j.quick_facts?.qualification?.en || j.education_qualification?.[lang] || j.education_qualification?.en || "")
+        .toLowerCase()
+        .includes(selectedQual.toLowerCase())
+    );
     
     // State/Location match
-    const matchesState = selectedState === "all" ? true : (j.quick_facts?.job_location[lang]?.toLowerCase().includes(selectedState.toLowerCase()) || false);
+    const matchesState = selectedState === "all" ? true : (
+      (j.quick_facts?.job_location?.[lang] || j.quick_facts?.job_location?.en || "")
+        .toLowerCase()
+        .includes(selectedState.toLowerCase())
+    );
     
     // Type match (Live vs All)
     const matchesType = selectedType === "all" ? true : (selectedType === "Live" ? j.isLive : true);
@@ -89,8 +118,8 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
       return (a.daysLeft || 999) - (b.daysLeft || 999);
     }
     if (sortBy === "Most Vacancies") {
-      const vA = parseInt(a.quick_facts?.vacancies.replace(/,/g, '') || "0");
-      const vB = parseInt(b.quick_facts?.vacancies.replace(/,/g, '') || "0");
+      const vA = parseInt((a.quick_facts?.vacancies || "0").replace(/,/g, '') || "0");
+      const vB = parseInt((b.quick_facts?.vacancies || "0").replace(/,/g, '') || "0");
       return vB - vA;
     }
     // Default: Latest
@@ -113,8 +142,8 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
         <div className="mb-3 lg:mb-4">
           <div className="text-xs sm:text-sm text-gray-500 flex items-center gap-1 sm:gap-2 font-medium mb-1">
             <Link href={`/${lang}`} className="hover:text-[#0A58CA] transition-colors">{dict.navigation.home}</Link>
-            <ChevronDown className="w-3 h-3 -rotate-90 text-gray-400" />
-            <span className="text-[#0A58CA] font-bold">{pagePath || "Jobs"}</span>
+            <span>/</span>
+            <span className="text-[#0B1B3D] font-bold">{dict.navigation.latestJobs}</span>
           </div>
           
           <div className="flex items-center justify-between">
@@ -175,11 +204,19 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                       className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-[#0B1B3D] font-bold outline-none focus:ring-2 focus:ring-[#0A58CA] transition-all cursor-pointer appearance-none shadow-sm hover:border-gray-300"
                     >
                       <option value="all">Any Qualification</option>
-                      <option value="10th">10th Pass</option>
-                      <option value="12th">12th Pass</option>
-                      <option value="Graduate">Graduate</option>
-                      <option value="Post Graduate">Post Graduate</option>
-                      <option value="Diploma">Diploma / ITI</option>
+                      {uniqueQualifications.length > 0 ? (
+                        uniqueQualifications.map(q => (
+                          <option key={q} value={q}>{q}</option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="10th">10th Pass</option>
+                          <option value="12th">12th Pass</option>
+                          <option value="Graduate">Graduate</option>
+                          <option value="Post Graduate">Post Graduate</option>
+                          <option value="Diploma">Diploma / ITI</option>
+                        </>
+                      )}
                     </select>
                     <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
                   </div>
@@ -197,11 +234,19 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                       className="w-full px-3 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-[#0B1B3D] font-bold outline-none focus:ring-2 focus:ring-[#0A58CA] transition-all cursor-pointer appearance-none shadow-sm hover:border-gray-300"
                     >
                       <option value="all">All India (Any State)</option>
-                      <option value="Delhi">Delhi</option>
-                      <option value="Uttar Pradesh">Uttar Pradesh</option>
-                      <option value="Bihar">Bihar</option>
-                      <option value="Maharashtra">Maharashtra</option>
-                      <option value="Rajasthan">Rajasthan</option>
+                      {uniqueStates.length > 0 ? (
+                        uniqueStates.map(s => (
+                          <option key={s} value={s}>{s}</option>
+                        ))
+                      ) : (
+                        <>
+                          <option value="Delhi">Delhi</option>
+                          <option value="Uttar Pradesh">Uttar Pradesh</option>
+                          <option value="Bihar">Bihar</option>
+                          <option value="Maharashtra">Maharashtra</option>
+                          <option value="Rajasthan">Rajasthan</option>
+                        </>
+                      )}
                     </select>
                     <ChevronDown className="w-4 h-4 text-gray-400 absolute right-3 top-3 pointer-events-none" />
                   </div>
@@ -396,6 +441,9 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
               </div>
             )}
             
+            {/* Rich CMS SEO Content Paragraphs */}
+            <SeoContentBlock contentHtml={contentHtml} />
+
           </div>
         </div>
       </div>

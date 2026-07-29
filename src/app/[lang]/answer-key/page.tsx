@@ -12,17 +12,64 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
   const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
   const settings = await getSettings();
   const pageData = settings.pages?.['answer-key'];
-  const lang = resolvedParams.lang || 'en';
-  
-  if (!pageData) return { title: 'Answer Key' };
-  
+
+  const titles: Record<Locale, string> = {
+    en: "Official Answer Keys 2026 - All Govt Exam Question Papers & Solutions | GovJobWala",
+    hi: "आंसर की 2026 - सभी सरकारी परीक्षा की उत्तर कुंजी और हल प्रश्न पत्र | GovJobWala",
+    mr: "उत्तरतालिका (Answer Key) 2026 - सर्व सरकारी परीक्षा उत्तर सूची | GovJobWala"
+  };
+
+  const descriptions: Record<Locale, string> = {
+    en: "Download official exam answer keys, solved question papers, and objection portal links for SSC, UPSC, Railway, Police, and State examinations 2026.",
+    hi: "SSC, UPSC, रेलवे, पुलिस और राज्य स्तरीय प्रतियोगी परीक्षाओं की आधिकारिक उत्तर कुंजी, हल प्रश्न पत्र और आपत्ति दर्ज करने के लिंक।",
+    mr: "SSC, UPSC, रेल्वे, पोलीस आणि महाराष्ट्र सरकारी परीक्षांची अधिकृत उत्तरतालिका (Answer Key) आणि प्रश्नपत्रिका सोप्या पद्धतीने डाउनलोड करा."
+  };
+
+  const keywords: Record<Locale, string> = {
+    en: "Sarkari Answer Key 2026, Exam Question Papers, Official Answer Key Download, SSC Answer Key, Railway Answer Key",
+    hi: "सरकारी आंसर की 2026, सरकारी परीक्षा उत्तर कुंजी, एसएससी आंसर की",
+    mr: "सरकारी परीक्षा उत्तरतालिका 2026, Answer Key Download, रेल्वे उत्तर सूची"
+  };
+
+  const title = pageData?.seo?.title?.[lang] || titles[lang] || titles.en;
+  const description = pageData?.seo?.description?.[lang] || descriptions[lang] || descriptions.en;
+  const keywordStr = pageData?.seo?.keywords?.[lang] || keywords[lang] || keywords.en;
+  const url = `https://govjobwala.com/${lang}/answer-key`;
+
+  const ogUrl = new URL('https://govjobwala.com/api/og');
+  ogUrl.searchParams.set('title', 'Sarkari Exam Answer Keys 2026');
+  ogUrl.searchParams.set('type', 'answer-key');
+
   return {
-    title: pageData.seo.title[lang],
-    description: pageData.seo.description[lang],
-    keywords: pageData.seo.keywords[lang],
-    alternates: getSeoAlternates(lang, '/answer-key')
+    title,
+    description,
+    keywords: keywordStr,
+    alternates: getSeoAlternates(lang, '/answer-key'),
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'GovJobWala',
+      locale: `${lang}_IN`,
+      type: 'website',
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogUrl.toString()],
+    }
   };
 }
 
@@ -38,9 +85,12 @@ export default async function Page({ params }: { params: Promise<{ lang: Locale 
 
   const pageData = settings.pages?.['answer-key'];
   
-  // Filter jobs by category
   const filterCat = 'Answer Key';
   const filteredJobs = jobs.filter(j => j.category === filterCat || j.categories?.includes(filterCat));
+
+  const contentHtml = typeof pageData?.content_html === 'string' 
+    ? pageData?.content_html 
+    : pageData?.content_html?.[lang] || pageData?.content_html?.en || '';
 
   return (
     <>
@@ -53,7 +103,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Locale 
           </div>
         </div>
       )}
-      <JobsClient jobs={filteredJobs} categories={categories} lang={lang} dict={dict} pageTitle={dict.navigation.answerKey} pagePath={dict.navigation.answerKey} />
+      <JobsClient jobs={filteredJobs} categories={categories} lang={lang} dict={dict} pageTitle={dict.navigation.answerKey} pagePath={dict.navigation.answerKey} contentHtml={contentHtml} />
     </>
   );
 }

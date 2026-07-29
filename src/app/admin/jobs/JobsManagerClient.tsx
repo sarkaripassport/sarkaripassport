@@ -3,9 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock, Copy, MessageSquare, Share2 } from "lucide-react";
+import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock, Copy, MessageSquare, Share2, Eye, EyeOff } from "lucide-react";
 import type { Job, Category } from "@/lib/db";
-import { deleteJobAction } from "./actions";
+import { deleteJobAction, toggleJobLiveStatusAction } from "./actions";
 
 export default function JobsManagerClient({ 
   initialJobs, 
@@ -18,8 +18,42 @@ export default function JobsManagerClient({
   const [jobs, setJobs] = useState<Job[]>(initialJobs);
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft" | "expired">("all");
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
+  const [isToggling, setIsToggling] = useState<string | null>(null);
+
+  const isJobExpired = (job: Job) => {
+    if (job.daysLeft !== undefined && job.daysLeft <= 0) return true;
+    const dateStr = job.quick_facts?.last_date?.en;
+    if (dateStr) {
+      const parts = dateStr.split(/[\/-]/);
+      let d: Date | null = null;
+      if (parts.length === 3) {
+        d = new Date(`${parts[2]}-${parts[1]}-${parts[0]}T00:00:00Z`);
+      } else {
+        d = new Date(dateStr);
+      }
+      if (d && !isNaN(d.getTime())) {
+        return d.getTime() - new Date().getTime() <= 0;
+      }
+    }
+    return false;
+  };
+
+  const handleToggleLive = async (id: string, currentIsLive: boolean) => {
+    setIsToggling(id);
+    try {
+      const result = await toggleJobLiveStatusAction(id, !currentIsLive);
+      if (result.success && result.isLive !== undefined) {
+        setJobs(jobs.map(j => j.id === id ? { ...j, isLive: result.isLive! } : j));
+      } else {
+        alert(result.message);
+      }
+    } catch (e) {
+      alert("An error occurred while changing visibility.");
+    }
+    setIsToggling(null);
+  };
 
   const handleDelete = async (id: string, title: string) => {
     if (confirm(`Are you sure you want to delete "${title}"? This action cannot be undone.`)) {
@@ -68,7 +102,9 @@ export default function JobsManagerClient({
 
     // Status Filter
     const matchesStatus = statusFilter === "all" ? true : (
-      statusFilter === "published" ? job.isLive === true : job.isLive === false
+      statusFilter === "published" ? (job.isLive === true && !isJobExpired(job)) :
+      statusFilter === "draft" ? job.isLive === false :
+      statusFilter === "expired" ? isJobExpired(job) : true
     );
 
     return matchesCategory && matchesSearch && matchesStatus;
@@ -129,6 +165,12 @@ export default function JobsManagerClient({
               className={`px-3 py-2 text-sm font-medium transition border-l border-gray-300 ${statusFilter === 'draft' ? 'bg-[#0A58CA] text-white' : 'text-gray-600 hover:bg-gray-50'}`}
             >
               Drafts
+            </button>
+            <button 
+              onClick={() => setStatusFilter("expired")}
+              className={`px-3 py-2 text-sm font-medium transition border-l border-gray-300 ${statusFilter === 'expired' ? 'bg-rose-600 text-white' : 'text-gray-600 hover:bg-gray-50'}`}
+            >
+              Expired
             </button>
           </div>
         </div>
@@ -199,10 +241,37 @@ export default function JobsManagerClient({
                   </td>
                   
                   <td className="p-4">
-                    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold border ${job.isLive ? job.statusColor : 'text-yellow-800 bg-yellow-100 border-yellow-200'}`}>
-                      {job.isLive ? <CheckCircle2 className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
-                      {job.isLive ? job.status : 'Draft'}
-                    </span>
+                    <div className="flex flex-col items-start gap-1.5">
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold border ${
+                        isJobExpired(job)
+                          ? 'text-rose-700 bg-rose-50 border-rose-200'
+                          : job.isLive
+                          ? job.statusColor
+                          : 'text-yellow-800 bg-yellow-100 border-yellow-200'
+                      }`}>
+                        {isJobExpired(job) ? (
+                          <Clock className="w-3 h-3 text-rose-600" />
+                        ) : job.isLive ? (
+                          <CheckCircle2 className="w-3 h-3" />
+                        ) : (
+                          <Clock className="w-3 h-3" />
+                        )}
+                        {isJobExpired(job) ? 'Expired' : job.isLive ? job.status : 'Draft'}
+                      </span>
+                      <button
+                        onClick={() => handleToggleLive(job.id, job.isLive)}
+                        disabled={isToggling === job.id}
+                        className={`inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] font-bold transition border shadow-xs ${
+                          job.isLive
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                            : 'bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200'
+                        } disabled:opacity-50`}
+                        title={job.isLive ? "Click to hide from front end" : "Click to show on front end"}
+                      >
+                        {job.isLive ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                        {job.isLive ? "Live (Hide)" : "Hidden (Show)"}
+                      </button>
+                    </div>
                   </td>
                   
                   <td className="p-4">

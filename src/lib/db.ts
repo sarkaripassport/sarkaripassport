@@ -222,6 +222,7 @@ export interface PageSettings {
     title: LocalizedString;
     subtitle: LocalizedString;
   };
+  content_html?: LocalizedString;
 }
 
 export interface HomepageSettings {
@@ -241,6 +242,15 @@ export interface HomepageSettings {
     col3_category: string;
     col4_category: string;
   };
+  adsense?: {
+    enabled?: boolean;
+    client_id?: string;
+    slot_header?: string;
+    slot_sidebar?: string;
+    slot_in_article?: string;
+    auto_ads?: boolean;
+    adsense_id?: string;
+  };
   announcements: Announcement[];
   whatsapp_link?: string;
   analytics?: {
@@ -249,11 +259,15 @@ export interface HomepageSettings {
     adsense_id?: string;
   };
   pages?: {
-    'admit-card': PageSettings;
-    'results': PageSettings;
-    'answer-key': PageSettings;
-    'syllabus': PageSettings;
-    'tools': PageSettings;
+    [key: string]: PageSettings | undefined;
+    'jobs'?: PageSettings;
+    'latest-jobs'?: PageSettings;
+    'admit-card'?: PageSettings;
+    'results'?: PageSettings;
+    'answer-key'?: PageSettings;
+    'syllabus'?: PageSettings;
+    'admission'?: PageSettings;
+    'tools'?: PageSettings;
   };
   social_links?: {
     facebook?: string;
@@ -305,25 +319,40 @@ const defaultSettings: HomepageSettings = {
   },
 
   pages: {
+    'jobs': {
+      seo: { title: { en: "Latest Government Jobs - GovJobWala", hi: "", mr: "" }, description: { en: "Browse all latest government job notifications across India", hi: "", mr: "" }, keywords: { en: "latest govt jobs, sarkari job", hi: "", mr: "" } },
+      hero: { title: { en: "Latest Government Jobs", hi: "", mr: "" }, subtitle: { en: "Find and apply for all active government vacancies", hi: "", mr: "" } },
+      content_html: { en: "", hi: "", mr: "" }
+    },
     'admit-card': {
       seo: { title: { en: "Admit Cards - GovJobWala", hi: "", mr: "" }, description: { en: "Download latest admit cards", hi: "", mr: "" }, keywords: { en: "admit card", hi: "", mr: "" } },
-      hero: { title: { en: "Download Admit Cards", hi: "", mr: "" }, subtitle: { en: "Get your hall tickets for upcoming exams", hi: "", mr: "" } }
+      hero: { title: { en: "Download Admit Cards", hi: "", mr: "" }, subtitle: { en: "Get your hall tickets for upcoming exams", hi: "", mr: "" } },
+      content_html: { en: "", hi: "", mr: "" }
     },
     'results': {
       seo: { title: { en: "Results - GovJobWala", hi: "", mr: "" }, description: { en: "Check latest exam results", hi: "", mr: "" }, keywords: { en: "results, exam results", hi: "", mr: "" } },
-      hero: { title: { en: "Exam Results", hi: "", mr: "" }, subtitle: { en: "Check your selection status instantly", hi: "", mr: "" } }
+      hero: { title: { en: "Exam Results", hi: "", mr: "" }, subtitle: { en: "Check your selection status instantly", hi: "", mr: "" } },
+      content_html: { en: "", hi: "", mr: "" }
     },
     'answer-key': {
       seo: { title: { en: "Answer Keys - GovJobWala", hi: "", mr: "" }, description: { en: "Download exam answer keys", hi: "", mr: "" }, keywords: { en: "answer key", hi: "", mr: "" } },
-      hero: { title: { en: "Exam Answer Keys", hi: "", mr: "" }, subtitle: { en: "Verify your answers and calculate scores", hi: "", mr: "" } }
+      hero: { title: { en: "Exam Answer Keys", hi: "", mr: "" }, subtitle: { en: "Verify your answers and calculate scores", hi: "", mr: "" } },
+      content_html: { en: "", hi: "", mr: "" }
     },
     'syllabus': {
       seo: { title: { en: "Syllabus - GovJobWala", hi: "", mr: "" }, description: { en: "Download exam syllabus", hi: "", mr: "" }, keywords: { en: "syllabus", hi: "", mr: "" } },
-      hero: { title: { en: "Exam Syllabus", hi: "", mr: "" }, subtitle: { en: "Prepare with the official syllabus", hi: "", mr: "" } }
+      hero: { title: { en: "Exam Syllabus", hi: "", mr: "" }, subtitle: { en: "Prepare with the official syllabus", hi: "", mr: "" } },
+      content_html: { en: "", hi: "", mr: "" }
+    },
+    'admission': {
+      seo: { title: { en: "Admission Notifications - GovJobWala", hi: "", mr: "" }, description: { en: "Latest entrance exams and university admission notifications", hi: "", mr: "" }, keywords: { en: "admission, entrance exam", hi: "", mr: "" } },
+      hero: { title: { en: "Admission Notifications", hi: "", mr: "" }, subtitle: { en: "Entrance exams, counseling, and admission updates", hi: "", mr: "" } },
+      content_html: { en: "", hi: "", mr: "" }
     },
     'tools': {
       seo: { title: { en: "Online Tools for Govt Jobs - GovJobWala", hi: "", mr: "" }, description: { en: "Free online tools to resize passport photos, compress PDFs, merge signature and photos for government job application forms. 100% free and secure.", hi: "", mr: "" }, keywords: { en: "image resizer, photo and signature merge, compress pdf, online signature generator, govjobwala tools", hi: "", mr: "" } },
-      hero: { title: { en: "Candidate Utility Tools", hi: "", mr: "" }, subtitle: { en: "Free online tools to format your photos, signatures, and documents for government job applications. Processed locally, 100% secure.", hi: "", mr: "" } }
+      hero: { title: { en: "Candidate Utility Tools", hi: "", mr: "" }, subtitle: { en: "Free online tools to format your photos, signatures, and documents for government job applications. Processed locally, 100% secure.", hi: "", mr: "" } },
+      content_html: { en: "", hi: "", mr: "" }
     }
   }
 };

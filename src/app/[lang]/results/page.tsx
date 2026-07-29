@@ -12,17 +12,64 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
   const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
   const settings = await getSettings();
   const pageData = settings.pages?.['results'];
-  const lang = resolvedParams.lang || 'en';
-  
-  if (!pageData) return { title: 'Results' };
-  
+
+  const titles: Record<Locale, string> = {
+    en: "Sarkari Exam Results 2026 - Check All Govt Exam Merit Lists | GovJobWala",
+    hi: "सरकारी रिजल्ट 2026 - सभी सरकारी परीक्षा परिणाम और मेरिट लिस्ट | GovJobWala",
+    mr: "सरकारी निकाल 2026 - सर्व परीक्षा निकाल व गुणवत्ता यादी | GovJobWala"
+  };
+
+  const descriptions: Record<Locale, string> = {
+    en: "Check live government exam results, merit lists, and cut-off marks for SSC, UPSC, Railway, Banking, Defense, and State level Sarkari examinations 2026.",
+    hi: "SSC, UPSC, रेलवे, पुलिस, बैंकिंग और राज्य सरकार की सभी प्रतियोगी परीक्षाओं के परिणाम, मेरिट लिस्ट और कट-ऑफ मार्क्स तुरंत देखें।",
+    mr: "SSC, UPSC, रेल्वे, पोलीस व बँकिंग भरती परीक्षांचे सर्व निकाल, गुणवत्ता यादी आणि कट-ऑफ मार्क्स येथे तपासा."
+  };
+
+  const keywords: Record<Locale, string> = {
+    en: "Sarkari Result 2026, Govt Exam Merit List, SSC Result, Railway Exam Result, UPSC Final Result, Cut Off Marks",
+    hi: "सरकारी रिजल्ट 2026, सरकारी परीक्षा परिणाम, एसएससी रिजल्ट, रेलवे रिजल्ट",
+    mr: "सरकारी निकाल 2026, महाभरती निकाल, परीक्षा निकाल, रेल्वे निकाल"
+  };
+
+  const title = pageData?.seo?.title?.[lang] || titles[lang] || titles.en;
+  const description = pageData?.seo?.description?.[lang] || descriptions[lang] || descriptions.en;
+  const keywordStr = pageData?.seo?.keywords?.[lang] || keywords[lang] || keywords.en;
+  const url = `https://govjobwala.com/${lang}/results`;
+
+  const ogUrl = new URL('https://govjobwala.com/api/og');
+  ogUrl.searchParams.set('title', 'Sarkari Exam Results 2026');
+  ogUrl.searchParams.set('type', 'results');
+
   return {
-    title: pageData.seo.title[lang],
-    description: pageData.seo.description[lang],
-    keywords: pageData.seo.keywords[lang],
-    alternates: getSeoAlternates(lang, '/results')
+    title,
+    description,
+    keywords: keywordStr,
+    alternates: getSeoAlternates(lang, '/results'),
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'GovJobWala',
+      locale: `${lang}_IN`,
+      type: 'website',
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogUrl.toString()],
+    }
   };
 }
 
@@ -38,9 +85,12 @@ export default async function Page({ params }: { params: Promise<{ lang: Locale 
 
   const pageData = settings.pages?.['results'];
   
-  // Filter jobs by category
   const filterCat = 'Result';
   const filteredJobs = jobs.filter(j => j.category === filterCat || j.categories?.includes(filterCat));
+
+  const contentHtml = typeof pageData?.content_html === 'string' 
+    ? pageData?.content_html 
+    : pageData?.content_html?.[lang] || pageData?.content_html?.en || '';
 
   return (
     <>
@@ -53,7 +103,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Locale 
           </div>
         </div>
       )}
-      <JobsClient jobs={filteredJobs} categories={categories} lang={lang} dict={dict} pageTitle={dict.navigation.results} pagePath={dict.navigation.results} />
+      <JobsClient jobs={filteredJobs} categories={categories} lang={lang} dict={dict} pageTitle={dict.navigation.results} pagePath={dict.navigation.results} contentHtml={contentHtml} />
     </>
   );
 }

@@ -78,10 +78,21 @@ export default function JobCard({
             </span>
           </div>
           
-          {daysLeft !== undefined && daysLeft <= 5 && (
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-50 text-red-600 text-[10px] font-black uppercase tracking-widest border border-red-100 shadow-sm whitespace-nowrap animate-pulse">
-              <Clock className="w-3 h-3" /> {daysLeft} {labels.daysLeft}
-            </span>
+          {daysLeft !== undefined && (
+            daysLeft <= 0 ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[10px] font-black uppercase tracking-widest border border-rose-200 shadow-sm whitespace-nowrap">
+                <Clock className="w-3 h-3 text-rose-600 shrink-0" />
+                {lang === 'hi' ? 'आवेदन समाप्त' : lang === 'mr' ? 'अर्ज संपला' : 'Application Ended'}
+              </span>
+            ) : (
+              <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-sm whitespace-nowrap border ${
+                daysLeft <= 5 
+                  ? 'bg-red-50 text-red-600 border-red-100 animate-pulse' 
+                  : 'bg-blue-50 text-[#0A58CA] border-blue-100'
+              }`}>
+                <Clock className="w-3 h-3 shrink-0" /> {daysLeft} {labels.daysLeft}
+              </span>
+            )
           )}
         </div>
 

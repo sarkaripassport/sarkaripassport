@@ -64,16 +64,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const specialSlugs = ['results', 'admit-card', 'answer-key', 'syllabus', 'admission'];
 
   const categoryUrls: MetadataRoute.Sitemap = locales.flatMap(locale => 
-    categories.map(cat => {
-      const route = specialSlugs.includes(cat.slug) ? `/${cat.slug}` : `/category/${cat.slug}`;
-      return {
-        url: `${BASE_URL}/${locale}${route}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.6,
-        alternates: getAlternates(route)
-      };
-    })
+    categories
+      .filter(cat => !specialSlugs.includes(cat.slug))
+      .map(cat => {
+        const route = `/category/${cat.slug}`;
+        return {
+          url: `${BASE_URL}/${locale}${route}`,
+          lastModified: new Date(),
+          changeFrequency: 'weekly',
+          priority: 0.6,
+          alternates: getAlternates(route)
+        };
+      })
   );
 
   return [

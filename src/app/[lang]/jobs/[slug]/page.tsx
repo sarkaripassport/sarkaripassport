@@ -331,9 +331,20 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
               <div className="flex flex-wrap gap-2">
                 <span className={`inline-flex items-center px-2.5 py-1 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded ${job.statusColor}`}>{job.status}</span>
                 {dynamicDaysLeft !== undefined && (
-                  <span className="inline-flex items-center px-2.5 py-1 bg-red-50 text-red-700 border border-red-100 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded">
-                    <Clock className="w-3 h-3 mr-1" /> {dynamicDaysLeft} {dict.home.daysLeft}
-                  </span>
+                  dynamicDaysLeft <= 0 ? (
+                    <span className="inline-flex items-center px-2.5 py-1 bg-rose-50 text-rose-700 border border-rose-200 text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded whitespace-nowrap shadow-sm">
+                      <Clock className="w-3 h-3 mr-1 text-rose-600 shrink-0" />
+                      {lang === 'hi' ? 'आवेदन समाप्त' : lang === 'mr' ? 'अर्ज संपला' : 'Application Ended'}
+                    </span>
+                  ) : (
+                    <span className={`inline-flex items-center px-2.5 py-1 border text-[9px] md:text-[10px] font-black uppercase tracking-wider rounded whitespace-nowrap shadow-sm ${
+                      dynamicDaysLeft <= 5
+                        ? 'bg-red-50 text-red-700 border-red-100 animate-pulse'
+                        : 'bg-blue-50 text-[#0A58CA] border-blue-100'
+                    }`}>
+                      <Clock className="w-3 h-3 mr-1 shrink-0" /> {dynamicDaysLeft} {dict.home.daysLeft}
+                    </span>
+                  )
                 )}
               </div>
               <ShareButton 
@@ -350,6 +361,27 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
             </div>
           </div>
         </section>
+
+        {/* Application Ended Alert Banner */}
+        {dynamicDaysLeft !== undefined && dynamicDaysLeft <= 0 && (
+          <section className="bg-rose-50 border-y md:border border-rose-200 py-3 px-4 md:rounded-2xl shadow-sm flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center shrink-0">
+              <Clock className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-sm md:text-base font-black text-rose-800 leading-tight">
+                {lang === 'hi' ? 'आवेदन समाप्त' : lang === 'mr' ? 'अर्ज संपला' : 'APPLICATION ENDED'}
+              </h3>
+              <p className="text-xs font-medium text-rose-600">
+                {lang === 'hi'
+                  ? 'इस सरकारी नौकरी के लिए आवेदन करने की अंतिम तिथि समाप्त हो चुकी है।'
+                  : lang === 'mr'
+                  ? 'या सरकारी नोकरीसाठी अर्ज करण्याची अंतिम तारीख संपली आहे.'
+                  : 'The application deadline for this recruitment has passed. Applications are no longer accepted.'}
+              </p>
+            </div>
+          </section>
+        )}
 
         {/* Section 14: Eligibility Match Widget (Dynamic via Client Component) */}
 

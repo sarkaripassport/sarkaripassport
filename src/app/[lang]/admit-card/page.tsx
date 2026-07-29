@@ -12,17 +12,64 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
   const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
   const settings = await getSettings();
   const pageData = settings.pages?.['admit-card'];
-  const lang = resolvedParams.lang || 'en';
-  
-  if (!pageData) return { title: 'admit card' };
-  
+
+  const titles: Record<Locale, string> = {
+    en: "Admit Cards 2026 - All Govt Exam Call Letters & Hall Tickets | GovJobWala",
+    hi: "एडमिट कार्ड 2026 - सभी सरकारी परीक्षा हॉल टिकट और कॉल लेटर | GovJobWala",
+    mr: "प्रवेशपत्र 2026 - सर्व सरकारी परीक्षा हॉल तिकीट व कॉल लेटर | GovJobWala"
+  };
+
+  const descriptions: Record<Locale, string> = {
+    en: "Download official admit cards, hall tickets, and exam date call letters for SSC, UPSC, Railway, Banking, Police, and State Government examinations 2026.",
+    hi: "SSC, UPSC, रेलवे, पुलिस और बैंकिंग भर्ती परीक्षा 2026 के लिए आधिकारिक एडमिट कार्ड, हॉल टिकट और परीक्षा तिथि डाउनलोड करें।",
+    mr: "SSC, UPSC, रेल्वे, पोलीस आणि महाराष्ट्र सरकारी परीक्षा 2026 साठी अधिकृत प्रवेशपत्र आणि हॉल तिकीट डाउनलोड करा."
+  };
+
+  const keywords: Record<Locale, string> = {
+    en: "Sarkari Exam Admit Card, Hall Ticket Download 2026, SSC Admit Card, Railway Admit Card, UPSC Call Letter, Govt Exam Dates",
+    hi: "सरकारी एडमिट कार्ड, हॉल टिकट 2026, एसएससी एडमिट कार्ड, रेलवे परीक्षा एडमिट कार्ड",
+    mr: "सरकारी परीक्षा प्रवेशपत्र, हॉल तिकीट 2026, महाभरती प्रवेशपत्र, रेल्वे हॉल तिकीट"
+  };
+
+  const title = pageData?.seo?.title?.[lang] || titles[lang] || titles.en;
+  const description = pageData?.seo?.description?.[lang] || descriptions[lang] || descriptions.en;
+  const keywordStr = pageData?.seo?.keywords?.[lang] || keywords[lang] || keywords.en;
+  const url = `https://govjobwala.com/${lang}/admit-card`;
+
+  const ogUrl = new URL('https://govjobwala.com/api/og');
+  ogUrl.searchParams.set('title', 'Sarkari Exam Admit Cards 2026');
+  ogUrl.searchParams.set('type', 'admit-card');
+
   return {
-    title: pageData.seo.title[lang],
-    description: pageData.seo.description[lang],
-    keywords: pageData.seo.keywords[lang],
-    alternates: getSeoAlternates(lang, '/admit-card')
+    title,
+    description,
+    keywords: keywordStr,
+    alternates: getSeoAlternates(lang, '/admit-card'),
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'GovJobWala',
+      locale: `${lang}_IN`,
+      type: 'website',
+      images: [
+        {
+          url: ogUrl.toString(),
+          width: 1200,
+          height: 630,
+          alt: title,
+        }
+      ]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogUrl.toString()],
+    }
   };
 }
 
@@ -38,9 +85,12 @@ export default async function Page({ params }: { params: Promise<{ lang: Locale 
 
   const pageData = settings.pages?.['admit-card'];
   
-  // Filter jobs by category
   const filterCat = 'Admit Card';
   const filteredJobs = jobs.filter(j => j.category === filterCat || j.categories?.includes(filterCat));
+
+  const contentHtml = typeof pageData?.content_html === 'string' 
+    ? pageData?.content_html 
+    : pageData?.content_html?.[lang] || pageData?.content_html?.en || '';
 
   return (
     <>
@@ -53,7 +103,7 @@ export default async function Page({ params }: { params: Promise<{ lang: Locale 
           </div>
         </div>
       )}
-      <JobsClient jobs={filteredJobs} categories={categories} lang={lang} dict={dict} pageTitle={dict.navigation.admitCard} pagePath={dict.navigation.admitCard} />
+      <JobsClient jobs={filteredJobs} categories={categories} lang={lang} dict={dict} pageTitle={dict.navigation.admitCard} pagePath={dict.navigation.admitCard} contentHtml={contentHtml} />
     </>
   );
 }

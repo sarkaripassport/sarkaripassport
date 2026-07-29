@@ -1,7 +1,8 @@
 import { Metadata, ResolvingMetadata } from 'next';
-import { getCategoryBySlug, getJobsByCategorySlug, getCategories } from '@/lib/db';
+import { getCategoryBySlug, getJobsByCategorySlug, getCategories, getSettings } from '@/lib/db';
 import { getSeoAlternates } from '@/lib/seo';
 import JobCard from '@/components/JobCard';
+import SeoContentBlock from '@/components/SeoContentBlock';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronDown, FolderOpen, AlertCircle } from 'lucide-react';
@@ -77,12 +78,16 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
   const { lang, slug } = resolvedParams;
   const dict = await getDictionary(lang);
   
-  const category = await getCategoryBySlug(slug);
-  // If the category is not predefined, we can still attempt to show jobs by tag,
-  // but let's provide a fallback name
+  const [category, jobs, settings] = await Promise.all([
+    getCategoryBySlug(slug),
+    getJobsByCategorySlug(slug),
+    getSettings()
+  ]);
   const categoryName = category ? category.name[lang] : slug.replace(/-/g, ' ').toUpperCase();
-  
-  const jobs = await getJobsByCategorySlug(slug);
+  const pageData = settings.pages?.[`category/${slug}`];
+  const contentHtml = typeof pageData?.content_html === 'string'
+    ? pageData.content_html
+    : pageData?.content_html?.[lang] || pageData?.content_html?.en || '';
 
   // Generate JSON-LD for CollectionPage
   const jsonLd = {
@@ -199,6 +204,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
             </Link>
           </div>
         )}
+
+        {/* SEO Custom CMS Content Block */}
+        <SeoContentBlock contentHtml={contentHtml} />
       </div>
     </div>
   );

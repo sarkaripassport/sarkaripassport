@@ -1,6 +1,7 @@
 import { getDictionary } from "@/i18n/getDictionary";
 import { Metadata } from "next";
 import ToolsClient from "./ToolsClient";
+import SeoContentBlock from "@/components/SeoContentBlock";
 import { getSeoAlternates } from "@/lib/seo";
 
 import { getSettings } from "@/lib/db";
@@ -43,6 +44,9 @@ export default async function ToolsPage({ params }: { params: Promise<{ lang: st
   
   const h1 = (toolsData?.hero?.title as any)?.[lang] || toolsData?.hero?.title?.en || "Candidate Utilities Toolkit";
   const subtitle = (toolsData?.hero?.subtitle as any)?.[lang] || toolsData?.hero?.subtitle?.en || "100% Free, Secure, and Instant. Process your photos and documents directly in your browser. No files are uploaded to our servers!";
+  const contentHtml = typeof toolsData?.content_html === 'string' 
+    ? toolsData?.content_html 
+    : (toolsData?.content_html as any)?.[lang] || (toolsData?.content_html as any)?.en || '';
 
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-indigo-50 via-white to-blue-50 py-12 relative overflow-hidden">
@@ -67,6 +71,7 @@ export default async function ToolsPage({ params }: { params: Promise<{ lang: st
           <ToolsClient lang={lang} dict={dict} />
         </div>
         
+        <SeoContentBlock contentHtml={contentHtml} />
       </div>
     </div>
   );

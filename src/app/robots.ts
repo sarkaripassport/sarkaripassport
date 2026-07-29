@@ -4,8 +4,8 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: '*',
-      allow: '/',
-      disallow: ['/admin/', '/admin', '/api/'],
+      allow: ['/', '/api/og'],
+      disallow: ['/admin/', '/admin', '/api/auth/'],
     },
     sitemap: 'https://govjobwala.com/sitemap.xml',
   }
