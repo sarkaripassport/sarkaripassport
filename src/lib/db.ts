@@ -160,6 +160,7 @@ export interface Job {
   categories?: string[];
   comments?: JobComment[];
   syllabus?: SyllabusSection[];
+  description_html?: string;
   
   schema_settings?: {
     enable_job_schema?: boolean;
@@ -265,6 +266,7 @@ export interface HomepageSettings {
     google_json?: string;
     indexnow_key?: string;
   };
+  matrix_pages?: Record<string, MatrixPage>;
 }
 
 const defaultSettings: HomepageSettings = {
@@ -566,7 +568,10 @@ const mockMatrixPages: Record<string, MatrixPage> = {
 };
 
 export async function getMatrixPage(slug: string): Promise<MatrixPage | null> {
-  // In production, this would query Supabase: await supabaseAdmin.from('matrix_pages').select('*').eq('slug', slug).single()
+  const settings = await getSettings();
+  if (settings.matrix_pages && settings.matrix_pages[slug]) {
+    return settings.matrix_pages[slug];
+  }
   return mockMatrixPages[slug] || null;
 }
 

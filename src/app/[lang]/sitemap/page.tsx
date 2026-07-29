@@ -5,17 +5,20 @@ import Link from 'next/link';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import { getSeoAlternates } from '@/lib/seo';
 
-export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
-  const dict = await getDictionary(params.lang as any);
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang;
   return {
     title: `Sitemap | GovJobWala`,
     description: `HTML Sitemap for GovJobWala. Navigate all categories, jobs, and important pages.`,
-    alternates: getSeoAlternates(params.lang, '/sitemap'),
+    alternates: getSeoAlternates(lang, '/sitemap'),
   };
 }
 
-export default async function SitemapPage({ params }: { params: { lang: string } }) {
-  const dict = await getDictionary(params.lang as any);
+export default async function SitemapPage({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang;
+  const dict = await getDictionary(lang as any);
   
   const [categories, jobs] = await Promise.all([
     getCategories(),
@@ -65,7 +68,7 @@ export default async function SitemapPage({ params }: { params: { lang: string }
             <ul className="space-y-3">
               {staticRoutes.map(route => (
                 <li key={route.path}>
-                  <Link href={`/${params.lang}${route.path}`} className="flex items-center text-gray-700 hover:text-[#0A58CA] font-medium transition-colors group">
+                  <Link href={`/${lang}${route.path}`} className="flex items-center text-gray-700 hover:text-[#0A58CA] font-medium transition-colors group">
                     <ChevronRight className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#0A58CA]" />
                     {route.name}
                   </Link>
@@ -84,9 +87,9 @@ export default async function SitemapPage({ params }: { params: { lang: string }
                 const route = specialSlugs.includes(cat.slug) ? `/${cat.slug}` : `/category/${cat.slug}`;
                 return (
                   <li key={cat.id}>
-                    <Link href={`/${params.lang}${route}`} className="flex items-center text-gray-700 hover:text-[#0A58CA] font-medium transition-colors group">
+                    <Link href={`/${lang}${route}`} className="flex items-center text-gray-700 hover:text-[#0A58CA] font-medium transition-colors group">
                       <ChevronRight className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#0A58CA]" />
-                      {cat.name[params.lang as keyof typeof cat.name] || cat.name.en}
+                      {cat.name[lang as keyof typeof cat.name] || cat.name.en}
                     </Link>
                   </li>
                 )
@@ -102,7 +105,7 @@ export default async function SitemapPage({ params }: { params: { lang: string }
             <ul className="space-y-3">
               {infoRoutes.map(route => (
                 <li key={route.path}>
-                  <Link href={`/${params.lang}${route.path}`} className="flex items-center text-gray-700 hover:text-[#0A58CA] font-medium transition-colors group">
+                  <Link href={`/${lang}${route.path}`} className="flex items-center text-gray-700 hover:text-[#0A58CA] font-medium transition-colors group">
                     <ChevronRight className="w-4 h-4 mr-2 text-gray-400 group-hover:text-[#0A58CA]" />
                     {route.name}
                   </Link>
@@ -119,15 +122,15 @@ export default async function SitemapPage({ params }: { params: { lang: string }
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {liveJobs.slice(0, 30).map(job => (
-                <Link key={job.id} href={`/${params.lang}/jobs/${job.slug}`} className="block p-3 rounded-lg border border-gray-100 bg-gray-50 hover:bg-blue-50 hover:border-blue-200 transition-colors">
-                  <div className="font-bold text-gray-800 text-sm truncate" title={job.title[params.lang as keyof typeof job.title] || job.title.en}>
-                    {job.title[params.lang as keyof typeof job.title] || job.title.en}
+                <Link key={job.id} href={`/${lang}/jobs/${job.slug}`} className="block p-3 rounded-lg border border-gray-100 bg-gray-50 hover:bg-blue-50 hover:border-blue-200 transition-colors">
+                  <div className="font-bold text-gray-800 text-sm truncate" title={job.title[lang as keyof typeof job.title] || job.title.en}>
+                    {job.title[lang as keyof typeof job.title] || job.title.en}
                   </div>
                 </Link>
               ))}
             </div>
             <div className="mt-6 text-center">
-               <Link href={`/${params.lang}/jobs`} className="inline-flex items-center justify-center font-bold text-white bg-[#0A58CA] px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors">
+               <Link href={`/${lang}/jobs`} className="inline-flex items-center justify-center font-bold text-white bg-[#0A58CA] px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors">
                  View All Jobs <ExternalLink className="w-4 h-4 ml-2" />
                </Link>
             </div>

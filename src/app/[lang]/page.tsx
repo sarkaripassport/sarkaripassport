@@ -58,6 +58,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
 
   const getCategoryUrl = (slug: string) => {
     const cleanSlug = slug.toLowerCase().replace(/s$/, ''); // singularize
+    if (cleanSlug === 'latest-job' || cleanSlug === 'latest-jobs') return `/${lang}/jobs`;
     if (cleanSlug === 'result') return `/${lang}/results`;
     if (cleanSlug === 'admit-card') return `/${lang}/admit-card`;
     if (cleanSlug === 'answer-key') return `/${lang}/answer-key`;
@@ -291,7 +292,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 sm:gap-3">
               {portalCategories.map((portal) => {
                 const count = getCategoryCount(portal.slug);
                 const hasNew = hasCategoryNew(portal.slug);
@@ -299,19 +300,19 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                   <Link 
                     href={getCategoryUrl(portal.slug)} 
                     key={portal.id} 
-                    className={`relative bg-white rounded-xl border p-4 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center group h-[120px] ${portal.glow}`}
+                    className={`relative bg-white rounded-xl border p-2 sm:p-4 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-pointer flex flex-col items-center justify-center group h-[100px] sm:h-[120px] ${portal.glow}`}
                   >
                     {hasNew && (
-                      <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
+                      <span className="absolute top-1 right-1 sm:top-2 sm:right-2 flex h-2 w-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
                       </span>
                     )}
-                    <div className={`mb-2.5 p-2 bg-gradient-to-br ${portal.gradient} text-white rounded-xl transition-transform group-hover:scale-110 shadow-md`}>
-                      <CategoryIcon name={portal.icon} className="w-5 h-5" />
+                    <div className={`mb-1.5 sm:mb-2.5 p-1.5 sm:p-2 bg-gradient-to-br ${portal.gradient} text-white rounded-lg sm:rounded-xl transition-transform group-hover:scale-110 shadow-md`}>
+                      <CategoryIcon name={portal.icon} className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
-                    <div className="font-extrabold text-[#0B1B3D] text-xs sm:text-[13px] leading-tight break-words group-hover:text-[#0A58CA] transition-colors">{portal.name[lang as 'en'|'hi'|'mr'] || portal.name.en}</div>
-                    <div className="font-extrabold text-[10px] text-gray-500 mt-1.5 bg-gray-100 px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-700 transition-all">{count} Active</div>
+                    <div className="font-extrabold text-[#0B1B3D] text-[10px] sm:text-[13px] leading-tight break-words group-hover:text-[#0A58CA] transition-colors">{portal.name[lang as 'en'|'hi'|'mr'] || portal.name.en}</div>
+                    <div className="font-extrabold text-[8px] sm:text-[10px] text-gray-500 mt-1 sm:mt-1.5 bg-gray-100 px-1.5 sm:px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-700 transition-all">{count} Active</div>
                   </Link>
                 );
               })}
@@ -416,7 +417,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                 return (
                   <Link 
                     key={item.id} 
-                    href={getCategoryUrl(item.slug)} 
+                    href={`/${lang}/category/${item.slug}`} 
                     className="flex flex-col items-center gap-2 cursor-pointer group w-[80px] transition-all hover:-translate-y-1"
                   >
                     <div className={`w-16 h-16 rounded-2xl bg-white border flex items-center justify-center transition-all duration-300 shadow-[0_2px_8px_rgba(0,0,0,0.02)] group-hover:scale-105 ${colors.border} ${colors.shadow}`}>

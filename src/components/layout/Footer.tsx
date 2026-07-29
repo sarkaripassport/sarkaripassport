@@ -113,7 +113,7 @@ export default async function Footer({ lang = 'en' }: { lang?: string }) {
             <h2 className="text-white font-bold mb-4">Contact Us</h2>
             <ul className="space-y-2 text-sm text-gray-300">
               <li><ProtectedEmail user="admin" className="hover:text-white transition flex items-center gap-2" /></li>
-              <li><ProtectedEmail user="contact" className="hover:text-white transition flex items-center gap-2" /></li>
+              <li><ProtectedEmail user="enquiry" className="hover:text-white transition flex items-center gap-2" /></li>
               <li><ProtectedEmail user="support" className="hover:text-white transition flex items-center gap-2" /></li>
             </ul>
           </div>

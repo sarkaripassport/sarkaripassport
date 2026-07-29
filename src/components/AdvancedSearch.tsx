@@ -33,7 +33,7 @@ export default function AdvancedSearch({ lang, categories }: AdvancedSearchProps
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-1.5 sm:p-2.5">
+    <div className="w-full bg-white rounded-lg shadow-sm border border-gray-100 p-1.5 sm:p-2.5">
       <form onSubmit={handleSearch} className="relative flex flex-col gap-1.5 sm:gap-2">
         <div className="relative">
           <Search className="absolute left-2.5 top-2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-gray-400" />

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { createJob, updateJob, getJobs } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { autoLinker } from '@/lib/autoLinkerHtml';
+import { autoCategorize } from '@/lib/autoCategorizer';
 
 import { supabaseAdmin } from '@/lib/supabase/admin';
 
@@ -95,7 +96,8 @@ export async function POST(req: Request) {
       data.description_html = autoLinker(data.description_html);
     }
 
-    const job = await createJob(data);
+    const categorizedData = autoCategorize(data);
+    const job = await createJob(categorizedData as any);
 
     // Trigger Distribution Broadcasts
     if (data.broadcast_now) {
@@ -146,7 +148,8 @@ export async function PUT(req: Request) {
       data.description_html = autoLinker(data.description_html);
     }
 
-    const job = await updateJob(id, data);
+    const categorizedData = autoCategorize(data);
+    const job = await updateJob(id, categorizedData);
     
     // Bust the Next.js cache so changes are visible instantly
     revalidatePath('/', 'layout');

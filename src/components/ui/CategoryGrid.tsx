@@ -14,9 +14,6 @@ export default function CategoryGrid({ categories, lang, title, specialSlugs }: 
 
   // Implement the architecture plan redirect for special slugs
   const getCategoryUrl = (slug: string) => {
-    if (specialSlugs.includes(slug)) {
-      return `/${lang}/${slug}`;
-    }
     return `/${lang}/category/${slug}`;
   };
 

@@ -6,10 +6,11 @@ import { getDictionary, Locale } from "@/i18n/getDictionary";
 
 export const revalidate = 60;
 
-export async function generateMetadata({ params }: { params: { lang: Locale } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }): Promise<Metadata> {
+  const resolvedParams = await params;
   const settings = await getSettings();
   const pageData = settings.pages?.['syllabus'];
-  const lang = params.lang || 'en';
+  const lang = resolvedParams.lang || 'en';
   
   if (!pageData) return { title: 'Syllabus' };
   
@@ -21,8 +22,9 @@ export async function generateMetadata({ params }: { params: { lang: Locale } })
   };
 }
 
-export default async function Page({ params }: { params: { lang: Locale } }) {
-  const lang = params.lang || 'en';
+export default async function Page({ params }: { params: Promise<{ lang: Locale }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang || 'en';
   const dict = await getDictionary(lang);
   const [jobs, settings, categories] = await Promise.all([
     getPublishedJobs(),

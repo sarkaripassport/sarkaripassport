@@ -5,7 +5,9 @@ import { getSeoAlternates } from "@/lib/seo";
 
 import { getSettings } from "@/lib/db";
 
-export async function generateMetadata({ params: { lang } }: { params: { lang: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang;
   const dict = await getDictionary(lang as any);
   const settings = await getSettings();
   const toolsData = settings.pages?.tools;
@@ -26,7 +28,9 @@ export async function generateMetadata({ params: { lang } }: { params: { lang: s
   };
 }
 
-export default async function ToolsPage({ params: { lang } }: { params: { lang: string } }) {
+export default async function ToolsPage({ params }: { params: Promise<{ lang: string }> }) {
+  const resolvedParams = await params;
+  const lang = resolvedParams.lang;
   const dict = await getDictionary(lang as any);
   const settings = await getSettings();
   const toolsData = settings.pages?.tools;

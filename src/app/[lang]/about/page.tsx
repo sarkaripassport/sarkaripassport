@@ -91,7 +91,7 @@ export default function AboutPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
             <ProtectedEmail user="admin" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition" />
-            <ProtectedEmail user="contact" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition" />
+            <ProtectedEmail user="enquiry" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition" />
             <ProtectedEmail user="support" className="bg-white px-6 py-4 rounded-xl shadow-sm border border-gray-100 font-bold text-[#0A58CA] hover:shadow-md transition" />
           </div>
         </div>

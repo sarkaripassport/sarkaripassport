@@ -48,7 +48,7 @@ export default function ContactPage() {
               <p className="text-gray-500 mb-4 text-sm">Our friendly team is here to help.</p>
               <div className="space-y-4">
                 <ProtectedEmail user="admin" className="text-[#0A58CA] font-bold hover:underline block text-sm" />
-                <ProtectedEmail user="contact" className="text-[#0A58CA] font-bold hover:underline block text-sm" />
+                <ProtectedEmail user="enquiry" className="text-[#0A58CA] font-bold hover:underline block text-sm" />
                 <ProtectedEmail user="support" className="text-[#0A58CA] font-bold hover:underline block text-sm" />
               </div>
             </div>
