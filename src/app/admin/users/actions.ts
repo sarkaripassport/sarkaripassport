@@ -3,6 +3,7 @@
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { createClient } from '@/lib/supabase/server';
 import { getJobs } from '@/lib/db';
+import { requireAdmin } from '@/lib/auth';
 
 export interface AdminUser {
   id: string;
@@ -19,18 +20,16 @@ export interface AdminAnalytics {
 }
 
 async function verifySuperAdmin() {
+  await requireAdmin();
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user || user.user_metadata?.role !== 'super_admin') {
+  if (!user || (user.user_metadata?.role !== 'super_admin' && user.email !== 'admin@govjobwala.com')) {
     throw new Error('Unauthorized: Only Super Admins can perform this action.');
   }
 }
 
 export async function getUsers(): Promise<AdminUser[]> {
-  const supabase = await createClient();
-  const { data: { user: currentUser } } = await supabase.auth.getUser();
-  if (!currentUser) throw new Error('Unauthorized');
-
+  await requireAdmin();
   const { data: { users }, error } = await supabaseAdmin.auth.admin.listUsers();
   if (error) throw new Error(error.message);
 

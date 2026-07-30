@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { checkApiAdminAuth } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   try {
+    const authError = await checkApiAdminAuth();
+    if (authError) return authError;
+
     const formData = await req.formData();
     const file = formData.get('file') as File;
     
@@ -12,9 +16,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file received." }, { status: 400 });
     }
 
+    // Security check 1: Enforce maximum upload file size (10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      return NextResponse.json({ error: "File exceeds maximum allowed size of 10MB." }, { status: 413 });
+    }
+
+    // Security check 2: Validate extension whitelist
+    const extension = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+    const allowedExtensions = ['.png', '.jpg', '.jpeg', '.webp', '.svg', '.pdf', '.gif'];
+    if (!allowedExtensions.includes(extension)) {
+      return NextResponse.json({ error: `File type ${extension} is not allowed.` }, { status: 415 });
+    }
+
     const buffer = Buffer.from(await file.arrayBuffer());
     const finalContentType = file.type;
-    const extension = file.name.substring(file.name.lastIndexOf('.'));
     
     // Generate clean filename
     const originalNameWithoutExt = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;

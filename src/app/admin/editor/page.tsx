@@ -899,7 +899,7 @@ function EditorContent() {
                   {jobData.seo_title?.[editLang] || jobData.title?.[editLang] || 'Job Title Example'}
                 </div>
                 <div className="text-[#006621] text-[13px] mb-1 truncate">
-                  https://sarkaripassport.com/{editLang}/jobs/{jobData.slug || 'example-slug'}
+                  https://govjobwala.com/{editLang}/jobs/{jobData.slug || 'example-slug'}
                 </div>
                 <div className="text-[#545454] text-[13px] leading-[1.4] line-clamp-2">
                   {jobData.seo_description?.[editLang] || jobData.job_summary?.[editLang] || 'This is the meta description that will appear in search results to attract candidates.'}

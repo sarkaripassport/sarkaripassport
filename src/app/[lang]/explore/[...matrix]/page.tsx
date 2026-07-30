@@ -149,13 +149,13 @@ export default async function ExploreMatrixPage({ params }: Props) {
         '@type': 'ListItem',
         'position': 1,
         'name': t.home,
-        'item': `https://sarkaripassport.com/${lang}`
+        'item': `https://govjobwala.com/${lang}`
       },
       ...displayTags.map((tag, idx) => ({
         '@type': 'ListItem',
         'position': idx + 2,
         'name': tag,
-        'item': `https://sarkaripassport.com/${lang}/explore/${matrix.slice(0, idx + 1).join('/')}`
+        'item': `https://govjobwala.com/${lang}/explore/${matrix.slice(0, idx + 1).join('/')}`
       }))
     ]
   };

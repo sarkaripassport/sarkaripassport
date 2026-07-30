@@ -2,9 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { deleteJob as dbDeleteJob, updateJob as dbUpdateJob } from "@/lib/db";
+import { requireAdmin } from "@/lib/auth";
 
 export async function deleteJobAction(id: string) {
   try {
+    await requireAdmin();
     const success = await dbDeleteJob(id);
     if (success) {
       // Revalidate paths so changes show up everywhere, especially localized routes
@@ -22,6 +24,7 @@ export async function deleteJobAction(id: string) {
 
 export async function toggleJobLiveStatusAction(id: string, newIsLive: boolean) {
   try {
+    await requireAdmin();
     const updated = await dbUpdateJob(id, { isLive: newIsLive });
     if (updated) {
       revalidatePath('/', 'layout');

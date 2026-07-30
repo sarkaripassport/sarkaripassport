@@ -20,8 +20,10 @@ export default function ClientSetup({
 }) {
   const [loadScripts, setLoadScripts] = useState(false);
 
+  const activeGaId = (gaId || process.env.NEXT_PUBLIC_GA_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "").trim();
+
   useEffect(() => {
-    if ((!adsenseId && !gaId && !gtmId) || loadScripts) return;
+    if ((!adsenseId && !activeGaId && !gtmId) || loadScripts) return;
     
     // Prevent bots/crawlers from ever triggering heavy scripts
     if (typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
@@ -45,14 +47,14 @@ export default function ClientSetup({
     window.addEventListener('touchstart', triggerLoading, { passive: true });
     window.addEventListener('keydown', triggerLoading, { passive: true });
 
-    // Fallback load after 6 seconds for human users who just wait
-    const fallbackTimer = setTimeout(triggerLoading, 6000);
+    // Fallback load after 2.5 seconds for human users who just wait
+    const fallbackTimer = setTimeout(triggerLoading, 2500);
 
     return () => {
       cleanupListeners();
       clearTimeout(fallbackTimer);
     };
-  }, [adsenseId, gaId, gtmId, loadScripts]);
+  }, [adsenseId, activeGaId, gtmId, loadScripts]);
 
   useEffect(() => {
     if (loadScripts) {
@@ -60,36 +62,35 @@ export default function ClientSetup({
       if (adsenseId && !document.getElementById('adsbygoogle-init')) {
         const script = document.createElement('script');
         script.id = 'adsbygoogle-init';
-        script.type = 'text/partytown'; // Delegate to Web Worker!
         script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`;
         script.crossOrigin = "anonymous";
         script.async = true;
         document.head.appendChild(script);
       }
 
-      // 2. Inject Google Analytics
-      if (gaId && !document.getElementById('ga-init')) {
+      // 2. Inject Google Analytics (Native Async Script for 100% Tracking Reliability)
+      if (activeGaId && !document.getElementById('ga-init')) {
         const script = document.createElement('script');
         script.id = 'ga-init';
-        script.type = 'text/partytown'; // Delegate to Web Worker!
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${activeGaId}`;
         script.async = true;
         document.head.appendChild(script);
 
         const inlineScript = document.createElement('script');
         inlineScript.id = 'ga-inline';
-        inlineScript.type = 'text/partytown'; // Delegate to Web Worker!
         inlineScript.innerHTML = `
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${gaId}');
+          gtag('config', '${activeGaId}', {
+            page_path: window.location.pathname,
+          });
         `;
         document.head.appendChild(inlineScript);
       }
 
     }
-  }, [loadScripts, adsenseId, gaId]);
+  }, [loadScripts, adsenseId, activeGaId]);
 
   return (
     <>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
@@ -14,6 +14,17 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
   const pathname = usePathname();
   const router = useRouter();
   const isEditor = pathname === '/admin/editor';
+  const isLoginPage = pathname === '/admin/login';
+
+  useEffect(() => {
+    if (isLoginPage) return;
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) {
+        router.push('/admin/login?redirectTo=' + encodeURIComponent(pathname));
+      }
+    });
+  }, [pathname, isLoginPage, router]);
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -30,8 +41,6 @@ export default function AdminClientShell({ children }: { children: React.ReactNo
   const toggleMenu = (menu: string) => {
     setOpenMenus(prev => ({ ...prev, [menu]: !prev[menu] }));
   };
-
-  const isLoginPage = pathname === '/admin/login';
 
   if (isLoginPage) {
     return <>{children}</>;

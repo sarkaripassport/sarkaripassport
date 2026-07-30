@@ -156,7 +156,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
 
   // Safe Date parsing function
   const parseSafeDate = (dateStr?: string) => {
-    if (!dateStr) return undefined;
+    if (!dateStr || typeof dateStr !== 'string') return undefined;
     // Handle DD/MM/YYYY or DD-MM-YYYY formats safely
     const parts = dateStr.split(/[\/-]/);
     if (parts.length === 3) {
@@ -179,6 +179,18 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   const defaultValidThrough = new Date();
   defaultValidThrough.setDate(defaultValidThrough.getDate() + 30);
 
+  const getSafeKeywords = (kw: any): string[] => {
+    if (!kw) return [];
+    if (Array.isArray(kw)) return kw.map(k => String(k).trim()).filter(Boolean);
+    if (typeof kw === 'string') return kw.split(',').map(s => s.trim()).filter(Boolean);
+    return [String(kw).trim()];
+  };
+
+  const jobKeywords = [
+    job.primary_keyword?.[lang],
+    ...getSafeKeywords(job.secondary_keywords?.[lang] || (job.secondary_keywords as any))
+  ].filter(Boolean).map(k => String(k).trim()).join(', ');
+
   // Generate JSON-LD for JobPosting
   const jobPostingLd = {
     '@context': 'https://schema.org/',
@@ -191,7 +203,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     },
     'title': job.title?.[lang] || 'Government Job Vacancy',
     'description': job.job_summary?.[lang] || `Recruitment for ${job.title?.[lang] || 'Vacancies'} by ${job.organization?.[lang] || 'Government Organization'}`,
-    'keywords': [job.primary_keyword?.[lang], ...(job.secondary_keywords?.[lang] ? job.secondary_keywords[lang].split(',') : [])].filter(Boolean).join(', '),
+    'keywords': jobKeywords,
     'datePosted': parseSafeDate(job.created_at) || new Date().toISOString(),
     'validThrough': validThrough || defaultValidThrough.toISOString(),
     'employmentType': 'FULL_TIME',
@@ -222,6 +234,19 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     }
   };
 
+  const getCategoryNav = (catName?: string) => {
+    if (!catName) return { name: dict.navigation.latestJobs || 'Latest Jobs', path: `/${lang}/jobs` };
+    const lower = catName.toLowerCase();
+    if (lower.includes('result')) return { name: dict.navigation.results || 'Results', path: `/${lang}/results` };
+    if (lower.includes('admit')) return { name: dict.navigation.admitCard || 'Admit Card', path: `/${lang}/admit-card` };
+    if (lower.includes('answer')) return { name: dict.navigation.answerKey || 'Answer Key', path: `/${lang}/answer-key` };
+    if (lower.includes('syllabus')) return { name: dict.navigation.syllabus || 'Syllabus', path: `/${lang}/syllabus` };
+    if (lower.includes('admission')) return { name: dict.navigation.admission || 'Admission', path: `/${lang}/admission` };
+    return { name: catName, path: `/${lang}/category/${lower.replace(/\s+/g, '-')}` };
+  };
+
+  const catNav = getCategoryNav(job.category);
+
   // Generate JSON-LD for BreadcrumbList
   const breadcrumbLd = {
     '@context': 'https://schema.org',
@@ -230,14 +255,14 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
       {
         '@type': 'ListItem',
         'position': 1,
-        'name': 'Home',
-        'item': 'https://govjobwala.com'
+        'name': dict.navigation.home || 'Home',
+        'item': `https://govjobwala.com/${lang}`
       },
       {
         '@type': 'ListItem',
         'position': 2,
-        'name': 'Latest Jobs',
-        'item': 'https://govjobwala.com/jobs'
+        'name': catNav.name,
+        'item': `https://govjobwala.com${catNav.path}`
       },
       {
         '@type': 'ListItem',
@@ -272,7 +297,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
       '@type': 'ListItem',
       'position': idx + 1,
       'name': section.subject[lang],
-      'description': section.topics.map(t => t.title[lang]).join(', ')
+      'description': section.topics.map(t => t.title?.[lang] || '').filter(Boolean).join(', ')
     }))
   } : null;
 
@@ -298,9 +323,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
       {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm hidden md:block">
         <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-2 text-xs text-gray-500 font-medium">
-          <Link href="/" className="hover:text-blue-600 transition-colors">{dict.navigation.home}</Link>
+          <Link href={`/${lang}`} className="hover:text-blue-600 transition-colors">{dict.navigation.home || 'Home'}</Link>
           <ChevronDown className="w-3 h-3 -rotate-90" />
-          <Link href="/jobs" className="hover:text-blue-600 transition-colors">{dict.navigation.latestJobs}</Link>
+          <Link href={catNav.path} className="hover:text-blue-600 transition-colors">{catNav.name}</Link>
           <ChevronDown className="w-3 h-3 -rotate-90" />
           <span className="text-gray-900 truncate max-w-[300px]">{job.title[lang]}</span>
         </div>

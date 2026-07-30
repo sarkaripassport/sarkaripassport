@@ -6,6 +6,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Search, ChevronDown, Building2, MapPin, Briefcase, GraduationCap, Filter, Bookmark, X } from "lucide-react";
 import JobCard from "@/components/JobCard";
 import SeoContentBlock from "@/components/SeoContentBlock";
+import IncrementalJobsList from "@/components/IncrementalJobsList";
+import ScrollToTopOnMount from "@/components/ScrollToTopOnMount";
 import type { Job, Category } from "@/lib/db";
 import { Locale } from "@/i18n/getDictionary";
 
@@ -372,74 +374,11 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-                  {currentJobs.map((job, index) => (
-                    <JobCard 
-                      key={job.id} 
-                      title={job.title[lang] || job.title.en || 'Untitled Job'}
-                      org={job.organization[lang] || job.organization.en || 'Unknown Organization'}
-                      qual={job.quick_facts?.qualification?.[lang] || job.quick_facts?.qualification?.en}
-                      vac={job.quick_facts?.vacancies || '-'}
-                      date={job.quick_facts?.last_date[lang] || '-'}
-                      status={job.status}
-                      statusColor={job.statusColor}
-                      isLive={job.isLive}
-                      isTrending={job.isTrending}
-                      daysLeft={job.daysLeft}
-                      link={`/${lang}/jobs/${job.slug}`}
-                      logoUrl={job.logo_url}
-                      logoAlt={job.logo_alt?.[lang] || job.logo_alt?.en || job.organization[lang] || job.organization.en || 'Logo'}
-                      lang={lang as any}
-                      imgPriority={index < 6}
-                      labels={{
-                        trending: dict.home.trending,
-                        daysLeft: dict.home.daysLeft,
-                        lastDate: dict.job.lastDate,
-                        details: dict.job.vacancyDetails.split(' ')[1] || 'Details',
-                        applyNow: dict.job.applyNow
-                      }}
-                    />
-                  ))}
-                </div>
+                <IncrementalJobsList jobs={filteredJobs} lang={lang} dict={dict} initialCount={15} step={10} />
               )}
             </div>
-
-            {/* Pagination Controls */}
-            {totalPages > 1 && (
-              <div className="flex items-center justify-between bg-white px-4 py-3 border border-gray-200 rounded-xl mt-6 shadow-sm">
-                {currentPage > 1 ? (
-                  <Link
-                    href={`/${lang}/jobs?${new URLSearchParams({ ...Object.fromEntries(searchParams.entries()), page: String(Math.max(1, currentPage - 1)) }).toString()}`}
-                    scroll={false}
-                    className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md text-[#0B1B3D] hover:bg-gray-50 transition-colors"
-                  >
-                    Previous
-                  </Link>
-                ) : (
-                  <button disabled className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md disabled:opacity-50 text-[#0B1B3D]">
-                    Previous
-                  </button>
-                )}
-                
-                <span className="text-sm font-bold text-gray-500">
-                  Page <span className="text-[#0A58CA]">{currentPage}</span> of {totalPages}
-                </span>
-
-                {currentPage < totalPages ? (
-                  <Link
-                    href={`/${lang}/jobs?${new URLSearchParams({ ...Object.fromEntries(searchParams.entries()), page: String(Math.min(totalPages, currentPage + 1)) }).toString()}`}
-                    scroll={false}
-                    className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md text-[#0B1B3D] hover:bg-gray-50 transition-colors"
-                  >
-                    Next
-                  </Link>
-                ) : (
-                  <button disabled className="px-3 py-1 text-sm font-bold border border-gray-200 rounded-md disabled:opacity-50 text-[#0B1B3D]">
-                    Next
-                  </button>
-                )}
-              </div>
-            )}
+            
+            <ScrollToTopOnMount />
             
             {/* Rich CMS SEO Content Paragraphs */}
             <SeoContentBlock contentHtml={contentHtml} />

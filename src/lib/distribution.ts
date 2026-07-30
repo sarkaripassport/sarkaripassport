@@ -6,7 +6,7 @@ import { Job } from './db';
  */
 
 export async function broadcastToTelegram(job: Job, lang: 'en' | 'hi' | 'mr') {
-  const url = `https://sarkaripassport.com/${lang}/jobs/${job.slug}`;
+  const url = `https://govjobwala.com/${lang}/jobs/${job.slug}`;
   const message = `
 🚨 **NEW SARKARI JOB ALERT** 🚨
 
@@ -27,7 +27,7 @@ ${url}
 
   console.log('=============================================');
   console.log('[TELEGRAM BROADCAST SIMULATION]');
-  console.log('Sending to Channel: @SarkariPassportOfficial');
+  console.log('Sending to Channel: @GovJobWalaOfficial');
   console.log(message);
   console.log('=============================================');
   
@@ -36,7 +36,7 @@ ${url}
 }
 
 export async function broadcastToWhatsApp(job: Job, lang: 'en' | 'hi' | 'mr') {
-  const url = `https://sarkaripassport.com/${lang}/jobs/${job.slug}`;
+  const url = `https://govjobwala.com/${lang}/jobs/${job.slug}`;
   const message = `
 *🚨 NEW SARKARI JOB ALERT 🚨*
 

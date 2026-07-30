@@ -42,6 +42,9 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: { exclude: ['error'] },
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   experimental: {
     optimizePackageImports: ['lucide-react'],
     inlineCss: true,

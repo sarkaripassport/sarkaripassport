@@ -7,6 +7,7 @@ import { autoLinker } from '@/lib/autoLinkerHtml';
 import { autoCategorize } from '@/lib/autoCategorizer';
 
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { checkApiAdminAuth } from '@/lib/auth';
 
 export async function GET(req: Request) {
   try {
@@ -39,6 +40,9 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const authError = await checkApiAdminAuth();
+    if (authError) return authError;
+
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     const data = await req.json();
@@ -127,6 +131,9 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
   try {
+    const authError = await checkApiAdminAuth();
+    if (authError) return authError;
+
     const { searchParams } = new URL(req.url);
     const id = searchParams.get('id');
     if (!id) return NextResponse.json({ error: "Missing job ID" }, { status: 400 });

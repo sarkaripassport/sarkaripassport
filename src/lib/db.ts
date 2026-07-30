@@ -383,31 +383,23 @@ export async function saveSettings(settings: HomepageSettings): Promise<void> {
 export const getJobs = unstable_cache(async (): Promise<Job[]> => {
   const { data, error } = await supabaseAdmin
     .from('jobs')
-    .select(`
-      id,
-      slug,
-      created_at,
-      updated_at,
-      title:data->title,
-      organization:data->organization,
-      category:data->category,
-      categories:data->categories,
-      status:data->status,
-      statusColor:data->statusColor,
-      isLive:data->isLive,
-      isTrending:data->isTrending,
-      logo_url:data->logo_url,
-      logo_alt:data->logo_alt,
-      quick_facts:data->quick_facts,
-      seo_matrix:data->seo_matrix
-    `)
+    .select('id, slug, created_at, updated_at, data')
     .order('created_at', { ascending: false });
     
   if (error || !data) {
     console.error('Error fetching jobs from Supabase:', error);
     return [];
   }
-  return data as unknown as Job[];
+  return (data as any[]).map(row => {
+    const jobData = typeof row.data === 'object' && row.data !== null ? row.data : {};
+    return {
+      ...jobData,
+      id: row.id || jobData.id,
+      slug: row.slug || jobData.slug,
+      created_at: row.created_at || jobData.created_at,
+      updated_at: row.updated_at || jobData.updated_at,
+    } as Job;
+  });
 }, ['jobs-cache'], { tags: ['jobs'], revalidate: 3600 });
 
 export const getPublishedJobs = unstable_cache(async (): Promise<Job[]> => {

@@ -43,7 +43,7 @@ export default function CategoryGrid({ categories, lang, title, specialSlugs }: 
         {categories.slice(0, 20).map((item) => {
           const colors = getCategoryColors(item.slug);
           return (
-            <Link key={item.id} href={getCategoryUrl(item.slug)} prefetch={false} className={`flex items-center gap-2 p-2 border rounded-lg transition-all group bg-white ${colors.border} ${colors.shadow}`}>
+            <Link key={item.id} href={getCategoryUrl(item.slug)} scroll={true} prefetch={false} className={`flex items-center gap-2 p-2 border rounded-lg transition-all group bg-white ${colors.border} ${colors.shadow}`}>
               <div className={`w-9 h-9 rounded-md bg-gray-50 flex items-center justify-center shrink-0 transition-colors ${colors.bg}`}>
                 <CategoryIcon name={item.icon || item.name.en} className="w-6 h-6 transition-transform group-hover:scale-110" />
               </div>

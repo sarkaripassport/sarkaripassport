@@ -210,7 +210,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
         // Others bump to top based on updated_at
         return new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime();
       })
-      .slice(0, 5);
+      .slice(0, 15);
   };
 
   // Structured Data (JSON-LD)
@@ -266,10 +266,10 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
       
 
       <div className="w-full space-y-1.5 sm:space-y-2.5">
-        {/* Hero Section (Compact Single-Line Strip on Desktop & Mobile) */}
-        <section className="relative bg-white border-b border-gray-200 overflow-hidden py-1.5 sm:py-2.5 px-3 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1.5 sm:gap-4">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3">
+        {/* Hero Section (Multi-Line Stacked Header on Desktop & Mobile) */}
+        <section className="relative bg-white border-b border-gray-200 overflow-hidden py-2 sm:py-3 px-3 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+            <div className="flex flex-col gap-1 max-w-4xl">
               <div className="flex items-center gap-1.5 text-[#0A58CA] font-bold text-[10px] sm:text-xs uppercase tracking-widest shrink-0">
                 <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> India's Trusted Govt Job Portal
                 <span className="relative flex h-2 w-2 shrink-0 ml-1">
@@ -278,12 +278,15 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                 </span>
                 <span className="text-[9px] text-green-600 font-black ml-0.5 uppercase">Live</span>
               </div>
-              <h1 className="text-base sm:text-lg md:text-xl font-extrabold text-[#0B1B3D] tracking-tight leading-tight">
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-extrabold text-[#0B1B3D] tracking-tight leading-tight">
                 {settings.hero.title[lang]}
               </h1>
+              <p className="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed">
+                {settings.hero.subtitle[lang]}
+              </p>
             </div>
-            <div className="hidden md:flex items-center gap-3">
-              <Link href={`/${lang}/jobs`} className="px-3 py-1.5 text-xs bg-[#0A58CA] text-white rounded-lg font-bold shadow-sm hover:bg-blue-700 transition">
+            <div className="flex items-center gap-3 shrink-0 self-start md:self-center">
+              <Link href={`/${lang}/jobs`} scroll={true} className="px-4 py-2 text-xs sm:text-sm bg-[#0A58CA] text-white rounded-lg font-bold shadow-sm hover:bg-blue-700 transition">
                 {dict.navigation.latestJobs}
               </Link>
             </div>
@@ -338,7 +341,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
                       </div>
                       <div className="font-extrabold text-[#0B1B3D] text-[10px] sm:text-xs leading-tight truncate group-hover:text-[#0A58CA] transition-colors">{portal.name[lang as 'en'|'hi'|'mr'] || portal.name.en}</div>
                     </div>
-                    <div className="hidden lg:block font-extrabold text-[9px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-700 transition-all shrink-0">{count} Active</div>
+                    <div className="block font-extrabold text-[9px] text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full group-hover:bg-blue-50 group-hover:text-blue-700 transition-all shrink-0">{count} Active</div>
                   </Link>
                 );
               })}

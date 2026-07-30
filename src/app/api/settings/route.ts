@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSettings, saveSettings } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
+import { checkApiAdminAuth } from '@/lib/auth';
 
 export async function GET() {
   try {
@@ -13,6 +14,9 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const authError = await checkApiAdminAuth();
+    if (authError) return authError;
+
     const data = await request.json();
     await saveSettings(data);
     revalidatePath('/', 'layout'); // Invalidate all cached pages

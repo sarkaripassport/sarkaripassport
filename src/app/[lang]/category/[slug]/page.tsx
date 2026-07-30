@@ -3,6 +3,8 @@ import { getCategoryBySlug, getJobsByCategorySlug, getCategories, getSettings } 
 import { getSeoAlternates } from '@/lib/seo';
 import JobCard from '@/components/JobCard';
 import SeoContentBlock from '@/components/SeoContentBlock';
+import ScrollToTopOnMount from '@/components/ScrollToTopOnMount';
+import IncrementalJobsList from '@/components/IncrementalJobsList';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronDown, FolderOpen, AlertCircle } from 'lucide-react';
@@ -106,18 +108,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
       {
         '@type': 'ListItem',
         'position': 1,
-        'name': 'Home',
-        'item': 'https://govjobwala.com'
+        'name': dict.navigation.home || 'Home',
+        'item': `https://govjobwala.com/${lang}`
       },
       {
         '@type': 'ListItem',
         'position': 2,
-        'name': 'Categories',
-        'item': 'https://govjobwala.com/jobs'
-      },
-      {
-        '@type': 'ListItem',
-        'position': 3,
         'name': categoryName,
         'item': `https://govjobwala.com/${lang}/category/${slug}`
       }
@@ -126,15 +122,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
 
   return (
     <div className="bg-[#F8FAFC] min-h-screen pb-12 font-sans text-gray-800">
+      <ScrollToTopOnMount />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }} />
       
       {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-[1200px] mx-auto px-4 py-3 flex items-center gap-2 text-xs text-gray-500 font-medium">
-          <Link href="/" className="hover:text-blue-600 transition-colors">{dict.navigation.home}</Link>
-          <ChevronDown className="w-3 h-3 -rotate-90" />
-          <Link href="/jobs" className="hover:text-blue-600 transition-colors">Categories</Link>
+          <Link href={`/${lang}`} className="hover:text-blue-600 transition-colors">{dict.navigation.home || 'Home'}</Link>
           <ChevronDown className="w-3 h-3 -rotate-90" />
           <span className="text-gray-900 truncate max-w-[300px]">{categoryName}</span>
         </div>
@@ -165,33 +160,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ lang:
         </div>
 
         {jobs.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {jobs.map((job) => (
-              <JobCard 
-                key={job.id}
-                title={job.title[lang] || job.title.en || 'Untitled'}
-                org={job.organization[lang] || job.organization.en || 'Unknown'}
-                vac={job.quick_facts?.vacancies || '-'}
-                date={job.quick_facts?.last_date[lang] || '-'}
-                status={job.status}
-                statusColor={job.statusColor}
-                isLive={job.isLive}
-                isTrending={job.isTrending}
-                daysLeft={job.daysLeft}
-                link={`/${lang}/jobs/${job.slug}`}
-                logoUrl={job.logo_url}
-                logoAlt={job.logo_alt?.[lang] || job.organization[lang]}
-                lang={lang as any}
-                labels={{
-                  trending: dict.home.trending,
-                  daysLeft: dict.home.daysLeft,
-                  lastDate: dict.job.lastDate,
-                  details: dict.job.vacancyDetails?.split(' ')[1] || 'Details',
-                  applyNow: dict.job.applyNow
-                }}
-              />
-            ))}
-          </div>
+          <IncrementalJobsList jobs={jobs} lang={lang as 'en'|'hi'|'mr'} dict={dict} initialCount={15} step={10} />
         ) : (
           <div className="bg-white border border-gray-200 rounded-xl p-12 text-center flex flex-col items-center shadow-sm">
             <div className="w-16 h-16 bg-gray-100 text-gray-400 rounded-full flex items-center justify-center mb-4">
