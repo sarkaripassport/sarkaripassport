@@ -10,10 +10,29 @@ function applySecurityHeaders(response: NextResponse): NextResponse {
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
   response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
   response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set(
+    'Content-Security-Policy',
+    "frame-ancestors 'self' https://govjobwala.com https://www.govjobwala.com http://localhost:* http://127.0.0.1:*;"
+  );
   return response;
 }
 
 export async function proxy(request: NextRequest) {
+  const host = request.headers.get('host') || '';
+  const fwdHost = request.headers.get('x-forwarded-host') || '';
+  const lowerHost = host.toLowerCase();
+  const lowerFwdHost = fwdHost.toLowerCase();
+
+  // Edge Canonical Host Firewall: Block onestopread.com and any unauthorized mirror domain with 404
+  const ALLOWED_HOSTS = ['govjobwala.com', 'localhost', '127.0.0.1', 'vercel.app'];
+  if (
+    lowerHost.includes('onestopread.com') ||
+    lowerFwdHost.includes('onestopread.com') ||
+    (lowerHost && !ALLOWED_HOSTS.some((allowed) => lowerHost.includes(allowed)))
+  ) {
+    return new NextResponse('404 Not Found - Unauthorized Mirror Domain', { status: 404 });
+  }
+
   const { pathname } = request.nextUrl;
   
   // 1. Locale Redirection (Fastest Path for Public Users)

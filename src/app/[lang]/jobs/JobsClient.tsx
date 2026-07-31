@@ -145,7 +145,7 @@ export default function JobsClient({ jobs, categories, lang, dict, pageTitle, pa
           <div className="text-xs sm:text-sm text-gray-500 flex items-center gap-1 sm:gap-2 font-medium mb-1">
             <Link href={`/${lang}`} className="hover:text-[#0A58CA] transition-colors">{dict.navigation.home}</Link>
             <span>/</span>
-            <span className="text-[#0B1B3D] font-bold">{dict.navigation.latestJobs}</span>
+            <span className="text-[#0B1B3D] font-bold">{pageTitle || dict.navigation.latestJobs}</span>
           </div>
           
           <div className="flex items-center justify-between">

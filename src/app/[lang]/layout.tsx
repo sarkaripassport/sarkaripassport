@@ -9,6 +9,7 @@ import Script from "next/script";
 import PartytownLoader from "@/components/PartytownLoader";
 import ClientSetup from "@/components/ClientSetup";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
+import CanonicalGuardian from "@/components/security/CanonicalGuardian";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -241,6 +242,7 @@ export default async function RootLayout({
         <BreakingNews lang={resolvedParams.lang as 'en' | 'hi' | 'mr'} />
         <main className="flex-grow flex flex-col pb-16 md:pb-0">{children}</main>
         <WhatsAppFloat />
+        <CanonicalGuardian />
         <ClientSetup adsenseId={settings.analytics?.adsense_id} gaId={settings.analytics?.ga_id} />
         <Footer lang={resolvedParams.lang || 'en'} />
       </body>

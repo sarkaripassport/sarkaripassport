@@ -73,26 +73,39 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
   };
 }
 
-import SeoContentBlock from '@/components/SeoContentBlock';
+import JobsClient from "@/app/[lang]/jobs/JobsClient";
+import { getPublishedJobs, getCategories } from "@/lib/db";
 
 export default async function AdmissionPage({ params }: { params: Promise<{ lang: Locale }> }) {
   const resolvedParams = await params;
   const lang = resolvedParams.lang || 'en';
-  const settings = await getSettings();
+  const dict = await getDictionary(lang);
+  const [jobs, settings, categories] = await Promise.all([
+    getPublishedJobs(),
+    getSettings(),
+    getCategories()
+  ]);
+
   const pageData = settings.pages?.['admission'];
+  const filterCat = 'Admission';
+  const filteredJobs = jobs.filter(j => j.category === filterCat || j.categories?.includes(filterCat));
+
   const contentHtml = typeof pageData?.content_html === 'string' 
     ? pageData?.content_html 
     : pageData?.content_html?.[lang] || pageData?.content_html?.en || '';
 
   return (
     <>
-      <ComingSoon 
-        title="University Admissions" 
-        description="Get the latest updates on college and university admissions across India. We are bringing you a seamless tracking experience." 
-      />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-        <SeoContentBlock contentHtml={contentHtml} />
-      </div>
+      {pageData && (
+        <div className="bg-[#0B1B3D] text-white py-6 lg:py-8 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500 rounded-full blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+          <div className="max-w-7xl mx-auto relative z-10 text-center">
+            <h1 className="text-2xl md:text-5xl font-black mb-2 md:mb-4">{pageData.hero?.title?.[lang] || "Admission 2026"}</h1>
+            <p className="text-blue-200 md:text-lg max-w-2xl mx-auto">{pageData.hero?.subtitle?.[lang] || "Latest Govt College & University Admissions"}</p>
+          </div>
+        </div>
+      )}
+      <JobsClient jobs={filteredJobs} categories={categories} lang={lang} dict={dict} pageTitle={dict.navigation.admission || "Admission"} pagePath={dict.navigation.admission || "Admission"} contentHtml={contentHtml} />
     </>
   );
 }
