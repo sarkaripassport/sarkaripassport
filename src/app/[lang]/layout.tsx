@@ -10,6 +10,7 @@ import PartytownLoader from "@/components/PartytownLoader";
 import ClientSetup from "@/components/ClientSetup";
 import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 import CanonicalGuardian from "@/components/security/CanonicalGuardian";
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,6 +19,7 @@ const inter = Inter({
   display: "swap",
   adjustFontFallback: true,
 });
+
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const settings = await getSettings();
@@ -102,6 +104,8 @@ export default async function RootLayout({
   };
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://moxkepugwmwleryhhhsv.supabase.co';
+  const gaId = settings.analytics?.ga_id || process.env.NEXT_PUBLIC_GA_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || '';
 
   return (
     <html
@@ -115,8 +119,11 @@ export default async function RootLayout({
         <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={supabaseUrl} />
         <PartytownLoader />
+        {gaId && <GoogleAnalytics gaId={gaId} />}
+        {gtmId && gtmId !== 'GTM-XXXXXXX' && <GoogleTagManager gtmId={gtmId} />}
         <Script
           id="peba-interceptor"
+
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `

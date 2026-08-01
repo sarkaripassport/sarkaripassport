@@ -507,26 +507,38 @@ export async function deleteJob(id: string): Promise<boolean> {
       .single();
 
     if (jobRow && jobRow.data) {
-      const logoUrl = jobRow.data.logo_url;
-      if (logoUrl && typeof logoUrl === 'string' && logoUrl.includes('/storage/v1/object/public/uploads/')) {
-        // Extract filename after '/uploads/'
-        const match = logoUrl.match(/\/uploads\/(.+)$/);
-        const filename = match ? match[1] : null;
-        
-        if (filename) {
-          console.log(`🧹 Cleaning up storage: deleting logo file '${filename}'`);
-          const { error: storageError } = await supabaseAdmin.storage
-            .from('uploads')
-            .remove([filename]);
-            
-          if (storageError) {
-            console.error(`❌ Failed to delete storage file '${filename}':`, storageError.message);
-          } else {
-            console.log(`✅ Successfully deleted storage file '${filename}'`);
+      const candidateLogos = [
+        jobRow.data.logo_url,
+        jobRow.data.logoUrl,
+        jobRow.data.organization_logo,
+        jobRow.data.logo
+      ].filter(url => url && typeof url === 'string');
+
+      const filenamesToDelete: string[] = [];
+
+      for (const logoUrl of candidateLogos) {
+        if (logoUrl.includes('/storage/v1/object/public/uploads/')) {
+          const match = logoUrl.match(/\/uploads\/(.+)$/);
+          if (match && match[1]) {
+            filenamesToDelete.push(match[1]);
           }
         }
       }
+
+      if (filenamesToDelete.length > 0) {
+        console.log(`🧹 Cleaning up storage: deleting logo files`, filenamesToDelete);
+        const { error: storageError } = await supabaseAdmin.storage
+          .from('uploads')
+          .remove(filenamesToDelete);
+          
+        if (storageError) {
+          console.error(`❌ Failed to delete storage files:`, storageError.message);
+        } else {
+          console.log(`✅ Successfully deleted storage logo files:`, filenamesToDelete);
+        }
+      }
     }
+
   } catch (err) {
     console.error('⚠️ Error performing storage cleanup for job deletion:', err);
   }

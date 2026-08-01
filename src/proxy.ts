@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 const locales = ['en', 'hi', 'mr'];
 const defaultLocale = 'en';
 
-function applySecurityHeaders(response: NextResponse): NextResponse {
+function applySecurityHeaders(response: NextResponse, pathname?: string): NextResponse {
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
@@ -14,8 +14,12 @@ function applySecurityHeaders(response: NextResponse): NextResponse {
     'Content-Security-Policy',
     "frame-ancestors 'self' https://govjobwala.com https://www.govjobwala.com http://localhost:* http://127.0.0.1:*;"
   );
+  if (pathname && !pathname.startsWith('/admin') && !pathname.startsWith('/api')) {
+    response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate, s-maxage=10, stale-while-revalidate=59');
+  }
   return response;
 }
+
 
 export async function proxy(request: NextRequest) {
   const host = request.headers.get('host') || '';

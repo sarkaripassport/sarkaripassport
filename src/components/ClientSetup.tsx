@@ -23,12 +23,7 @@ export default function ClientSetup({
   const activeGaId = (gaId || process.env.NEXT_PUBLIC_GA_ID || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "").trim();
 
   useEffect(() => {
-    if ((!adsenseId && !activeGaId && !gtmId) || loadScripts) return;
-    
-    // Prevent bots/crawlers from ever triggering heavy scripts
-    if (typeof navigator !== 'undefined' && /bot|googlebot|crawler|spider|robot|crawling|lighthouse|chrome-lighthouse/i.test(navigator.userAgent)) {
-      return;
-    }
+    if (!adsenseId || loadScripts) return;
 
     const triggerLoading = () => {
       setLoadScripts(true);
@@ -47,18 +42,18 @@ export default function ClientSetup({
     window.addEventListener('touchstart', triggerLoading, { passive: true });
     window.addEventListener('keydown', triggerLoading, { passive: true });
 
-    // Fallback load after 2.5 seconds for human users who just wait
-    const fallbackTimer = setTimeout(triggerLoading, 2500);
+    // Fallback load after 2 seconds
+    const fallbackTimer = setTimeout(triggerLoading, 2000);
 
     return () => {
       cleanupListeners();
       clearTimeout(fallbackTimer);
     };
-  }, [adsenseId, activeGaId, gtmId, loadScripts]);
+  }, [adsenseId, loadScripts]);
 
   useEffect(() => {
     if (loadScripts) {
-      // 1. Inject AdSense
+      // Inject AdSense
       if (adsenseId && !document.getElementById('adsbygoogle-init')) {
         const script = document.createElement('script');
         script.id = 'adsbygoogle-init';
@@ -67,30 +62,9 @@ export default function ClientSetup({
         script.async = true;
         document.head.appendChild(script);
       }
-
-      // 2. Inject Google Analytics (Native Async Script for 100% Tracking Reliability)
-      if (activeGaId && !document.getElementById('ga-init')) {
-        const script = document.createElement('script');
-        script.id = 'ga-init';
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${activeGaId}`;
-        script.async = true;
-        document.head.appendChild(script);
-
-        const inlineScript = document.createElement('script');
-        inlineScript.id = 'ga-inline';
-        inlineScript.innerHTML = `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${activeGaId}', {
-            page_path: window.location.pathname,
-          });
-        `;
-        document.head.appendChild(inlineScript);
-      }
-
     }
-  }, [loadScripts, adsenseId, activeGaId]);
+  }, [loadScripts, adsenseId]);
+
 
   return (
     <>
