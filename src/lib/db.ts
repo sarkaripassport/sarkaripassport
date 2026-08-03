@@ -380,6 +380,31 @@ export async function saveSettings(settings: HomepageSettings): Promise<void> {
   revalidateTag('settings', 'default');
 }
 
+export function calculateDynamicDaysLeft(lastDateStr?: string, fallbackDays = 30): number {
+  if (!lastDateStr || typeof lastDateStr !== 'string') return fallbackDays;
+  const cleaned = lastDateStr.trim();
+  if (!cleaned) return fallbackDays;
+
+  const parsedDate = new Date(cleaned);
+  if (isNaN(parsedDate.getTime())) {
+    const parts = cleaned.split(/[\/\-\.]/);
+    if (parts.length === 3) {
+      const [d, m, y] = parts.map(Number);
+      if (d && m && y) {
+        const altDate = new Date(y < 100 ? 2000 + y : y, m - 1, d);
+        if (!isNaN(altDate.getTime())) {
+          const diffMs = altDate.getTime() - new Date().setHours(0, 0, 0, 0);
+          return Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+        }
+      }
+    }
+    return fallbackDays;
+  }
+
+  const diffMs = parsedDate.getTime() - new Date().setHours(0, 0, 0, 0);
+  return Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+}
+
 export const getJobs = unstable_cache(async (): Promise<Job[]> => {
   const { data, error } = await supabaseAdmin
     .from('jobs')
@@ -392,15 +417,18 @@ export const getJobs = unstable_cache(async (): Promise<Job[]> => {
   }
   return (data as any[]).map(row => {
     const jobData = typeof row.data === 'object' && row.data !== null ? row.data : {};
+    const dynamicDays = calculateDynamicDaysLeft(jobData.quick_facts?.last_date?.en, jobData.daysLeft);
     return {
       ...jobData,
       id: row.id || jobData.id,
       slug: row.slug || jobData.slug,
+      daysLeft: dynamicDays,
       created_at: row.created_at || jobData.created_at,
       updated_at: row.updated_at || jobData.updated_at,
     } as Job;
   });
 }, ['jobs-cache'], { tags: ['jobs'], revalidate: 3600 });
+
 
 export const getPublishedJobs = unstable_cache(async (): Promise<Job[]> => {
   const jobs = await getJobs();

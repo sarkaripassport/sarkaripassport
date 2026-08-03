@@ -83,11 +83,11 @@ export default function PressPage() {
               <p className="text-blue-100 text-sm mb-6 leading-relaxed">
                 If you are a member of the press and require information or an interview, please reach out to our media relations team.
               </p>
-              <a href="mailto:support.naukaripassport@gmail.com" className="flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-4 rounded-xl">
+              <a href="mailto:support@govjobwala.com" className="flex items-center gap-3 bg-white/10 hover:bg-white/20 transition-colors p-4 rounded-xl">
                 <Mail className="w-5 h-5 text-blue-200" />
                 <div>
                   <p className="text-xs text-blue-200 font-medium">Press Contact</p>
-                  <p className="font-bold text-sm">support.naukaripassport@gmail.com</p>
+                  <p className="font-bold text-sm">support@govjobwala.com</p>
                 </div>
               </a>
             </div>

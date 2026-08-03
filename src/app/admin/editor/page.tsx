@@ -80,19 +80,96 @@ function EditorContent() {
     });
   };
 
+  const [logoUploading, setLogoUploading] = useState(false);
+  const [logoProgress, setLogoProgress] = useState(0);
+
+  const ensureLoc = (val: any) => {
+    if (!val) return { en: '', hi: '', mr: '' };
+    if (typeof val === 'string') return { en: val, hi: val, mr: val };
+    return {
+      en: val.en || '',
+      hi: val.hi || val.en || '',
+      mr: val.mr || val.en || '',
+    };
+  };
+
+  const normalizeJobData = (raw: any) => {
+    if (!raw || typeof raw !== 'object') return raw;
+    const qf = raw.quick_facts || {};
+    return {
+      ...raw,
+      title: ensureLoc(raw.title),
+      organization: ensureLoc(raw.organization),
+      seo_title: ensureLoc(raw.seo_title),
+      seo_description: ensureLoc(raw.seo_description),
+      primary_keyword: ensureLoc(raw.primary_keyword),
+      secondary_keywords: ensureLoc(raw.secondary_keywords),
+      logo_alt: ensureLoc(raw.logo_alt),
+      job_summary: ensureLoc(raw.job_summary),
+      education_qualification: ensureLoc(raw.education_qualification),
+      salary_benefits: ensureLoc(raw.salary_benefits),
+      physical_standards: ensureLoc(raw.physical_standards),
+      quick_facts: {
+        vacancies: qf.vacancies || '',
+        last_date: ensureLoc(qf.last_date),
+        qualification: ensureLoc(qf.qualification),
+        age_limit: ensureLoc(qf.age_limit),
+        job_location: ensureLoc(qf.job_location),
+        salary: ensureLoc(qf.salary),
+        application_mode: ensureLoc(qf.application_mode),
+      },
+    };
+  };
+
+  const copyFromEnglish = (targetLang: 'hi' | 'mr') => {
+    setJobData((prev: any) => {
+      const copyLoc = (loc: any) => {
+        if (!loc || typeof loc !== 'object') return loc;
+        const enVal = loc.en || '';
+        return { ...loc, [targetLang]: loc[targetLang] || enVal };
+      };
+
+      const qf = prev.quick_facts || {};
+      return {
+        ...prev,
+        title: copyLoc(prev.title),
+        organization: copyLoc(prev.organization),
+        seo_title: copyLoc(prev.seo_title),
+        seo_description: copyLoc(prev.seo_description),
+        primary_keyword: copyLoc(prev.primary_keyword),
+        secondary_keywords: copyLoc(prev.secondary_keywords),
+        logo_alt: copyLoc(prev.logo_alt),
+        job_summary: copyLoc(prev.job_summary),
+        education_qualification: copyLoc(prev.education_qualification),
+        salary_benefits: copyLoc(prev.salary_benefits),
+        physical_standards: copyLoc(prev.physical_standards),
+        quick_facts: {
+          ...qf,
+          last_date: copyLoc(qf.last_date),
+          qualification: copyLoc(qf.qualification),
+          age_limit: copyLoc(qf.age_limit),
+          job_location: copyLoc(qf.job_location),
+          salary: copyLoc(qf.salary),
+          application_mode: copyLoc(qf.application_mode),
+        },
+      };
+    });
+  };
+
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
     const file = e.target.files[0];
     
-    // Prevent Vercel 4.5MB payload limit by enforcing 5MB limit on frontend (before compression)
     if (file.size > 5 * 1024 * 1024) {
       alert("File is too large! Please upload a logo smaller than 5MB.");
       return;
     }
 
-    setLoading(true);
+    setLogoUploading(true);
+    setLogoProgress(30);
     try {
       const optimizedFile = await compressImage(file);
+      setLogoProgress(60);
       const formData = new FormData();
       formData.append('file', optimizedFile);
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
@@ -104,6 +181,7 @@ function EditorContent() {
       }
       
       const data = await res.json();
+      setLogoProgress(100);
       if (data.url) {
         setJobData((prev: any) => ({ ...prev, logo_url: data.url }));
       } else {
@@ -111,8 +189,10 @@ function EditorContent() {
       }
     } catch(err: any) {
       alert("Upload failed: " + err.message);
+    } finally {
+      setLogoUploading(false);
+      setLogoProgress(0);
     }
-    setLoading(false);
   };
 
   const initLocalized = () => ({ en: '', hi: '', mr: '' });
@@ -185,12 +265,13 @@ function EditorContent() {
               delete data.id;
               data.slug = data.slug + '-copy-' + Math.floor(Math.random() * 1000);
             }
-            setJobData(data);
+            setJobData(normalizeJobData(data));
           }
         })
         .finally(() => setLoading(false));
     }
   }, [editId, cloneId]);
+
 
   const handleSave = async (actionType?: 'Draft' | 'Publish' | 'Update') => {
     setSaving(true);
@@ -355,6 +436,7 @@ function EditorContent() {
               <Globe className="w-4 h-4 text-gray-400 ml-2" />
               {(['en', 'hi', 'mr'] as const).map(lang => (
                 <button
+                  type="button"
                   key={lang}
                   onClick={() => setEditLang(lang)}
                   className={`px-4 py-1.5 text-xs font-bold uppercase rounded-md transition-all ${editLang === lang ? 'bg-white text-[#0A58CA] shadow-sm' : 'text-gray-500 hover:text-gray-800'}`}
@@ -363,6 +445,18 @@ function EditorContent() {
                 </button>
               ))}
             </div>
+
+            {editLang !== 'en' && (
+              <button
+                type="button"
+                onClick={() => copyFromEnglish(editLang)}
+                className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#0A58CA] border border-blue-200 text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shadow-sm"
+                title={`Copy all English content into ${editLang === 'hi' ? 'Hindi' : 'Marathi'}`}
+              >
+                <span>📋 Copy All from English</span>
+              </button>
+            )}
+
           </div>
           
           <div className="flex items-center gap-3">

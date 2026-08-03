@@ -119,7 +119,7 @@ export default async function RootLayout({
         <link rel="preconnect" href={supabaseUrl} crossOrigin="anonymous" />
         <link rel="dns-prefetch" href={supabaseUrl} />
         <PartytownLoader />
-        {gaId && <GoogleAnalytics gaId={gaId} />}
+        {gaId && <GoogleAnalytics gaId={gaId} gaParams={{ send_page_view: true, transport_type: 'beacon' }} />}
         {gtmId && gtmId !== 'GTM-XXXXXXX' && <GoogleTagManager gtmId={gtmId} />}
         <Script
           id="peba-interceptor"

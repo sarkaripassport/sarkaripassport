@@ -79,8 +79,8 @@ export default function PrivacyPolicyPage() {
           <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 inline-block">
             <p className="font-bold text-[#0B1B3D] mb-1">GovJobWala HQ</p>
             <p className="text-gray-600 mb-2">Nashik, Maharashtra, India</p>
-            <a href="mailto:support.naukaripassport@gmail.com" className="text-[#0A58CA] font-bold hover:underline">
-              support.naukaripassport@gmail.com
+            <a href="mailto:support@govjobwala.com" className="text-[#0A58CA] font-bold hover:underline">
+              support@govjobwala.com
             </a>
           </div>
         </div>

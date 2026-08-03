@@ -97,8 +97,8 @@ export default function CareersPage() {
           <div className="mt-12 bg-blue-50 border border-blue-100 rounded-2xl p-8 text-center">
             <h3 className="text-xl font-bold text-[#0B1B3D] mb-3">Don't see a fit?</h3>
             <p className="text-gray-600 mb-6">We are always looking for talented individuals. Send us your resume and let us know how you can contribute.</p>
-            <a href="mailto:support.naukaripassport@gmail.com" className="inline-block bg-white text-[#0A58CA] font-bold px-6 py-3 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors">
-              support.naukaripassport@gmail.com
+            <a href="mailto:support@govjobwala.com" className="inline-block bg-white text-[#0A58CA] font-bold px-6 py-3 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors">
+              support@govjobwala.com
             </a>
           </div>
         </div>
