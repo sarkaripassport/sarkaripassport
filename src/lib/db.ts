@@ -577,6 +577,59 @@ export async function deleteJob(id: string): Promise<boolean> {
   return !error;
 }
 
+export async function deleteMultipleJobs(ids: string[]): Promise<boolean> {
+  if (!ids || ids.length === 0) return true;
+  try {
+    const { data: jobRows } = await supabaseAdmin
+      .from('jobs')
+      .select('data')
+      .in('id', ids);
+
+    if (jobRows && jobRows.length > 0) {
+      const filenamesToDelete: string[] = [];
+      for (const row of jobRows) {
+        if (row.data) {
+          const candidateLogos = [
+            row.data.logo_url,
+            row.data.logoUrl,
+            row.data.organization_logo,
+            row.data.logo
+          ].filter(url => url && typeof url === 'string');
+
+          for (const logoUrl of candidateLogos) {
+            if (logoUrl.includes('/storage/v1/object/public/uploads/')) {
+              const match = logoUrl.match(/\/uploads\/(.+)$/);
+              if (match && match[1]) {
+                filenamesToDelete.push(match[1]);
+              }
+            }
+          }
+        }
+      }
+
+      if (filenamesToDelete.length > 0) {
+        console.log(`🧹 Cleaning up storage for multiple jobs: deleting logo files`, filenamesToDelete);
+        const { error: storageError } = await supabaseAdmin.storage
+          .from('uploads')
+          .remove(filenamesToDelete);
+
+        if (storageError) {
+          console.error(`❌ Failed to delete storage files in bulk:`, storageError.message);
+        } else {
+          console.log(`✅ Successfully deleted bulk storage logo files:`, filenamesToDelete);
+        }
+      }
+    }
+  } catch (err) {
+    console.error('⚠️ Error performing storage cleanup for bulk job deletion:', err);
+  }
+
+  const { error } = await supabaseAdmin.from('jobs').delete().in('id', ids);
+  if (!error) revalidateTag('jobs', 'default');
+  return !error;
+}
+
+
 export async function addJobComment(slug: string, comment: Omit<JobComment, 'id' | 'created_at'>): Promise<JobComment | null> {
   const { data: row } = await supabaseAdmin.from('jobs').select('data, id').eq('slug', slug).single();
   if (!row) return null;

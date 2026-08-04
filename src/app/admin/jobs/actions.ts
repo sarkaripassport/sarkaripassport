@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { deleteJob as dbDeleteJob, updateJob as dbUpdateJob } from "@/lib/db";
+import { deleteJob as dbDeleteJob, deleteMultipleJobs as dbDeleteMultipleJobs, updateJob as dbUpdateJob } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 
 export async function deleteJobAction(id: string) {
@@ -9,7 +9,6 @@ export async function deleteJobAction(id: string) {
     await requireAdmin();
     const success = await dbDeleteJob(id);
     if (success) {
-      // Revalidate paths so changes show up everywhere, especially localized routes
       revalidatePath('/', 'layout');
       revalidatePath('/admin/jobs');
       return { success: true, message: "Job deleted successfully" };
@@ -21,6 +20,27 @@ export async function deleteJobAction(id: string) {
     return { success: false, message: error.message || "Failed to delete job" };
   }
 }
+
+export async function deleteMultipleJobsAction(ids: string[]) {
+  try {
+    await requireAdmin();
+    if (!ids || ids.length === 0) {
+      return { success: false, message: "No jobs selected for deletion." };
+    }
+    const success = await dbDeleteMultipleJobs(ids);
+    if (success) {
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin/jobs');
+      return { success: true, count: ids.length, message: `${ids.length} jobs deleted successfully` };
+    } else {
+      return { success: false, message: "Failed to delete selected jobs" };
+    }
+  } catch (error: any) {
+    console.error("Failed to delete multiple jobs:", error);
+    return { success: false, message: error.message || "Failed to delete selected jobs" };
+  }
+}
+
 
 export async function toggleJobLiveStatusAction(id: string, newIsLive: boolean) {
   try {

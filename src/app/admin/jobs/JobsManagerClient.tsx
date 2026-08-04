@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, Plus, Edit, Trash2, Filter, ChevronDown, CheckCircle2, Clock, Copy, MessageSquare, Share2, Eye, EyeOff } from "lucide-react";
 import type { Job, Category } from "@/lib/db";
-import { deleteJobAction, toggleJobLiveStatusAction } from "./actions";
+import { deleteJobAction, deleteMultipleJobsAction, toggleJobLiveStatusAction } from "./actions";
 
 export default function JobsManagerClient({ 
   initialJobs, 
@@ -21,6 +21,9 @@ export default function JobsManagerClient({
   const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft" | "expired">("all");
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
   const [isToggling, setIsToggling] = useState<string | null>(null);
+  const [selectedJobIds, setSelectedJobIds] = useState<string[]>([]);
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false);
+
 
   const isJobExpired = (job: Job) => {
     if (job.daysLeft !== undefined && job.daysLeft <= 0) return true;
@@ -62,6 +65,7 @@ export default function JobsManagerClient({
         const result = await deleteJobAction(id);
         if (result.success) {
           setJobs(jobs.filter(j => j.id !== id));
+          setSelectedJobIds(prev => prev.filter(selectedId => selectedId !== id));
         } else {
           alert(result.message);
         }
@@ -71,6 +75,41 @@ export default function JobsManagerClient({
       setIsDeleting(null);
     }
   };
+
+  const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.checked) {
+      setSelectedJobIds(filteredJobs.map(j => j.id));
+    } else {
+      setSelectedJobIds([]);
+    }
+  };
+
+  const handleToggleSelectJob = (id: string) => {
+    setSelectedJobIds(prev => 
+      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedJobIds.length === 0) return;
+    if (confirm(`Are you sure you want to delete ${selectedJobIds.length} selected job(s)? This action cannot be undone and will clean up all associated organization logos.`)) {
+      setIsBulkDeleting(true);
+      try {
+        const result = await deleteMultipleJobsAction(selectedJobIds);
+        if (result.success) {
+          setJobs(jobs.filter(j => !selectedJobIds.includes(j.id)));
+          setSelectedJobIds([]);
+        } else {
+          alert(result.message);
+        }
+      } catch (e) {
+        alert("An error occurred while deleting selected jobs.");
+      } finally {
+        setIsBulkDeleting(false);
+      }
+    }
+  };
+
 
   const generateWhatsAppMessage = (job: Job) => {
     const title = job.title.en;
@@ -184,11 +223,57 @@ export default function JobsManagerClient({
         </Link>
       </div>
 
+      {/* Floating Batch Action Banner */}
+      {selectedJobIds.length > 0 && (
+        <div className="bg-blue-50 border-b border-blue-200 px-4 py-3 flex items-center justify-between transition-all">
+          <div className="flex items-center gap-2 text-sm font-bold text-[#0B1B3D]">
+            <span className="bg-[#0A58CA] text-white px-2.5 py-0.5 rounded-full text-xs font-extrabold">
+              {selectedJobIds.length}
+            </span>
+            <span>{selectedJobIds.length === 1 ? 'job selected' : 'jobs selected'}</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleBulkDelete}
+              disabled={isBulkDeleting}
+              className="bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+            >
+              {isBulkDeleting ? (
+                <>
+                  <span className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="w-3.5 h-3.5" />
+                  Delete Selected ({selectedJobIds.length})
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => setSelectedJobIds([])}
+              className="text-xs text-gray-600 hover:text-gray-900 font-semibold px-2 py-1 cursor-pointer"
+            >
+              Clear Selection
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Data Table */}
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider border-b border-gray-200">
+              <th className="p-4 w-10 text-center">
+                <input
+                  type="checkbox"
+                  checked={filteredJobs.length > 0 && filteredJobs.every(j => selectedJobIds.includes(j.id))}
+                  onChange={handleSelectAll}
+                  className="w-4 h-4 rounded border-gray-300 text-[#0A58CA] focus:ring-[#0A58CA] cursor-pointer"
+                  title="Select All Visible Jobs"
+                />
+              </th>
               <th className="p-4 font-bold">Job Title & Organization</th>
               <th className="p-4 font-bold">Categories</th>
               <th className="p-4 font-bold">Author</th>
@@ -201,14 +286,25 @@ export default function JobsManagerClient({
           <tbody className="divide-y divide-gray-200 text-sm">
             {filteredJobs.length === 0 ? (
               <tr>
-                <td colSpan={5} className="p-8 text-center text-gray-500">
+                <td colSpan={8} className="p-8 text-center text-gray-500">
                   No jobs found matching your filters.
                 </td>
               </tr>
             ) : (
-              filteredJobs.map((job) => (
-                <tr key={job.id} className="hover:bg-blue-50/50 transition group">
-                  <td className="p-4">
+              filteredJobs.map((job) => {
+                const isSelected = selectedJobIds.includes(job.id);
+                return (
+                  <tr key={job.id} className={`transition group ${isSelected ? 'bg-blue-50/80' : 'hover:bg-blue-50/50'}`}>
+                    <td className="p-4 text-center">
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => handleToggleSelectJob(job.id)}
+                        className="w-4 h-4 rounded border-gray-300 text-[#0A58CA] focus:ring-[#0A58CA] cursor-pointer"
+                      />
+                    </td>
+                    <td className="p-4">
+
                     <div className="font-bold text-[#0B1B3D] mb-1 line-clamp-1">{job.title.en}</div>
                     <div className="text-gray-500 text-xs">{job.organization.en}</div>
                   </td>
@@ -331,8 +427,8 @@ export default function JobsManagerClient({
                     </div>
                   </td>
                 </tr>
-              ))
-            )}
+              );
+            })}
           </tbody>
         </table>
       </div>
