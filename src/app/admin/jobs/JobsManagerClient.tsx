@@ -428,7 +428,8 @@ export default function JobsManagerClient({
                   </td>
                 </tr>
               );
-            })}
+            })
+          )}
           </tbody>
         </table>
       </div>
