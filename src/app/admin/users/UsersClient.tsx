@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { AdminUser, addCoAdmin, removeAdmin } from './actions';
-import { Shield, ShieldAlert, Trash2, Plus, UserPlus, Loader2 } from 'lucide-react';
+import { AdminUser, addCoAdmin, removeAdmin, toggleAdminRole } from './actions';
+import { Shield, ShieldAlert, Trash2, Plus, UserPlus, Loader2, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function UsersClient({ users, currentRole, currentUserId, analytics = [] }: { users: AdminUser[], currentRole: string, currentUserId: string, analytics?: any[] }) {
@@ -10,6 +10,7 @@ export default function UsersClient({ users, currentRole, currentUserId, analyti
   const [password, setPassword] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [isRemoving, setIsRemoving] = useState<string | null>(null);
+  const [isToggling, setIsToggling] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -41,6 +42,21 @@ export default function UsersClient({ users, currentRole, currentUserId, analyti
       setIsRemoving(null);
     }
   };
+
+  const handleToggleRole = async (id: string, role: string) => {
+    const newRole = role === 'super_admin' ? 'co_admin' : 'super_admin';
+    if (!confirm(`Are you sure you want to change this user's role to ${newRole === 'super_admin' ? 'Super Admin' : 'Co-Admin'}?`)) return;
+    setIsToggling(id);
+    try {
+      await toggleAdminRole(id, newRole);
+      router.refresh();
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setIsToggling(null);
+    }
+  };
+
 
   const isSuperAdmin = currentRole === 'super_admin';
 
@@ -86,15 +102,44 @@ export default function UsersClient({ users, currentRole, currentUserId, analyti
                   </td>
                   <td className="p-4 text-right">
                     {isSuperAdmin && u.id !== currentUserId && (
-                      <button 
-                        onClick={() => handleRemove(u.id)}
-                        disabled={isRemoving === u.id}
-                        className="text-red-500 hover:text-red-700 disabled:opacity-50 p-2 rounded-lg hover:bg-red-50 transition-colors"
-                      >
-                        {isRemoving === u.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleToggleRole(u.id, u.role)}
+                          disabled={isToggling === u.id}
+                          title={u.role === 'super_admin' ? 'Demote to Co-Admin' : 'Promote to Super Admin'}
+                          className={`disabled:opacity-50 px-2.5 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition-colors ${
+                            u.role === 'super_admin'
+                              ? 'bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200'
+                              : 'bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200'
+                          }`}
+                        >
+                          {isToggling === u.id ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : u.role === 'super_admin' ? (
+                            <>
+                              <ArrowDownCircle className="w-3.5 h-3.5" />
+                              <span>Make Co-Admin</span>
+                            </>
+                          ) : (
+                            <>
+                              <ArrowUpCircle className="w-3.5 h-3.5" />
+                              <span>Make Super Admin</span>
+                            </>
+                          )}
+                        </button>
+
+                        <button 
+                          onClick={() => handleRemove(u.id)}
+                          disabled={isRemoving === u.id}
+                          title="Remove Admin"
+                          className="text-red-500 hover:text-red-700 disabled:opacity-50 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                        >
+                          {isRemoving === u.id ? <Loader2 className="w-5 h-5 animate-spin" /> : <Trash2 className="w-5 h-5" />}
+                        </button>
+                      </div>
                     )}
                   </td>
+
                 </tr>
               ))}
             </tbody>

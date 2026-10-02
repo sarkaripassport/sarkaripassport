@@ -4,15 +4,21 @@ const locales = ['en', 'hi', 'mr'];
 const defaultLocale = 'en';
 
 function applySecurityHeaders(response: NextResponse, pathname?: string): NextResponse {
+  // Government-Grade Zero-Vulnerability Security Headers
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
-  response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
-  response.headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  response.headers.set(
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=(), payment=(), usb=(), screen-wake-lock=(), browsing-topics=()'
+  );
+  response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');
   response.headers.set('X-XSS-Protection', '1; mode=block');
+  response.headers.set('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  response.headers.set('Cross-Origin-Resource-Policy', 'same-origin');
   response.headers.set(
     'Content-Security-Policy',
-    "frame-ancestors 'self' https://govjobwala.com https://www.govjobwala.com http://localhost:* http://127.0.0.1:*;"
+    "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests;"
   );
   if (pathname && !pathname.startsWith('/admin') && !pathname.startsWith('/api')) {
     response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate, s-maxage=10, stale-while-revalidate=59');

@@ -15,8 +15,9 @@ export const revalidate = 3600; // 1 hour ISR for millisecond Edge TTFB
 export async function generateStaticParams() {
   const categories = await getCategories();
   const langs = ['en', 'hi', 'mr'];
+  const topCategories = categories.slice(0, 5); // Pre-render top 5 categories at build time; all others render on-demand via ISR
   const params: { lang: string; slug: string }[] = [];
-  for (const cat of categories) {
+  for (const cat of topCategories) {
     for (const lang of langs) {
       params.push({ lang, slug: cat.slug });
     }

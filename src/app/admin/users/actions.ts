@@ -73,6 +73,20 @@ export async function removeAdmin(userId: string) {
   return { success: true };
 }
 
+export async function toggleAdminRole(userId: string, newRole: 'super_admin' | 'co_admin') {
+  await verifySuperAdmin();
+  
+  const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+    user_metadata: { role: newRole }
+  });
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return { success: true };
+}
+
+
 export async function getAdminAnalytics(): Promise<AdminAnalytics[]> {
   await verifySuperAdmin();
   

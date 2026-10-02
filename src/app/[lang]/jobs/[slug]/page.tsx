@@ -68,8 +68,9 @@ export const revalidate = 3600; // 1 hour ISR
 export async function generateStaticParams() {
   const jobs = await getPublishedJobs();
   const langs = ['en', 'hi', 'mr'];
+  const topJobs = jobs.slice(0, 5); // Pre-render top 5 core jobs at build time; all others render on-demand via ISR
   const params: { lang: string; slug: string }[] = [];
-  for (const job of jobs) {
+  for (const job of topJobs) {
     for (const lang of langs) {
       params.push({ lang, slug: job.slug });
     }
