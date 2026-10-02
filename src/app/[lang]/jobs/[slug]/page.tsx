@@ -63,6 +63,15 @@ function optimizeRichText(html: string | undefined, lang: string) {
   return processedHtml;
 }
 
+function getLocStr(val: any, l: string, fallback = ''): string {
+  if (!val) return fallback;
+  if (typeof val === 'string') return val;
+  if (typeof val === 'object') {
+    return val[l] || val.en || val.hi || val.mr || Object.values(val)[0] || fallback;
+  }
+  return String(val);
+}
+
 export const revalidate = 3600; // 1 hour ISR
 
 export async function generateStaticParams() {
@@ -91,26 +100,30 @@ export async function generateMetadata(
       title: 'Job Not Found | GovJobWala',
     };
   }
+
+  const title = getLocStr(job.seo_title, lang) || `${getLocStr(job.title, lang)} | GovJobWala`;
+  const description = getLocStr(job.seo_description, lang) || getLocStr(job.job_summary, lang) || `Apply for ${getLocStr(job.title, lang)} at ${getLocStr(job.organization, lang)}`;
+  const primaryKw = getLocStr(job.primary_keyword, lang);
   
   return {
-    title: job.seo_title?.[lang as 'en' | 'hi' | 'mr'] || `${job.title[lang as 'en' | 'hi' | 'mr']} | GovJobWala`,
-    description: job.seo_description?.[lang as 'en' | 'hi' | 'mr'] || job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+    title,
+    description,
     openGraph: {
       type: 'website',
       url: `https://govjobwala.com/${lang}/jobs/${slug}`,
-      title: job.seo_title?.[lang as 'en' | 'hi' | 'mr'] || `${job.title[lang as 'en' | 'hi' | 'mr']}`,
-      description: job.seo_description?.[lang as 'en' | 'hi' | 'mr'] || job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+      title,
+      description,
       siteName: 'GovJobWala',
       images: job.logo_url ? [{ url: job.logo_url }] : [],
     },
     twitter: {
       card: 'summary',
-      title: job.seo_title?.[lang as 'en' | 'hi' | 'mr'] || `${job.title[lang as 'en' | 'hi' | 'mr']}`,
-      description: job.seo_description?.[lang as 'en' | 'hi' | 'mr'] || job.job_summary?.[lang as 'en' | 'hi' | 'mr'] || `Apply for ${job.title[lang as 'en' | 'hi' | 'mr']} at ${job.organization[lang as 'en' | 'hi' | 'mr']}`,
+      title,
+      description,
       images: job.logo_url ? [job.logo_url] : [],
     },
-    keywords: job.primary_keyword?.[lang as 'en' | 'hi' | 'mr'] ? [job.primary_keyword[lang as 'en' | 'hi' | 'mr']] : undefined,
-    alternates: getSeoAlternates(lang, `/jobs/${slug}`)
+    keywords: primaryKw ? [primaryKw] : undefined,
+    alternates: getSeoAlternates(lang as any, `/jobs/${slug}`)
   };
 }
 
@@ -153,7 +166,12 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   }
 
   // Determine best apply link
-  const applyLink = job.important_links?.find(l => l.is_primary || (l.label.en && l.label.en.toLowerCase().includes('apply')) || (l.label[lang] && l.label[lang].toLowerCase().includes('apply')))?.url || job.important_links?.[0]?.url || '#';
+  const applyLink = job.important_links?.find(l => {
+    if (l.is_primary) return true;
+    const lbl = getLocStr(l.label, lang).toLowerCase();
+    const lblEn = getLocStr(l.label, 'en').toLowerCase();
+    return lbl.includes('apply') || lblEn.includes('apply');
+  })?.url || job.important_links?.[0]?.url || '#';
 
   // Safe Date parsing function
   const parseSafeDate = (dateStr?: string) => {
@@ -169,7 +187,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     return isNaN(date.getTime()) ? undefined : date.toISOString();
   };
 
-  const validThrough = parseSafeDate(job.quick_facts?.last_date?.[lang]);
+  const validThrough = parseSafeDate(getLocStr(job.quick_facts?.last_date, lang));
   let dynamicDaysLeft = job.daysLeft; // fallback
   if (validThrough) {
     const diffTime = new Date(validThrough).getTime() - new Date().getTime();
@@ -188,8 +206,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   };
 
   const jobKeywords = [
-    job.primary_keyword?.[lang],
-    ...getSafeKeywords(job.secondary_keywords?.[lang] || (job.secondary_keywords as any))
+    getLocStr(job.primary_keyword, lang),
+    ...getSafeKeywords(getLocStr(job.secondary_keywords, lang) || (job.secondary_keywords as any))
   ].filter(Boolean).map(k => String(k).trim()).join(', ');
 
   // Generate JSON-LD for JobPosting
@@ -199,18 +217,18 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     'url': `https://govjobwala.com/${lang}/jobs/${slug}`,
     'identifier': {
       '@type': 'PropertyValue',
-      'name': job.organization?.[lang] || 'Government Organization',
+      'name': getLocStr(job.organization, lang, 'Government Organization'),
       'value': job.id
     },
-    'title': job.title?.[lang] || 'Government Job Vacancy',
-    'description': job.job_summary?.[lang] || `Recruitment for ${job.title?.[lang] || 'Vacancies'} by ${job.organization?.[lang] || 'Government Organization'}`,
+    'title': getLocStr(job.title, lang, 'Government Job Vacancy'),
+    'description': getLocStr(job.job_summary, lang) || `Recruitment for ${getLocStr(job.title, lang, 'Vacancies')} by ${getLocStr(job.organization, lang, 'Government Organization')}`,
     'keywords': jobKeywords,
     'datePosted': parseSafeDate(job.created_at) || new Date().toISOString(),
     'validThrough': validThrough || defaultValidThrough.toISOString(),
     'employmentType': 'FULL_TIME',
     'hiringOrganization': {
       '@type': 'Organization',
-      'name': job.organization?.[lang] || 'Government Organization',
+      'name': getLocStr(job.organization, lang, 'Government Organization'),
       'logo': job.logo_url || 'https://govjobwala.com/logo.png'
     },
     'jobLocation': {
@@ -218,8 +236,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
       'address': {
         '@type': 'PostalAddress',
         'streetAddress': 'Headquarters',
-        'addressLocality': job.quick_facts?.job_location?.[lang] || 'New Delhi',
-        'addressRegion': job.quick_facts?.job_location?.[lang] || 'Delhi',
+        'addressLocality': getLocStr(job.quick_facts?.job_location, lang, 'New Delhi'),
+        'addressRegion': getLocStr(job.quick_facts?.job_location, lang, 'Delhi'),
         'postalCode': '110001',
         'addressCountry': 'IN'
       }
@@ -229,7 +247,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
       'currency': 'INR',
       'value': {
         '@type': 'QuantitativeValue',
-        'value': job.quick_facts?.salary?.[lang] || 'As per norms',
+        'value': getLocStr(job.quick_facts?.salary, lang, 'As per norms'),
         'unitText': 'MONTH'
       }
     }
@@ -268,7 +286,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
       {
         '@type': 'ListItem',
         'position': 3,
-        'name': job.title?.[lang] || 'Job Details',
+        'name': getLocStr(job.title, lang, 'Job Details'),
         'item': `https://govjobwala.com/${lang}/jobs/${slug}`
       }
     ]
@@ -280,10 +298,10 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
     '@type': 'FAQPage',
     'mainEntity': job.faqs.map(faq => ({
       '@type': 'Question',
-      'name': faq.question[lang],
+      'name': getLocStr(faq.question, lang),
       'acceptedAnswer': {
         '@type': 'Answer',
-        'text': faq.answer[lang]
+        'text': getLocStr(faq.answer, lang)
       }
     }))
   } : null;
@@ -292,13 +310,13 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   const syllabusLd = job.syllabus && job.syllabus.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    'name': `${job.title[lang]} Exam Syllabus`,
-    'description': `Complete detailed syllabus for ${job.title[lang]}`,
+    'name': `${getLocStr(job.title, lang)} Exam Syllabus`,
+    'description': `Complete detailed syllabus for ${getLocStr(job.title, lang)}`,
     'itemListElement': job.syllabus.map((section, idx) => ({
       '@type': 'ListItem',
       'position': idx + 1,
-      'name': section.subject[lang],
-      'description': section.topics.map(t => t.title?.[lang] || '').filter(Boolean).join(', ')
+      'name': getLocStr(section.subject, lang),
+      'description': section.topics.map(t => getLocStr(t.title, lang)).filter(Boolean).join(', ')
     }))
   } : null;
 
@@ -306,8 +324,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
   const videoLd = youtubeVideoId ? {
     '@context': 'https://schema.org',
     '@type': 'VideoObject',
-    'name': `${job.title[lang]} - Official Details`,
-    'description': `Watch official details for ${job.title[lang]}`,
+    'name': `${getLocStr(job.title, lang)} - Official Details`,
+    'description': `Watch official details for ${getLocStr(job.title, lang)}`,
     'thumbnailUrl': `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`,
     'uploadDate': parseSafeDate(job.created_at) || new Date().toISOString(),
     'embedUrl': `https://www.youtube.com/embed/${youtubeVideoId}`
@@ -328,7 +346,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           <ChevronDown className="w-3 h-3 -rotate-90" />
           <Link href={catNav.path} className="hover:text-blue-600 transition-colors">{catNav.name}</Link>
           <ChevronDown className="w-3 h-3 -rotate-90" />
-          <span className="text-gray-900 truncate max-w-[300px]">{job.title[lang]}</span>
+          <span className="text-gray-900 truncate max-w-[300px]">{getLocStr(job.title, lang)}</span>
         </div>
       </div>
 
@@ -344,11 +362,11 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
           
           {job.logo_url && job.logo_url.replace(/['"]/g, '').trim().startsWith("http") ? (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-white rounded-2xl shadow-sm border border-gray-100 flex items-center justify-center overflow-hidden relative z-10 mt-1">
-              <Image src={job.logo_url.replace(/['"]/g, '').trim()} alt={job.logo_alt?.[lang] || job.organization[lang]} width={112} height={112} priority className="w-full h-full object-contain p-1" />
+              <Image src={job.logo_url.replace(/['"]/g, '').trim()} alt={getLocStr(job.logo_alt, lang, getLocStr(job.organization, lang))} width={112} height={112} priority className="w-full h-full object-contain p-1" />
             </div>
           ) : (
             <div className="w-20 h-20 md:w-28 md:h-28 shrink-0 bg-gray-50 rounded-2xl border border-gray-100 flex items-center justify-center relative z-10 mt-1">
-              <span className="text-gray-400 font-bold text-2xl md:text-3xl">{job.organization[lang].charAt(0)}</span>
+              <span className="text-gray-400 font-bold text-2xl md:text-3xl">{getLocStr(job.organization, lang, 'G').charAt(0)}</span>
             </div>
           )}
           
@@ -374,16 +392,16 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                 )}
               </div>
               <ShareButton 
-                title={job.title[lang]} 
-                text={`Apply for ${job.title[lang]} at ${job.organization[lang]}`} 
+                title={getLocStr(job.title, lang)} 
+                text={`Apply for ${getLocStr(job.title, lang)} at ${getLocStr(job.organization, lang)}`} 
                 url={`https://govjobwala.com/${lang}/jobs/${slug}`}
                 className="inline-flex px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs font-bold text-gray-600 hover:text-[#0A58CA] hover:border-blue-200 hover:bg-blue-50"
               />
             </div>
             
             <div>
-              <h1 className="text-xl md:text-2xl font-black text-[#0B1B3D] leading-tight tracking-tight mb-1">{job.title[lang]}</h1>
-              <p className="text-xs font-bold text-gray-500 truncate">{job.organization[lang]}</p>
+              <h1 className="text-xl md:text-2xl font-black text-[#0B1B3D] leading-tight tracking-tight mb-1">{getLocStr(job.title, lang)}</h1>
+              <p className="text-xs font-bold text-gray-500 truncate">{getLocStr(job.organization, lang)}</p>
             </div>
           </div>
         </section>
@@ -447,7 +465,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                  </div>
                  <div>
                    <span className="text-[9px] md:text-[10px] font-bold text-gray-400 uppercase tracking-wider block leading-none mb-1">Location</span>
-                   <span className="text-sm font-black text-[#0B1B3D] leading-none">{job.quick_facts.job_location[lang]}</span>
+                   <span className="text-sm font-black text-[#0B1B3D] leading-none">{getLocStr(job.quick_facts.job_location, lang, 'All India')}</span>
                  </div>
               </div>
             </div>
@@ -469,7 +487,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
             {job.job_summary && (
               <div className="bg-white rounded-2xl p-5 md:p-6 shadow-[0_2px_10px_rgb(0,0,0,0.02)] border border-gray-100 mb-6">
                 <h2 className="text-base font-black text-[#0B1B3D] mb-3">Job Summary</h2>
-                <div className="text-sm leading-relaxed text-gray-600 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(job.job_summary[lang], lang) || '' }} />
+                <div className="text-sm leading-relaxed text-gray-600 prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(getLocStr(job.job_summary, lang), lang) || '' }} />
               </div>
             )}
             
@@ -505,8 +523,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                   {job.important_dates.map((date, idx) => (
                     <div key={idx} className="relative pl-6">
                       <div className="absolute w-3 h-3 bg-blue-500 rounded-full -left-[7px] top-1.5 ring-4 ring-white"></div>
-                      <h4 className="text-sm font-bold text-[#0B1B3D]">{date.label[lang]}</h4>
-                      <p className="text-sm text-blue-600 font-bold mt-0.5">{date.date[lang]}</p>
+                      <h4 className="text-sm font-bold text-[#0B1B3D]">{getLocStr(date.label, lang)}</h4>
+                      <p className="text-sm text-blue-600 font-bold mt-0.5">{getLocStr(date.date, lang)}</p>
                     </div>
                   ))}
                 </div>
@@ -522,8 +540,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                 <div className="grid grid-cols-1 gap-3">
                   {job.application_fee.map((fee, idx) => (
                     <div key={idx} className="flex justify-between items-center p-3 rounded-lg border border-green-100 bg-green-50/30">
-                      <span className="text-sm font-semibold text-gray-700">{fee.category[lang]}</span>
-                      <span className="text-sm font-black text-green-700">{fee.amount[lang]}</span>
+                      <span className="text-sm font-semibold text-gray-700">{getLocStr(fee.category, lang)}</span>
+                      <span className="text-sm font-black text-green-700">{getLocStr(fee.fee || fee.amount, lang, 'Nil')}</span>
                     </div>
                   ))}
                 </div>
@@ -544,12 +562,12 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       
                       <div className="p-4 border-b border-gray-100 border-dashed">
                         <div className="flex justify-between items-start gap-2 mb-2">
-                          <h3 className="font-black text-[#0B1B3D] leading-tight text-lg" dangerouslySetInnerHTML={{ __html: vac.post_name[lang] || '' }} />
+                          <h3 className="font-black text-[#0B1B3D] leading-tight text-lg" dangerouslySetInnerHTML={{ __html: getLocStr(vac.post_name, lang) || '' }} />
                           <span className="bg-blue-600 text-white font-black px-2.5 py-1 rounded text-sm shrink-0 shadow-sm">{vac.total} Posts</span>
                         </div>
                         <div className="flex items-start gap-2 mt-3 text-sm text-gray-700 bg-gray-50 p-2.5 rounded-lg border border-gray-100">
                           <GraduationCap className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                          <span className="font-semibold leading-snug" dangerouslySetInnerHTML={{ __html: vac.education[lang] || '' }} />
+                          <span className="font-semibold leading-snug" dangerouslySetInnerHTML={{ __html: getLocStr(vac.education, lang) || '' }} />
                         </div>
                       </div>
                       <div className="p-3 bg-gray-50/50">
@@ -581,14 +599,14 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                     <tbody className="divide-y divide-gray-100">
                       {job.vacancy_cards.map((vac, idx) => (
                         <tr key={idx} className="hover:bg-blue-50/30 transition-colors group">
-                          <td className="px-5 py-4 font-black text-[#0B1B3D] align-top text-base group-hover:text-blue-700 transition-colors" dangerouslySetInnerHTML={{ __html: vac.post_name[lang] || '' }} />
+                          <td className="px-5 py-4 font-black text-[#0B1B3D] align-top text-base group-hover:text-blue-700 transition-colors" dangerouslySetInnerHTML={{ __html: getLocStr(vac.post_name, lang) || '' }} />
                           <td className="px-5 py-4 align-top">
                             <span className="inline-flex items-center justify-center bg-blue-100 text-blue-700 font-black px-3 py-1 rounded-md min-w-[3rem] text-sm border border-blue-200 shadow-sm">{vac.total}</span>
                           </td>
                           <td className="px-5 py-4 text-gray-700 font-medium align-top leading-snug max-w-[250px] text-sm">
                             <div className="flex items-start gap-2">
                               <GraduationCap className="w-4 h-4 text-gray-400 shrink-0 mt-0.5" />
-                              <span dangerouslySetInnerHTML={{ __html: vac.education[lang] || '' }} />
+                              <span dangerouslySetInnerHTML={{ __html: getLocStr(vac.education, lang) || '' }} />
                             </div>
                           </td>
                           <td className="px-5 py-4 border-l border-gray-50 align-top bg-gray-50/30">
@@ -616,7 +634,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                 <div className="space-y-2">
                   {job.important_links.map((link, idx) => (
                     <a key={idx} href={link.url} target="_blank" className={`flex items-center justify-between p-3 rounded-lg border text-sm font-bold transition-colors ${link.is_primary ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100' : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'}`}>
-                      {link.label[lang]}
+                      {getLocStr(link.label, lang)}
                       <ArrowRight className="w-4 h-4" />
                     </a>
                   ))}
@@ -633,8 +651,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                     <div key={step.step_number} className="flex gap-4">
                       <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-700 font-black flex items-center justify-center shrink-0 border border-blue-200">{step.step_number}</div>
                       <div>
-                        <h4 className="font-bold text-[#0B1B3D] mb-1 [&>p]:inline" dangerouslySetInnerHTML={{ __html: step.title[lang] || '' }} />
-                        <div className="text-sm text-gray-600 leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(step.description[lang], lang) || '' }} />
+                        <h4 className="font-bold text-[#0B1B3D] mb-1 [&>p]:inline" dangerouslySetInnerHTML={{ __html: getLocStr(step.title, lang) || '' }} />
+                        <div className="text-sm text-gray-600 leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(getLocStr(step.description, lang), lang) || '' }} />
                       </div>
                     </div>
                   ))}
@@ -650,7 +668,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                   {job.how_to_apply.map((step) => (
                     <div key={step.step_number} className="flex gap-3 text-sm bg-gray-50 p-3 rounded-lg border border-gray-100">
                       <span className="font-black text-blue-400 shrink-0">Step {step.step_number}:</span>
-                      <div className="text-gray-700 [&>p]:inline" dangerouslySetInnerHTML={{ __html: optimizeRichText(step.instruction[lang], lang) || '' }} />
+                      <div className="text-gray-700 [&>p]:inline" dangerouslySetInnerHTML={{ __html: optimizeRichText(getLocStr(step.instruction, lang), lang) || '' }} />
                     </div>
                   ))}
                 </div>
@@ -667,7 +685,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                       <summary className="flex items-center justify-between p-4 cursor-pointer font-bold text-gray-800">
                         <span className="flex items-center gap-2">
                           <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 text-xs flex items-center justify-center shrink-0">{idx + 1}</span>
-                          <span className="[&>p]:inline" dangerouslySetInnerHTML={{ __html: section.subject[lang] || '' }} />
+                          <span className="[&>p]:inline" dangerouslySetInnerHTML={{ __html: getLocStr(section.subject, lang) || '' }} />
                         </span>
                         <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
                       </summary>
@@ -676,7 +694,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                           {section.topics.map((topic, tidx) => (
                             <li key={tidx} className="flex items-start gap-2 text-sm text-gray-700">
                               <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                              <span className="leading-tight [&>p]:inline" dangerouslySetInnerHTML={{ __html: topic.title[lang] || '' }} />
+                              <span className="leading-tight [&>p]:inline" dangerouslySetInnerHTML={{ __html: getLocStr(topic.title, lang) || '' }} />
                             </li>
                           ))}
                         </ul>
@@ -695,10 +713,10 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                   {job.faqs.map((faq, idx) => (
                     <details key={idx} className="group bg-gray-50 border border-gray-200 rounded-xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
                       <summary className="flex items-center justify-between p-4 cursor-pointer font-bold text-gray-800">
-                        <span className="[&>p]:inline" dangerouslySetInnerHTML={{ __html: faq.question[lang] || '' }} />
+                        <span className="[&>p]:inline" dangerouslySetInnerHTML={{ __html: getLocStr(faq.question, lang) || '' }} />
                         <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
                       </summary>
-                      <div className="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 bg-white leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(faq.answer[lang], lang) || '' }} />
+                      <div className="p-4 pt-0 text-sm text-gray-600 border-t border-gray-100 bg-white leading-relaxed prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: optimizeRichText(getLocStr(faq.answer, lang), lang) || '' }} />
                     </details>
                   ))}
                 </div>
@@ -720,7 +738,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                  <div className="space-y-2">
                    {job.important_links.map((link, idx) => (
                      <a key={idx} href={link.url} target="_blank" className={`flex items-center justify-between p-3 rounded-lg border text-sm font-bold transition-colors ${link.is_primary ? 'bg-blue-50 border-blue-200 text-blue-700 hover:bg-blue-100' : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'}`}>
-                       {link.label[lang]}
+                       {getLocStr(link.label, lang)}
                        <ArrowRight className="w-4 h-4" />
                      </a>
                    ))}
@@ -757,7 +775,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
              <div className="hidden md:block bg-gradient-to-b from-[#0A58CA] to-[#084298] rounded-2xl text-white p-6 shadow-lg relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white opacity-5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <h3 className="font-black text-xl mb-2">Ready to Apply?</h3>
-                <p className="text-blue-100 text-sm mb-5 leading-relaxed">Submit your application before <strong className="text-white">{job.quick_facts?.last_date[lang]}</strong>.</p>
+                <p className="text-blue-100 text-sm mb-5 leading-relaxed">Submit your application before <strong className="text-white">{getLocStr(job.quick_facts?.last_date, lang)}</strong>.</p>
                 <a href={applyLink} target="_blank" className="w-full py-3.5 bg-yellow-400 text-yellow-950 hover:bg-yellow-300 rounded-xl font-black transition-colors shadow flex items-center justify-center gap-2 text-sm uppercase tracking-wide">
                   Apply Online Now <ArrowRight className="w-4 h-4" />
                 </a>
@@ -770,8 +788,8 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                  <ul className="space-y-3">
                    {job.application_fee.map((fee, idx) => (
                      <li key={idx} className="flex justify-between items-center text-sm border-b border-gray-50 pb-2 last:border-0 last:pb-0">
-                       <span className="text-gray-600">{fee.category[lang]}</span>
-                       <span className="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded">{fee.amount[lang]}</span>
+                       <span className="text-gray-600">{getLocStr(fee.category, lang)}</span>
+                       <span className="font-bold text-green-700 bg-green-50 px-2 py-0.5 rounded">{getLocStr(fee.fee || fee.amount, lang, 'Nil')}</span>
                      </li>
                    ))}
                  </ul>
@@ -800,7 +818,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                     <div className="relative w-10 h-10 shrink-0">
                       <Image 
                         src={rJob.logo_url.replace(/['"]/g, '').trim()} 
-                        alt={`${rJob.organization[lang]} logo`} 
+                        alt={`${getLocStr(rJob.organization, lang)} logo`} 
                         width={40}
                         height={40}
                         className="object-contain p-1 max-w-full max-h-full"
@@ -808,19 +826,19 @@ export default async function JobDetailPage({ params }: { params: Promise<{ lang
                     </div>
                   ) : (
                     <div className="w-10 h-10 bg-blue-50 text-blue-600 rounded flex items-center justify-center font-bold text-lg shrink-0">
-                      {rJob.organization[lang]?.charAt(0) || 'G'}
+                      {getLocStr(rJob.organization, lang, 'G').charAt(0)}
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wide truncate">{rJob.organization[lang]}</p>
-                    <h3 className="font-bold text-[#0B1B3D] text-sm leading-tight line-clamp-2 group-hover:text-blue-700 transition-colors">{rJob.title[lang]}</h3>
+                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wide truncate">{getLocStr(rJob.organization, lang)}</p>
+                    <h3 className="font-bold text-[#0B1B3D] text-sm leading-tight line-clamp-2 group-hover:text-blue-700 transition-colors">{getLocStr(rJob.title, lang)}</h3>
                   </div>
                 </div>
                 
                 <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between text-xs font-semibold text-gray-600">
-                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {rJob.quick_facts?.job_location?.[lang] || 'All India'}</span>
+                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {getLocStr(rJob.quick_facts?.job_location, lang, 'All India')}</span>
                   {rJob.quick_facts?.last_date && (
-                    <span className="flex items-center gap-1 text-red-600 bg-red-50 px-2 py-0.5 rounded"><Calendar className="w-3.5 h-3.5" /> {rJob.quick_facts.last_date[lang]}</span>
+                    <span className="flex items-center gap-1 text-red-600 bg-red-50 px-2 py-0.5 rounded"><Calendar className="w-3.5 h-3.5" /> {getLocStr(rJob.quick_facts.last_date, lang)}</span>
                   )}
                 </div>
               </Link>
